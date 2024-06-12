@@ -1,12 +1,15 @@
 {
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "fastify": "^4.27.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.2",
-    "tsx": "^4.15.2"
+    "tsx": "^4.15.2",
+    "typescript": "^5.4.5"
   }
 }
