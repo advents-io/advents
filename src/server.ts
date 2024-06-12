@@ -1,10 +1,12 @@
 import fastify from 'fastify'
+import fastifyCors from '@fastify/cors'
 
 const app = fastify()
 
-app.get('/', (_, reply) => reply.send({ hello: 'world' }))
+app.register(fastifyCors)
+
 
 const port = Number(process.env.PORT) || 3000
 const host = 'RENDER' in process.env ? `0.0.0.0` : `localhost`
 
-app.listen({ port, host }).then(() => console.log('Server is running'))
+app.listen({ port, host }).then(() => console.log('Server is running!'))
