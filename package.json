@@ -2,7 +2,6 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup src",
-    "migrate:prod": "prisma migrate deploy",
     "start": "node dist/server.js"
   },
   "dependencies": {
