@@ -1,11 +1,14 @@
 import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
+import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
 import { insertLog } from '@/routes/logs'
 import { checkServerStatus } from '@/routes'
 
-const app = fastify()
+const app = fastify().withTypeProvider<ZodTypeProvider>()
 
+app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler)
 app.register(fastifyCors)
 
 app.register(insertLog)
