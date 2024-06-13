@@ -11,7 +11,7 @@ export async function insertLog(app: FastifyInstance) {
       schema: {
         body: z.object({
           comment: z.string().nullable(),
-          data: z.string(),
+          data: z.unknown(),
         }),
       },
     },
