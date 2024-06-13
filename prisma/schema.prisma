@@ -9,7 +9,8 @@ datasource db {
 
 model Log {
   id        String   @id @default(uuid())
-  log       Json
+  comment   String?
+  data      Json
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("logs")
