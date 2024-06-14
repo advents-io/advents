@@ -1,8 +1,8 @@
 {
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "migrate": "prisma migrate dev",
-    "migrate:prod": "prisma migrate deploy",
+    "migrate": "prisma migrate dev && prisma generate",
+    "migrate:prod": "prisma migrate deploy && prisma generate",
     "build": "tsup src",
     "start": "node dist/server.js"
   },
