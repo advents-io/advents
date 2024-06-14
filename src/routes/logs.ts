@@ -33,6 +33,7 @@ export async function insertLog(app: FastifyInstance) {
         await prisma.log.create({
           data: {
             ...request.body,
+            installTime: request.body.installTime ? new Date(request.body.installTime) : null,
             data: request.body.data as PrismaJson,
           },
         })
