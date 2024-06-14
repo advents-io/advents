@@ -15,7 +15,7 @@ const insertLogSchema = z.object({
   deviceYearClass: z.string().nullable(),
   osName: z.string().nullable(),
   osVersion: z.string().nullable(),
-  installTime: z.date().nullable(),
+  installTime: z.string().nullable(),
   installReferrer: z.string().nullable(),
   appVersion: z.string().nullable(),
 })
