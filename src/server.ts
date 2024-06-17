@@ -2,9 +2,9 @@ import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
 import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
-import { insertLog } from '@/routes/logs'
-import { checkServerStatus } from '@/routes'
 import { isDevelopment } from '@/utils/environment'
+
+import { registerRoutes } from '@/configs/register-routes'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -12,8 +12,7 @@ app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
 app.register(fastifyCors)
 
-app.register(insertLog)
-app.register(checkServerStatus)
+app.register(registerRoutes)
 
 if (isDevelopment) {
   app.addHook('onRequest', (request, _, done) => {

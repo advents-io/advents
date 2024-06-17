@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 
-export async function checkServerStatus(app: FastifyInstance) {
+export default async function (app: FastifyInstance) {
   app.get('/', (_, reply) => {
     reply.send({
       status: 'Server is running!',

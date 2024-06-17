@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { PrismaJson, prisma } from '@/libs/prisma'
 
-const insertLogSchema = z.object({
+const bodySchema = z.object({
   comment: z.string().nullable(),
   data: z.unknown(),
 
@@ -20,12 +20,12 @@ const insertLogSchema = z.object({
   appVersion: z.string().nullable(),
 })
 
-export async function insertLog(app: FastifyInstance) {
+export default async function (app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/logs',
     {
       schema: {
-        body: insertLogSchema,
+        body: bodySchema,
       },
     },
     async (request, reply) => {
