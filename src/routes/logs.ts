@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { PrismaJson, prisma } from '@/lib/prisma'
+import { PrismaJson, prisma } from '@/libs/prisma'
 
 const insertLogSchema = z.object({
   comment: z.string().nullable(),
