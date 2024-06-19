@@ -1,4 +1,5 @@
 {
+  "name": "@advents/api",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "migrate": "prisma migrate dev && prisma generate",
