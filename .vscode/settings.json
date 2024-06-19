@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    ".gitignore": true,
+    ".prettierrc": true,
+    "pnpm-lock.yaml": true,
+    ".editorconfig": true,
+    "package.json": true,
+    "pnpm-workspace.yaml": true,
+
+    "**/node_modules": true,
+    "**/tsconfig.json": true
+  }
+}
