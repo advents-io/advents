@@ -5,19 +5,19 @@ import { z } from 'zod'
 import { PrismaJson, prisma } from '@/libs/prisma'
 
 const bodySchema = z.object({
-  comment: z.string().nullable(),
+  comment: z.string().nullish(),
   data: z.unknown(),
 
-  deviceId: z.string().nullable(),
-  deviceName: z.string().nullable(),
-  deviceBrand: z.string().nullable(),
-  deviceModel: z.string().nullable(),
-  deviceYearClass: z.string().nullable(),
-  osName: z.string().nullable(),
-  osVersion: z.string().nullable(),
-  installTime: z.string().nullable(),
-  installReferrer: z.string().nullable(),
-  appVersion: z.string().nullable(),
+  deviceId: z.string().nullish(),
+  deviceName: z.string().nullish(),
+  deviceBrand: z.string().nullish(),
+  deviceModel: z.string().nullish(),
+  deviceYearClass: z.string().nullish(),
+  osName: z.string().nullish(),
+  osVersion: z.string().nullish(),
+  installTime: z.string().nullish(),
+  installReferrer: z.string().nullish(),
+  appVersion: z.string().nullish(),
 })
 
 export default async function (app: FastifyInstance) {
