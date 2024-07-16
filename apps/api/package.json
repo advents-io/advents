@@ -17,8 +17,15 @@
   },
   "devDependencies": {
     "@advents/tsconfig": "workspace:*",
+    "@advents/eslint-config": "workspace:*",
     "prisma": "^5.15.0",
     "tsup": "^8.1.0",
     "tsx": "^4.15.2"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/node.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
 }
