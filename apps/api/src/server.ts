@@ -1,10 +1,9 @@
-import fastify from 'fastify'
 import fastifyCors from '@fastify/cors'
-import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
-
-import { isDevelopment } from '@/utils/environment'
+import fastify from 'fastify'
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 
 import { registerRoutes } from '@/configs/register-routes'
+import { isDevelopment } from '@/utils/environment'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 

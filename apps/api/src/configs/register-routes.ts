@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FastifyInstance } from 'fastify'
-import path from 'path'
 import fs from 'fs/promises'
+import path from 'path'
 
 export async function registerRoutes(app: FastifyInstance) {
   const routesDir = await getRoutesDir()

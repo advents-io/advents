@@ -1,7 +1,16 @@
 {
   "name": "advents",
+  "scripts": {
+    "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
+  },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "typescript": "^5.5.3"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/node.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
 }
