@@ -29,3 +29,19 @@ model Log {
 
   @@map("logs")
 }
+
+model Link {
+  id String @id @default(uuid())
+
+  domain      String
+  slug        String
+  iosUrl      String @map("ios_url") @db.Text
+  androidUrl  String @map("android_url") @db.Text
+  fallbackUrl String @map("fallback_url") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([domain, slug])
+  @@map("links")
+}
