@@ -1,6 +1,8 @@
 {
   "name": "advents",
   "scripts": {
+    "api": "pnpm run --dir apps/api",
+    "web": "pnpm run --dir apps/web",
     "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
   },
   "devDependencies": {
