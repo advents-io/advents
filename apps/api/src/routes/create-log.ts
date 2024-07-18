@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { prisma, PrismaJson } from '@/libs/prisma'
+import { prisma, PrismaJson } from '@/lib/prisma'
 
 const bodySchema = z.object({
   comment: z.string().nullish(),
