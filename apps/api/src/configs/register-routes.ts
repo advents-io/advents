@@ -42,7 +42,7 @@ const getRoutesToRegister: (dir: string) => Promise<any[]> = async (dir: string)
 const getDirValidFilePaths = async (dir: string) => {
   const files: string[] = []
 
-  const allFiles = await fs.readdir(dir)
+  const allFiles = await fs.readdir(dir, { recursive: true })
 
   for (const file of allFiles) {
     const isValidFile = file.endsWith('.ts') || file.endsWith('.js')
