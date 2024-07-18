@@ -29,19 +29,15 @@ export default async function (app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      try {
-        await prisma.log.create({
-          data: {
-            ...request.body,
-            installTime: request.body.installTime ? new Date(request.body.installTime) : null,
-            data: request.body.data as PrismaJson,
-          },
-        })
+      await prisma.log.create({
+        data: {
+          ...request.body,
+          installTime: request.body.installTime ? new Date(request.body.installTime) : null,
+          data: request.body.data as PrismaJson,
+        },
+      })
 
-        reply.status(201)
-      } catch (error) {
-        reply.status(400) // TODO criar validação de erros
-      }
+      reply.status(201)
     },
   )
 }

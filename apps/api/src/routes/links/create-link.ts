@@ -22,20 +22,16 @@ export default async function (app: FastifyInstance) {
     async (request, reply) => {
       const domain = 'l.advents.io'
 
-      try {
-        await prisma.link.create({
-          data: {
-            domain: 'l.advents.io',
-            ...request.body,
-          },
-        })
+      await prisma.link.create({
+        data: {
+          domain: 'l.advents.io',
+          ...request.body,
+        },
+      })
 
-        const link = `${domain}/${request.body.slug}`
+      const link = `${domain}/${request.body.slug}`
 
-        reply.status(201).send({ link })
-      } catch (error) {
-        reply.status(400) // TODO criar validação de erros
-      }
+      reply.status(201).send({ link })
     },
   )
 }

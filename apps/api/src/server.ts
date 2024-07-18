@@ -2,6 +2,7 @@ import fastifyCors from '@fastify/cors'
 import fastify from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 
+import { errorHandler } from '@/configs/error-handler'
 import { registerRoutes } from '@/configs/register-routes'
 import { isDevelopment } from '@/utils/environment'
 
@@ -12,6 +13,7 @@ app.setValidatorCompiler(validatorCompiler)
 app.register(fastifyCors)
 
 app.register(registerRoutes)
+app.setErrorHandler(errorHandler)
 
 if (isDevelopment) {
   app.addHook('onRequest', (request, _, done) => {
