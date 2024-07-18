@@ -40,7 +40,7 @@ export default async function (app: FastifyInstance) {
 
         reply.status(201)
       } catch (error) {
-        reply.status(400)
+        reply.status(400) // TODO criar validação de erros
       }
     },
   )
