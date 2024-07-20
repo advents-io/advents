@@ -24,9 +24,6 @@ importers:
       '@fastify/cors':
         specifier: ^9.0.1
         version: 9.0.1
-      '@prisma/client':
-        specifier: ^5.15.0
-        version: 5.15.0(prisma@5.15.1)
       fastify:
         specifier: ^4.27.0
         version: 4.28.0
@@ -83,6 +80,9 @@ importers:
       '@advents/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@advents/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       '@advents/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
