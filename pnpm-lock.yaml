@@ -135,7 +135,7 @@ importers:
   packages/prisma:
     dependencies:
       '@prisma/client':
-        specifier: ^5
+        specifier: ^5.15.0
         version: 5.15.0(prisma@5.15.1)
     devDependencies:
       '@advents/eslint-config':

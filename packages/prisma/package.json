@@ -6,7 +6,7 @@
     "migrate:prod": "prisma migrate deploy && prisma generate"
   },
   "peerDependencies": {
-    "@prisma/client": "^5"
+    "@prisma/client": "^5.15.0"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
