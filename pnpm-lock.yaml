@@ -19,7 +19,7 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
 
-  apps/web:
+  apps/app:
     dependencies:
       '@prisma/client':
         specifier: ^5.15.0

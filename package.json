@@ -1,8 +1,7 @@
 {
   "name": "advents",
   "scripts": {
-    "api": "pnpm --dir apps/api",
-    "web": "pnpm --dir apps/web",
+    "app": "pnpm --dir apps/app",
     "prisma": "pnpm --dir packages/prisma",
     "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
   },

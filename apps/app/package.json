@@ -1,5 +1,5 @@
 {
-  "name": "@advents/web",
+  "name": "@advents/app",
   "scripts": {
     "dev": "next dev --turbo"
   },
