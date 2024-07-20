@@ -8,28 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Log {
-  id String @id @default(uuid())
-
-  comment String?
-  data    Json
-
-  installReferrer String?   @map("install_referrer")
-  installTime     DateTime? @map("install_time")
-  deviceId        String?   @map("device_id")
-  deviceName      String?   @map("device_name")
-  osName          String?   @map("os_name")
-  osVersion       String?   @map("os_version")
-  deviceBrand     String?   @map("device_brand")
-  deviceModel     String?   @map("device_model")
-  deviceYearClass String?   @map("device_year_class")
-  appVersion      String?   @map("app_version")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@map("logs")
-}
-
 model Link {
   id String @id @default(uuid())
 

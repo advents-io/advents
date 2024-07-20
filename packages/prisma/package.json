@@ -2,8 +2,7 @@
   "name": "@advents/prisma",
   "main": "src/index.ts",
   "scripts": {
-    "migrate": "prisma migrate dev && prisma generate",
-    "migrate:prod": "prisma migrate deploy && prisma generate"
+    "migrate": "prisma migrate dev && prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
