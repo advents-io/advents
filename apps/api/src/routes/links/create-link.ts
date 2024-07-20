@@ -1,8 +1,7 @@
+import { prisma } from '@advents/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-
-import { prisma } from '@/lib/prisma'
 
 const bodySchema = z.object({
   slug: z.string(),

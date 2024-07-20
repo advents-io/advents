@@ -2,8 +2,6 @@
   "name": "@advents/api",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "migrate": "prisma migrate dev && prisma generate",
-    "migrate:prod": "prisma migrate deploy && prisma generate",
     "build": "tsup src",
     "start": "node dist/server.js",
     "clean": "rm -rf dist"
@@ -16,8 +14,8 @@
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
+    "@advents/prisma": "workspace:*",
     "@advents/tsconfig": "workspace:*",
-    "prisma": "^5.15.0",
     "tsup": "^8.1.0",
     "tsx": "^4.15.2"
   },
