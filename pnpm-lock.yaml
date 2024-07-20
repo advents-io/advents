@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/node':
         specifier: ^20.14.10
@@ -29,9 +33,6 @@ importers:
       fastify-type-provider-zod:
         specifier: ^1.2.0
         version: 1.2.0(fastify@4.28.0)(zod@3.23.8)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
     devDependencies:
       '@advents/eslint-config':
         specifier: workspace:*
