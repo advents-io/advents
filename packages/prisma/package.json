@@ -1,0 +1,22 @@
+{
+  "name": "@advents/prisma",
+  "main": "src/index.ts",
+  "scripts": {
+    "migrate": "prisma migrate dev && prisma generate",
+    "migrate:prod": "prisma migrate deploy && prisma generate"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^5"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*",
+    "prisma": "^5.15.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/node.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}

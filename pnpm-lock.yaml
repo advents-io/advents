@@ -37,6 +37,9 @@ importers:
       '@advents/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@advents/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       '@advents/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -131,6 +134,22 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.5
         version: 0.6.5(prettier@3.3.3)
+
+  packages/prisma:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5
+        version: 5.15.0(prisma@5.15.1)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      prisma:
+        specifier: ^5.15.0
+        version: 5.15.1
 
   packages/tsconfig: {}
 

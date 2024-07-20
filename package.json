@@ -3,6 +3,7 @@
   "scripts": {
     "api": "pnpm --dir apps/api",
     "web": "pnpm --dir apps/web",
+    "prisma": "pnpm --dir packages/prisma",
     "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
   },
   "dependencies": {

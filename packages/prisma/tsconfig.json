@@ -1,0 +1,10 @@
+{
+  "extends": "@advents/tsconfig/node.json",
+
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
