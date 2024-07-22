@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "migrate": "prisma migrate dev && prisma generate",
-    "postinstall": "prisma migrate deploy && prisma generate"
+    "migrate:prod": "prisma migrate deploy && prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
