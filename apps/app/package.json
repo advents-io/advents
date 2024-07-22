@@ -2,7 +2,8 @@
   "name": "@advents/app",
   "scripts": {
     "dev": "next dev --turbo",
-    "migrate": "prisma migrate dev && prisma generate"
+    "migrate": "prisma migrate dev && prisma generate",
+    "postinstall": "prisma migrate deploy && prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
