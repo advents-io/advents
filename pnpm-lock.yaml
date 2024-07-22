@@ -21,6 +21,12 @@ importers:
 
   apps/app:
     dependencies:
+      '@neondatabase/serverless':
+        specifier: ^0.9.4
+        version: 0.9.4
+      '@prisma/adapter-neon':
+        specifier: ^5.17.0
+        version: 5.17.0(@neondatabase/serverless@0.9.4)
       '@prisma/client':
         specifier: ^5.17.0
         version: 5.17.0(prisma@5.17.0)
@@ -55,9 +61,6 @@ importers:
       '@advents/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@advents/prisma':
-        specifier: workspace:*
-        version: link:../../packages/prisma
       '@advents/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -70,6 +73,9 @@ importers:
       postcss:
         specifier: ^8
         version: 8.4.39
+      prisma:
+        specifier: ^5.17.0
+        version: 5.17.0
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.6
@@ -106,28 +112,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.5
         version: 0.6.5(prettier@3.3.3)
-
-  packages/prisma:
-    dependencies:
-      '@neondatabase/serverless':
-        specifier: ^0.9.4
-        version: 0.9.4
-      '@prisma/adapter-neon':
-        specifier: ^5.17.0
-        version: 5.17.0(@neondatabase/serverless@0.9.4)
-      '@prisma/client':
-        specifier: ^5.17.0
-        version: 5.17.0(prisma@5.17.0)
-    devDependencies:
-      '@advents/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@advents/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      prisma:
-        specifier: ^5.17.0
-        version: 5.17.0
 
   packages/tsconfig: {}
 

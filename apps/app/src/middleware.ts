@@ -1,6 +1,6 @@
-import { prisma } from '@advents/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
 
 export default async function middleware(req: NextRequest) {
