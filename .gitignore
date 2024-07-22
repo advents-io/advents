@@ -3,4 +3,5 @@ node_modules
 dist
 .env
 .next
+.vercel
 next-env.d.ts
