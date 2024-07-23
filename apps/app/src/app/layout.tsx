@@ -3,6 +3,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { Header } from '@/components/header'
+
 const interFont = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -20,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='pt-BR' className={interFont.className}>
-      <body>{children}</body>
+      <body className='flex min-h-screen flex-col'>
+        <Header />
+        {children}
+      </body>
     </html>
   )
 }
