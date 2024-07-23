@@ -52,7 +52,7 @@ export default async function middleware(req: NextRequest) {
   const isAndroid = userAgent(req).os?.name === 'Android'
 
   if (isAndroid) {
-    return NextResponse.redirect(link.iosUrl, {
+    return NextResponse.redirect(link.androidUrl, {
       status: 302,
     })
   }
