@@ -4,9 +4,17 @@ import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
 
 export default async function middleware(req: NextRequest) {
-  const domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
+  let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  if (!LINK_DOMAINS.includes(domain)) {
+  const isDevLinkDomain = domain === 'l.localhost:3000' || domain.endsWith('.vercel.app')
+
+  if (isDevLinkDomain) {
+    domain = LINK_DOMAINS[0]
+  }
+
+  const isLinkDomain = LINK_DOMAINS.includes(domain)
+
+  if (!isLinkDomain) {
     return NextResponse.next()
   }
 
