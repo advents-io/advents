@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
@@ -29,6 +29,22 @@ export default async function middleware(req: NextRequest) {
 
   if (!link) {
     return NextResponse.redirect(WEBSITE_URL, {
+      status: 302,
+    })
+  }
+
+  const isIos = userAgent(req).os?.name === 'iOS'
+
+  if (isIos) {
+    return NextResponse.redirect(link.iosUrl, {
+      status: 302,
+    })
+  }
+
+  const isAndroid = userAgent(req).os?.name === 'Android'
+
+  if (isAndroid) {
+    return NextResponse.redirect(link.iosUrl, {
       status: 302,
     })
   }
