@@ -7,6 +7,7 @@
     "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@neondatabase/serverless": "^0.9.4",
     "@prisma/adapter-neon": "^5.17.0",
     "@prisma/client": "^5.17.0",
@@ -20,6 +21,7 @@
     "next": "15.0.0-rc.0",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-dom": "19.0.0-rc-f994737d14-20240522",
+    "react-hook-form": "^7.52.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
