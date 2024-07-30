@@ -90,7 +90,7 @@ export const CreateLinkDialog = () => {
 
                       <span className='text-muted-foreground'>/</span>
 
-                      <Input id='short-link-slug' placeholder='slug' {...field} />
+                      <Input autoFocus id='short-link-slug' placeholder='slug' {...field} />
                     </div>
                   </FormControl>
                   <FormMessage />
