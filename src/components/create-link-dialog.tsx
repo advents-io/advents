@@ -137,7 +137,7 @@ export const CreateLinkDialog = () => {
               name='fallbackUrl'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Url de fallback</FormLabel>
+                  <FormLabel>Url alternativa</FormLabel>
                   <FormControl>
                     <Input placeholder='https://acme.com' {...field} />
                   </FormControl>

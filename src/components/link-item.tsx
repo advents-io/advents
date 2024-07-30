@@ -20,13 +20,13 @@ export const LinkItem = ({ link }: Props) => {
       </CardHeader>
       <CardContent>
         <p className='text-sm text-muted-foreground'>
-          <b>Fallback:</b> <NextLink href={link.fallbackUrl}>{link.fallbackUrl}</NextLink>
+          <b>Android:</b> <NextLink href={link.androidUrl}>{link.androidUrl}</NextLink>
         </p>
         <p className='text-sm text-muted-foreground'>
           <b>iOS:</b> <NextLink href={link.iosUrl}>{link.iosUrl}</NextLink>
         </p>
         <p className='text-sm text-muted-foreground'>
-          <b>Android:</b> <NextLink href={link.androidUrl}>{link.androidUrl}</NextLink>
+          <b>Url Alternativa:</b> <NextLink href={link.fallbackUrl}>{link.fallbackUrl}</NextLink>
         </p>
       </CardContent>
     </Card>
