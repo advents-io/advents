@@ -28,12 +28,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useToast } from '@/components/ui/use-toast'
 import { CreateLinkProps, createLinkSchema } from '@/schemas/create-link'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
 
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
+  const { toast } = useToast()
 
   const form = useForm<CreateLinkProps>({
     resolver: zodResolver(createLinkSchema),
@@ -54,7 +56,12 @@ export const CreateLinkDialog = () => {
 
     if (result.ok) {
       form.reset()
+
       setOpen(false)
+
+      toast({
+        title: 'Link foi criado com sucesso.',
+      })
     }
   }
 
