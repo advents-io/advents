@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { Header } from '@/components/header'
+import { Toaster } from '@/components/ui/toaster'
 
 const interFont = Inter({
   subsets: ['latin'],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className='flex min-h-screen flex-col'>
         <Header />
         {children}
+        <Toaster />
       </body>
     </html>
   )
