@@ -3,7 +3,7 @@ import { LinkItem } from '@/components/link-item'
 import { prisma } from '@/lib/prisma'
 
 export default async function Home() {
-  const links = await prisma.link.findMany()
+  const links = await prisma.link.findMany({ orderBy: { createdAt: 'desc' } })
 
   return (
     <main className='flex flex-1 flex-col p-8 md:p-14'>

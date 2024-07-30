@@ -40,9 +40,17 @@ export async function POST(req: NextRequest) {
 const generateRandomSlug = async (domain: string) => {
   const slug = nanoid()
 
-  const slugExists = (await prisma.link.count({ where: { domain, slug } })) > 0
+  const linkExists = await prisma.link.findUnique({
+    select: { id: true },
+    where: {
+      domain_slug: {
+        domain,
+        slug,
+      },
+    },
+  })
 
-  if (slugExists) {
+  if (linkExists) {
     return generateRandomSlug(domain)
   }
 
