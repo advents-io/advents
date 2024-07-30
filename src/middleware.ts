@@ -3,10 +3,10 @@ import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
 
-export default async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain = domain === 'l.localhost:3000' || domain.endsWith('.vercel.app')
+  const isDevLinkDomain = domain === 'l.localhost:3000'
 
   if (isDevLinkDomain) {
     domain = LINK_DOMAINS[0]
