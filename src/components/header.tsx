@@ -7,8 +7,8 @@ import AdventsLogo from 'public/advents.svg'
 import { useState } from 'react'
 
 import { NavigationItem } from '@/components/navigation-item'
-import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { Routes } from '@/utils/routes'
 
 const TABS = [

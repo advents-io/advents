@@ -1,7 +1,7 @@
 import { Link } from '@prisma/client'
 import NextLink from 'next/link'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/ui/card'
 
 interface Props {
   link: Link
