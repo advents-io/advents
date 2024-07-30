@@ -11,6 +11,11 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Routes } from '@/utils/routes'
 
+const TABS = [
+  { label: 'Links', href: Routes['/'] },
+  { label: 'Ajustes', href: Routes['/settings'] },
+]
+
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -23,8 +28,11 @@ export const Header = () => {
           <Image src={AdventsLogo} alt='Logo da Advents' className='mr-5 w-24' />
         </Link>
 
-        <NavigationItem href={Routes['/']}>Links</NavigationItem>
-        <NavigationItem href={Routes['/settings']}>Settings</NavigationItem>
+        {TABS.map((tab, index) => (
+          <NavigationItem key={index} href={tab.href}>
+            {tab.label}
+          </NavigationItem>
+        ))}
       </nav>
 
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -46,12 +54,11 @@ export const Header = () => {
               <Package2 className='h-6 w-6' />
             </Link>
 
-            <NavigationItem onClick={closeMenu} href={Routes['/']}>
-              Links
-            </NavigationItem>
-            <NavigationItem onClick={closeMenu} href={Routes['/settings']}>
-              Settings
-            </NavigationItem>
+            {TABS.map((tab, index) => (
+              <NavigationItem key={index} onClick={closeMenu} href={tab.href}>
+                {tab.label}
+              </NavigationItem>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>
