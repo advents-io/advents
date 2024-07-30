@@ -1,8 +1,8 @@
-'use server'
+import { NextResponse } from 'next/server'
 
 import { prisma } from '@/lib/prisma'
 
-export const createLink = async () => {
+export async function POST() {
   await prisma.link.create({
     data: {
       domain: 'l.advents.io',
@@ -12,4 +12,6 @@ export const createLink = async () => {
       fallbackUrl: 'https://favorito.digital',
     },
   })
+
+  return NextResponse.json(null, { status: 201 })
 }
