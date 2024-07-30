@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -28,35 +28,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { CreateLinkProps, createLinkSchema } from '@/schemas/create-link'
 import { LINK_DOMAINS } from '@/utils/constants'
-
-const createLinkSchema = z.object({
-  slug: z.string().min(4),
-  iosUrl: z.string().url().includes('apps.apple.com'),
-  androidUrl: z.string().url().includes('play.google.com'),
-  fallbackUrl: z.string().url(),
-})
-
-type CreateLinkType = z.infer<typeof createLinkSchema>
+import { IS_DEVELOPMENT } from '@/utils/env'
 
 export const CreateLinkDialog = () => {
-  const form = useForm<CreateLinkType>({
+  const [open, setOpen] = useState(false)
+
+  const form = useForm<CreateLinkProps>({
     resolver: zodResolver(createLinkSchema),
+    defaultValues: {
+      androidUrl: IS_DEVELOPMENT
+        ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
+        : '',
+      iosUrl: IS_DEVELOPMENT ? 'https://apps.apple.com/br/app/id1598991618?platform=iphone' : '',
+      fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
+    },
   })
 
-  const onSubmit = async (values: CreateLinkType) => {
-    await fetch('/api/links', {
+  const onSubmit = async (values: CreateLinkProps) => {
+    const result = await fetch('/api/links', {
       body: JSON.stringify(values),
       method: 'POST',
     })
+
+    if (result.ok) {
+      form.reset()
+      setOpen(false)
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='default' size='sm'>
-          Criar link
-        </Button>
+        <Button size='lg'>Criar link</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -90,7 +95,7 @@ export const CreateLinkDialog = () => {
 
                       <span className='text-muted-foreground'>/</span>
 
-                      <Input autoFocus id='short-link-slug' placeholder='slug' {...field} />
+                      <Input autoFocus placeholder='(opcional)' {...field} />
                     </div>
                   </FormControl>
                   <FormMessage />
