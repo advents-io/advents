@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { prisma } from '@/lib/prisma'
+import { supabaseClient } from '@/lib/supabase'
 import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
 
 export async function middleware(req: NextRequest) {
@@ -26,14 +26,17 @@ export async function middleware(req: NextRequest) {
     })
   }
 
-  const link = await prisma.link.findUnique({
-    where: {
-      domain_slug: {
-        domain,
-        slug,
-      },
-    },
-  })
+  const supabase = supabaseClient()
+
+  const link = (
+    await supabase
+      .from('links')
+      .select('androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url')
+      .eq('slug', slug)
+      .eq('domain', domain)
+      .limit(1)
+      .single()
+  ).data
 
   if (!link) {
     return NextResponse.redirect(WEBSITE_URL, {

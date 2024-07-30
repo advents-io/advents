@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
-import { createLinkSchema } from '@/schemas/create-link'
+import { createLinkSchema } from '@/schemas/link'
 import { LINK_DOMAINS } from '@/utils/constants'
 
 export async function POST(req: NextRequest) {
