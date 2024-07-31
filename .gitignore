@@ -5,3 +5,8 @@ dist
 .next
 .vercel
 next-env.d.ts
+
+# Supabase
+.branches
+.temp
+.env
