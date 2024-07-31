@@ -28,6 +28,7 @@ export async function middleware(req: NextRequest) {
 
   const supabase = supabaseClient()
 
+  // This was necessary because Prisma was not able to run on edge middleware in the Supabase database
   const link = (
     await supabase
       .from('links')
