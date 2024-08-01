@@ -14,8 +14,6 @@ import { useToast } from '@/ui/use-toast'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
 
-// TODO remove react-hook-form, @hookform/resolvers, and form component of shadcn/ui
-
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()

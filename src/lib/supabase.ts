@@ -1,12 +1,12 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+import { env } from '@/utils/env'
+
 export const supabaseClient = () => {
   const cookieStore = cookies()
 
-  const { SUPABASE_URL, SUPABASE_ANON_KEY } = process.env
-
-  return createServerClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
+  return createServerClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!, {
     cookies: {
       getAll() {
         return cookieStore.getAll()
