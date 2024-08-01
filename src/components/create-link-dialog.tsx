@@ -1,12 +1,20 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CreateLinkProps, createLinkSchema } from '@/schemas/link'
 import { Button } from '@/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
@@ -28,6 +36,8 @@ export const CreateLinkDialog = () => {
       fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
     },
   })
+
+  const isLoading = form.formState.isLoading
 
   const onSubmit = async (values: CreateLinkProps) => {
     const result = await fetch('/api/links', {
@@ -139,7 +149,11 @@ export const CreateLinkDialog = () => {
               )}
             />
 
-            <Button type='submit'>Criar link</Button>
+            <DialogFooter>
+              <Button type='submit' disabled={isLoading} className='min-w-28'>
+                {!isLoading ? 'Criar link' : <Loader2 className='animate-spin' />}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

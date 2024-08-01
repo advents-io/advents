@@ -7,6 +7,18 @@ const envSchema = z.object({
   SUPABASE_ANON_KEY: z.string(),
 })
 
-export const env = envSchema.parse(process.env)
+export const envParse = envSchema.safeParse(process.env)
+
+if (!envParse.success) {
+  console.error(envParse.error)
+}
+
+export const env = envParse.data || {
+  DATABASE_URL: '',
+  DIRECT_URL: '',
+  SUPABASE_URL: '',
+  SUPABASE_ANON_KEY: '',
+}
+
 export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production'
