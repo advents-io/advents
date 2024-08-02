@@ -1,34 +1,37 @@
 import { NextRequest } from 'next/server'
 
+import { safeEndpoint } from '@/http/api-error-handler'
+import { created } from '@/http/created-response'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
 import { createLinkSchema } from '@/schemas/link'
 import { LINK_DOMAINS } from '@/utils/constants'
-import { Created } from '@/utils/http-responses'
 
 export async function POST(req: NextRequest) {
-  const {
-    slug: reqSlug,
-    iosUrl,
-    androidUrl,
-    fallbackUrl,
-  } = createLinkSchema.parse(await req.json())
-
-  const domain = LINK_DOMAINS[0]
-
-  const slug = reqSlug || (await generateRandomSlug(domain))
-
-  await prisma.link.create({
-    data: {
-      domain,
-      slug,
+  return await safeEndpoint(async () => {
+    const {
+      slug: reqSlug,
       iosUrl,
       androidUrl,
       fallbackUrl,
-    },
-  })
+    } = createLinkSchema.parse(await req.json())
 
-  return Created()
+    const domain = LINK_DOMAINS[0]
+
+    const slug = reqSlug || (await generateRandomSlug(domain))
+
+    await prisma.link.create({
+      data: {
+        domain,
+        slug,
+        iosUrl,
+        androidUrl,
+        fallbackUrl,
+      },
+    })
+
+    return created()
+  })
 }
 
 const generateRandomSlug = async (domain: string) => {
