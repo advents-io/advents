@@ -1,6 +1,12 @@
+import { Metadata } from 'next'
+
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkItem } from '@/components/link-item'
 import { prisma } from '@/lib/prisma'
+
+export const metadata: Metadata = {
+  title: 'Links | Advents',
+}
 
 export default async function Home() {
   const links = await prisma.link.findMany({ orderBy: { createdAt: 'desc' } })

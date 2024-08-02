@@ -1,3 +1,9 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Ajustes | Advents',
+}
+
 export default function Settings() {
   return (
     <div className='flex flex-1 items-center justify-center'>
