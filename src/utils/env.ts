@@ -7,9 +7,11 @@ const envSchema = z.object({
   SUPABASE_ANON_KEY: z.string(),
 })
 
+export type Env = z.infer<typeof envSchema>
+
 const serverRuntime = typeof window === 'undefined'
 
-export const env = serverRuntime
+export const env: Env = serverRuntime
   ? envSchema.parse(process.env)
   : {
       DATABASE_URL: '',
