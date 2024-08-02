@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import ky from 'ky'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,22 +41,22 @@ export const CreateLinkDialog = () => {
   const isLoading = form.formState.isLoading
 
   const onSubmit = async (values: CreateLinkProps) => {
-    const result = await fetch('/api/links', {
-      body: JSON.stringify(values),
-      method: 'POST',
-    })
+    try {
+      await ky.post('/api/links', {
+        json: values,
+      })
 
-    if (!result.ok) {
-      return
+      form.reset()
+
+      setOpen(false)
+
+      toast({
+        title: 'Link foi criado com sucesso.',
+      })
+    } catch (error) {
+      // TODO tratar o erro
+      console.log(error)
     }
-
-    form.reset()
-
-    setOpen(false)
-
-    toast({
-      title: 'Link foi criado com sucesso.',
-    })
   }
 
   return (
