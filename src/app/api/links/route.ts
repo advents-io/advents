@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
 import { createLinkSchema } from '@/schemas/link'
 import { LINK_DOMAINS } from '@/utils/constants'
+import { Created } from '@/utils/http-responses'
 
 export async function POST(req: NextRequest) {
   const {
@@ -27,14 +28,7 @@ export async function POST(req: NextRequest) {
     },
   })
 
-  const shortLink = 'https://' + domain + '/' + slug
-
-  return NextResponse.json(
-    {
-      shortLink,
-    },
-    { status: 201 },
-  )
+  return Created()
 }
 
 const generateRandomSlug = async (domain: string) => {

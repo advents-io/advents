@@ -45,15 +45,17 @@ export const CreateLinkDialog = () => {
       method: 'POST',
     })
 
-    if (result.ok) {
-      form.reset()
-
-      setOpen(false)
-
-      toast({
-        title: 'Link foi criado com sucesso.',
-      })
+    if (!result.ok) {
+      return
     }
+
+    form.reset()
+
+    setOpen(false)
+
+    toast({
+      title: 'Link foi criado com sucesso.',
+    })
   }
 
   return (
