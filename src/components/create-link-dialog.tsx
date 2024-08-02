@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import ky from 'ky'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -26,6 +27,7 @@ import { IS_DEVELOPMENT } from '@/utils/env'
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
+  const { refresh } = useRouter()
 
   const form = useForm<CreateLinkProps>({
     resolver: zodResolver(createLinkSchema),
@@ -53,6 +55,8 @@ export const CreateLinkDialog = () => {
       toast({
         title: 'Link foi criado com sucesso.',
       })
+
+      refresh()
     } catch (error) {
       // TODO tratar o erro
       console.log(error)
