@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 
 import { errorHandler } from '@/api/error-handler'
+import { BadRequestError } from '@/api/errors/bad-request-error'
 import { created } from '@/api/responses'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
@@ -17,6 +18,22 @@ export async function POST(req: NextRequest) {
     } = createLinkSchema.parse(await req.json())
 
     const domain = LINK_DOMAINS[0]
+
+    if (reqSlug) {
+      const linkExists = await prisma.link.findUnique({
+        select: { id: true },
+        where: {
+          domain_slug: {
+            domain,
+            slug: reqSlug,
+          },
+        },
+      })
+
+      if (linkExists) {
+        throw new BadRequestError(`Link duplicado.\n\nO link curto "${reqSlug}" já existe.`)
+      }
+    }
 
     const slug = reqSlug || (await generateRandomSlug(domain))
 

@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { NextResponse } from 'next/server'
 
+import { BadRequestError } from '@/api/errors'
 import { badRequest, internalServerError } from '@/api/responses'
 
 export interface ErrorResponse {
@@ -21,6 +22,10 @@ export async function errorHandler<T>(
       }
 
       return badRequest({ error: `Erro ao processar a requisição (Erro ${error.code})` })
+    }
+
+    if (error instanceof BadRequestError) {
+      return badRequest({ error: error.message })
     }
 
     return internalServerError({
