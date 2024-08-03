@@ -64,7 +64,7 @@ export const LinkItem = ({ link }: Props) => {
 
         <div className='flex items-center'>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button variant='ghost' size='icon'>
                 <EllipsisVertical className='h-4 w-4' />
               </Button>
