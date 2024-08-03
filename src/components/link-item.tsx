@@ -1,13 +1,19 @@
 'use client'
 
 import { Link } from '@prisma/client'
-import { Copy } from 'lucide-react'
+import { Copy, EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
 import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 interface Props {
@@ -26,31 +32,57 @@ export const LinkItem = ({ link }: Props) => {
 
   return (
     <Card>
-      <CardContent className='flex items-center gap-2 p-6 text-sm'>
-        <NextLink href={httpShortLink} className='font-semibold' target='_blank'>
-          {shortLink}
-        </NextLink>
+      <CardContent className='flex p-6 text-sm'>
+        <div className='flex flex-1 items-center gap-2'>
+          <NextLink href={httpShortLink} className='font-semibold' target='_blank'>
+            {shortLink}
+          </NextLink>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              className='h-8 w-8 rounded-full'
-              onClick={copyToClipboard}
-              variant='ghost'
-              size='icon'
-            >
-              <Copy className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Copiar link</TooltipContent>
-        </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className='h-8 w-8 rounded-full'
+                onClick={copyToClipboard}
+                variant='ghost'
+                size='icon'
+              >
+                <Copy className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className='ml-2 text-muted-foreground'>{formatDate(link.createdAt)}</span>
-          </TooltipTrigger>
-          <TooltipContent>{dayjs(link.createdAt).format('DD MMM YY, HH:mm')}</TooltipContent>
-        </Tooltip>
+            <TooltipContent>Copiar link</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className='ml-2 text-muted-foreground'>{formatDate(link.createdAt)}</span>
+            </TooltipTrigger>
+
+            <TooltipContent>{dayjs(link.createdAt).format('DD MMM YY, HH:mm')}</TooltipContent>
+          </Tooltip>
+        </div>
+
+        <div className='flex items-center'>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant='ghost' size='icon'>
+                <EllipsisVertical className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Pencil className='mr-2 h-4 w-4' />
+                Editar
+              </DropdownMenuItem>
+
+              <DropdownMenuItem>
+                <Trash2 className='mr-2 h-4 w-4 text-destructive' />
+                <span className='text-destructive'>Deletar</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </CardContent>
     </Card>
   )
