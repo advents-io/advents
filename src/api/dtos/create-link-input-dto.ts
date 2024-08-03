@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const createLinkSchema = z.object({
+export const createLinkInputSchema = z.object({
   slug: z
     .string()
     .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
@@ -16,4 +16,4 @@ export const createLinkSchema = z.object({
   fallbackUrl: z.string({ message: 'Campo obrigatório.' }).url(),
 })
 
-export type CreateLinkProps = z.infer<typeof createLinkSchema>
+export type CreateLinkInputProps = z.infer<typeof createLinkInputSchema>

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { CreateLinkProps, createLinkSchema } from '@/schemas/link'
+import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import {
@@ -32,8 +32,8 @@ export const CreateLinkDialog = () => {
   const { toast } = useToast()
   const { refresh } = useRouter()
 
-  const form = useForm<CreateLinkProps>({
-    resolver: zodResolver(createLinkSchema),
+  const form = useForm<CreateLinkInputProps>({
+    resolver: zodResolver(createLinkInputSchema),
     defaultValues: {
       androidUrl: IS_DEVELOPMENT
         ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
@@ -45,7 +45,7 @@ export const CreateLinkDialog = () => {
 
   const isLoading = form.formState.isLoading
 
-  const onSubmit = async (values: CreateLinkProps) => {
+  const onSubmit = async (values: CreateLinkInputProps) => {
     try {
       setApiError(undefined)
 

@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server'
 
+import { createLinkInputSchema } from '@/api/dtos'
 import { errorHandler } from '@/api/error-handler'
-import { BadRequestError } from '@/api/errors/bad-request-error'
+import { BadRequestError } from '@/api/errors'
 import { created } from '@/api/responses'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
-import { createLinkSchema } from '@/schemas/link'
 import { LINK_DOMAINS } from '@/utils/constants'
 
 export async function POST(req: NextRequest) {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       iosUrl,
       androidUrl,
       fallbackUrl,
-    } = createLinkSchema.parse(await req.json())
+    } = createLinkInputSchema.parse(await req.json())
 
     const domain = LINK_DOMAINS[0]
 
