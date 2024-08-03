@@ -1,14 +1,14 @@
 import { NextRequest } from 'next/server'
 
-import { safeEndpoint } from '@/http/api-error-handler'
-import { created } from '@/http/created-response'
+import { errorHandler } from '@/http/api-error-handler'
+import { created } from '@/http/responses'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
 import { createLinkSchema } from '@/schemas/link'
 import { LINK_DOMAINS } from '@/utils/constants'
 
 export async function POST(req: NextRequest) {
-  return await safeEndpoint(async () => {
+  return await errorHandler(async () => {
     const {
       slug: reqSlug,
       iosUrl,

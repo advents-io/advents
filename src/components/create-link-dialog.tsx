@@ -2,12 +2,14 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import ky from 'ky'
-import { Loader2 } from 'lucide-react'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { getErrorMessage } from '@/http/api-error-handler'
 import { CreateLinkProps, createLinkSchema } from '@/schemas/link'
+import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import {
   Dialog,
@@ -26,6 +28,7 @@ import { IS_DEVELOPMENT } from '@/utils/env'
 
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
+  const [apiError, setApiError] = useState<string>()
   const { toast } = useToast()
   const { refresh } = useRouter()
 
@@ -44,6 +47,8 @@ export const CreateLinkDialog = () => {
 
   const onSubmit = async (values: CreateLinkProps) => {
     try {
+      setApiError(undefined)
+
       await ky.post('/api/links', {
         json: values,
       })
@@ -58,8 +63,8 @@ export const CreateLinkDialog = () => {
 
       refresh()
     } catch (error) {
-      // TODO tratar o erro
-      console.log(error)
+      const message = await getErrorMessage(error)
+      setApiError(message)
     }
   }
 
@@ -73,6 +78,14 @@ export const CreateLinkDialog = () => {
         <DialogHeader>
           <DialogTitle>Criar novo link</DialogTitle>
         </DialogHeader>
+
+        {apiError && (
+          <Alert variant='destructive'>
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle>Ops!</AlertTitle>
+            <AlertDescription>{apiError}</AlertDescription>
+          </Alert>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
