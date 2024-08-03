@@ -5,9 +5,11 @@ import { Copy, EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
+import { EditLinkDialog } from '@/components/edit-link-dialog'
 import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
+import { DialogTrigger } from '@/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,25 +65,29 @@ export const LinkItem = ({ link }: Props) => {
         </div>
 
         <div className='flex items-center'>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' size='icon'>
-                <EllipsisVertical className='h-4 w-4' />
-              </Button>
-            </DropdownMenuTrigger>
+          <EditLinkDialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' size='icon'>
+                  <EllipsisVertical className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Pencil className='mr-2 h-4 w-4' />
-                Editar
-              </DropdownMenuItem>
+              <DropdownMenuContent>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem>
+                    <Pencil className='mr-2 h-4 w-4' />
+                    Editar
+                  </DropdownMenuItem>
+                </DialogTrigger>
 
-              <DropdownMenuItem>
-                <Trash2 className='mr-2 h-4 w-4 text-destructive' />
-                <span className='text-destructive'>Deletar</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem>
+                  <Trash2 className='mr-2 h-4 w-4 text-destructive' />
+                  <span className='text-destructive'>Deletar</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </EditLinkDialog>
         </div>
       </CardContent>
     </Card>
