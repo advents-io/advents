@@ -1,6 +1,7 @@
-import { Link } from '@prisma/client'
 import { NextRequest } from 'next/server'
 
+import { getLinkOutputSchema } from '@/api/dtos/output'
+import { GetLinkOutputProps } from '@/api/dtos/output/get-link-output'
 import { errorHandler } from '@/api/error-handler'
 import { BadRequestError } from '@/api/errors'
 import { ok } from '@/api/responses'
@@ -18,6 +19,8 @@ export async function GET(_: NextRequest, { params }: { params: { linkId: string
       throw new BadRequestError('Link não encontrado')
     }
 
-    return ok<Link>(link)
+    const result = getLinkOutputSchema.parse(link)
+
+    return ok<GetLinkOutputProps>(result)
   })
 }

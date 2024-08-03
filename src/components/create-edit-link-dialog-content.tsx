@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@prisma/client'
 import ky from 'ky'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -10,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos/input'
+import { GetLinkOutputProps } from '@/api/dtos/output/get-link-output'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
@@ -31,7 +31,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
   const getLink = async (linkId: string) => {
     const response = await ky.get(`/api/links/${linkId}`)
-    const link = await response.json<Link>()
+    const link = await response.json<GetLinkOutputProps>()
     return link
   }
 
