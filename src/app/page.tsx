@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const links = await prisma.link.findMany({
     select: {
+      id: true,
       domain: true,
       slug: true,
       createdAt: true,

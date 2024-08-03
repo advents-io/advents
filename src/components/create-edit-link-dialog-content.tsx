@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from '@prisma/client'
 import ky from 'ky'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -21,21 +22,32 @@ import { getErrorMessage } from '@/utils/error-formatter'
 
 interface Props {
   closeDialog: () => void
+  linkId?: string
 }
 
-export const CreateEditLinkDialogContent = ({ closeDialog }: Props) => {
+export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   const [apiError, setApiError] = useState<string>()
   const { refresh } = useRouter()
 
+  const getLink = async (linkId: string) => {
+    const response = await ky.get(`/api/links/${linkId}`)
+    const link = await response.json<Link>()
+    return link
+  }
+
   const form = useForm<CreateLinkInputProps>({
     resolver: zodResolver(createLinkInputSchema),
-    defaultValues: {
-      androidUrl: IS_DEVELOPMENT
-        ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
-        : '',
-      iosUrl: IS_DEVELOPMENT ? 'https://apps.apple.com/br/app/id1598991618?platform=iphone' : '',
-      fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
-    },
+    defaultValues: linkId
+      ? async () => getLink(linkId)
+      : {
+          androidUrl: IS_DEVELOPMENT
+            ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
+            : '',
+          iosUrl: IS_DEVELOPMENT
+            ? 'https://apps.apple.com/br/app/id1598991618?platform=iphone'
+            : '',
+          fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
+        },
   })
 
   const isLoading = form.formState.isLoading
@@ -52,7 +64,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog }: Props) => {
 
       closeDialog()
 
-      toast.success('Link foi criado com sucesso.')
+      toast.success('Link criado com sucesso.')
 
       refresh()
     } catch (error) {
@@ -81,6 +93,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog }: Props) => {
                 <FormLabel>Link curto</FormLabel>
                 <FormControl>
                   <div className='flex items-center gap-2'>
+                    {/* TODO: Assign the edit link domain to the select */}
                     <Select defaultValue={LINK_DOMAINS[0]}>
                       <SelectTrigger className='w-60' id='short-link-domain'>
                         <SelectValue />

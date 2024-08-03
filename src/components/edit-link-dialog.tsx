@@ -2,11 +2,15 @@
 
 import { useState } from 'react'
 
+import { CreateEditLinkDialogContent } from '@/components/create-edit-link-dialog-content'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
 
-import { CreateEditLinkDialogContent } from './create-edit-link-dialog-content'
+interface Props {
+  children: React.ReactNode
+  linkId: string
+}
 
-export const EditLinkDialog = ({ children }: { children: React.ReactNode }) => {
+export const EditLinkDialog = ({ children, linkId }: Props) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -18,7 +22,7 @@ export const EditLinkDialog = ({ children }: { children: React.ReactNode }) => {
           <DialogTitle>Criar novo link</DialogTitle>
         </DialogHeader>
 
-        <CreateEditLinkDialogContent closeDialog={() => setOpen(false)} />
+        <CreateEditLinkDialogContent closeDialog={() => setOpen(false)} linkId={linkId} />
       </DialogContent>
     </Dialog>
   )

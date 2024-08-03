@@ -19,7 +19,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 interface Props {
-  link: Pick<Link, 'domain' | 'slug' | 'createdAt'>
+  link: Pick<Link, 'id' | 'domain' | 'slug' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
@@ -65,7 +65,7 @@ export const LinkItem = ({ link }: Props) => {
         </div>
 
         <div className='flex items-center'>
-          <EditLinkDialog>
+          <EditLinkDialog linkId={link.id}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant='ghost' size='icon'>
