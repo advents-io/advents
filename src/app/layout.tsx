@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 
 import { Header } from '@/components/header'
 import { Toaster } from '@/ui/toaster'
+import { TooltipProvider } from '@/ui/tooltip'
 
 const interFont = Inter({
   subsets: ['latin'],
@@ -24,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang='pt-BR' className={interFont.className}>
       <body className='flex min-h-screen flex-col'>
-        <Header />
-        {children}
+        <TooltipProvider delayDuration={100}>
+          <Header />
+          {children}
+        </TooltipProvider>
         <Toaster />
       </body>
     </html>
