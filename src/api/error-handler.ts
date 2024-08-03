@@ -1,23 +1,10 @@
 import { Prisma } from '@prisma/client'
-import { HTTPError } from 'ky'
 import { NextResponse } from 'next/server'
 
-import { badRequest, internalServerError } from '@/http/responses'
+import { badRequest, internalServerError } from '@/api/responses'
 
 export interface ErrorResponse {
   error: string
-}
-
-export const getErrorMessage = async (error: unknown) => {
-  if (error instanceof HTTPError) {
-    return (await error.response.json<ErrorResponse>()).error
-  }
-
-  if (error instanceof Error) {
-    return error.message
-  }
-
-  return 'Erro desconhecido'
 }
 
 export async function errorHandler<T>(

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 
-import { errorHandler } from '@/http/api-error-handler'
-import { created } from '@/http/responses'
+import { errorHandler } from '@/api/error-handler'
+import { created } from '@/api/responses'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
 import { createLinkSchema } from '@/schemas/link'

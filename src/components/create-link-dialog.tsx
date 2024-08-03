@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { getErrorMessage } from '@/http/api-error-handler'
 import { CreateLinkProps, createLinkSchema } from '@/schemas/link'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
@@ -25,6 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/ui/use-toast'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
+import { getErrorMessage } from '@/utils/error-formatter'
 
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
