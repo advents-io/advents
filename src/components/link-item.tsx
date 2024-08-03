@@ -1,34 +1,43 @@
 import { Link } from '@prisma/client'
 import NextLink from 'next/link'
 
-import { Card, CardContent, CardHeader } from '@/ui/card'
+import { dayjs } from '@/lib/dayjs'
+import { Card, CardContent } from '@/ui/card'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 interface Props {
-  link: Link
+  link: Pick<Link, 'domain' | 'slug' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
-  const fullLink = `${link.domain}/${link.slug}`
-  const fullHttpsLink = `https://${fullLink}`
+  const shortLink = `${link.domain}/${link.slug}`
+  const httpShortLink = `https://${shortLink}`
 
   return (
     <Card>
-      <CardHeader>
-        <NextLink href={fullHttpsLink} className='font-semibold' target='_blank'>
-          {fullLink}
+      <CardContent className='flex gap-4 p-6 text-sm'>
+        <NextLink href={httpShortLink} className='font-semibold' target='_blank'>
+          {shortLink}
         </NextLink>
-      </CardHeader>
-      <CardContent>
-        <p className='text-sm text-muted-foreground'>
-          <b>Android:</b> <NextLink href={link.androidUrl}>{link.androidUrl}</NextLink>
-        </p>
-        <p className='text-sm text-muted-foreground'>
-          <b>iOS:</b> <NextLink href={link.iosUrl}>{link.iosUrl}</NextLink>
-        </p>
-        <p className='text-sm text-muted-foreground'>
-          <b>Url Alternativa:</b> <NextLink href={link.fallbackUrl}>{link.fallbackUrl}</NextLink>
-        </p>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className='text-muted-foreground'>{formatDate(link.createdAt)}</span>
+          </TooltipTrigger>
+          <TooltipContent>{dayjs(link.createdAt).format('DD MMM YY, HH:mm')}</TooltipContent>
+        </Tooltip>
       </CardContent>
     </Card>
   )
+}
+
+const formatDate = (date: Date) => {
+  const inputDate = dayjs(date)
+  const currentYear = dayjs().year()
+  const inputYear = inputDate.year()
+
+  return inputYear === currentYear
+    ? inputDate.format('DD MMM')
+    : //
+      inputDate.format('DD MMM YY')
 }

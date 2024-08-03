@@ -9,7 +9,14 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const links = await prisma.link.findMany({ orderBy: { createdAt: 'desc' } })
+  const links = await prisma.link.findMany({
+    select: {
+      domain: true,
+      slug: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  })
 
   return (
     <main className='flex flex-1 flex-col p-8 md:p-14'>
@@ -20,8 +27,8 @@ export default async function Home() {
       </div>
 
       <div className='space-y-4'>
-        {links.map(link => (
-          <LinkItem key={link.id} link={link} />
+        {links.map((link, index) => (
+          <LinkItem key={index} link={link} />
         ))}
       </div>
 
