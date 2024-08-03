@@ -6,6 +6,7 @@ import { AlertCircle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -21,7 +22,6 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import { useToast } from '@/ui/use-toast'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
 import { getErrorMessage } from '@/utils/error-formatter'
@@ -29,7 +29,6 @@ import { getErrorMessage } from '@/utils/error-formatter'
 export const CreateEditLinkDialog = () => {
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string>()
-  const { toast } = useToast()
   const { refresh } = useRouter()
 
   const form = useForm<CreateLinkInputProps>({
@@ -57,9 +56,7 @@ export const CreateEditLinkDialog = () => {
 
       setOpen(false)
 
-      toast({
-        title: 'Link foi criado com sucesso.',
-      })
+      toast.success('Link foi criado com sucesso.')
 
       refresh()
     } catch (error) {

@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { Header } from '@/components/header'
-import { Toaster } from '@/ui/toaster'
+import { Toaster } from '@/ui/sonner'
 import { TooltipProvider } from '@/ui/tooltip'
 
 const interFont = Inter({
@@ -29,7 +29,7 @@ export default function RootLayout({
           <Header />
           {children}
         </TooltipProvider>
-        <Toaster />
+        <Toaster richColors closeButton theme='light' />
       </body>
     </html>
   )

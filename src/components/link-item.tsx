@@ -3,29 +3,25 @@
 import { Link } from '@prisma/client'
 import { Copy } from 'lucide-react'
 import NextLink from 'next/link'
+import { toast } from 'sonner'
 
 import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { useToast } from '@/ui/use-toast'
 
 interface Props {
   link: Pick<Link, 'domain' | 'slug' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
-  const { toast } = useToast()
-
   const shortLink = `${link.domain}/${link.slug}`
   const httpShortLink = `https://${shortLink}`
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(httpShortLink)
 
-    toast({
-      title: 'Link copiado',
-    })
+    toast('Link copiado')
   }
 
   return (
