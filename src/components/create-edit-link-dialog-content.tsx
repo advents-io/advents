@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos'
+import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos/input'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 
-import { createLinkInputSchema } from '@/api/dtos'
+import { createLinkInputSchema } from '@/api/dtos/input'
 import { errorHandler } from '@/api/error-handler'
 import { BadRequestError } from '@/api/errors'
 import { created } from '@/api/responses'
