@@ -26,7 +26,7 @@ import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
 import { getErrorMessage } from '@/utils/error-formatter'
 
-export const CreateLinkDialog = () => {
+export const CreateEditLinkDialog = () => {
   const [open, setOpen] = useState(false)
   const [apiError, setApiError] = useState<string>()
   const { toast } = useToast()

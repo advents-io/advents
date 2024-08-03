@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { CreateLinkDialog } from '@/components/create-link-dialog'
+import { CreateEditLinkDialog } from '@/components/create-edit-link-dialog'
 import { LinkItem } from '@/components/link-item'
 import { prisma } from '@/lib/prisma'
 
@@ -23,7 +23,7 @@ export default async function Home() {
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>Links</h1>
 
-        <CreateLinkDialog />
+        <CreateEditLinkDialog />
       </div>
 
       <div className='space-y-4'>
