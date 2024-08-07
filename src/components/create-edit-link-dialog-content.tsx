@@ -73,7 +73,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   }
 
   return (
-    <>
+    <div className='relative'>
       {apiError && (
         <Alert variant='destructive'>
           <AlertCircle className='h-4 w-4' />
@@ -172,6 +172,12 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
           </DialogFooter>
         </form>
       </Form>
-    </>
+
+      {linkId && form.formState.isLoading && (
+        <div className='absolute -inset-2 flex items-center justify-center bg-white'>
+          <Loader2 className='animate-spin' />
+        </div>
+      )}
+    </div>
   )
 }
