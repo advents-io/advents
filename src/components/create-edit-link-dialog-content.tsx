@@ -109,7 +109,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
                     <span className='text-muted-foreground'>/</span>
 
-                    <Input autoFocus placeholder='(opcional)' {...field} />
+                    <Input autoFocus placeholder='(opcional)' disabled={!!linkId} {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -167,7 +167,15 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
           <DialogFooter>
             <Button type='submit' disabled={form.formState.isSubmitting} className='min-w-28'>
-              {!form.formState.isSubmitting ? 'Criar link' : <Loader2 className='animate-spin' />}
+              {!form.formState.isSubmitting ? (
+                linkId ? (
+                  'Salvar'
+                ) : (
+                  'Criar link'
+                )
+              ) : (
+                <Loader2 className='animate-spin' />
+              )}
             </Button>
           </DialogFooter>
         </form>

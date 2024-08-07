@@ -19,7 +19,7 @@ export const EditLinkDialog = ({ children, linkId }: Props) => {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar novo link</DialogTitle>
+          <DialogTitle>Editar link</DialogTitle>
         </DialogHeader>
 
         <CreateEditLinkDialogContent closeDialog={() => setOpen(false)} linkId={linkId} />
