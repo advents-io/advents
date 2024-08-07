@@ -50,8 +50,6 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
         },
   })
 
-  const isLoading = form.formState.isLoading
-
   const onSubmit = async (values: CreateLinkInputProps) => {
     try {
       setApiError(undefined)
@@ -167,8 +165,8 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
           />
 
           <DialogFooter>
-            <Button type='submit' disabled={isLoading} className='min-w-28'>
-              {!isLoading ? 'Criar link' : <Loader2 className='animate-spin' />}
+            <Button type='submit' disabled={form.formState.isSubmitting} className='min-w-28'>
+              {!form.formState.isSubmitting ? 'Criar link' : <Loader2 className='animate-spin' />}
             </Button>
           </DialogFooter>
         </form>
