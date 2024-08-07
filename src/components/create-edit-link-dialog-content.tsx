@@ -40,6 +40,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     defaultValues: linkId
       ? async () => getLink(linkId)
       : {
+          slug: '',
           androidUrl: IS_DEVELOPMENT
             ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
             : '',
