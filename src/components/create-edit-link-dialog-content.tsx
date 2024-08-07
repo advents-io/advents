@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { CreateLinkInputProps, createLinkInputSchema } from '@/api/dtos/input'
-import { GetLinkOutputProps } from '@/api/dtos/output/get-link-output'
+import { GetLinkOutputProps } from '@/api/dtos/output'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
@@ -35,11 +35,14 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     return link
   }
 
+  const defaultDomain = LINK_DOMAINS[0]
+
   const form = useForm<CreateLinkInputProps>({
     resolver: zodResolver(createLinkInputSchema),
     defaultValues: linkId
       ? async () => getLink(linkId)
       : {
+          domain: defaultDomain,
           slug: '',
           androidUrl: IS_DEVELOPMENT
             ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
@@ -84,38 +87,53 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-          <FormField
-            control={form.control}
-            name='slug'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Link curto</FormLabel>
-                <FormControl>
-                  <div className='flex items-center gap-2'>
-                    {/* TODO: Assign the edit link domain to the select */}
-                    <Select defaultValue={LINK_DOMAINS[0]}>
-                      <SelectTrigger className='w-60' id='short-link-domain'>
-                        <SelectValue />
-                      </SelectTrigger>
+          <div className='flex flex-col'>
+            <FormLabel className='mb-3'>Link curto</FormLabel>
 
-                      <SelectContent>
-                        {LINK_DOMAINS.map((domain, index) => (
-                          <SelectItem key={index} value={domain}>
-                            {domain}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+            <div className='flex items-center gap-2'>
+              <FormField
+                control={form.control}
+                name='domain'
+                render={({ field }) => (
+                  <FormItem className='w-60'>
+                    <FormControl>
+                      <Select {...field}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
 
-                    <span className='text-muted-foreground'>/</span>
+                        <SelectContent>
+                          {LINK_DOMAINS.map((domain, index) => (
+                            <SelectItem key={index} value={domain}>
+                              {domain}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-                    <Input autoFocus placeholder='(opcional)' disabled={!!linkId} {...field} />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <span className='text-muted-foreground'>/</span>
+
+              <FormField
+                control={form.control}
+                name='slug'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormControl>
+                      <Input autoFocus placeholder='(opcional)' disabled={!!linkId} {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormMessage className='mt-1'>
+              {form.formState.errors.domain?.message || form.formState.errors.slug?.message}
+            </FormMessage>
+          </div>
 
           <FormField
             control={form.control}

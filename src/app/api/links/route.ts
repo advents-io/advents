@@ -6,18 +6,16 @@ import { BadRequestError } from '@/api/errors'
 import { created } from '@/api/responses'
 import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
-import { LINK_DOMAINS } from '@/utils/constants'
 
 export async function POST(req: NextRequest) {
   return await errorHandler(async () => {
     const {
+      domain,
       slug: reqSlug,
       iosUrl,
       androidUrl,
       fallbackUrl,
     } = createLinkInputSchema.parse(await req.json())
-
-    const domain = LINK_DOMAINS[0]
 
     if (reqSlug) {
       const linkExists = await prisma.link.findUnique({

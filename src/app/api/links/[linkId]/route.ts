@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server'
 
-import { getLinkOutputSchema } from '@/api/dtos/output'
-import { GetLinkOutputProps } from '@/api/dtos/output/get-link-output'
+import { GetLinkOutputProps, getLinkOutputSchema } from '@/api/dtos/output'
 import { errorHandler } from '@/api/error-handler'
 import { BadRequestError } from '@/api/errors'
 import { ok } from '@/api/responses'

@@ -1,3 +1,3 @@
-import { getLinkOutputSchema } from './get-link-output'
+import { GetLinkOutputProps, getLinkOutputSchema } from './get-link-output'
 
-export { getLinkOutputSchema }
+export { type GetLinkOutputProps, getLinkOutputSchema }
