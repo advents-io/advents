@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import ky from 'ky'
-import { AlertCircle, Loader2 } from 'lucide-react'
+import { AlertCircle, Loader2, PlusCircle, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -193,9 +193,15 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
             <Button type='submit' disabled={form.formState.isSubmitting} className='min-w-28'>
               {!form.formState.isSubmitting ? (
                 linkId ? (
-                  'Salvar'
+                  <>
+                    <Save className='mr-2 h-4 w-4' />
+                    Salvar
+                  </>
                 ) : (
-                  'Criar link'
+                  <>
+                    <PlusCircle className='mr-2 h-4 w-4' />
+                    Criar link
+                  </>
                 )
               ) : (
                 <Loader2 className='animate-spin' />

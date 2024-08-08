@@ -1,5 +1,6 @@
 'use client'
 
+import { PlusCircle } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/ui/button'
@@ -13,7 +14,10 @@ export const CreateLinkDialog = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size='lg'>Criar link</Button>
+        <Button size='lg'>
+          <PlusCircle className='mr-2 h-4 w-4' />
+          Criar link
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
