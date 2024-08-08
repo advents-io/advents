@@ -8,7 +8,11 @@ export const createLinkInputSchema = z.object({
   domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   slug: z
     .string({ message: 'Campo obrigatório.' })
-    .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.') // TODO valid special characters
+    .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
+    .regex(
+      /^[a-zA-Z0-9-_]*$/,
+      'A chave do link deve conter apenas letras, números, hifens ou underline.',
+    )
     .optional(),
   androidUrl: z
     .string({ message: 'Campo obrigatório.' })

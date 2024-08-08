@@ -102,7 +102,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
                 name='domain'
                 render={({ field }) => (
                   <FormItem className='w-60'>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue />
