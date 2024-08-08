@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server'
 
-import { createLinkInputSchema } from '@/api/dtos/input'
-import { GetLinkOutputProps, getLinkOutputSchema } from '@/api/dtos/output'
-import { errorHandler } from '@/api/error-handler'
-import { BadRequestError } from '@/api/errors'
-import { NotFoundError } from '@/api/errors/not-found-error'
-import { noContent, ok } from '@/api/responses'
+import { createLinkInputSchema } from '@/http/dtos/input'
+import { GetLinkOutputProps, getLinkOutputSchema } from '@/http/dtos/output'
+import { errorHandler } from '@/http/error-handler'
+import { BadRequestError } from '@/http/errors'
+import { NotFoundError } from '@/http/errors/not-found-error'
+import { noContent, ok } from '@/http/responses'
 import { prisma } from '@/lib/prisma'
 import { generateRandomSlug } from '@/utils/link-helper'
 

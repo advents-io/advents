@@ -1,6 +1,6 @@
 import { HTTPError } from 'ky'
 
-import { ErrorResponse } from '@/api/error-handler'
+import { ErrorResponse } from '@/http/error-handler'
 
 export const getErrorMessage = async (error: unknown) => {
   if (error instanceof HTTPError) {

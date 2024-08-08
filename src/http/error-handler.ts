@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import { NextResponse } from 'next/server'
 
-import { BadRequestError, NotFoundError } from '@/api/errors'
-import { badRequest, internalServerError, notFound } from '@/api/responses'
+import { BadRequestError, NotFoundError } from '@/http/errors'
+import { badRequest, internalServerError, notFound } from '@/http/responses'
 
 export interface ErrorResponse {
   error: string
