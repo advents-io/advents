@@ -82,7 +82,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   }
 
   return (
-    <div className='relative space-y-4'>
+    <div className='relative space-y-4 pt-4'>
       {apiError && (
         <Alert variant='destructive'>
           <AlertCircle className='h-4 w-4' />

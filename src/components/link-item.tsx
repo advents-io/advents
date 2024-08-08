@@ -1,11 +1,12 @@
 'use client'
 
 import { Link } from '@prisma/client'
-import { Copy, EllipsisVertical, Pencil, Trash2 } from 'lucide-react'
+import { Copy, EllipsisVertical, Pencil, QrCode, Trash2 } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
 import { EditLinkDialog } from '@/components/edit-link-dialog'
+import { QrCodeDialog } from '@/components/qrcode-dialog'
 import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
@@ -65,29 +66,38 @@ export const LinkItem = ({ link }: Props) => {
         </div>
 
         <div className='flex items-center'>
-          <EditLinkDialog linkId={link.id}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant='ghost' size='icon'>
-                  <EllipsisVertical className='h-4 w-4' />
-                </Button>
-              </DropdownMenuTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' size='icon'>
+                <EllipsisVertical className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
 
-              <DropdownMenuContent>
+            <DropdownMenuContent>
+              <EditLinkDialog linkId={link.id}>
                 <DialogTrigger asChild>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onSelect={e => e.preventDefault()}>
                     <Pencil className='mr-2 h-4 w-4' />
                     Editar
                   </DropdownMenuItem>
                 </DialogTrigger>
+              </EditLinkDialog>
 
-                <DropdownMenuItem>
-                  <Trash2 className='mr-2 h-4 w-4 text-destructive' />
-                  <span className='text-destructive'>Deletar</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </EditLinkDialog>
+              <QrCodeDialog shortLink={httpShortLink}>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem onSelect={e => e.preventDefault()}>
+                    <QrCode className='mr-2 h-4 w-4' />
+                    <span>QR Code</span>
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </QrCodeDialog>
+
+              <DropdownMenuItem>
+                <Trash2 className='mr-2 h-4 w-4 text-destructive' />
+                <span className='text-destructive'>Deletar</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </CardContent>
     </Card>
