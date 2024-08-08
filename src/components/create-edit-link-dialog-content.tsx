@@ -58,9 +58,15 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     try {
       setApiError(undefined)
 
-      await ky.post('/api/links', {
-        json: values,
-      })
+      if (linkId) {
+        await ky.put(`/api/links/${linkId}`, {
+          json: values,
+        })
+      } else {
+        await ky.post('/api/links', {
+          json: values,
+        })
+      }
 
       form.reset()
 
@@ -76,7 +82,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   }
 
   return (
-    <div className='relative'>
+    <div className='relative space-y-4'>
       {apiError && (
         <Alert variant='destructive'>
           <AlertCircle className='h-4 w-4' />
@@ -123,7 +129,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
                 render={({ field }) => (
                   <FormItem className='w-full'>
                     <FormControl>
-                      <Input autoFocus placeholder='(opcional)' disabled={!!linkId} {...field} />
+                      <Input autoFocus placeholder='(opcional)' {...field} />
                     </FormControl>
                   </FormItem>
                 )}

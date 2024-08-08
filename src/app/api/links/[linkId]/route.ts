@@ -1,10 +1,13 @@
 import { NextRequest } from 'next/server'
 
+import { createLinkInputSchema } from '@/api/dtos/input'
 import { GetLinkOutputProps, getLinkOutputSchema } from '@/api/dtos/output'
 import { errorHandler } from '@/api/error-handler'
 import { BadRequestError } from '@/api/errors'
-import { ok } from '@/api/responses'
+import { NotFoundError } from '@/api/errors/not-found-error'
+import { noContent, ok } from '@/api/responses'
 import { prisma } from '@/lib/prisma'
+import { generateRandomSlug } from '@/utils/link-helper'
 
 export async function GET(_: NextRequest, { params }: { params: { linkId: string } }) {
   return await errorHandler(async () => {
@@ -21,5 +24,55 @@ export async function GET(_: NextRequest, { params }: { params: { linkId: string
     const result = getLinkOutputSchema.parse(link)
 
     return ok<GetLinkOutputProps>(result)
+  })
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params: { linkId } }: { params: { linkId: string } },
+) {
+  return await errorHandler(async () => {
+    const newLink = createLinkInputSchema.parse(await req.json())
+
+    const originalLink = await prisma.link.findUnique({ where: { id: linkId } })
+
+    if (!originalLink) {
+      throw new NotFoundError('Link não encontrado.')
+    }
+
+    if (
+      newLink.slug &&
+      (originalLink.domain !== newLink.domain || originalLink.slug !== newLink.slug)
+    ) {
+      const newLinkExists = await prisma.link.findUnique({
+        select: { id: true },
+        where: {
+          domain_slug: {
+            domain: newLink.domain,
+            slug: newLink.slug,
+          },
+        },
+      })
+
+      if (newLinkExists) {
+        throw new BadRequestError(`Link duplicado.\n\nO link curto "${newLink.slug}" já existe.`)
+      }
+    }
+
+    newLink.slug = newLink.slug || (await generateRandomSlug(newLink.domain))
+
+    const link = {
+      ...originalLink,
+      ...newLink,
+    }
+
+    await prisma.link.update({
+      where: {
+        id: linkId,
+      },
+      data: link,
+    })
+
+    return noContent()
   })
 }

@@ -4,8 +4,8 @@ import { createLinkInputSchema } from '@/api/dtos/input'
 import { errorHandler } from '@/api/error-handler'
 import { BadRequestError } from '@/api/errors'
 import { created } from '@/api/responses'
-import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
+import { generateRandomSlug } from '@/utils/link-helper'
 
 export async function POST(req: NextRequest) {
   return await errorHandler(async () => {
@@ -47,24 +47,4 @@ export async function POST(req: NextRequest) {
 
     return created()
   })
-}
-
-const generateRandomSlug = async (domain: string) => {
-  const slug = nanoid()
-
-  const linkExists = await prisma.link.findUnique({
-    select: { id: true },
-    where: {
-      domain_slug: {
-        domain,
-        slug,
-      },
-    },
-  })
-
-  if (linkExists) {
-    return generateRandomSlug(domain)
-  }
-
-  return slug
 }
