@@ -72,7 +72,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
       closeDialog()
 
-      toast.success('Link criado com sucesso.')
+      toast.success(linkId ? 'Link alterado com sucesso.' : 'Link criado com sucesso.')
 
       refresh()
     } catch (error) {
@@ -102,21 +102,21 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
                 name='domain'
                 render={({ field }) => (
                   <FormItem className='w-60'>
-                    <FormControl>
-                      <Select {...field}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
+                      </FormControl>
 
-                        <SelectContent>
-                          {LINK_DOMAINS.map((domain, index) => (
-                            <SelectItem key={index} value={domain}>
-                              {domain}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                      <SelectContent>
+                        {LINK_DOMAINS.map((domain, index) => (
+                          <SelectItem key={index} value={domain}>
+                            {domain}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
