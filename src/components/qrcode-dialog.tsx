@@ -1,8 +1,10 @@
-import { Copy, Download, ImageIcon } from 'lucide-react'
+import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { getQrAsCanvas, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
+import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
 import {
@@ -11,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
+import { getErrorMessage } from '@/utils/error-formatter'
 
 interface Props {
   children: React.ReactNode
@@ -18,6 +21,8 @@ interface Props {
 }
 
 export const QrCodeDialog = ({ shortLink, children }: Props) => {
+  const [error, setError] = useState<string>()
+
   const config: QrProps = {
     value: shortLink,
     bgColor: '#ffffff',
@@ -34,18 +39,23 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
   }
 
   const copyToClipboard = async () => {
-    const canvas = await getQrAsCanvas(config, 'image/png', true)
+    try {
+      const canvas = await getQrAsCanvas(config, 'image/png', true)
 
-    ;(canvas as HTMLCanvasElement).toBlob(async blob => {
-      const item = new ClipboardItem({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        'image/png': blob,
+      ;(canvas as HTMLCanvasElement).toBlob(async blob => {
+        const item = new ClipboardItem({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          'image/png': blob,
+        })
+        await navigator.clipboard.write([item])
+
+        toast.success('Imagem do QR Code copiada.')
       })
-      await navigator.clipboard.write([item])
-
-      toast.success('Imagem do QR Code copiada.')
-    })
+    } catch (error) {
+      const message = await getErrorMessage(error)
+      setError(message)
+    }
   }
 
   return (
@@ -56,6 +66,14 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
         <DialogHeader>
           <DialogTitle>QR Code</DialogTitle>
         </DialogHeader>
+
+        {error && (
+          <Alert variant='destructive'>
+            <AlertCircle className='h-4 w-4' />
+            <AlertTitle>Ops!</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <div className='flex flex-col items-center justify-center space-y-10 pt-10'>
           <QrCodeSvg config={config} />
