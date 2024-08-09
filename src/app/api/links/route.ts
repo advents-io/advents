@@ -10,6 +10,7 @@ import { generateRandomSlug } from '@/utils/link-helper'
 export async function POST(req: NextRequest) {
   return await errorHandler(async () => {
     const {
+      title,
       domain,
       slug: reqSlug,
       iosUrl,
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.link.create({
       data: {
+        title,
         domain,
         slug,
         iosUrl,

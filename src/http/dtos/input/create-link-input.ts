@@ -5,9 +5,10 @@ import { LINK_DOMAINS } from '@/utils/constants'
 const [first, ...rest] = LINK_DOMAINS
 
 export const createLinkInputSchema = z.object({
+  title: z.string().max(50, 'O título deve possuir no máximo 50 caracteres.').optional(),
   domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   slug: z
-    .string({ message: 'Campo obrigatório.' })
+    .string()
     .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
     .regex(
       /^[a-zA-Z0-9-_]*$/,

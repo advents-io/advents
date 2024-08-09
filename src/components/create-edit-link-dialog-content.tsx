@@ -92,7 +92,21 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
       )}
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
+          <FormField
+            control={form.control}
+            name='title'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Título</FormLabel>
+                <FormControl>
+                  <Input placeholder='Campanha com influencer (opcional)' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className='flex flex-col'>
             <FormLabel className='mb-3'>Link curto</FormLabel>
 
