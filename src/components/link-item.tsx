@@ -38,11 +38,17 @@ export const LinkItem = ({ link }: Props) => {
     <Card>
       <CardContent className='flex p-6 text-sm'>
         <div className='flex flex-1 items-center gap-2'>
-          <span className='text-md text-muted-foreground'>{link.title}</span>
+          <span className='text-md hidden text-muted-foreground sm:flex'>{link.title}</span>
 
-          {link.title && <ArrowRightIcon className='h-4 w-4' />}
+          {link.title && (
+            <ArrowRightIcon className='hidden h-4 w-4 text-muted-foreground sm:flex' />
+          )}
 
-          <NextLink href={httpShortLink} className='font-semibold' target='_blank'>
+          <NextLink
+            href={httpShortLink}
+            className='max-w-44 truncate font-semibold sm:max-w-none'
+            target='_blank'
+          >
             {shortLink}
           </NextLink>
 
@@ -63,7 +69,9 @@ export const LinkItem = ({ link }: Props) => {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className='ml-2 text-muted-foreground'>{formatDate(link.createdAt)}</span>
+              <span className='ml-2 hidden text-muted-foreground sm:flex'>
+                {formatDate(link.createdAt)}
+              </span>
             </TooltipTrigger>
 
             <TooltipContent>{dayjs(link.createdAt).format('DD MMM YY, HH:mm')}</TooltipContent>
