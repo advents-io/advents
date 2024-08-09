@@ -11,11 +11,12 @@ datasource db {
 model Link {
   id String @id @default(uuid())
 
+  title       String?
   domain      String
   slug        String
-  iosUrl      String @map("ios_url") @db.Text
-  androidUrl  String @map("android_url") @db.Text
-  fallbackUrl String @map("fallback_url") @db.Text
+  iosUrl      String  @map("ios_url")
+  androidUrl  String  @map("android_url")
+  fallbackUrl String  @map("fallback_url")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
