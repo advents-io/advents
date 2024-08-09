@@ -1,9 +1,16 @@
-import { Copy, Download } from 'lucide-react'
+import { Copy, Download, ImageIcon } from 'lucide-react'
+import { toast } from 'sonner'
 
-import { QrCodeSvg } from '@/lib/qrcode'
+import { getQrAsCanvas, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/dropdown-menu'
 
 interface Props {
   children: React.ReactNode
@@ -26,6 +33,21 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
     },
   }
 
+  const copyToClipboard = async () => {
+    const canvas = await getQrAsCanvas(config, 'image/png', true)
+
+    ;(canvas as HTMLCanvasElement).toBlob(async blob => {
+      const item = new ClipboardItem({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        'image/png': blob,
+      })
+      await navigator.clipboard.write([item])
+
+      toast.success('Imagem do QR Code copiada.')
+    })
+  }
+
   return (
     <Dialog>
       {children}
@@ -39,17 +61,30 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
           <QrCodeSvg config={config} />
 
           <div className='flex space-x-4'>
-            {
-              // TODO: Implementar funcionalidade de copiar e baixar QR Code
-            }
-            <Button className='w-36'>
+            <Button className='w-36' onClick={copyToClipboard}>
               <Copy className='mr-2 h-4 w-4' />
               Copiar
             </Button>
-            <Button className='w-36'>
-              <Download className='mr-2 h-4 w-4' />
-              Baixar
-            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className='w-36'>
+                  <Download className='mr-2 h-4 w-4' />
+                  Baixar
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <ImageIcon className='mr-2 h-4 w-4' />
+                  Formato .svg
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ImageIcon className='mr-2 h-4 w-4' />
+                  Formato .png
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </DialogContent>

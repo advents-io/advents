@@ -9,9 +9,10 @@ import {
   ERROR_LEVEL_MAP,
   MARGIN_SIZE,
 } from './constants'
-import { Excavation, ImageSettings, Modules, QrPropsSVG } from './types'
+import { Excavation, ImageSettings, Modules, QrProps, QrPropsSVG } from './types'
+import { SUPPORTS_PATH2D } from './utils'
 
-export function QrCodeSvg(props: QrPropsSVG) {
+export const QrCodeSvg = (props: QrPropsSVG) => {
   const { config, ...otherProps } = props
 
   const {
@@ -67,7 +68,7 @@ export function QrCodeSvg(props: QrPropsSVG) {
 
 // We could just do this in generatePath, except that we want to support
 // non-Path2D canvas, so we need to keep it an explicit step.
-function excavateModules(modules: Modules, excavation: Excavation): Modules {
+const excavateModules = (modules: Modules, excavation: Excavation): Modules => {
   return modules.slice().map((row, y) => {
     if (y < excavation.y || y >= excavation.y + excavation.h) {
       return row
@@ -81,7 +82,7 @@ function excavateModules(modules: Modules, excavation: Excavation): Modules {
   })
 }
 
-function generatePath(modules: Modules, margin = 0): string {
+const generatePath = (modules: Modules, margin = 0): string => {
   const ops: Array<string> = []
   modules.forEach(function (row, y) {
     let start: number | null = null
@@ -119,7 +120,7 @@ function generatePath(modules: Modules, margin = 0): string {
   return ops.join('')
 }
 
-function getImageSettings(
+const getImageSettings = (
   cells: Modules,
   size: number,
   includeMargin: boolean,
@@ -130,7 +131,7 @@ function getImageSettings(
   h: number
   w: number
   excavation: Excavation | null
-} {
+} => {
   if (imageSettings == null) {
     return null
   }
@@ -153,4 +154,101 @@ function getImageSettings(
   }
 
   return { x, y, h, w, excavation }
+}
+
+export const getQrAsCanvas = async (
+  props: QrProps,
+  type: string,
+  getCanvas?: boolean,
+): Promise<HTMLCanvasElement | string> => {
+  const {
+    value,
+    size = DEFAULT_SIZE,
+    level = DEFAULT_LEVEL,
+    bgColor = DEFAULT_BGCOLOR,
+    fgColor = DEFAULT_FGCOLOR,
+    includeMargin = DEFAULT_INCLUDEMARGIN,
+    imageSettings,
+  } = props
+
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+
+  let cells = qrcodegen.QrCode.encodeText(value, ERROR_LEVEL_MAP[level]).getModules()
+  const margin = includeMargin ? MARGIN_SIZE : 0
+  const numCells = cells.length + margin * 2
+  const calculatedImageSettings = getImageSettings(cells, size, includeMargin, imageSettings)
+
+  const image = new Image()
+  image.crossOrigin = 'anonymous'
+  if (calculatedImageSettings) {
+    await waitUntilImageLoaded(
+      image,
+      // @ts-expect-error: imageSettings is not null
+      imageSettings.src,
+    )
+    if (calculatedImageSettings.excavation != null) {
+      cells = excavateModules(cells, calculatedImageSettings.excavation)
+    }
+  }
+
+  const pixelRatio = window.devicePixelRatio || 1
+  canvas.height = canvas.width = size * pixelRatio
+  const scale = (size / numCells) * pixelRatio
+  ctx.scale(scale, scale)
+
+  // Draw solid background, only paint dark modules.
+  ctx.fillStyle = bgColor
+  ctx.fillRect(0, 0, numCells, numCells)
+
+  ctx.fillStyle = fgColor
+  if (SUPPORTS_PATH2D) {
+    // $FlowFixMe: Path2D c'tor doesn't support args yet.
+    ctx.fill(new Path2D(generatePath(cells, margin)))
+  } else {
+    cells.forEach(function (row, rdx) {
+      row.forEach(function (cell, cdx) {
+        if (cell) {
+          ctx.fillRect(cdx + margin, rdx + margin, 1, 1)
+        }
+      })
+    })
+  }
+
+  const haveImageToRender =
+    calculatedImageSettings != null &&
+    image !== null &&
+    image.complete &&
+    image.naturalHeight !== 0 &&
+    image.naturalWidth !== 0
+  if (haveImageToRender) {
+    ctx.drawImage(
+      image,
+      calculatedImageSettings.x + margin,
+      calculatedImageSettings.y + margin,
+      calculatedImageSettings.w,
+      calculatedImageSettings.h,
+    )
+  }
+
+  if (getCanvas) return canvas
+
+  const url = canvas.toDataURL(type, 1.0)
+  canvas.remove()
+  image.remove()
+  return url
+}
+
+const waitUntilImageLoaded = (img: HTMLImageElement, src: string) => {
+  return new Promise(resolve => {
+    function onFinish() {
+      img.onload = null
+      img.onerror = null
+      resolve(true)
+    }
+    img.onload = onFinish
+    img.onerror = onFinish
+    img.src = src
+    img.loading = 'eager'
+  })
 }
