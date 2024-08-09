@@ -12,6 +12,7 @@ export default async function Home() {
   const links = await prisma.link.findMany({
     select: {
       id: true,
+      title: true,
       domain: true,
       slug: true,
       createdAt: true,

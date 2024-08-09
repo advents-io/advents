@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@prisma/client'
-import { Copy, EllipsisVertical, Pencil, QrCode, Trash2 } from 'lucide-react'
+import { ArrowRightIcon, Copy, EllipsisVertical, Pencil, QrCode, Trash2 } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
-  link: Pick<Link, 'id' | 'domain' | 'slug' | 'createdAt'>
+  link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
@@ -38,6 +38,10 @@ export const LinkItem = ({ link }: Props) => {
     <Card>
       <CardContent className='flex p-6 text-sm'>
         <div className='flex flex-1 items-center gap-2'>
+          <span className='text-md text-muted-foreground'>{link.title}</span>
+
+          {link.title && <ArrowRightIcon className='h-4 w-4' />}
+
           <NextLink href={httpShortLink} className='font-semibold' target='_blank'>
             {shortLink}
           </NextLink>
