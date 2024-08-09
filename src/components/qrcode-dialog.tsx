@@ -1,5 +1,5 @@
 import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { getQrAsCanvas, QrCodeSvg } from '@/lib/qrcode'
@@ -14,14 +14,18 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { getErrorMessage } from '@/utils/error-formatter'
+import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
   children: React.ReactNode
-  shortLink: string
+  domain: string
+  slug: string
 }
 
-export const QrCodeDialog = ({ shortLink, children }: Props) => {
+export const QrCodeDialog = ({ domain, slug, children }: Props) => {
   const [error, setError] = useState<string>()
+
+  const shortLink = formatShortLink(domain, slug, true)
 
   const config: QrProps = {
     value: shortLink,
@@ -38,8 +42,36 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
     },
   }
 
+  const anchorRef = useRef<HTMLAnchorElement>(null)
+
+  const download = async (url: string, extension: string) => {
+    if (!anchorRef.current) {
+      return
+    }
+
+    try {
+      setError(undefined)
+
+      anchorRef.current.href = url
+      anchorRef.current.download = `${slug}-qrcode.${extension}`
+      anchorRef.current.click()
+
+      toast.success('Imagem do QR Code baixada.')
+    } catch (error) {
+      const message = await getErrorMessage(error)
+      setError(message)
+    }
+  }
+
+  const downloadPng = async () => {
+    const content = (await getQrAsCanvas(config, 'image/png')) as string
+    await download(content, 'png')
+  }
+
   const copyToClipboard = async () => {
     try {
+      setError(undefined)
+
       const canvas = await getQrAsCanvas(config, 'image/png', true)
 
       ;(canvas as HTMLCanvasElement).toBlob(async blob => {
@@ -97,13 +129,16 @@ export const QrCodeDialog = ({ shortLink, children }: Props) => {
                   <ImageIcon className='mr-2 h-4 w-4' />
                   Formato .svg
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={downloadPng}>
                   <ImageIcon className='mr-2 h-4 w-4' />
                   Formato .png
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          {/* This will be used to prompt downloads. */}
+          <a className='hidden' download={`${slug}-qrcode.svg`} ref={anchorRef} />
         </div>
       </DialogContent>
     </Dialog>

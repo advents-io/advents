@@ -18,14 +18,15 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
+import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
   link: Pick<Link, 'id' | 'domain' | 'slug' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
-  const shortLink = `${link.domain}/${link.slug}`
-  const httpShortLink = `https://${shortLink}`
+  const shortLink = formatShortLink(link.domain, link.slug)
+  const httpShortLink = formatShortLink(link.domain, link.slug, true)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(httpShortLink)
@@ -83,7 +84,7 @@ export const LinkItem = ({ link }: Props) => {
                 </DialogTrigger>
               </EditLinkDialog>
 
-              <QrCodeDialog shortLink={httpShortLink}>
+              <QrCodeDialog domain={link.domain} slug={link.slug}>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={e => e.preventDefault()}>
                     <QrCode className='mr-2 h-4 w-4' />
