@@ -2,7 +2,7 @@ import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-import { getQrAsCanvas, QrCodeSvg } from '@/lib/qrcode'
+import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
@@ -68,6 +68,11 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
     await download(content, 'png')
   }
 
+  const downloadSvg = async () => {
+    const content = await getQrAsSvgDataUri(config)
+    await download(content, 'svg')
+  }
+
   const copyToClipboard = async () => {
     try {
       setError(undefined)
@@ -125,10 +130,11 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={downloadSvg}>
                   <ImageIcon className='mr-2 h-4 w-4' />
                   Formato .svg
                 </DropdownMenuItem>
+
                 <DropdownMenuItem onClick={downloadPng}>
                   <ImageIcon className='mr-2 h-4 w-4' />
                   Formato .png

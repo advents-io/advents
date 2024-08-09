@@ -252,3 +252,76 @@ const waitUntilImageLoaded = (img: HTMLImageElement, src: string) => {
     img.loading = 'eager'
   })
 }
+
+export const getQrAsSvgDataUri = async (props: QrProps) => {
+  const {
+    value,
+    size = DEFAULT_SIZE,
+    level = DEFAULT_LEVEL,
+    bgColor = DEFAULT_BGCOLOR,
+    fgColor = DEFAULT_FGCOLOR,
+    includeMargin = DEFAULT_INCLUDEMARGIN,
+    imageSettings,
+  } = props
+
+  let cells = qrcodegen.QrCode.encodeText(value, ERROR_LEVEL_MAP[level]).getModules()
+
+  const margin = includeMargin ? MARGIN_SIZE : 0
+  const numCells = cells.length + margin * 2
+  const calculatedImageSettings = getImageSettings(cells, size, includeMargin, imageSettings)
+
+  let image = ''
+  if (imageSettings != null && calculatedImageSettings != null) {
+    if (calculatedImageSettings.excavation != null)
+      cells = excavateModules(cells, calculatedImageSettings.excavation)
+
+    const base64Image = await getBase64Image(imageSettings.src)
+
+    image = [
+      `<image href="${base64Image}"`,
+      `height="${calculatedImageSettings.h}"`,
+      `width="${calculatedImageSettings.w}"`,
+      `x="${calculatedImageSettings.x + margin}"`,
+      `y="${calculatedImageSettings.y + margin}"`,
+      'preserveAspectRatio="none"></image>',
+    ].join(' ')
+  }
+
+  const fgPath = generatePath(cells, margin)
+
+  const svgData = [
+    `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" viewBox="0 0 ${numCells} ${numCells}">`,
+    `<path fill="${bgColor}" d="M0,0 h${numCells}v${numCells}H0z" shapeRendering="crispEdges"></path>`,
+    `<path fill="${fgColor}" d="${fgPath}" shapeRendering="crispEdges"></path>`,
+    image,
+    '</svg>',
+  ].join('')
+
+  return `data:image/svg+xml,${encodeURIComponent(svgData)}`
+}
+
+const getBase64Image = (imgUrl: string) => {
+  return new Promise(function (resolve, reject) {
+    const img = new Image()
+    img.src = imgUrl
+    img.setAttribute('crossOrigin', 'anonymous')
+
+    img.onload = function () {
+      const canvas = document.createElement('canvas')
+
+      canvas.width = img.width
+      canvas.height = img.height
+
+      const ctx = canvas.getContext('2d')
+      ctx?.drawImage(img, 0, 0)
+
+      const dataURL = canvas.toDataURL('image/png')
+      resolve(dataURL)
+    }
+
+    img.onerror = function () {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject('The image could not be loaded.')
+    }
+  })
+}
