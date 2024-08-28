@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 
 import { DeleteLinkDialog } from '@/components/delete-link-dialog'
 import { EditLinkDialog } from '@/components/edit-link-dialog'
+import { FakeLinkAnalytics } from '@/components/fake-link-analytics'
 import { QrCodeDialog } from '@/components/qrcode-dialog'
 import { dayjs } from '@/lib/dayjs'
 import { AlertDialogTrigger } from '@/ui/alert-dialog'
@@ -80,7 +81,9 @@ export const LinkItem = ({ link }: Props) => {
           </Tooltip>
         </div>
 
-        <div className='flex items-center'>
+        <div className='flex items-center gap-2'>
+          <FakeLinkAnalytics />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' size='icon'>
