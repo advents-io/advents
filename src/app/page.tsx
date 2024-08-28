@@ -2,23 +2,38 @@ import { Metadata } from 'next'
 
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkItem } from '@/components/link-item'
+import { LinksPagination } from '@/components/links-pagination'
 import { prisma } from '@/lib/prisma'
 
 export const metadata: Metadata = {
   title: 'Links | Advents',
 }
 
-export default async function Home() {
-  const links = await prisma.link.findMany({
-    select: {
-      id: true,
-      title: true,
-      domain: true,
-      slug: true,
-      createdAt: true,
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+export default async function Home({ searchParams }: { searchParams: { page?: string } }) {
+  const page = Number(searchParams.page) || 1
+  const pageSize = 10
+
+  const getLinks = async (page: number) => {
+    const [links, totalLinks] = await prisma.$transaction([
+      prisma.link.findMany({
+        select: {
+          id: true,
+          title: true,
+          domain: true,
+          slug: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.link.count(),
+    ])
+
+    return { links, totalLinks }
+  }
+
+  const { links, totalLinks } = await getLinks(page)
 
   return (
     <main className='flex flex-1 flex-col p-8 md:p-14'>
@@ -34,9 +49,7 @@ export default async function Home() {
         ))}
       </div>
 
-      <p className='mt-4 text-sm text-muted-foreground'>
-        Exibindo 1 - {links.length} de {links.length} links
-      </p>
+      <LinksPagination page={page} pageSize={pageSize} total={totalLinks} />
     </main>
   )
 }
