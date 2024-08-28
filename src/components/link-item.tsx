@@ -5,9 +5,11 @@ import { ArrowRightIcon, Copy, EllipsisVertical, Pencil, QrCode, Trash2 } from '
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
+import { DeleteLinkDialog } from '@/components/delete-link-dialog'
 import { EditLinkDialog } from '@/components/edit-link-dialog'
 import { QrCodeDialog } from '@/components/qrcode-dialog'
 import { dayjs } from '@/lib/dayjs'
+import { AlertDialogTrigger } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { DialogTrigger } from '@/ui/dialog'
@@ -105,10 +107,14 @@ export const LinkItem = ({ link }: Props) => {
                 </DialogTrigger>
               </QrCodeDialog>
 
-              <DropdownMenuItem>
-                <Trash2 className='mr-2 h-4 w-4 text-destructive' />
-                <span className='text-destructive'>Deletar</span>
-              </DropdownMenuItem>
+              <DeleteLinkDialog linkId={link.id} shortLink={shortLink}>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem onSelect={e => e.preventDefault()}>
+                    <Trash2 className='mr-2 h-4 w-4 text-destructive' />
+                    <span className='text-destructive'>Deletar</span>
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+              </DeleteLinkDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

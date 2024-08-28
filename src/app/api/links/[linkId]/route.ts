@@ -76,3 +76,18 @@ export async function PUT(
     return noContent()
   })
 }
+
+export async function DELETE(
+  _: NextRequest,
+  { params: { linkId } }: { params: { linkId: string } },
+) {
+  return await errorHandler(async () => {
+    await prisma.link.delete({
+      where: {
+        id: linkId,
+      },
+    })
+
+    return noContent()
+  })
+}
