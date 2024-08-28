@@ -5,7 +5,7 @@ import { LINK_DOMAINS } from '@/utils/constants'
 const [first, ...rest] = LINK_DOMAINS
 
 export const createLinkInputSchema = z.object({
-  title: z.string().max(50, 'O título deve possuir no máximo 50 caracteres.').optional(),
+  title: z.string().max(50, 'O título deve possuir no máximo 50 caracteres.').nullish(),
   domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   slug: z
     .string()

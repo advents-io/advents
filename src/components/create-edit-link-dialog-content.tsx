@@ -100,7 +100,11 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
               <FormItem>
                 <FormLabel>Título</FormLabel>
                 <FormControl>
-                  <Input placeholder='Campanha com influencer (opcional)' {...field} />
+                  <Input
+                    placeholder='Campanha com influencer (opcional)'
+                    {...field}
+                    value={field.value ?? ''}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
