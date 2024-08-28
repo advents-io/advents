@@ -13,6 +13,7 @@ import { Routes } from '@/utils/routes'
 
 const TABS = [
   { label: 'Links', href: Routes['/'] },
+  { label: 'Analytics', href: Routes['/analytics'] },
   { label: 'Ajustes', href: Routes['/settings'] },
 ]
 
