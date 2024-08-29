@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function Home({ searchParams }: { searchParams: { page?: string } }) {
   const page = Number(searchParams.page) || 1
-  const pageSize = 10
+  const pageSize = 30
 
   const getLinks = async (page: number) => {
     const [links, totalLinks] = await prisma.$transaction([
