@@ -9,12 +9,12 @@ import { useState } from 'react'
 import { NavigationItem } from '@/components/navigation-item'
 import { Button } from '@/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
-import { Routes } from '@/utils/routes'
+import { routes } from '@/utils/routes'
 
 const TABS = [
-  { label: 'Links', href: Routes['/'] },
-  { label: 'Analytics', href: Routes['/analytics'] },
-  { label: 'Ajustes', href: Routes['/settings'] },
+  { label: 'Links', href: routes.links },
+  { label: 'Analytics', href: routes.analytics },
+  { label: 'Ajustes', href: routes.settings },
 ]
 
 export const Header = () => {
@@ -25,7 +25,7 @@ export const Header = () => {
   return (
     <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
       <nav className='hidden flex-row items-center gap-6 md:flex'>
-        <Link href={Routes['/']}>
+        <Link href={routes.links}>
           <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
         </Link>
 
@@ -39,7 +39,7 @@ export const Header = () => {
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
           <div className='flex flex-1 items-center justify-between md:hidden'>
-            <Link href={Routes['/']}>
+            <Link href={routes.links}>
               <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
             </Link>
 
@@ -52,7 +52,7 @@ export const Header = () => {
         <SheetContent side='right'>
           <nav className='grid gap-6'>
             <Link
-              href={Routes['/']}
+              href={routes.links}
               onClick={closeMenu}
               className='flex items-center gap-2 text-lg font-semibold'
             >

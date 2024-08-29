@@ -1,5 +1,5 @@
-export enum Routes {
-  '/' = '/',
-  '/analytics' = '/analytics',
-  '/settings' = '/settings',
+export const routes = {
+  links: '/',
+  analytics: '/analytics',
+  settings: '/settings',
 }

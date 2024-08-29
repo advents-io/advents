@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { Badge } from '@/ui/badge'
-import { Routes } from '@/utils/routes'
+import { routes } from '@/utils/routes'
 
 export const FakeLinkAnalytics = () => {
   const [mounted, setMounted] = useState(false)
@@ -24,7 +24,7 @@ export const FakeLinkAnalytics = () => {
 
   return (
     <>
-      <Link href={Routes['/analytics']} className='hidden sm:flex'>
+      <Link href={routes.analytics} className='hidden sm:flex'>
         <Badge variant='secondary' className='min-w-20 justify-center gap-2 py-1 font-normal'>
           {mounted ? (
             <>
@@ -37,7 +37,7 @@ export const FakeLinkAnalytics = () => {
         </Badge>
       </Link>
 
-      <Link href={Routes['/analytics']} className='hidden sm:flex'>
+      <Link href={routes.analytics} className='hidden sm:flex'>
         <Badge variant='secondary' className='min-w-20 justify-center gap-2 py-1 font-normal'>
           {mounted ? (
             <>
