@@ -7,7 +7,6 @@ import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,6 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/ui/alert-dialog'
+import { Button } from '@/ui/button'
 import { getErrorMessage } from '@/utils/error-formatter'
 
 interface Props {
@@ -33,6 +33,8 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
     try {
       setError(undefined)
       setLoading(true)
+
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
       await ky.delete(`/api/links/${linkId}`)
 
@@ -73,14 +75,14 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <AlertDialogAction
+          <Button
             variant='destructive'
             onClick={deleteLink}
             disabled={loading}
             className='min-w-28'
           >
-            {loading ? <Loader2 className='animate-spin' /> : 'Continue'}
-          </AlertDialogAction>
+            {loading ? <Loader2 className='animate-spin' /> : 'Deletar'}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
