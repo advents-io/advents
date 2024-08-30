@@ -1,8 +1,8 @@
 'use server'
 
 import { actionClient, ActionError } from '@/actions/safe-action'
-import { getLinkInputSchema } from '@/actions/schemas/input/get-link-input'
-import { getLinkOutputSchema } from '@/actions/schemas/output/get-link-output'
+import { getLinkInputSchema } from '@/actions/schemas/input/link/get-link-input'
+import { getLinkOutputSchema } from '@/actions/schemas/output/link/get-link-output'
 import { prisma } from '@/lib/prisma'
 
 export const getLinkAction = actionClient

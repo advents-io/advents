@@ -14,8 +14,8 @@ import { formatErrors } from '@/actions/safe-action'
 import {
   CreateLinkInputProps,
   createLinkInputSchema,
-} from '@/actions/schemas/input/create-link-input'
-import { GetLinkOutputProps } from '@/actions/schemas/output/get-link-output'
+} from '@/actions/schemas/input/link/create-link-input'
+import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'

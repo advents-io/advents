@@ -1,7 +1,7 @@
 'use server'
 
 import { actionClient } from '@/actions/safe-action'
-import { deleteLinkInputSchema } from '@/actions/schemas/input/delete-link-input'
+import { deleteLinkInputSchema } from '@/actions/schemas/input/link/delete-link-input'
 import { prisma } from '@/lib/prisma'
 
 export const deleteLinkAction = actionClient
