@@ -13,27 +13,21 @@ export default async function Home({ searchParams }: { searchParams: { page?: st
   const page = Number(searchParams.page) || 1
   const pageSize = 30
 
-  const getLinks = async (page: number) => {
-    const [links, totalLinks] = await prisma.$transaction([
-      prisma.link.findMany({
-        select: {
-          id: true,
-          title: true,
-          domain: true,
-          slug: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
-      prisma.link.count(),
-    ])
-
-    return { links, totalLinks }
-  }
-
-  const { links, totalLinks } = await getLinks(page)
+  const [links, totalLinks] = await prisma.$transaction([
+    prisma.link.findMany({
+      select: {
+        id: true,
+        title: true,
+        domain: true,
+        slug: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.link.count(),
+  ])
 
   return (
     <main className='flex flex-1 flex-col p-8 md:p-14'>
