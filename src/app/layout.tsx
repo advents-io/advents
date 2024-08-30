@@ -23,7 +23,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='pt-BR' className={interFont.className}>
-      <body className='flex min-h-screen flex-col'>
+      <body className='relative flex min-h-screen flex-col'>
         <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         <Toaster richColors closeButton theme='light' />
       </body>

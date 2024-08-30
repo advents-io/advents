@@ -28,7 +28,7 @@ export const PrivateHeader = () => {
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
-    <header className='sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
+    <header className='sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 md:px-6'>
       <nav className='hidden flex-1 md:flex'>
         <div className='flex flex-1 flex-row items-center gap-6'>
           <Link href={routes.LINKS.path}>
@@ -42,7 +42,7 @@ export const PrivateHeader = () => {
           ))}
         </div>
 
-        <Button variant='ghost' onClick={() => signOut()} disabled={isExecuting}>
+        <Button size='sm' variant='ghost' onClick={() => signOut()} disabled={isExecuting}>
           <LoadingSpinner loading={isExecuting}>
             <LogOut className='mr-2 h-4 w-4' />
             Sair
@@ -58,18 +58,14 @@ export const PrivateHeader = () => {
             </Link>
 
             <Button variant='outline' size='icon'>
-              <Menu className='h-5 w-5' />
+              <Menu className='h-4 w-4' />
             </Button>
           </div>
         </SheetTrigger>
 
         <SheetContent side='right'>
           <nav className='grid gap-6'>
-            <Link
-              href={routes.LINKS.path}
-              onClick={closeMenu}
-              className='flex items-center gap-2 text-lg font-semibold'
-            >
+            <Link href={routes.LINKS.path} onClick={closeMenu} className='mb-6'>
               <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
             </Link>
 
