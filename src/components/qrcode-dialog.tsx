@@ -2,6 +2,7 @@ import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import { getErrorMessage } from '@/http/error-formatter'
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -13,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { getErrorMessage } from '@/utils/error-formatter'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {

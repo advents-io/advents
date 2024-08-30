@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { LoadingContent } from '@/components/loading-content'
+import { getErrorMessage } from '@/http/error-formatter'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import {
   AlertDialog,
@@ -16,7 +17,6 @@ import {
   AlertDialogTitle,
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
-import { getErrorMessage } from '@/utils/error-formatter'
 
 interface Props {
   linkId: string
