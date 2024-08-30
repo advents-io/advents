@@ -1,11 +1,12 @@
-import ky from 'ky'
 import { AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { deleteLinkAction } from '@/actions/link/delete-link-action'
+import { formatErrors } from '@/actions/safe-action'
 import { LoadingContent } from '@/components/loading-content'
-import { getErrorMessage } from '@/http/error-formatter'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import {
   AlertDialog,
@@ -25,30 +26,22 @@ interface Props {
 }
 
 export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
-  const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
   const { refresh } = useRouter()
 
-  const deleteLink = async () => {
-    try {
-      setError(undefined)
-      setLoading(true)
-
-      await ky.delete(`/api/links/${linkId}`)
-
+  const {
+    execute: deleteLink,
+    isExecuting,
+    result,
+  } = useAction(deleteLinkAction, {
+    onSuccess: () => {
       setOpen(false)
-
       toast('Link excluído com sucesso.')
-
       refresh()
-    } catch (e) {
-      const error = await getErrorMessage(e)
-      setError(error)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+  })
+
+  const error = formatErrors(result)
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -74,8 +67,12 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <Button variant='destructive' onClick={deleteLink} disabled={loading}>
-            <LoadingContent loading={loading}>Continuar</LoadingContent>
+          <Button
+            variant='destructive'
+            onClick={() => deleteLink({ linkId })}
+            disabled={isExecuting}
+          >
+            <LoadingContent loading={isExecuting}>Continuar</LoadingContent>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
