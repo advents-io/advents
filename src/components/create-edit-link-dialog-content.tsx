@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { LoadingSpinner } from '@/components/loading-spinner'
 import { CreateLinkInputProps, createLinkInputSchema } from '@/http/dtos/input'
 import { GetLinkOutputProps } from '@/http/dtos/output'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -208,22 +209,20 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
           />
 
           <DialogFooter>
-            <Button type='submit' disabled={form.formState.isSubmitting} className='min-w-28'>
-              {!form.formState.isSubmitting ? (
-                linkId ? (
+            <Button type='submit' disabled={form.formState.isSubmitting}>
+              <LoadingSpinner loading={form.formState.isSubmitting}>
+                {linkId ? (
                   <>
-                    <Save className='mr-2 h-4 w-4' />
+                    <Save className='h-4 w-4' />
                     Salvar
                   </>
                 ) : (
                   <>
-                    <PlusCircle className='mr-2 h-4 w-4' />
+                    <PlusCircle className='h-4 w-4' />
                     Criar link
                   </>
-                )
-              ) : (
-                <Loader2 className='animate-spin' />
-              )}
+                )}
+              </LoadingSpinner>
             </Button>
           </DialogFooter>
         </form>

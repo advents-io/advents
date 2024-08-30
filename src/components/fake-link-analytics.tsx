@@ -1,7 +1,8 @@
-import { Download, Loader2, MousePointerClick } from 'lucide-react'
+import { Download, MousePointerClick } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { LoadingSpinner } from '@/components/loading-spinner'
 import { Badge } from '@/ui/badge'
 import { routes } from '@/utils/routes'
 
@@ -25,28 +26,20 @@ export const FakeLinkAnalytics = () => {
   return (
     <>
       <Link href={routes.analytics} className='hidden sm:flex'>
-        <Badge variant='secondary' className='min-w-20 justify-center gap-2 py-1 font-normal'>
-          {mounted ? (
-            <>
-              <MousePointerClick className='h-4 w-4' />
-              {clicks} clicks
-            </>
-          ) : (
-            <Loader2 className='h-4 w-4 animate-spin' />
-          )}
+        <Badge variant='secondary' className='py-1 font-normal'>
+          <LoadingSpinner loading={!mounted}>
+            <MousePointerClick className='h-4 w-4' />
+            {clicks} clicks
+          </LoadingSpinner>
         </Badge>
       </Link>
 
       <Link href={routes.analytics} className='hidden sm:flex'>
-        <Badge variant='secondary' className='min-w-20 justify-center gap-2 py-1 font-normal'>
-          {mounted ? (
-            <>
-              <Download className='h-4 w-4' />
-              {installs} instalações
-            </>
-          ) : (
-            <Loader2 className='h-4 w-4 animate-spin' />
-          )}
+        <Badge variant='secondary' className='py-1 font-normal'>
+          <LoadingSpinner loading={!mounted}>
+            <Download className='h-4 w-4' />
+            {installs} instalações
+          </LoadingSpinner>
         </Badge>
       </Link>
     </>
