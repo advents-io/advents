@@ -16,18 +16,15 @@ export const createLinkInputSchema = z.object({
     )
     .optional(),
   androidUrl: z
-    .string({ message: 'Campo obrigatório.' })
+    .string({ message: 'Url inválida.' })
     .url('Url inválida.')
     .includes('play.google.com', {
       message: 'A url do app Android deve ser da Google Play Store.',
     }),
-  iosUrl: z
-    .string({ message: 'Campo obrigatório.' })
-    .url('Url inválida.')
-    .includes('apps.apple.com', {
-      message: 'A url do app iOS deve ser da App Store.',
-    }),
-  fallbackUrl: z.string({ message: 'Campo obrigatório.' }).url('Url inválida.'),
+  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
+    message: 'A url do app iOS deve ser da App Store.',
+  }),
+  fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
 
 export type CreateLinkInputProps = z.infer<typeof createLinkInputSchema>

@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
 export const signInInputSchema = z.object({
-  email: z.string().email('E-mail inválido.'),
-  password: z.string(),
+  email: z.string({ message: 'E-mail inválido.' }).email('E-mail inválido.'),
+  password: z.string({ message: 'Senha é obrigatória.' }).min(1, 'Senha é obrigatória.'),
 })
+
+export type SignInInputProps = z.infer<typeof signInInputSchema>
