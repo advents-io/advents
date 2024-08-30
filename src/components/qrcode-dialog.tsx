@@ -2,7 +2,6 @@ import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-import { getErrorMessage } from '@/http/error-formatter'
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -58,8 +57,9 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
 
       toast.success('Imagem do QR Code baixada.')
     } catch (e) {
-      const error = await getErrorMessage(e)
-      setError(error)
+      if (e instanceof Error) {
+        setError(e.message)
+      }
     }
   }
 
@@ -89,9 +89,10 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
 
         toast.success('Imagem do QR Code copiada.')
       })
-    } catch (error) {
-      const message = await getErrorMessage(error)
-      setError(message)
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message)
+      }
     }
   }
 
