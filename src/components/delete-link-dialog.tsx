@@ -1,9 +1,10 @@
 import ky from 'ky'
-import { AlertCircle, Loader2 } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { LoadingContent } from '@/components/loading-content'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import {
   AlertDialog,
@@ -33,8 +34,6 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
     try {
       setError(undefined)
       setLoading(true)
-
-      await new Promise(resolve => setTimeout(resolve, 2000))
 
       await ky.delete(`/api/links/${linkId}`)
 
@@ -75,13 +74,8 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <Button
-            variant='destructive'
-            onClick={deleteLink}
-            disabled={loading}
-            className='min-w-28'
-          >
-            {loading ? <Loader2 className='animate-spin' /> : 'Deletar'}
+          <Button variant='destructive' onClick={deleteLink} disabled={loading}>
+            <LoadingContent loading={loading}>Continuar</LoadingContent>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
