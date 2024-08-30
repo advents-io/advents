@@ -1,6 +1,6 @@
 import { Header } from '@/components/header'
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
