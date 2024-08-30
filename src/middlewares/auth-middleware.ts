@@ -38,5 +38,9 @@ export const authMiddleware = async (req: NextRequest) => {
     return NextResponse.redirect(new URL(routes.SIGN_IN.path, req.url))
   }
 
+  if (!isProtectedRoute && !user.error) {
+    return NextResponse.redirect(new URL(routes.LINKS.path, req.url))
+  }
+
   return response
 }
