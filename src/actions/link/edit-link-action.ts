@@ -1,7 +1,6 @@
 'use server'
 
-import { ActionError } from '@/actions/action-error'
-import { actionClient } from '@/actions/safe-action'
+import { actionClient, ActionError } from '@/actions/safe-action'
 import { editLinkInputSchema } from '@/http/dtos/input/edit-link-input'
 import { prisma } from '@/lib/prisma'
 import { generateRandomSlug } from '@/utils/link-helper'

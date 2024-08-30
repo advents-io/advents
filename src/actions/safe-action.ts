@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { createSafeActionClient } from 'next-safe-action'
 
-import { ActionError } from './action-error'
+export class ActionError extends Error {}
 
 export const actionClient = createSafeActionClient({
   handleReturnedServerError(e) {
