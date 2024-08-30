@@ -26,7 +26,7 @@ export const formatErrors = (result: {
     formErrors: string[]
     fieldErrors: Record<string, string[]>
   }
-}) => {
+}): string | undefined => {
   const { serverError, validationErrors } = result
   const errors: string[] = []
 
@@ -35,14 +35,16 @@ export const formatErrors = (result: {
   }
 
   if (validationErrors?.fieldErrors) {
-    Object.values(validationErrors.fieldErrors).forEach(fieldErrors => {
-      errors.push(...fieldErrors)
-    })
+    Object.values(validationErrors.fieldErrors)
+      .flat()
+      .forEach(error => {
+        errors.push(error)
+      })
   }
 
   if (validationErrors?.formErrors) {
     errors.push(...validationErrors.formErrors)
   }
 
-  return errors.join('\n')
+  return errors.length > 0 ? errors.join('\n') : undefined
 }

@@ -4,13 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import ky from 'ky'
 import { AlertCircle, Loader2, PlusCircle, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { createLinkAction } from '@/actions/link/create-link-action'
+import { editLinkAction } from '@/actions/link/edit-link-action'
+import { formatErrors } from '@/actions/safe-action'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { CreateLinkInputProps, createLinkInputSchema } from '@/http/dtos/input'
-import { GetLinkOutputProps } from '@/http/dtos/output'
+import { CreateLinkInputProps, createLinkInputSchema } from '@/http/dtos/input/create-link-input'
+import { GetLinkOutputProps } from '@/http/dtos/output/get-link-output'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
@@ -19,7 +22,6 @@ import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_DEVELOPMENT } from '@/utils/env'
-import { getErrorMessage } from '@/utils/error-formatter'
 
 interface Props {
   closeDialog: () => void
@@ -27,8 +29,47 @@ interface Props {
 }
 
 export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
-  const [apiError, setApiError] = useState<string>()
   const { refresh } = useRouter()
+
+  const onSuccess = () => {
+    form.reset()
+    closeDialog()
+    toast.success(linkId ? 'Link alterado com sucesso.' : 'Link criado com sucesso.')
+    refresh()
+  }
+
+  const {
+    executeAsync: createLink,
+    isExecuting: isCreating,
+    result: createLinkResult,
+  } = useAction(createLinkAction, {
+    onSuccess,
+  })
+
+  const {
+    executeAsync: editLink,
+    isExecuting: isEditing,
+    result: editLinkResult,
+  } = useAction(editLinkAction, {
+    onSuccess,
+  })
+
+  const isExecuting = isCreating || isEditing
+
+  const onSubmit = (link: CreateLinkInputProps) => {
+    if (linkId) {
+      editLink({
+        ...link,
+        linkId,
+      })
+    } else {
+      createLink(link)
+    }
+  }
+
+  const createLinkError = formatErrors(createLinkResult)
+  const editLinkError = formatErrors(editLinkResult)
+  const error = createLinkError || editLinkError
 
   const getLink = async (linkId: string) => {
     const response = await ky.get(`/api/links/${linkId}`)
@@ -38,7 +79,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
   const defaultDomain = LINK_DOMAINS[0]
 
-  const form = useForm<CreateLinkInputProps>({
+  const form = useForm({
     resolver: zodResolver(createLinkInputSchema),
     defaultValues: linkId
       ? async () => getLink(linkId)
@@ -55,40 +96,13 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
         },
   })
 
-  const onSubmit = async (values: CreateLinkInputProps) => {
-    try {
-      setApiError(undefined)
-
-      if (linkId) {
-        await ky.put(`/api/links/${linkId}`, {
-          json: values,
-        })
-      } else {
-        await ky.post('/api/links', {
-          json: values,
-        })
-      }
-
-      form.reset()
-
-      closeDialog()
-
-      toast.success(linkId ? 'Link alterado com sucesso.' : 'Link criado com sucesso.')
-
-      refresh()
-    } catch (error) {
-      const message = await getErrorMessage(error)
-      setApiError(message)
-    }
-  }
-
   return (
     <div className='relative space-y-4 pt-4'>
-      {apiError && (
+      {error && (
         <Alert variant='destructive'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Ops!</AlertTitle>
-          <AlertDescription>{apiError}</AlertDescription>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
@@ -209,8 +223,8 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
           />
 
           <DialogFooter>
-            <Button type='submit' disabled={form.formState.isSubmitting}>
-              <LoadingSpinner loading={form.formState.isSubmitting}>
+            <Button type='submit' disabled={isExecuting}>
+              <LoadingSpinner loading={isExecuting}>
                 {linkId ? (
                   <>
                     <Save className='h-4 w-4' />
