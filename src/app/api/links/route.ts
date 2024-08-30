@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server'
 
-import { createLinkInputSchema } from '@/http/dtos/input'
+import { createLinkInputSchema } from '@/http/dtos/input/create-link-input'
 import { errorHandler } from '@/http/error-handler'
-import { BadRequestError } from '@/http/errors'
-import { created } from '@/http/responses'
+import { BadRequestError } from '@/http/errors/bad-request-error'
+import { created } from '@/http/responses/created'
 import { prisma } from '@/lib/prisma'
 import { generateRandomSlug } from '@/utils/link-helper'
 
