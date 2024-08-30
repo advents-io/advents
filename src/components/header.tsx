@@ -23,7 +23,7 @@ export const Header = () => {
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
-    <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
+    <header className='sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
       <nav className='hidden flex-row items-center gap-6 md:flex'>
         <Link href={routes.links}>
           <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />

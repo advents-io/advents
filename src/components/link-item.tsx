@@ -39,7 +39,7 @@ export const LinkItem = ({ link }: Props) => {
 
   return (
     <Card>
-      <CardContent className='flex p-6 text-sm'>
+      <CardContent className='flex px-2 py-4 text-sm'>
         <div className='flex flex-1 items-center gap-2'>
           <span className='text-md hidden text-muted-foreground sm:flex'>{link.title}</span>
 
