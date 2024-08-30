@@ -1,12 +1,15 @@
 'use client'
 
-import { Menu } from 'lucide-react'
+import { LogOut, Menu } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAction } from 'next-safe-action/hooks'
 import AdventsBrand from 'public/advents.svg'
 import { useState } from 'react'
 
-import { NavigationItem } from '@/components/navigation-item'
+import { signOutAction } from '@/actions/auth/sign-out-action'
+import { HeaderItem } from '@/components/header-item'
+import { LoadingSpinner } from '@/components/loading-spinner'
 import { Button } from '@/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { routes } from '@/utils/routes'
@@ -18,22 +21,33 @@ const TABS = [
 ]
 
 export const Header = () => {
+  const { execute: signOut, isExecuting } = useAction(signOutAction)
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const closeMenu = () => setIsMenuOpen(false)
 
   return (
     <header className='sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
-      <nav className='hidden flex-row items-center gap-6 md:flex'>
-        <Link href={routes.LINKS.path}>
-          <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
-        </Link>
+      <nav className='hidden flex-1 md:flex'>
+        <div className='flex flex-1 flex-row items-center gap-6'>
+          <Link href={routes.LINKS.path}>
+            <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
+          </Link>
 
-        {TABS.map((tab, index) => (
-          <NavigationItem key={index} href={tab.href}>
-            {tab.label}
-          </NavigationItem>
-        ))}
+          {TABS.map((tab, index) => (
+            <HeaderItem key={index} href={tab.href}>
+              {tab.label}
+            </HeaderItem>
+          ))}
+        </div>
+
+        <Button variant='ghost' onClick={() => signOut()} disabled={isExecuting}>
+          <LoadingSpinner loading={isExecuting}>
+            <LogOut className='mr-2 h-4 w-4' />
+            Sair
+          </LoadingSpinner>
+        </Button>
       </nav>
 
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -60,10 +74,17 @@ export const Header = () => {
             </Link>
 
             {TABS.map((tab, index) => (
-              <NavigationItem key={index} onClick={closeMenu} href={tab.href}>
+              <HeaderItem key={index} onClick={closeMenu} href={tab.href}>
                 {tab.label}
-              </NavigationItem>
+              </HeaderItem>
             ))}
+
+            <HeaderItem onClick={() => signOut()}>
+              <LoadingSpinner loading={isExecuting}>
+                <LogOut className='mr-2 h-4 w-4' />
+                Sair
+              </LoadingSpinner>
+            </HeaderItem>
           </nav>
         </SheetContent>
       </Sheet>
