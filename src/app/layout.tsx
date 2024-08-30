@@ -3,7 +3,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { Header } from '@/components/header'
 import { Toaster } from '@/ui/sonner'
 import { TooltipProvider } from '@/ui/tooltip'
 
@@ -25,10 +24,7 @@ export default function RootLayout({
   return (
     <html lang='pt-BR' className={interFont.className}>
       <body className='flex min-h-screen flex-col'>
-        <TooltipProvider delayDuration={100}>
-          <Header />
-          {children}
-        </TooltipProvider>
+        <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         <Toaster richColors closeButton theme='light' />
       </body>
     </html>
