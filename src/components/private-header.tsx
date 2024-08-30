@@ -20,7 +20,7 @@ const TABS = [
   { label: 'Ajustes', href: routes.SETTINGS.path },
 ]
 
-export const Header = () => {
+export const PrivateHeader = () => {
   const { execute: signOut, isExecuting } = useAction(signOutAction)
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
