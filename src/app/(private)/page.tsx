@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Links | Advents',
 }
 
-export default async function Home({ searchParams }: { searchParams: { page?: string } }) {
+export default async function Links({ searchParams }: { searchParams: { page?: string } }) {
   const page = Number(searchParams.page) || 1
   const pageSize = 30
 

@@ -13,7 +13,7 @@ const interFont = Inter({
 
 export const metadata: Metadata = {
   title: 'Advents',
-  description: 'O futuro das MMPs.',
+  description: 'Deep links de forma fácil!',
 }
 
 export default function RootLayout({
