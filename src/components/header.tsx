@@ -12,9 +12,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { routes } from '@/utils/routes'
 
 const TABS = [
-  { label: 'Links', href: routes.links },
-  { label: 'Analytics', href: routes.analytics },
-  { label: 'Ajustes', href: routes.settings },
+  { label: 'Links', href: routes.LINKS.path },
+  { label: 'Analytics', href: routes.ANALYTICS.path },
+  { label: 'Ajustes', href: routes.SETTINGS.path },
 ]
 
 export const Header = () => {
@@ -25,7 +25,7 @@ export const Header = () => {
   return (
     <header className='sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
       <nav className='hidden flex-row items-center gap-6 md:flex'>
-        <Link href={routes.links}>
+        <Link href={routes.LINKS.path}>
           <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
         </Link>
 
@@ -39,7 +39,7 @@ export const Header = () => {
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
           <div className='flex flex-1 items-center justify-between md:hidden'>
-            <Link href={routes.links}>
+            <Link href={routes.LINKS.path}>
               <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
             </Link>
 
@@ -52,7 +52,7 @@ export const Header = () => {
         <SheetContent side='right'>
           <nav className='grid gap-6'>
             <Link
-              href={routes.links}
+              href={routes.LINKS.path}
               onClick={closeMenu}
               className='flex items-center gap-2 text-lg font-semibold'
             >
