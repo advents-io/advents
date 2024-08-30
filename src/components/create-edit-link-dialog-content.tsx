@@ -11,9 +11,12 @@ import { createLinkAction } from '@/actions/link/create-link-action'
 import { editLinkAction } from '@/actions/link/edit-link-action'
 import { getLinkAction } from '@/actions/link/get-link-action'
 import { formatErrors } from '@/actions/safe-action'
+import {
+  CreateLinkInputProps,
+  createLinkInputSchema,
+} from '@/actions/schemas/input/create-link-input'
+import { GetLinkOutputProps } from '@/actions/schemas/output/get-link-output'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { CreateLinkInputProps, createLinkInputSchema } from '@/http/dtos/input/create-link-input'
-import { GetLinkOutputProps } from '@/http/dtos/output/get-link-output'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
