@@ -42,9 +42,9 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
       toast('Link excluído com sucesso.')
 
       refresh()
-    } catch (error) {
-      const message = await getErrorMessage(error)
-      setError(message)
+    } catch (e) {
+      const error = await getErrorMessage(e)
+      setError(error)
     } finally {
       setLoading(false)
     }

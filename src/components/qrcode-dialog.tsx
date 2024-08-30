@@ -57,9 +57,9 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
       anchorRef.current.click()
 
       toast.success('Imagem do QR Code baixada.')
-    } catch (error) {
-      const message = await getErrorMessage(error)
-      setError(message)
+    } catch (e) {
+      const error = await getErrorMessage(e)
+      setError(error)
     }
   }
 
