@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import ky from 'ky'
 import { AlertCircle, Loader2, PlusCircle, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
@@ -10,6 +9,7 @@ import { toast } from 'sonner'
 
 import { createLinkAction } from '@/actions/link/create-link-action'
 import { editLinkAction } from '@/actions/link/edit-link-action'
+import { getLinkAction } from '@/actions/link/get-link-action'
 import { formatErrors } from '@/actions/safe-action'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { CreateLinkInputProps, createLinkInputSchema } from '@/http/dtos/input/create-link-input'
@@ -39,7 +39,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   }
 
   const {
-    executeAsync: createLink,
+    execute: createLink,
     isExecuting: isCreating,
     result: createLinkResult,
   } = useAction(createLinkAction, {
@@ -47,7 +47,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   })
 
   const {
-    executeAsync: editLink,
+    execute: editLink,
     isExecuting: isEditing,
     result: editLinkResult,
   } = useAction(editLinkAction, {
@@ -72,14 +72,13 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   const error = createLinkError || editLinkError
 
   const getLink = async (linkId: string) => {
-    const response = await ky.get(`/api/links/${linkId}`)
-    const link = await response.json<GetLinkOutputProps>()
-    return link
+    const response = await getLinkAction({ linkId })
+    return response?.data as GetLinkOutputProps
   }
 
   const defaultDomain = LINK_DOMAINS[0]
 
-  const form = useForm({
+  const form = useForm<CreateLinkInputProps>({
     resolver: zodResolver(createLinkInputSchema),
     defaultValues: linkId
       ? async () => getLink(linkId)
