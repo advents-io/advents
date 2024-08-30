@@ -20,10 +20,6 @@ export const routes = {
     path: '/sign-in',
     protected: false,
   },
-  SIGN_UP: {
-    path: '/sign-up',
-    protected: false,
-  },
   FORGOT_PASSWORD: {
     path: '/forgot-password',
     protected: false,
