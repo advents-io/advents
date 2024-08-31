@@ -102,7 +102,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     <div className='relative space-y-4 pt-4'>
       {error && (
         <Alert variant='destructive'>
-          <AlertCircle className='h-4 w-4' />
+          <AlertCircle className='size-4' />
           <AlertTitle>Ops!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
@@ -229,12 +229,12 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
               <LoadingSpinner loading={isExecuting}>
                 {linkId ? (
                   <>
-                    <Save className='h-4 w-4' />
+                    <Save className='size-4' />
                     Salvar
                   </>
                 ) : (
                   <>
-                    <PlusCircle className='h-4 w-4' />
+                    <PlusCircle className='size-4' />
                     Criar link
                   </>
                 )}

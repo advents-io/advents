@@ -107,7 +107,7 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
 
         {error && (
           <Alert variant='destructive'>
-            <AlertCircle className='h-4 w-4' />
+            <AlertCircle className='size-4' />
             <AlertTitle>Ops!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
@@ -118,26 +118,26 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
 
           <div className='flex space-x-4'>
             <Button className='w-36' onClick={copyToClipboard}>
-              <Copy className='mr-2 h-4 w-4' />
+              <Copy className='mr-2 size-4' />
               Copiar
             </Button>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className='w-36'>
-                  <Download className='mr-2 h-4 w-4' />
+                  <Download className='mr-2 size-4' />
                   Baixar
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={downloadSvg}>
-                  <ImageIcon className='mr-2 h-4 w-4' />
+                  <ImageIcon className='mr-2 size-4' />
                   Formato .svg
                 </DropdownMenuItem>
 
                 <DropdownMenuItem onClick={downloadPng}>
-                  <ImageIcon className='mr-2 h-4 w-4' />
+                  <ImageIcon className='mr-2 size-4' />
                   Formato .png
                 </DropdownMenuItem>
               </DropdownMenuContent>

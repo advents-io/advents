@@ -43,9 +43,7 @@ export const LinkItem = ({ link }: Props) => {
         <div className='flex flex-1 items-center gap-2'>
           <span className='text-md hidden text-muted-foreground sm:flex'>{link.title}</span>
 
-          {link.title && (
-            <ArrowRightIcon className='hidden h-4 w-4 text-muted-foreground sm:flex' />
-          )}
+          {link.title && <ArrowRightIcon className='hidden size-4 text-muted-foreground sm:flex' />}
 
           <NextLink
             href={httpShortLink}
@@ -63,7 +61,7 @@ export const LinkItem = ({ link }: Props) => {
                 variant='ghost'
                 size='icon'
               >
-                <Copy className='h-4 w-4' />
+                <Copy className='size-4' />
               </Button>
             </TooltipTrigger>
 
@@ -87,7 +85,7 @@ export const LinkItem = ({ link }: Props) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' size='icon'>
-                <EllipsisVertical className='h-4 w-4' />
+                <EllipsisVertical className='size-4' />
               </Button>
             </DropdownMenuTrigger>
 
@@ -95,7 +93,7 @@ export const LinkItem = ({ link }: Props) => {
               <EditLinkDialog linkId={link.id}>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={e => e.preventDefault()}>
-                    <Pencil className='mr-2 h-4 w-4' />
+                    <Pencil className='mr-2 size-4' />
                     Editar
                   </DropdownMenuItem>
                 </DialogTrigger>
@@ -104,7 +102,7 @@ export const LinkItem = ({ link }: Props) => {
               <QrCodeDialog domain={link.domain} slug={link.slug}>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={e => e.preventDefault()}>
-                    <QrCode className='mr-2 h-4 w-4' />
+                    <QrCode className='mr-2 size-4' />
                     <span>QR Code</span>
                   </DropdownMenuItem>
                 </DialogTrigger>
@@ -113,7 +111,7 @@ export const LinkItem = ({ link }: Props) => {
               <DeleteLinkDialog linkId={link.id} shortLink={shortLink}>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem onSelect={e => e.preventDefault()}>
-                    <Trash2 className='mr-2 h-4 w-4 text-destructive' />
+                    <Trash2 className='mr-2 size-4 text-destructive' />
                     <span className='text-destructive'>Deletar</span>
                   </DropdownMenuItem>
                 </AlertDialogTrigger>

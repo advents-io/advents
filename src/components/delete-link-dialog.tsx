@@ -53,7 +53,7 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
 
           {error && (
             <Alert variant='destructive'>
-              <AlertCircle className='h-4 w-4' />
+              <AlertCircle className='size-4' />
               <AlertTitle>Ops!</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>

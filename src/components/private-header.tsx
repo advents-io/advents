@@ -44,7 +44,7 @@ export const PrivateHeader = () => {
 
         <Button size='sm' variant='ghost' onClick={() => signOut()} disabled={isExecuting}>
           <LoadingSpinner loading={isExecuting}>
-            <LogOut className='mr-2 h-4 w-4' />
+            <LogOut className='mr-2 size-4' />
             Sair
           </LoadingSpinner>
         </Button>
@@ -58,7 +58,7 @@ export const PrivateHeader = () => {
             </Link>
 
             <Button variant='outline' size='icon'>
-              <Menu className='h-4 w-4' />
+              <Menu className='size-4' />
             </Button>
           </div>
         </SheetTrigger>
@@ -77,7 +77,7 @@ export const PrivateHeader = () => {
 
             <HeaderItem onClick={() => signOut()}>
               <LoadingSpinner loading={isExecuting}>
-                <LogOut className='mr-2 h-4 w-4' />
+                <LogOut className='mr-2 size-4' />
                 Sair
               </LoadingSpinner>
             </HeaderItem>

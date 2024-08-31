@@ -49,7 +49,7 @@ export const SignInForm = () => {
         <p>Verifique sua caixa de entrada e abra o link enviado.</p>
 
         <Button className='mt-2' variant='outline' onClick={() => setEmailSent(false)}>
-          <ArrowLeft className='mr-2 h-4 w-4' />
+          <ArrowLeft className='mr-2 size-4' />
           Voltar
         </Button>
       </div>
@@ -59,17 +59,17 @@ export const SignInForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(signIn)} className='mx-10 w-full max-w-sm'>
+        <Image src={AdventsLogo} alt='Logo da Advents' className='size-8' />
+
+        <h1 className='mt-10 text-xl font-medium'>Entre na Advents</h1>
+
         {error && (
-          <Alert variant='destructive' className='mb-6'>
-            <AlertCircle className='h-4 w-4' />
+          <Alert variant='destructive' className='my-4'>
+            <AlertCircle className='size-4' />
             <AlertTitle>Ops!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
-        <Image src={AdventsLogo} alt='Logo da Advents' className='size-8' />
-
-        <h1 className='mt-10 text-xl font-medium'>Entre na Advents</h1>
 
         <div className='mt-6 flex flex-col gap-6'>
           <FormField

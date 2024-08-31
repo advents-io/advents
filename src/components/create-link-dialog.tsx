@@ -15,7 +15,7 @@ export const CreateLinkDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size='lg'>
-          <PlusCircle className='mr-2 h-4 w-4' />
+          <PlusCircle className='mr-2 size-4' />
           Criar link
         </Button>
       </DialogTrigger>

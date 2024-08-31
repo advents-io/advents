@@ -28,7 +28,7 @@ export const FakeLinkAnalytics = () => {
       <Link href={routes.ANALYTICS.path} className='hidden sm:flex'>
         <Badge variant='secondary' className='py-1 font-normal'>
           <LoadingSpinner loading={!mounted}>
-            <MousePointerClick className='h-4 w-4' />
+            <MousePointerClick className='size-4' />
             {clicks} clicks
           </LoadingSpinner>
         </Badge>
@@ -37,7 +37,7 @@ export const FakeLinkAnalytics = () => {
       <Link href={routes.ANALYTICS.path} className='hidden sm:flex'>
         <Badge variant='secondary' className='py-1 font-normal'>
           <LoadingSpinner loading={!mounted}>
-            <Download className='h-4 w-4' />
+            <Download className='size-4' />
             {installs} instalações
           </LoadingSpinner>
         </Badge>
