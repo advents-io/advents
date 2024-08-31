@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { supabaseClient } from '@/lib/supabase'
-import { LINK_DOMAINS, WEBSITE_URL } from '@/utils/constants'
+import { LINK_DOMAINS, LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
@@ -63,7 +63,7 @@ export const linkMiddleware = async (req: NextRequest) => {
 const getDomain = (req: NextRequest) => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain = domain === 'l.localhost:3000'
+  const isDevLinkDomain = domain === LOCALHOST_LINK_DOMAIN
 
   if (isDevLinkDomain) {
     domain = LINK_DOMAINS[0]
