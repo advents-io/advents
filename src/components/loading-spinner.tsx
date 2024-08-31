@@ -1,16 +1,22 @@
 import { Loader2 } from 'lucide-react'
 
-interface Props {
+import { cn } from '@/lib/tailwind'
+
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   loading: boolean
 }
 
-export const LoadingSpinner = ({ children, loading }: Props) => {
+export const LoadingSpinner = ({ children, loading, className, ...rest }: Props) => {
   return (
     <div className='relative w-full'>
       <div
         data-loading={loading}
-        className='flex items-center justify-center gap-2 opacity-100 data-[loading=true]:opacity-0'
+        className={cn(
+          'flex items-center justify-center gap-2 opacity-100 data-[loading=true]:opacity-0',
+          className,
+        )}
+        {...rest}
       >
         {children}
       </div>

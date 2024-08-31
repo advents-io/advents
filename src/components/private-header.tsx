@@ -1,6 +1,6 @@
 'use client'
 
-import { LogOut, Menu } from 'lucide-react'
+import { LogOut, Menu, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAction } from 'next-safe-action/hooks'
@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { Label } from '@/ui/label'
+import { Separator } from '@/ui/separator'
 import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { routes } from '@/utils/routes'
 
@@ -67,14 +68,17 @@ export const PrivateHeader = ({ email }: Props) => {
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
               <Avatar className='size-8'>
-                <AvatarFallback className='text-sm'>
-                  {email?.slice(0, 1).toUpperCase()}
+                <AvatarFallback>
+                  <User className='size-4' />
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
-              <DropdownMenuLabel>{email}</DropdownMenuLabel>
+              <DropdownMenuLabel className='flex items-center gap-2 font-normal text-muted-foreground'>
+                <User className='size-4' />
+                {email}
+              </DropdownMenuLabel>
 
               <DropdownMenuSeparator />
 
@@ -83,7 +87,7 @@ export const PrivateHeader = ({ email }: Props) => {
                 onClick={() => signOut()}
                 onSelect={e => e.preventDefault()}
               >
-                <LoadingSpinner loading={isExecuting}>
+                <LoadingSpinner loading={isExecuting} className='justify-start'>
                   <LogOut className='mr-2 size-4' />
                   Sair
                 </LoadingSpinner>
@@ -123,10 +127,15 @@ export const PrivateHeader = ({ email }: Props) => {
                 </HeaderItem>
               ))}
 
-              <Label className='mt-10 text-base text-muted-foreground'>{email}</Label>
+              <Separator />
+
+              <div className='flex items-center gap-2 text-muted-foreground'>
+                <User className='size-5' />
+                <Label className='text-base font-normal'>{email}</Label>
+              </div>
 
               <HeaderItem onClick={() => signOut()} className='text-base'>
-                <LoadingSpinner loading={isExecuting}>
+                <LoadingSpinner loading={isExecuting} className='justify-start'>
                   <LogOut className='mr-2 size-4' />
                   Sair
                 </LoadingSpinner>
