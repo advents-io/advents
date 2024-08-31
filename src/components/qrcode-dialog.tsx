@@ -19,10 +19,20 @@ interface Props {
   children: React.ReactNode
   domain: string
   slug: string
+  closeDropdown: () => void
 }
 
-export const QrCodeDialog = ({ domain, slug, children }: Props) => {
+export const QrCodeDialog = ({ domain, slug, children, closeDropdown }: Props) => {
   const [error, setError] = useState<string>()
+  const [open, setOpen] = useState(false)
+
+  const handleSetOpen = (open: boolean) => {
+    setOpen(open)
+
+    if (!open) {
+      closeDropdown()
+    }
+  }
 
   const shortLink = formatShortLink(domain, slug, true)
 
@@ -97,7 +107,7 @@ export const QrCodeDialog = ({ domain, slug, children }: Props) => {
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleSetOpen}>
       {children}
 
       <DialogContent>

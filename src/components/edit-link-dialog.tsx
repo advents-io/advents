@@ -8,13 +8,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
 interface Props {
   children: React.ReactNode
   linkId: string
+  closeDropdown: () => void
 }
 
-export const EditLinkDialog = ({ children, linkId }: Props) => {
+export const EditLinkDialog = ({ children, linkId, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
 
+  const handleSetOpen = (open: boolean) => {
+    setOpen(open)
+
+    if (!open) {
+      closeDropdown()
+    }
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleSetOpen}>
       {children}
 
       <DialogContent>
@@ -22,7 +31,7 @@ export const EditLinkDialog = ({ children, linkId }: Props) => {
           <DialogTitle>Editar link</DialogTitle>
         </DialogHeader>
 
-        <CreateEditLinkDialogContent closeDialog={() => setOpen(false)} linkId={linkId} />
+        <CreateEditLinkDialogContent closeDialog={() => handleSetOpen(false)} linkId={linkId} />
       </DialogContent>
     </Dialog>
   )

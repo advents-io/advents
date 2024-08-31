@@ -23,11 +23,20 @@ interface Props {
   linkId: string
   shortLink: string
   children: React.ReactNode
+  closeDropdown: () => void
 }
 
-export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
+export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
   const { refresh } = useRouter()
+
+  const handleSetOpen = (open: boolean) => {
+    setOpen(open)
+
+    if (!open) {
+      closeDropdown()
+    }
+  }
 
   const {
     execute: deleteLink,
@@ -35,7 +44,7 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
     result,
   } = useAction(deleteLinkAction, {
     onSuccess: () => {
-      setOpen(false)
+      handleSetOpen(false)
       toast('Link excluído com sucesso.')
       refresh()
     },
@@ -44,7 +53,7 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink }: Props) => {
   const error = formatErrors(result)
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={open} onOpenChange={handleSetOpen}>
       {children}
 
       <AlertDialogContent>
