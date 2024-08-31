@@ -7,7 +7,7 @@ interface Props {
 
 export const LoadingSpinner = ({ children, loading }: Props) => {
   return (
-    <div className='relative'>
+    <div className='relative w-full'>
       <div
         data-loading={loading}
         className='flex items-center gap-2 opacity-100 data-[loading=true]:opacity-0'

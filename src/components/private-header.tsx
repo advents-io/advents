@@ -10,7 +10,17 @@ import { useState } from 'react'
 import { signOutAction } from '@/actions/auth/sign-out-action'
 import { HeaderItem } from '@/components/header-item'
 import { LoadingSpinner } from '@/components/loading-spinner'
+import { Avatar, AvatarFallback } from '@/ui/avatar'
 import { Button } from '@/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/ui/dropdown-menu'
+import { Label } from '@/ui/label'
 import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { routes } from '@/utils/routes'
 
@@ -20,7 +30,11 @@ const TABS = [
   { label: 'Ajustes', href: routes.SETTINGS.path },
 ]
 
-export const PrivateHeader = () => {
+interface Props {
+  email?: string
+}
+
+export const PrivateHeader = ({ email }: Props) => {
   const { execute: signOut, isExecuting } = useAction(signOutAction)
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -42,12 +56,32 @@ export const PrivateHeader = () => {
           ))}
         </div>
 
-        <Button size='sm' variant='ghost' onClick={() => signOut()} disabled={isExecuting}>
-          <LoadingSpinner loading={isExecuting}>
-            <LogOut className='mr-2 size-4' />
-            Sair
-          </LoadingSpinner>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger className='cursor-pointer' asChild>
+            <Avatar className='size-8'>
+              <AvatarFallback className='text-sm'>
+                {email?.slice(0, 1).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuLabel>{email}</DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              disabled={isExecuting}
+              onClick={() => signOut()}
+              onSelect={e => e.preventDefault()}
+            >
+              <LoadingSpinner loading={isExecuting}>
+                <LogOut className='mr-2 size-4' />
+                Sair
+              </LoadingSpinner>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </nav>
 
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -75,7 +109,9 @@ export const PrivateHeader = () => {
               </HeaderItem>
             ))}
 
-            <HeaderItem onClick={() => signOut()}>
+            <Label className='mt-10 text-base text-muted-foreground'>{email}</Label>
+
+            <HeaderItem onClick={() => signOut()} className='text-base'>
               <LoadingSpinner loading={isExecuting}>
                 <LogOut className='mr-2 size-4' />
                 Sair
