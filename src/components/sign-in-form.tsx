@@ -39,58 +39,58 @@ export const SignInForm = () => {
     resolver: zodResolver(signInInputSchema),
   })
 
-  if (emailSent) {
-    return (
-      <div className='max-w-xs space-y-4'>
-        <p>
-          Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
-        </p>
-
-        <p>Verifique sua caixa de entrada e abra o link enviado.</p>
-
-        <Button className='mt-2' variant='outline' onClick={() => setEmailSent(false)}>
-          <ArrowLeft className='mr-2 size-4' />
-          Voltar
-        </Button>
-      </div>
-    )
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(signIn)} className='mx-10 w-full max-w-sm'>
-        <Image src={AdventsLogo} alt='Logo da Advents' className='size-8' />
+    <div className='mx-10 w-full max-w-sm'>
+      <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
 
-        <h1 className='mt-10 text-xl font-medium'>Entre na Advents</h1>
+      {emailSent ? (
+        <div className='max-w-xs space-y-4'>
+          <p>
+            Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+          </p>
 
-        {error && (
-          <Alert variant='destructive' className='my-4'>
-            <AlertCircle className='size-4' />
-            <AlertTitle>Ops!</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+          <p>Verifique sua caixa de entrada e abra o link enviado.</p>
 
-        <div className='mt-6 flex flex-col gap-6'>
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder='jeff@amazon.com' type='email' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button type='submit' disabled={isExecuting}>
-            <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
+          <Button className='mt-2' variant='outline' onClick={() => setEmailSent(false)}>
+            <ArrowLeft className='mr-2 size-4' />
+            Voltar
           </Button>
         </div>
-      </form>
-    </Form>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(signIn)}>
+            <h1 className='text-xl font-medium'>Entre na Advents</h1>
+
+            {error && (
+              <Alert variant='destructive' className='my-4'>
+                <AlertCircle className='size-4' />
+                <AlertTitle>Ops!</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <div className='mt-6 flex flex-col gap-6'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder='jeff@amazon.com' type='email' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type='submit' disabled={isExecuting}>
+                <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
+    </div>
   )
 }
