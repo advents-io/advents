@@ -29,7 +29,7 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
   }
 
   return (
-    <div className='mt-4 flex items-center'>
+    <div className='mt-4 flex items-center gap-2'>
       <div className='flex-1'>
         <p className='text-sm text-muted-foreground'>
           Exibindo {start} - {end} de {total} links
@@ -38,8 +38,8 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
 
       <div className='flex gap-2'>
         <Button size='sm' variant='secondary' disabled={page === 1} onClick={() => addPage(-1)}>
-          <ChevronLeft className='mr-1 size-3' />
-          Anterior
+          <ChevronLeft className='size-5 sm:size-3' />
+          <span className='ml-1 hidden sm:flex'>Anterior</span>
         </Button>
 
         <Button
@@ -48,8 +48,8 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
           disabled={page === totalPages}
           onClick={() => addPage(1)}
         >
-          Próximo
-          <ChevronRight className='ml-1 size-3' />
+          <span className='mr-1 hidden sm:flex'>Próximo</span>
+          <ChevronRight className='size-5 sm:size-3' />
         </Button>
       </div>
     </div>
