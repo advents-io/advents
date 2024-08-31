@@ -6,9 +6,7 @@ import { routes } from '@/utils/routes'
 
 export const authMiddleware = async (req: NextRequest) => {
   let response = NextResponse.next({
-    request: {
-      headers: req.headers,
-    },
+    request: req,
   })
 
   const supabase = createServerClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!, {

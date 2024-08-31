@@ -9,5 +9,6 @@ import { routes } from '@/utils/routes'
 export const signOutAction = actionClient.action(async () => {
   const supabase = supabaseClient()
   await supabase.auth.signOut()
+
   return redirect(routes.SIGN_IN.path)
 })

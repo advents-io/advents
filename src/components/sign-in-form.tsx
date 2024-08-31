@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle } from 'lucide-react'
-import Link from 'next/link'
+import { AlertCircle, ArrowLeft } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { signInAction } from '@/actions/auth/sign-in-action'
@@ -14,10 +14,18 @@ import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
-import { routes } from '@/utils/routes'
 
 export const SignInForm = () => {
-  const { execute: signIn, isExecuting, result } = useAction(signInAction)
+  const [emailSent, setEmailSent] = useState(false)
+
+  const {
+    execute: signIn,
+    isExecuting,
+    result,
+    input,
+  } = useAction(signInAction, {
+    onSuccess: () => setEmailSent(true),
+  })
 
   const error = formatErrors(result)
 
@@ -25,20 +33,37 @@ export const SignInForm = () => {
     resolver: zodResolver(signInInputSchema),
   })
 
+  if (emailSent) {
+    return (
+      <div className='max-w-xs space-y-4'>
+        <p>
+          Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+        </p>
+
+        <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+
+        <Button className='mt-2' variant='outline' onClick={() => setEmailSent(false)}>
+          <ArrowLeft className='mr-2 h-4 w-4' />
+          Voltar
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(signIn)} className='min-w-64'>
-        <h1 className='text-2xl font-medium'>Entrar</h1>
-
         {error && (
-          <Alert variant='destructive' className='mt-6'>
+          <Alert variant='destructive' className='mb-6'>
             <AlertCircle className='h-4 w-4' />
             <AlertTitle>Ops!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
-        <div className='mt-6 flex flex-col gap-6'>
+        <h1 className='text-2xl font-medium'>Entrar</h1>
+
+        <div className='mt-4 flex flex-col gap-6'>
           <FormField
             control={form.control}
             name='email'
@@ -47,30 +72,6 @@ export const SignInForm = () => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder='seu@email.com' type='email' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <div className='flex items-center justify-between'>
-                  <FormLabel>Senha</FormLabel>
-
-                  <Link
-                    className='text-xs text-foreground underline'
-                    href={routes.FORGOT_PASSWORD.path}
-                  >
-                    Esqueceu a senha?
-                  </Link>
-                </div>
-
-                <FormControl>
-                  <Input placeholder='******' type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

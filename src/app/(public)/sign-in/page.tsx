@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 
+import { PublicHeader } from '@/components/public-header'
 import { SignInForm } from '@/components/sign-in-form'
 
 export const metadata: Metadata = {
@@ -7,5 +8,12 @@ export const metadata: Metadata = {
 }
 
 export default async function SignIn() {
-  return <SignInForm />
+  return (
+    <>
+      <PublicHeader />
+      <div className='flex flex-1 items-center justify-center'>
+        <SignInForm />
+      </div>
+    </>
+  )
 }
