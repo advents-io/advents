@@ -8,6 +8,7 @@ import AdventsBrand from 'public/advents-brand.svg'
 import { useState } from 'react'
 
 import { signOutAction } from '@/actions/auth/sign-out-action'
+import { ContactDropdown } from '@/components/contact-dropdown'
 import { HeaderItem } from '@/components/header-item'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { Avatar, AvatarFallback } from '@/ui/avatar'
@@ -56,70 +57,84 @@ export const PrivateHeader = ({ email }: Props) => {
           ))}
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className='cursor-pointer' asChild>
-            <Avatar className='size-8'>
-              <AvatarFallback className='text-sm'>
-                {email?.slice(0, 1).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
+        <div className='flex items-center gap-4'>
+          <ContactDropdown>
+            <Button variant='ghost' size='sm'>
+              Ajuda
+            </Button>
+          </ContactDropdown>
 
-          <DropdownMenuContent>
-            <DropdownMenuLabel>{email}</DropdownMenuLabel>
+          <DropdownMenu>
+            <DropdownMenuTrigger className='cursor-pointer' asChild>
+              <Avatar className='size-8'>
+                <AvatarFallback className='text-sm'>
+                  {email?.slice(0, 1).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
 
-            <DropdownMenuSeparator />
+            <DropdownMenuContent>
+              <DropdownMenuLabel>{email}</DropdownMenuLabel>
 
-            <DropdownMenuItem
-              disabled={isExecuting}
-              onClick={() => signOut()}
-              onSelect={e => e.preventDefault()}
-            >
-              <LoadingSpinner loading={isExecuting}>
-                <LogOut className='mr-2 size-4' />
-                Sair
-              </LoadingSpinner>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                disabled={isExecuting}
+                onClick={() => signOut()}
+                onSelect={e => e.preventDefault()}
+              >
+                <LoadingSpinner loading={isExecuting}>
+                  <LogOut className='mr-2 size-4' />
+                  Sair
+                </LoadingSpinner>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </nav>
 
-      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-        <SheetTrigger asChild>
-          <div className='flex flex-1 items-center justify-between md:hidden'>
-            <Link href={routes.LINKS.path}>
-              <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
-            </Link>
+      <div className='flex flex-1 items-center md:hidden'>
+        <Link href={routes.LINKS.path} className='flex flex-1'>
+          <Image src={AdventsBrand} alt='Logo da Advents' className='w-20' />
+        </Link>
 
+        <ContactDropdown>
+          <Button variant='ghost' size='sm'>
+            Ajuda
+          </Button>
+        </ContactDropdown>
+
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <SheetTrigger asChild>
             <Button variant='outline' size='icon'>
               <Menu className='size-4' />
             </Button>
-          </div>
-        </SheetTrigger>
+          </SheetTrigger>
 
-        <SheetContent side='right'>
-          <nav className='grid gap-6'>
-            <Link href={routes.LINKS.path} onClick={closeMenu} className='mb-6'>
-              <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
-            </Link>
+          <SheetContent side='right'>
+            <nav className='grid gap-6'>
+              <Link href={routes.LINKS.path} onClick={closeMenu} className='mb-6'>
+                <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
+              </Link>
 
-            {TABS.map((tab, index) => (
-              <HeaderItem key={index} onClick={closeMenu} href={tab.href}>
-                {tab.label}
+              {TABS.map((tab, index) => (
+                <HeaderItem key={index} onClick={closeMenu} href={tab.href}>
+                  {tab.label}
+                </HeaderItem>
+              ))}
+
+              <Label className='mt-10 text-base text-muted-foreground'>{email}</Label>
+
+              <HeaderItem onClick={() => signOut()} className='text-base'>
+                <LoadingSpinner loading={isExecuting}>
+                  <LogOut className='mr-2 size-4' />
+                  Sair
+                </LoadingSpinner>
               </HeaderItem>
-            ))}
-
-            <Label className='mt-10 text-base text-muted-foreground'>{email}</Label>
-
-            <HeaderItem onClick={() => signOut()} className='text-base'>
-              <LoadingSpinner loading={isExecuting}>
-                <LogOut className='mr-2 size-4' />
-                Sair
-              </LoadingSpinner>
-            </HeaderItem>
-          </nav>
-        </SheetContent>
-      </Sheet>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   )
 }
