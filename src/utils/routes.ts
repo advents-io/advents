@@ -11,17 +11,9 @@ export const routes = {
     path: '/settings',
     protected: true,
   },
-  RESET_PASSWORD: {
-    path: '/reset-password',
-    protected: true,
-  },
 
   SIGN_IN: {
     path: '/sign-in',
-    protected: false,
-  },
-  FORGOT_PASSWORD: {
-    path: '/forgot-password',
     protected: false,
   },
 }
