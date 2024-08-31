@@ -4,7 +4,7 @@ import { LogOut, Menu } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAction } from 'next-safe-action/hooks'
-import AdventsBrand from 'public/advents.svg'
+import AdventsBrand from 'public/advents-brand.svg'
 import { useState } from 'react'
 
 import { signOutAction } from '@/actions/auth/sign-out-action'

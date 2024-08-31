@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import AdventsBrand from 'public/advents.svg'
+import AdventsBrand from 'public/advents-brand.svg'
 
 import { Button } from '@/ui/button'
 import { CONTACT_EMAIL, WEBSITE_URL } from '@/utils/constants'
