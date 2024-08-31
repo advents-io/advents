@@ -185,6 +185,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
                 <FormControl>
                   <Input
                     placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
+                    type='url'
                     {...field}
                   />
                 </FormControl>
@@ -202,6 +203,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
                 <FormControl>
                   <Input
                     placeholder='https://apps.apple.com/br/app/exemplo-app/id123456789'
+                    type='url'
                     {...field}
                   />
                 </FormControl>
@@ -217,7 +219,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
               <FormItem>
                 <FormLabel>Url alternativa</FormLabel>
                 <FormControl>
-                  <Input placeholder='https://acme.com' {...field} />
+                  <Input placeholder='https://acme.com' type='url' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
