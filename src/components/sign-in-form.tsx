@@ -15,8 +15,11 @@ import { SignInInputProps, signInInputSchema } from '@/actions/schemas/input/aut
 import { LoadingContent } from '@/components/loading-content'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
+
+import { ContactDropdown } from './contact-dropdown'
 
 export const SignInForm = () => {
   const [emailSent, setEmailSent] = useState(false)
@@ -40,36 +43,41 @@ export const SignInForm = () => {
   })
 
   return (
-    <div className='mx-10 w-full max-w-sm'>
-      <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
+    <Card className='w-full max-w-sm'>
+      <CardHeader>
+        <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
 
-      {emailSent ? (
-        <div className='max-w-xs space-y-4'>
-          <p>
-            Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
-          </p>
+        {!emailSent && (
+          <>
+            <CardTitle>Entre na Advents</CardTitle>
 
-          <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+            <CardDescription>
+              Entre com o e-mail cadastrado para receber um link de acesso.
+            </CardDescription>
+          </>
+        )}
+      </CardHeader>
 
-          <Button className='mt-2' variant='outline' onClick={() => setEmailSent(false)}>
-            <ArrowLeft className='mr-2 size-4' />
-            Voltar
-          </Button>
-        </div>
-      ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(signIn)}>
-            <h1 className='text-xl font-medium'>Entre na Advents</h1>
+      <CardContent>
+        {emailSent ? (
+          <div className='space-y-4'>
+            <p>
+              Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+            </p>
 
-            {error && (
-              <Alert variant='destructive' className='my-4'>
-                <AlertCircle className='size-4' />
-                <AlertTitle>Ops!</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+            <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+          </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(signIn)}>
+              {error && (
+                <Alert variant='destructive' className='mb-4'>
+                  <AlertCircle className='size-4' />
+                  <AlertTitle>Ops!</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            <div className='mt-6 flex flex-col gap-6'>
               <FormField
                 control={form.control}
                 name='email'
@@ -83,14 +91,34 @@ export const SignInForm = () => {
                   </FormItem>
                 )}
               />
+            </form>
+          </Form>
+        )}
+      </CardContent>
 
-              <Button type='submit' disabled={isExecuting}>
-                <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
+      <CardFooter>
+        {emailSent ? (
+          <Button variant='outline' onClick={() => setEmailSent(false)}>
+            <ArrowLeft className='mr-2 size-4' />
+            Voltar
+          </Button>
+        ) : (
+          <div className='flex flex-1 flex-col gap-3'>
+            <Button type='submit' disabled={isExecuting}>
+              <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
+            </Button>
+
+            <span className='text-sm'>
+              Não possui uma conta?{' '}
+              <ContactDropdown>
+                <Button variant='link' size='sm' className='p-0'>
+                  Entre em contato.
+                </Button>
+              </ContactDropdown>
+            </span>
+          </div>
+        )}
+      </CardFooter>
+    </Card>
   )
 }
