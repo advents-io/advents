@@ -9,14 +9,20 @@ export async function GET(req: NextRequest) {
   const tokenHash = requestUrl.searchParams.get('token_hash')
 
   if (!tokenHash) {
-    return NextResponse.redirect(`${origin}${routes.SIGN_IN.path}`) // TODO: Redirect to sign in page with error
+    const errorMessage = 'Token inválido.'
+
+    return NextResponse.redirect(
+      `${origin}${routes.SIGN_IN.path}?error_description=${encodeURIComponent(errorMessage)}`,
+    )
   }
 
   const supabase = supabaseClient()
   const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' })
 
   if (error) {
-    return NextResponse.redirect(`${origin}${routes.SIGN_IN.path}`) // TODO: Redirect to sign in page with error
+    return NextResponse.redirect(
+      `${origin}${routes.SIGN_IN.path}?error_description=${encodeURIComponent(error.message)}`,
+    )
   }
 
   return NextResponse.redirect(`${origin}${routes.LINKS.path}`)

@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertCircle, ArrowLeft } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -18,6 +19,9 @@ import { Input } from '@/ui/input'
 export const SignInForm = () => {
   const [emailSent, setEmailSent] = useState(false)
 
+  const searchParams = useSearchParams()
+  const errorDescription = searchParams.get('error_description')
+
   const {
     execute: signIn,
     isExecuting,
@@ -27,7 +31,7 @@ export const SignInForm = () => {
     onSuccess: () => setEmailSent(true),
   })
 
-  const error = formatErrors(result)
+  const error = formatErrors(result) || errorDescription
 
   const form = useForm<SignInInputProps>({
     resolver: zodResolver(signInInputSchema),
