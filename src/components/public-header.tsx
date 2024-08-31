@@ -2,8 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import AdventsBrand from 'public/advents-brand.svg'
 
+import { ContactDropdown } from '@/components/contact-dropdown'
 import { Button } from '@/ui/button'
-import { CONTACT_EMAIL, WEBSITE_URL } from '@/utils/constants'
+import { WEBSITE_URL } from '@/utils/constants'
 
 export const PublicHeader = () => {
   return (
@@ -13,11 +14,11 @@ export const PublicHeader = () => {
           <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
         </Link>
 
-        <Link href={`mailto:${CONTACT_EMAIL}`}>
+        <ContactDropdown>
           <Button variant='ghost' size='sm'>
             Contato
           </Button>
-        </Link>
+        </ContactDropdown>
       </nav>
     </header>
   )
