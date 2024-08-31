@@ -14,13 +14,72 @@ model Link {
   title       String?
   domain      String
   slug        String
-  iosUrl      String  @map("ios_url")
   androidUrl  String  @map("android_url")
+  iosUrl      String  @map("ios_url")
   fallbackUrl String  @map("fallback_url")
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  @@unique([domain, slug])
+  @@map("links")
+}
+
+model App {
+  id String @id @default(uuid())
+
+  name               String
+  slug               String
+  defaultDomain      String  @map("default_domain")
+  androidUrl         String  @map("android_url")
+  iosUrl             String  @map("ios_url")
+  defaultFallbackUrl String? @map("default_fallback_url")
+  qrCodeLogo         String? @map("qrcode_logo")
+
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+  links  Link[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  @@unique([slug, teamId])
+  @@map("apps")
+}
+
+model Team {
+  id String @id @default(uuid())
+
+  name String
+  slug String
+
+  members Member[]
+  apps    App[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@unique([domain, slug])
-  @@map("links")
+  @@unique([slug])
+  @@map("teams")
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId])
+  @@map("members")
 }
