@@ -10,7 +10,7 @@ export const LoadingSpinner = ({ children, loading }: Props) => {
     <div className='relative w-full'>
       <div
         data-loading={loading}
-        className='flex items-center gap-2 opacity-100 data-[loading=true]:opacity-0'
+        className='flex items-center justify-center gap-2 opacity-100 data-[loading=true]:opacity-0'
       >
         {children}
       </div>
