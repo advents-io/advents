@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { PublicHeader } from '@/components/public-header'
 import { SignInForm } from '@/components/sign-in-form'
@@ -12,7 +13,9 @@ export default async function SignIn() {
     <>
       <PublicHeader />
       <div className='flex flex-1 items-center justify-center'>
-        <SignInForm />
+        <Suspense>
+          <SignInForm />
+        </Suspense>
       </div>
     </>
   )
