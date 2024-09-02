@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { createLinkInputSchema } from './create-link-input'
+import { createLinkInputFormSchema } from './create-link-input'
 
-export const editLinkInputSchema = createLinkInputSchema.extend({
+export const editLinkInputSchema = createLinkInputFormSchema.extend({
   linkId: z
     .string({ message: 'Id do link em formato inválido.' })
     .uuid('Id do link em formato inválido.'),

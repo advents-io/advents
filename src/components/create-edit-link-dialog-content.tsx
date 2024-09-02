@@ -2,18 +2,19 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertCircle, Loader2, PlusCircle, Save } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { getAppAction } from '@/actions/app/get-app-action'
 import { createLinkAction } from '@/actions/link/create-link-action'
 import { editLinkAction } from '@/actions/link/edit-link-action'
 import { getLinkAction } from '@/actions/link/get-link-action'
 import { formatErrors } from '@/actions/safe-action'
 import {
-  CreateLinkInputProps,
-  createLinkInputSchema,
+  CreateLinkInputFormProps,
+  createLinkInputFormSchema,
 } from '@/actions/schemas/input/link/create-link-input'
 import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
 import { LoadingSpinner } from '@/components/loading-spinner'
@@ -33,6 +34,7 @@ interface Props {
 
 export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   const { refresh } = useRouter()
+  const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
 
   const onSuccess = () => {
     form.reset()
@@ -57,16 +59,21 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     onSuccess,
   })
 
-  const isExecuting = isCreating || isEditing
-
-  const onSubmit = (link: CreateLinkInputProps) => {
+  const onSubmit = async (link: CreateLinkInputFormProps) => {
     if (linkId) {
       editLink({
         ...link,
         linkId,
       })
     } else {
-      createLink(link)
+      const result = await getAppAction({ appSlug, teamSlug })
+      const appId = result?.data
+
+      if (!appId) {
+        return
+      }
+
+      createLink({ ...link, appId })
     }
   }
 
@@ -81,8 +88,8 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
   const defaultDomain = LINK_DOMAINS[0]
 
-  const form = useForm<CreateLinkInputProps>({
-    resolver: zodResolver(createLinkInputSchema),
+  const form = useForm<CreateLinkInputFormProps>({
+    resolver: zodResolver(createLinkInputFormSchema),
     defaultValues: linkId
       ? async () => getLink(linkId)
       : {
@@ -97,6 +104,8 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
           fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
         },
   })
+
+  const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
   return (
     <div className='relative space-y-4 pt-4'>

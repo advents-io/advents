@@ -22,6 +22,9 @@ export default async function Links({
   const app = await prisma.app.findFirst({
     where: {
       slug: params.app,
+      team: {
+        slug: params.team,
+      },
     },
     select: {
       id: true,
