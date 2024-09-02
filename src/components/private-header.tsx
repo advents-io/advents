@@ -3,11 +3,12 @@
 import { App } from '@prisma/client'
 import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import AdventsLogo from 'public/advents-logo.svg'
 
 import { signOutAction } from '@/actions/auth/sign-out-action'
+import { AppSelector } from '@/components/app-selector'
 import { ContactDropdown } from '@/components/contact-dropdown'
 import { HeaderItem } from '@/components/header-item'
 import { LoadingSpinner } from '@/components/loading-spinner'
@@ -28,7 +29,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { routes } from '@/utils/routes'
 
 interface Props {
@@ -39,12 +39,6 @@ interface Props {
 export const PrivateHeader = ({ email, apps }: Props) => {
   const { execute: signOut, isExecuting } = useAction(signOutAction)
   const { app, team } = useParams<{ team: string; app: string }>()
-
-  const router = useRouter()
-
-  const handleAppChange = (appSlug: string) => {
-    router.push(routes.LINKS.path(team, appSlug))
-  }
 
   const includeTabs = !!team && !!app
 
@@ -65,19 +59,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
               </BreadcrumbSeparator>
 
               <BreadcrumbItem>
-                <Select defaultValue={app} onValueChange={handleAppChange}>
-                  <SelectTrigger className='w-56 font-medium text-foreground focus:ring-0 focus:ring-offset-0'>
-                    <SelectValue placeholder='Selecione um app' />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    {apps.map(app => (
-                      <SelectItem key={app.id} value={app.slug}>
-                        {app.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <AppSelector apps={apps} />
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
