@@ -41,8 +41,8 @@ export const PrivateHeader = ({ email }: Props) => {
   const includeTabs = !!team && !!app
 
   return (
-    <header className='sticky top-0 z-10 w-full border-b bg-background p-4 pb-0 md:px-14'>
-      <div className='flex pb-4'>
+    <header className='-top-18 sticky z-10 w-full border-b bg-background px-4 md:px-14'>
+      <div className='flex py-4'>
         <div className='flex flex-1 flex-row items-center'>
           <Breadcrumb>
             <BreadcrumbList>
@@ -112,7 +112,7 @@ export const PrivateHeader = ({ email }: Props) => {
       </div>
 
       {includeTabs && (
-        <nav className='flex gap-4'>
+        <nav className='flex gap-4 pt-2'>
           <HeaderItem href={routes.LINKS.path(team, app)}>Links</HeaderItem>
           <HeaderItem href={routes.ANALYTICS.path(team, app)}>Analytics</HeaderItem>
           <HeaderItem href={routes.SETTINGS.path(team, app)}>Ajustes</HeaderItem>
