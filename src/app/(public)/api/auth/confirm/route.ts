@@ -25,5 +25,5 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  return NextResponse.redirect(`${origin}${routes.LINKS.path}`)
+  return NextResponse.redirect(`${origin}${routes.TEAMS.path}`)
 }

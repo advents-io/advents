@@ -21,7 +21,7 @@ export const signInAction = actionClient
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${origin}/auth/confirm`,
+        emailRedirectTo: `${origin}/api/auth/confirm`,
       },
     })
 
