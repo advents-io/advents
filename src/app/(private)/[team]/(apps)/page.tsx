@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import { prisma } from '@/lib/prisma'
@@ -5,7 +6,7 @@ import { supabaseClient } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { routes } from '@/utils/routes'
 
-export default async function Apps({ params }: { params: { team: string } }) {
+export default async function Apps() {
   const supabase = supabaseClient()
 
   const {
@@ -16,12 +17,17 @@ export default async function Apps({ params }: { params: { team: string } }) {
     return redirect(routes.SIGN_IN.path)
   }
 
-  const team = await prisma.team.findUnique({
+  const team = await prisma.team.findFirst({
     where: {
-      slug: params.team,
+      members: {
+        some: {
+          userId: user.id,
+        },
+      },
     },
     select: {
       id: true,
+      slug: true,
     },
   })
 
@@ -29,14 +35,20 @@ export default async function Apps({ params }: { params: { team: string } }) {
     return redirect(routes.TEAMS.path)
   }
 
-  const app = await prisma.app.findFirst({
+  const apps = await prisma.app.findMany({
     where: {
       teamId: team.id,
     },
-    select: { slug: true },
+    select: {
+      name: true,
+      slug: true,
+    },
+    orderBy: {
+      name: 'asc',
+    },
   })
 
-  if (!app) {
+  if (apps.length === 0) {
     return (
       <div className='flex flex-1 items-center justify-center'>
         <Card className='w-full max-w-md'>
@@ -53,5 +65,19 @@ export default async function Apps({ params }: { params: { team: string } }) {
     )
   }
 
-  return redirect(routes.LINKS.path(params.team, app.slug))
+  return (
+    <div className='flex flex-1 flex-col p-8 md:p-14'>
+      <h1 className='mb-4 text-xl font-bold'>Apps</h1>
+
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        {apps.map((app, index) => (
+          <Link href={routes.LINKS.path(team.slug, app.slug)} key={index}>
+            <Card>
+              <CardContent className='py-6 text-lg'>{app.name}</CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
 }

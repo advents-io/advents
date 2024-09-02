@@ -38,7 +38,7 @@ export default async function Links({
   const page = Number(searchParams.page) || 1
 
   return (
-    <main className='flex flex-1 flex-col p-8 md:p-14'>
+    <div className='flex flex-1 flex-col p-8 md:p-14'>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>Links</h1>
 
@@ -48,6 +48,6 @@ export default async function Links({
       <Suspense fallback={<LoadingLinkList />}>
         <LinkList page={page} appId={app.id} />
       </Suspense>
-    </main>
+    </div>
   )
 }

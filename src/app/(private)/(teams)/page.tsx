@@ -51,6 +51,9 @@ export default async function Teams() {
       teamId: team.id,
     },
     select: { slug: true },
+    orderBy: {
+      name: 'asc',
+    },
   })
 
   if (!app) {
