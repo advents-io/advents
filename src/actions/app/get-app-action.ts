@@ -2,6 +2,7 @@
 
 import { actionClient, ActionError } from '@/actions/safe-action'
 import { getAppInputSchema } from '@/actions/schemas/input/app/get-app-input'
+import { getAppOutputSchema } from '@/actions/schemas/output/app/get-app-output'
 import { prisma } from '@/lib/prisma'
 
 export const getAppAction = actionClient
@@ -18,6 +19,10 @@ export const getAppAction = actionClient
       },
       select: {
         id: true,
+        defaultDomain: true,
+        androidUrl: true,
+        iosUrl: true,
+        defaultFallbackUrl: true,
       },
     })
 
@@ -25,5 +30,5 @@ export const getAppAction = actionClient
       throw new ActionError('App não encontrado.')
     }
 
-    return app.id
+    return getAppOutputSchema.parse(app)
   })

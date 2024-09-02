@@ -2,15 +2,32 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
+import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_PRODUCTION } from '@/utils/env'
 
+const [first, ...rest] = LINK_DOMAINS
+
 const appSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  slug: z.string().min(1, 'Slug is required'),
-  defaultDomain: z.string().min(1, 'Default domain is required'),
-  androidUrl: z.string().url('Invalid Android URL'),
-  iosUrl: z.string().url('Invalid iOS URL'),
-  defaultFallbackUrl: z.string().url('Invalid fallback URL').optional(),
+  name: z.string({ message: 'Nome do app é obrigatório.' }).min(1, 'Nome do app é obrigatório.'),
+  slug: z
+    .string({ message: 'Slug do app é obrigatório.' })
+    .min(1, 'Slug do app é obrigatório.')
+    .max(20, 'O Slug do app deve possuir no máximo 20 caracteres.')
+    .regex(
+      /^[a-zA-Z0-9-_]*$/,
+      'O Slug do app deve conter apenas letras, números, hifens ou underline.',
+    ),
+  defaultDomain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
+  androidUrl: z
+    .string({ message: 'Url inválida.' })
+    .url('Url inválida.')
+    .includes('play.google.com', {
+      message: 'A url do app Android deve ser da Google Play Store.',
+    }),
+  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
+    message: 'A url do app iOS deve ser da App Store.',
+  }),
+  defaultFallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').optional(),
   qrCodeLogo: z.string().url('Invalid QR code logo URL').optional(),
   teamId: z.string().uuid('Invalid team ID'),
   createdBy: z.string().uuid('Invalid user ID'),

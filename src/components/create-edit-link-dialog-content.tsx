@@ -16,6 +16,7 @@ import {
   CreateLinkInputFormProps,
   createLinkInputFormSchema,
 } from '@/actions/schemas/input/link/create-link-input'
+import { GetAppOutputProps } from '@/actions/schemas/output/app/get-app-output'
 import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -25,7 +26,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { LINK_DOMAINS } from '@/utils/constants'
-import { IS_DEVELOPMENT } from '@/utils/env'
 
 interface Props {
   closeDialog: () => void
@@ -67,13 +67,13 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
       })
     } else {
       const result = await getAppAction({ appSlug, teamSlug })
-      const appId = result?.data
+      const app = result?.data
 
-      if (!appId) {
+      if (!app) {
         return
       }
 
-      createLink({ ...link, appId })
+      createLink({ ...link, appId: app.id })
     }
   }
 
@@ -86,23 +86,21 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
     return response?.data as GetLinkOutputProps
   }
 
-  const defaultDomain = LINK_DOMAINS[0]
+  const getDefaultLinkValues = async () => {
+    const response = await getAppAction({ appSlug, teamSlug })
+    const app = response?.data as GetAppOutputProps
+
+    return {
+      domain: app.defaultDomain,
+      androidUrl: app.androidUrl,
+      iosUrl: app.iosUrl,
+      fallbackUrl: app.defaultFallbackUrl || LINK_DOMAINS[0],
+    }
+  }
 
   const form = useForm<CreateLinkInputFormProps>({
     resolver: zodResolver(createLinkInputFormSchema),
-    defaultValues: linkId
-      ? async () => getLink(linkId)
-      : {
-          domain: defaultDomain,
-          slug: '',
-          androidUrl: IS_DEVELOPMENT
-            ? 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada'
-            : '',
-          iosUrl: IS_DEVELOPMENT
-            ? 'https://apps.apple.com/br/app/id1598991618?platform=iphone'
-            : '',
-          fallbackUrl: IS_DEVELOPMENT ? 'https://favorito.digital' : '',
-        },
+    defaultValues: linkId ? async () => getLink(linkId) : async () => getDefaultLinkValues(),
   })
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
@@ -255,7 +253,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
         </form>
       </Form>
 
-      {linkId && form.formState.isLoading && (
+      {form.formState.isLoading && (
         <div className='absolute -inset-2 flex items-center justify-center bg-white'>
           <Loader2 className='animate-spin' />
         </div>
