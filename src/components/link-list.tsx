@@ -4,13 +4,17 @@ import { prisma } from '@/lib/prisma'
 
 interface Props {
   page: number
+  appId: string
 }
 
-export const LinkList = async ({ page }: Props) => {
+export const LinkList = async ({ page, appId }: Props) => {
   const pageSize = 30
 
   const [links, totalLinks] = await prisma.$transaction([
     prisma.link.findMany({
+      where: {
+        appId,
+      },
       select: {
         id: true,
         title: true,
@@ -22,7 +26,11 @@ export const LinkList = async ({ page }: Props) => {
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
-    prisma.link.count(),
+    prisma.link.count({
+      where: {
+        appId,
+      },
+    }),
   ])
 
   return (

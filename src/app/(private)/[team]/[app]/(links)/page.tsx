@@ -46,7 +46,7 @@ export default async function Links({
       </div>
 
       <Suspense fallback={<LoadingLinkList />}>
-        <LinkList page={page} />
+        <LinkList page={page} appId={app.id} />
       </Suspense>
     </main>
   )
