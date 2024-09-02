@@ -5,8 +5,8 @@ export const getLinkOutputSchema = z.object({
   title: z.string().nullish(),
   domain: z.string(),
   slug: z.string(),
-  androidUrl: z.string().url().includes('play.google.com'),
-  iosUrl: z.string().url().includes('apps.apple.com'),
+  androidUrl: z.string().url(),
+  iosUrl: z.string().url(),
   fallbackUrl: z.string().url(),
 })
 

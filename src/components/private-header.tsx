@@ -66,7 +66,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
 
               <BreadcrumbItem>
                 <Select defaultValue={app} onValueChange={handleAppChange}>
-                  <SelectTrigger className='w-56 font-medium text-foreground'>
+                  <SelectTrigger className='w-56 font-medium text-foreground focus:ring-0 focus:ring-offset-0'>
                     <SelectValue placeholder='Selecione um app' />
                   </SelectTrigger>
 

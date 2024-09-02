@@ -15,15 +15,8 @@ export const createLinkInputFormSchema = z.object({
       'A chave do link deve conter apenas letras, números, hifens ou underline.',
     )
     .optional(),
-  androidUrl: z
-    .string({ message: 'Url inválida.' })
-    .url('Url inválida.')
-    .includes('play.google.com', {
-      message: 'A url do app Android deve ser da Google Play Store.',
-    }),
-  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
-    message: 'A url do app iOS deve ser da App Store.',
-  }),
+  androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
+  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
 

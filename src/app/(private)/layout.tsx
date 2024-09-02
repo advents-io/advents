@@ -22,6 +22,9 @@ export default async function PrivateLayout({ children }: { children: React.Reac
       name: true,
       slug: true,
     },
+    orderBy: {
+      name: 'asc',
+    },
   })
 
   return (

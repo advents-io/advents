@@ -12,7 +12,7 @@ const appSchema = z.object({
   slug: z
     .string({ message: 'Slug do app é obrigatório.' })
     .min(1, 'Slug do app é obrigatório.')
-    .max(20, 'O Slug do app deve possuir no máximo 20 caracteres.')
+    .max(100, 'O Slug do app deve possuir no máximo 100 caracteres.')
     .regex(
       /^[a-zA-Z0-9-_]*$/,
       'O Slug do app deve conter apenas letras, números, hifens ou underline.',
