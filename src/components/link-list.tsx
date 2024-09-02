@@ -20,6 +20,8 @@ export const LinkList = async ({ page, appId }: Props) => {
         title: true,
         domain: true,
         slug: true,
+        clicks: true,
+        installs: true,
         createdAt: true,
       },
       orderBy: { createdAt: 'desc' },

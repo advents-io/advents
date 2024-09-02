@@ -17,6 +17,8 @@ model Link {
   androidUrl  String  @map("android_url")
   iosUrl      String  @map("ios_url")
   fallbackUrl String  @map("fallback_url")
+  clicks      Int     @default(0)
+  installs    Int     @default(0)
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id])

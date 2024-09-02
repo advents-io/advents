@@ -5,7 +5,7 @@ import { ArrowRightIcon, Copy } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'
 
-import { FakeLinkAnalytics } from '@/components/fake-link-analytics'
+import { LinkAnalytics } from '@/components/link-analytics'
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
-  link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'createdAt'>
+  link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clicks' | 'installs' | 'createdAt'>
 }
 
 export const LinkItem = ({ link }: Props) => {
@@ -70,7 +70,7 @@ export const LinkItem = ({ link }: Props) => {
         </div>
 
         <div className='flex items-center gap-2'>
-          <FakeLinkAnalytics />
+          <LinkAnalytics clicks={link.clicks} installs={link.installs} />
 
           <LinkItemDropdown
             id={link.id}
