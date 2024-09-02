@@ -1,8 +1,9 @@
 'use client'
 
+import { App } from '@prisma/client'
 import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import AdventsLogo from 'public/advents-logo.svg'
 
@@ -32,11 +33,18 @@ import { routes } from '@/utils/routes'
 
 interface Props {
   email?: string
+  apps: Pick<App, 'id' | 'name' | 'slug'>[]
 }
 
-export const PrivateHeader = ({ email }: Props) => {
+export const PrivateHeader = ({ email, apps }: Props) => {
   const { execute: signOut, isExecuting } = useAction(signOutAction)
   const { app, team } = useParams<{ team: string; app: string }>()
+
+  const router = useRouter()
+
+  const handleAppChange = (appSlug: string) => {
+    router.push(routes.LINKS.path(team, appSlug))
+  }
 
   const includeTabs = !!team && !!app
 
@@ -57,14 +65,17 @@ export const PrivateHeader = ({ email }: Props) => {
               </BreadcrumbSeparator>
 
               <BreadcrumbItem>
-                <Select>
-                  <SelectTrigger className='w-56'>
-                    <SelectValue placeholder='Theme' />
+                <Select defaultValue={app} onValueChange={handleAppChange}>
+                  <SelectTrigger className='w-56 font-medium text-foreground'>
+                    <SelectValue placeholder='Selecione um app' />
                   </SelectTrigger>
+
                   <SelectContent>
-                    <SelectItem value='light'>Light</SelectItem>
-                    <SelectItem value='dark'>Dark</SelectItem>
-                    <SelectItem value='system'>System</SelectItem>
+                    {apps.map(app => (
+                      <SelectItem key={app.id} value={app.slug}>
+                        {app.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </BreadcrumbItem>
