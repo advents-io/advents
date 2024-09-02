@@ -16,8 +16,8 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
   const pathname = usePathname()
   const { replace } = useRouter()
 
-  const totalPages = Math.ceil(total / pageSize)
-  const start = (page - 1) * pageSize + 1
+  const totalPages = total > 0 ? Math.ceil(total / pageSize) : 1
+  const start = total > 0 ? (page - 1) * pageSize + 1 : 0
   const end = Math.min(page * pageSize, total)
 
   const addPage = (add: number) => {
