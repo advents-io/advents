@@ -6,7 +6,7 @@ import { Button } from '@/ui/button'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
-  href?: string
+  href: string
 }
 
 export const HeaderItem = ({ children, href, className, ...props }: Props) => {
@@ -15,20 +15,20 @@ export const HeaderItem = ({ children, href, className, ...props }: Props) => {
   const isActive = pathname === href
 
   return (
-    <div>
+    <Link href={href}>
       <Button
         className={cn('font-normal text-muted-foreground', className)}
         variant='ghost'
         size='sm'
         {...props}
       >
-        {href ? <Link href={href}>{children}</Link> : children}
+        {children}
       </Button>
 
       <div
         data-isactive={isActive}
         className='mt-1 hidden h-0.5 w-full bg-black data-[isactive=true]:flex'
       />
-    </div>
+    </Link>
   )
 }
