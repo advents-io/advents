@@ -13,8 +13,8 @@ const appSchema = z.object({
   defaultFallbackUrl: z.string().url('Invalid fallback URL').optional(),
   qrCodeLogo: z.string().url('Invalid QR code logo URL').optional(),
   teamId: z.string().uuid('Invalid team ID'),
-  createdBy: z.string().min(1, 'Created by is required'),
-  updatedBy: z.string().min(1, 'Updated by is required'),
+  createdBy: z.string().uuid('Invalid user ID'),
+  updatedBy: z.string().uuid('Invalid user ID'),
 })
 
 export async function POST(request: Request) {
