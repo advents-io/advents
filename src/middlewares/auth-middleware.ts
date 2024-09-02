@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { env } from '@/utils/env'
-import { routes } from '@/utils/routes'
+import { isProtectedRoute, routes } from '@/utils/routes'
 
 export const authMiddleware = async (req: NextRequest) => {
   let response = NextResponse.next({
@@ -28,16 +28,14 @@ export const authMiddleware = async (req: NextRequest) => {
 
   const user = await supabase.auth.getUser()
 
-  const isProtectedRoute = Object.values(routes).some(
-    route => route.path === req.nextUrl.pathname && route.protected === true,
-  )
+  const isProtectedRouteValue = isProtectedRoute(req.nextUrl.pathname)
 
-  if (isProtectedRoute && user.error) {
+  if (isProtectedRouteValue && user.error) {
     return NextResponse.redirect(new URL(routes.SIGN_IN.path, req.url))
   }
 
-  if (!isProtectedRoute && !user.error) {
-    return NextResponse.redirect(new URL(routes.LINKS.path, req.url))
+  if (!isProtectedRouteValue && !user.error) {
+    return NextResponse.redirect(new URL(routes.TEAMS.path, req.url))
   }
 
   return response

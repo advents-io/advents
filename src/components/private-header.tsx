@@ -3,6 +3,7 @@
 import { LogOut, Menu, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import AdventsBrand from 'public/advents-brand.svg'
 import { useState } from 'react'
@@ -26,20 +27,16 @@ import { Separator } from '@/ui/separator'
 import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet'
 import { routes } from '@/utils/routes'
 
-const TABS = [
-  { label: 'Links', href: routes.LINKS.path },
-  { label: 'Analytics', href: routes.ANALYTICS.path },
-  { label: 'Ajustes', href: routes.SETTINGS.path },
-]
-
 interface Props {
   email?: string
 }
 
 export const PrivateHeader = ({ email }: Props) => {
   const { execute: signOut, isExecuting } = useAction(signOutAction)
-
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const { app, team } = useParams<{ team: string; app: string }>()
+  const includeTabs = !!team && !!app
 
   const closeMenu = () => setIsMenuOpen(false)
 
@@ -47,15 +44,17 @@ export const PrivateHeader = ({ email }: Props) => {
     <header className='sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 md:px-6'>
       <nav className='hidden flex-1 md:flex'>
         <div className='flex flex-1 flex-row items-center gap-6'>
-          <Link href={routes.LINKS.path}>
+          <Link href={routes.TEAMS.path}>
             <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
           </Link>
 
-          {TABS.map((tab, index) => (
-            <HeaderItem key={index} href={tab.href}>
-              {tab.label}
-            </HeaderItem>
-          ))}
+          {includeTabs && (
+            <>
+              <HeaderItem href={routes.LINKS.path(team, app)}>Links</HeaderItem>
+              <HeaderItem href={routes.ANALYTICS.path(team, app)}>Analytics</HeaderItem>
+              <HeaderItem href={routes.SETTINGS.path(team, app)}>Ajustes</HeaderItem>
+            </>
+          )}
         </div>
 
         <div className='flex items-center gap-4'>
@@ -98,7 +97,7 @@ export const PrivateHeader = ({ email }: Props) => {
       </nav>
 
       <div className='flex flex-1 items-center md:hidden'>
-        <Link href={routes.LINKS.path} className='flex flex-1'>
+        <Link href={routes.TEAMS.path} className='flex flex-1'>
           <Image src={AdventsBrand} alt='Logo da Advents' className='w-20' />
         </Link>
 
@@ -117,15 +116,23 @@ export const PrivateHeader = ({ email }: Props) => {
 
           <SheetContent side='right'>
             <nav className='grid gap-6'>
-              <Link href={routes.LINKS.path} onClick={closeMenu} className='mb-6'>
+              <Link href={routes.TEAMS.path} onClick={closeMenu} className='mb-6'>
                 <Image src={AdventsBrand} alt='Logo da Advents' className='mr-5 w-24' />
               </Link>
 
-              {TABS.map((tab, index) => (
-                <HeaderItem key={index} onClick={closeMenu} href={tab.href}>
-                  {tab.label}
-                </HeaderItem>
-              ))}
+              {includeTabs && (
+                <>
+                  <HeaderItem onClick={closeMenu} href={routes.LINKS.path(team, app)}>
+                    Links
+                  </HeaderItem>
+                  <HeaderItem onClick={closeMenu} href={routes.ANALYTICS.path(team, app)}>
+                    Analytics
+                  </HeaderItem>
+                  <HeaderItem onClick={closeMenu} href={routes.SETTINGS.path(team, app)}>
+                    Ajustes
+                  </HeaderItem>
+                </>
+              )}
 
               <Separator />
 

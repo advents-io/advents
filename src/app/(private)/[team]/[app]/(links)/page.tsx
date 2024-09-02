@@ -1,15 +1,37 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkList } from '@/components/link-list'
 import { LoadingLinkList } from '@/components/loading-link-list'
+import { prisma } from '@/lib/prisma'
+import { routes } from '@/utils/routes'
 
 export const metadata: Metadata = {
   title: 'Links | Advents',
 }
 
-export default async function Links({ searchParams }: { searchParams: { page?: string } }) {
+export default async function Links({
+  searchParams,
+  params,
+}: {
+  searchParams: { page?: string }
+  params: { team: string; app: string }
+}) {
+  const app = await prisma.app.findFirst({
+    where: {
+      slug: params.app,
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  if (!app) {
+    redirect(routes.APPS.path(params.team))
+  }
+
   const page = Number(searchParams.page) || 1
 
   return (

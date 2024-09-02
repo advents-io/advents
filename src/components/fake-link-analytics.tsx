@@ -1,5 +1,6 @@
 import { Download, MousePointerClick } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { LoadingSpinner } from '@/components/loading-spinner'
@@ -10,6 +11,8 @@ export const FakeLinkAnalytics = () => {
   const [mounted, setMounted] = useState(false)
   const [clicks, setClicks] = useState(0)
   const [installs, setInstalls] = useState(0)
+
+  const { team, app } = useParams<{ team: string; app: string }>()
 
   useEffect(() => {
     if (clicks === 0) {
@@ -25,7 +28,7 @@ export const FakeLinkAnalytics = () => {
 
   return (
     <>
-      <Link href={routes.ANALYTICS.path} className='hidden sm:flex'>
+      <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
         <Badge variant='secondary' className='py-1 font-normal'>
           <LoadingSpinner loading={!mounted}>
             <MousePointerClick className='size-4' />
@@ -34,7 +37,7 @@ export const FakeLinkAnalytics = () => {
         </Badge>
       </Link>
 
-      <Link href={routes.ANALYTICS.path} className='hidden sm:flex'>
+      <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
         <Badge variant='secondary' className='py-1 font-normal'>
           <LoadingSpinner loading={!mounted}>
             <Download className='size-4' />

@@ -1,19 +1,27 @@
 export const routes = {
-  LINKS: {
+  TEAMS: {
     path: '/',
-    protected: true,
+  },
+  APPS: {
+    path: (team: string) => `/${team}`,
+  },
+  LINKS: {
+    path: (team: string, app: string) => `/${team}/${app}`,
   },
   ANALYTICS: {
-    path: '/analytics',
-    protected: true,
+    path: (team: string, app: string) => `/${team}/${app}/analytics`,
   },
   SETTINGS: {
-    path: '/settings',
-    protected: true,
+    path: (team: string, app: string) => `/${team}/${app}/settings`,
   },
 
   SIGN_IN: {
     path: '/sign-in',
-    protected: false,
   },
+}
+
+export function isProtectedRoute(path: string) {
+  const notProtectedRoutes = [routes.SIGN_IN.path]
+
+  return !notProtectedRoutes.includes(path)
 }
