@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -6,6 +7,10 @@ import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { routes } from '@/utils/routes'
+
+export const metadata: Metadata = {
+  title: 'Apps | Advents',
+}
 
 export default async function Apps() {
   const supabase = supabaseClient()
