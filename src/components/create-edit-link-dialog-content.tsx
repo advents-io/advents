@@ -7,7 +7,7 @@ import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { getAppAction } from '@/actions/app/get-app-action'
+import { getAppDefaultValuesAction, getAppIdAction } from '@/actions/app/get-app-action'
 import { createLinkAction } from '@/actions/link/create-link-action'
 import { editLinkAction } from '@/actions/link/edit-link-action'
 import { getLinkAction } from '@/actions/link/get-link-action'
@@ -16,7 +16,7 @@ import {
   CreateLinkInputFormProps,
   createLinkInputFormSchema,
 } from '@/actions/schemas/input/link/create-link-input'
-import { GetAppOutputProps } from '@/actions/schemas/output/app/get-app-output'
+import { GetAppDefaultValuesOutputProps } from '@/actions/schemas/output/app/get-app-output'
 import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
@@ -66,14 +66,14 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
         linkId,
       })
     } else {
-      const result = await getAppAction({ appSlug, teamSlug })
-      const app = result?.data
+      const result = await getAppIdAction({ appSlug, teamSlug })
+      const appId = result?.data
 
-      if (!app) {
+      if (!appId) {
         return
       }
 
-      createLink({ ...link, appId: app.id })
+      createLink({ ...link, appId })
     }
   }
 
@@ -87,8 +87,8 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
   }
 
   const getDefaultLinkValues = async () => {
-    const response = await getAppAction({ appSlug, teamSlug })
-    const app = response?.data as GetAppOutputProps
+    const response = await getAppDefaultValuesAction({ appSlug, teamSlug })
+    const app = response?.data as GetAppDefaultValuesOutputProps
 
     return {
       domain: app.defaultDomain,
