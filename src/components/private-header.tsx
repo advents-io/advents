@@ -33,7 +33,7 @@ import { routes } from '@/utils/routes'
 
 interface Props {
   email?: string
-  apps: Pick<App, 'id' | 'name' | 'slug'>[]
+  apps: Pick<App, 'id' | 'name' | 'slug' | 'imageUrl'>[]
 }
 
 export const PrivateHeader = ({ email, apps }: Props) => {

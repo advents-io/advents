@@ -1,4 +1,5 @@
 import { App } from '@prisma/client'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -17,7 +18,7 @@ import {
 import { routes } from '@/utils/routes'
 
 interface Props {
-  apps: Pick<App, 'id' | 'name' | 'slug'>[]
+  apps: Pick<App, 'id' | 'name' | 'slug' | 'imageUrl'>[]
 }
 
 export const AppSelector = ({ apps }: Props) => {
@@ -43,8 +44,8 @@ export const AppSelector = ({ apps }: Props) => {
 
   return (
     <Select value={selectedApp} onValueChange={handleAppChange} open={open} onOpenChange={setOpen}>
-      <SelectTrigger className='w-56 font-medium text-foreground focus:ring-0 focus:ring-offset-0'>
-        <SelectValue placeholder='Selecione um app' />
+      <SelectTrigger className='w-40 font-medium text-foreground focus:ring-0 focus:ring-offset-0 md:w-72'>
+        <SelectValue placeholder='Selecione um app' className='text-nowrap bg-red-400' />
       </SelectTrigger>
 
       <SelectContent>
@@ -63,7 +64,16 @@ export const AppSelector = ({ apps }: Props) => {
 
           {apps.map(app => (
             <SelectItem key={app.id} value={app.slug}>
-              {app.name}
+              <div className='flex items-center gap-2'>
+                <Image
+                  src={app.imageUrl}
+                  alt={app.name}
+                  width={25}
+                  height={25}
+                  className='rounded-full'
+                />
+                <span className='truncate'>{app.name}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectGroup>

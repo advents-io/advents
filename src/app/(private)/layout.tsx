@@ -21,6 +21,7 @@ export default async function PrivateLayout({ children }: { children: React.Reac
       id: true,
       name: true,
       slug: true,
+      imageUrl: true,
     },
     orderBy: {
       name: 'asc',
