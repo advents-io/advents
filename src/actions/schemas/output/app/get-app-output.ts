@@ -8,3 +8,13 @@ export const getAppDefaultValuesOutputSchema = z.object({
 })
 
 export type GetAppDefaultValuesOutputProps = z.infer<typeof getAppDefaultValuesOutputSchema>
+
+export const getAppOutputSchema = getAppDefaultValuesOutputSchema.extend({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string(),
+  imageUrl: z.string().url(),
+  qrcodeLogoUrl: z.string().url().nullish(),
+})
+
+export type GetAppOutputProps = z.infer<typeof getAppOutputSchema>
