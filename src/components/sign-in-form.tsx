@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
@@ -12,14 +12,13 @@ import { useForm } from 'react-hook-form'
 import { signInAction } from '@/actions/auth/sign-in-action'
 import { formatErrors } from '@/actions/safe-action'
 import { SignInInputProps, signInInputSchema } from '@/actions/schemas/input/auth/sign-in-input'
+import { ContactDropdown } from '@/components/contact-dropdown'
+import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
-import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
-
-import { ContactDropdown } from './contact-dropdown'
 
 export const SignInForm = () => {
   const [emailSent, setEmailSent] = useState(false)
@@ -70,13 +69,7 @@ export const SignInForm = () => {
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(signIn)}>
-              {error && (
-                <Alert variant='destructive' className='mb-4'>
-                  <AlertCircle className='size-4' />
-                  <AlertTitle>Ops!</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+              <ErrorAlert error={error} />
 
               <FormField
                 control={form.control}

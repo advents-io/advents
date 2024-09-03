@@ -1,10 +1,10 @@
-import { AlertCircle, Copy, Download, ImageIcon } from 'lucide-react'
+import { Copy, Download, ImageIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import { ErrorAlert } from '@/components/error-alert'
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
-import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
 import {
@@ -115,13 +115,7 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown }: Props) =
           <DialogTitle>QR Code</DialogTitle>
         </DialogHeader>
 
-        {error && (
-          <Alert variant='destructive'>
-            <AlertCircle className='size-4' />
-            <AlertTitle>Ops!</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+        <ErrorAlert error={error} />
 
         <div className='flex flex-col items-center justify-center space-y-10 pt-10'>
           <QrCodeSvg config={config} />

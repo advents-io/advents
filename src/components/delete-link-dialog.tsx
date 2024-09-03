@@ -1,4 +1,3 @@
-import { AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
@@ -6,8 +5,8 @@ import { toast } from 'sonner'
 
 import { deleteLinkAction } from '@/actions/link/delete-link-action'
 import { formatErrors } from '@/actions/safe-action'
+import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
-import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -60,13 +59,7 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }:
         <AlertDialogHeader>
           <AlertDialogTitle>Deletar {shortLink}</AlertDialogTitle>
 
-          {error && (
-            <Alert variant='destructive'>
-              <AlertCircle className='size-4' />
-              <AlertTitle>Ops!</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+          <ErrorAlert error={error} />
 
           <AlertDialogDescription>
             Essa ação é irreversível. Isso irá deletar permanentemente o link e todas as suas

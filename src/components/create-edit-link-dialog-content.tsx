@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle, Loader2, PlusCircle, Save } from 'lucide-react'
+import { Loader2, PlusCircle, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
@@ -18,8 +18,8 @@ import {
 } from '@/actions/schemas/input/link/create-link-input'
 import { GetAppOutputProps } from '@/actions/schemas/output/app/get-app-output'
 import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
+import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
@@ -107,13 +107,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
 
   return (
     <div className='relative space-y-4 pt-4'>
-      {error && (
-        <Alert variant='destructive'>
-          <AlertCircle className='size-4' />
-          <AlertTitle>Ops!</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+      <ErrorAlert error={error} />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
