@@ -3,6 +3,7 @@
 import { actionClient, ActionError } from '@/actions/safe-action'
 import { editLinkInputSchema } from '@/actions/schemas/input/link/edit-link-input'
 import { prisma } from '@/lib/prisma'
+import { supabaseClient } from '@/lib/supabase'
 import { generateRandomSlug } from '@/utils/link-helper'
 
 export const editLinkAction = actionClient
@@ -37,9 +38,18 @@ export const editLinkAction = actionClient
 
     newLink.slug = newLink.slug || (await generateRandomSlug(newLink.domain))
 
+    const {
+      data: { user },
+    } = await supabaseClient().auth.getUser()
+
+    if (!user) {
+      throw new ActionError('Usuário não encontrado.')
+    }
+
     const link = {
       ...originalLink,
       ...newLink,
+      updatedBy: user.id,
     }
 
     await prisma.link.update({
