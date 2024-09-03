@@ -26,7 +26,7 @@ export const getAppIdAction = actionClient
       throw new ActionError('App não encontrado.')
     }
 
-    return app.id
+    return { id: app.id }
   })
 
 export const getAppDefaultValuesAction = actionClient

@@ -73,7 +73,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
         return
       }
 
-      createLink({ ...link, appId })
+      createLink({ ...link, appId: appId.id })
     }
   }
 
