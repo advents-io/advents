@@ -5,6 +5,7 @@ const envSchema = z.object({
   DIRECT_URL: z.string(),
   SUPABASE_URL: z.string().url(),
   SUPABASE_ANON_KEY: z.string(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string(),
 })
 
 export type Env = z.infer<typeof envSchema>
@@ -18,6 +19,7 @@ export const env: Env = serverRuntime
       DIRECT_URL: '',
       SUPABASE_URL: '',
       SUPABASE_ANON_KEY: '',
+      SUPABASE_SERVICE_ROLE_KEY: '',
     }
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development'
