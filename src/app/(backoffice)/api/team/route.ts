@@ -9,8 +9,8 @@ const teamSchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
 })
 
-export async function POST(request: Request) {
-  const host = request.headers.get('host')
+export async function POST(req: Request) {
+  const host = req.headers.get('host')
   const isLocalhost = !host || !host.includes('localhost') || IS_PRODUCTION
 
   if (isLocalhost) {
@@ -18,14 +18,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json()
+    const body = await req.json()
     const data = teamSchema.parse(body)
 
-    const newTeam = await prisma.team.create({
+    const team = await prisma.team.create({
       data,
     })
 
-    return NextResponse.json(newTeam, { status: 201 })
+    return NextResponse.json(team, { status: 201 })
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : 'Unknown error' },

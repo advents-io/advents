@@ -9,8 +9,8 @@ const memberSchema = z.object({
   teamId: z.string().uuid('Valid team ID is required'),
 })
 
-export async function POST(request: Request) {
-  const host = request.headers.get('host')
+export async function POST(req: Request) {
+  const host = req.headers.get('host')
   const isLocalhost = !host || !host.includes('localhost') || IS_PRODUCTION
 
   if (isLocalhost) {
@@ -18,14 +18,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json()
+    const body = await req.json()
     const data = memberSchema.parse(body)
 
-    const newMember = await prisma.member.create({
+    const member = await prisma.member.create({
       data,
     })
 
-    return NextResponse.json(newMember, { status: 201 })
+    return NextResponse.json(member, { status: 201 })
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : 'Unknown error' },

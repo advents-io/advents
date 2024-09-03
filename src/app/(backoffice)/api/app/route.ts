@@ -28,14 +28,14 @@ const appSchema = z.object({
     message: 'A url do app iOS deve ser da App Store.',
   }),
   defaultFallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').optional(),
-  qrCodeLogo: z.string().url('Invalid QR code logo URL').optional(),
+  qrCodeLogoUrl: z.string().url('Invalid QR code logo URL').optional(),
   teamId: z.string().uuid('Invalid team ID'),
   createdBy: z.string().uuid('Invalid user ID'),
   updatedBy: z.string().uuid('Invalid user ID'),
 })
 
-export async function POST(request: Request) {
-  const host = request.headers.get('host')
+export async function POST(req: Request) {
+  const host = req.headers.get('host')
   const isLocalhost = !host || !host.includes('localhost') || IS_PRODUCTION
 
   if (isLocalhost) {
@@ -43,18 +43,36 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json()
+    const body = await req.json()
     const data = appSchema.parse(body)
 
-    const newApp = await prisma.app.create({
-      data,
+    const imageUrl = await fetchUrlOgImage(data.androidUrl)
+
+    const app = await prisma.app.create({
+      data: {
+        ...data,
+        imageUrl,
+      },
     })
 
-    return NextResponse.json(newApp, { status: 201 })
+    return NextResponse.json(app, { status: 201 })
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : 'Unknown error' },
       { status: 400 },
     )
   }
+}
+
+const fetchUrlOgImage = async (url: string) => {
+  const response = await fetch(url)
+  const html = await response.text()
+
+  const ogImageMatch = html.match(/<meta property="og:image" content="(.*?)">/)
+
+  if (!ogImageMatch) {
+    throw new Error('No OG image found')
+  }
+
+  return ogImageMatch[1]
 }

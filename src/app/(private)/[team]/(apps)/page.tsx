@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -42,6 +43,7 @@ export default async function Apps() {
     select: {
       name: true,
       slug: true,
+      imageUrl: true,
     },
     orderBy: {
       name: 'asc',
@@ -73,7 +75,16 @@ export default async function Apps() {
         {apps.map((app, index) => (
           <Link href={routes.LINKS.path(team.slug, app.slug)} key={index}>
             <Card>
-              <CardContent className='py-6 text-lg'>{app.name}</CardContent>
+              <CardContent className='flex items-center gap-4 py-6 text-lg'>
+                <Image
+                  src={app.imageUrl}
+                  alt={app.name}
+                  width={40}
+                  height={40}
+                  className='rounded-full'
+                />
+                {app.name}
+              </CardContent>
             </Card>
           </Link>
         ))}

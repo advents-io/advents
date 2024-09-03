@@ -1,7 +1,7 @@
 import { App } from '@prisma/client'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button } from '@/ui/button'
 import {
@@ -21,17 +21,28 @@ interface Props {
 }
 
 export const AppSelector = ({ apps }: Props) => {
-  const { app, team } = useParams<{ team: string; app: string }>()
+  const { app, team } = useParams<{ team: string; app?: string }>()
   const [open, setOpen] = useState(false)
+  const [selectedApp, setSelectedApp] = useState<string>(app || '')
+
+  useEffect(() => {
+    setSelectedApp(app || '')
+  }, [app])
 
   const router = useRouter()
 
   const handleAppChange = (appSlug: string) => {
+    setSelectedApp(appSlug)
     router.push(routes.LINKS.path(team, appSlug))
   }
 
+  const handleSeeAllApps = () => {
+    setOpen(false)
+    setSelectedApp('')
+  }
+
   return (
-    <Select defaultValue={app} onValueChange={handleAppChange} open={open} onOpenChange={setOpen}>
+    <Select value={selectedApp} onValueChange={handleAppChange} open={open} onOpenChange={setOpen}>
       <SelectTrigger className='w-56 font-medium text-foreground focus:ring-0 focus:ring-offset-0'>
         <SelectValue placeholder='Selecione um app' />
       </SelectTrigger>
@@ -41,7 +52,7 @@ export const AppSelector = ({ apps }: Props) => {
           <SelectLabel className='flex items-center gap-10'>
             <span className='w-full'>Meus apps</span>
 
-            <Link href={routes.APPS.path(team)} onClick={() => setOpen(false)}>
+            <Link href={routes.APPS.path(team)} onClick={handleSeeAllApps}>
               <Button size='sm' variant='outline'>
                 Ver todos
               </Button>

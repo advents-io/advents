@@ -38,10 +38,11 @@ model App {
   name               String
   slug               String
   defaultDomain      String  @map("default_domain")
+  imageUrl           String  @map("image_url")
   androidUrl         String  @map("android_url")
   iosUrl             String  @map("ios_url")
   defaultFallbackUrl String? @map("default_fallback_url")
-  qrCodeLogo         String? @map("qrcode_logo")
+  qrcodeLogoUrl      String? @map("qrcode_logo_url")
 
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
