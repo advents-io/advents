@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkList } from '@/components/link-list'
-import { LoadingLinkList } from '@/components/loading-link-list'
+import { LoadingPageContent } from '@/components/loading-page-content'
 import { prisma } from '@/lib/prisma'
 import { routes } from '@/utils/routes'
 
@@ -45,7 +45,7 @@ export default async function Links({
         <CreateLinkDialog />
       </div>
 
-      <Suspense fallback={<LoadingLinkList />}>
+      <Suspense fallback={<LoadingPageContent className='mt-6' />}>
         <LinkList page={page} appId={app.id} />
       </Suspense>
     </div>
