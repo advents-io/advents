@@ -31,7 +31,7 @@ export default async function PrivateLayout({ children }: { children: React.Reac
   return (
     <>
       <PrivateHeader email={email} apps={apps} />
-      {children}
+      <div className='p-8 md:p-14'>{children}</div>
     </>
   )
 }

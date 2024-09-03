@@ -73,7 +73,7 @@ export default async function Apps() {
   }
 
   return (
-    <div className='flex flex-1 flex-col p-8 md:p-14'>
+    <div className='flex flex-1 flex-col'>
       <h1 className='mb-4 text-xl font-bold'>Apps</h1>
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
