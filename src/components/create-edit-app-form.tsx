@@ -33,7 +33,7 @@ import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { LINK_DOMAINS } from '@/utils/constants'
 
-export const EditAppForm = () => {
+export const CreateEditAppForm = () => {
   const { app, team } = useParams<{ app: string; team: string }>()
 
   const form = useForm<EditAppInputFormProps>({

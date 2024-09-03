@@ -2,7 +2,7 @@ import { Settings as SettingsIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import React from 'react'
 
-import { EditAppForm } from '@/components/edit-app-form'
+import { CreateEditAppForm } from '@/components/create-edit-app-form'
 import { Button } from '@/ui/button'
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default async function Settings() {
       </aside>
 
       <main className='max-w-lg flex-1'>
-        <EditAppForm />
+        <CreateEditAppForm />
       </main>
     </div>
   )
