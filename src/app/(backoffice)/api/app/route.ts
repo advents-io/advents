@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_PRODUCTION } from '@/utils/env'
+import { regexes } from '@/utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
 
@@ -14,8 +15,8 @@ const appSchema = z.object({
     .min(1, 'Slug do app é obrigatório.')
     .max(100, 'O Slug do app deve possuir no máximo 100 caracteres.')
     .regex(
-      /^[a-zA-Z0-9-_]*$/,
-      'O Slug do app deve conter apenas letras, números, hifens ou underline.',
+      regexes.LOWER_CASE_SLUG,
+      'O Slug do app deve conter apenas letras minusculas, números, hífen ou underline.',
     ),
   defaultDomain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   androidUrl: z

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { LINK_DOMAINS } from '@/utils/constants'
+import { regexes } from '@/utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
 
@@ -11,8 +12,8 @@ export const createLinkInputFormSchema = z.object({
     .string()
     .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
     .regex(
-      /^[a-zA-Z0-9-_]*$/,
-      'A chave do link deve conter apenas letras, números, hifens ou underline.',
+      regexes.CASE_INSENSITIVE_SLUG,
+      'A chave do link deve conter apenas letras, números, hifen ou underline.',
     )
     .optional(),
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
