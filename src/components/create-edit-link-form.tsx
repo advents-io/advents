@@ -32,7 +32,7 @@ interface Props {
   linkId?: string
 }
 
-export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
+export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const { refresh } = useRouter()
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
 

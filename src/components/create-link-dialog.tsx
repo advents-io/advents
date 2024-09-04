@@ -3,10 +3,9 @@
 import { PlusCircle } from 'lucide-react'
 import { useState } from 'react'
 
+import { CreateEditLinkForm } from '@/components/create-edit-link-form'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
-
-import { CreateEditLinkDialogContent } from './create-edit-link-dialog-content'
 
 export const CreateLinkDialog = () => {
   const [open, setOpen] = useState(false)
@@ -25,7 +24,7 @@ export const CreateLinkDialog = () => {
           <DialogTitle>Criar novo link</DialogTitle>
         </DialogHeader>
 
-        <CreateEditLinkDialogContent closeDialog={() => setOpen(false)} />
+        <CreateEditLinkForm closeDialog={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   )

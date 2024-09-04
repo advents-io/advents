@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { CreateEditLinkDialogContent } from '@/components/create-edit-link-dialog-content'
+import { CreateEditLinkForm } from '@/components/create-edit-link-form'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
 
 interface Props {
@@ -31,7 +31,7 @@ export const EditLinkDialog = ({ children, linkId, closeDropdown }: Props) => {
           <DialogTitle>Editar link</DialogTitle>
         </DialogHeader>
 
-        <CreateEditLinkDialogContent closeDialog={() => handleSetOpen(false)} linkId={linkId} />
+        <CreateEditLinkForm closeDialog={() => handleSetOpen(false)} linkId={linkId} />
       </DialogContent>
     </Dialog>
   )
