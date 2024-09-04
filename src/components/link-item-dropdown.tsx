@@ -62,7 +62,7 @@ export const LinkItemDropdown = ({ id, domain, slug, shortLink }: Props) => {
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
               <Trash2 className='mr-2 size-4 text-destructive' />
-              <span className='text-destructive'>Deletar</span>
+              <span className='text-destructive'>Excluir</span>
             </DropdownMenuItem>
           </AlertDialogTrigger>
         </DeleteLinkDialog>

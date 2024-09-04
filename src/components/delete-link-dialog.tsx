@@ -57,13 +57,13 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }:
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Deletar {shortLink}</AlertDialogTitle>
+          <AlertDialogTitle>Excluir {shortLink}</AlertDialogTitle>
 
           <ErrorAlert error={error} />
 
           <AlertDialogDescription>
-            Essa ação é irreversível. Isso irá deletar permanentemente o link e todas as suas
-            informações.
+            Essa ação é irreversível. Isso irá excluir permanentemente o link e todas as suas
+            informações e estatísticas de uso.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
