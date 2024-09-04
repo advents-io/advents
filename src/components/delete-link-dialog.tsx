@@ -67,7 +67,7 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }:
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
           <Button
             variant='destructive'

@@ -37,14 +37,14 @@ export default async function Teams() {
       <div className='flex flex-1 items-center justify-center'>
         <Card className='w-full max-w-md'>
           <CardHeader>
-            <CardTitle>Time não encontrado</CardTitle>
+            <CardTitle>Conta não encontrada</CardTitle>
             <CardDescription>
-              Não conseguimos encontrar um time associado à sua conta.
+              Não conseguimos encontrar uma conta associada ao seu usuário.
             </CardDescription>
           </CardHeader>
           <CardContent className='text-sm'>
-            Isso pode ser porque você ainda não foi convidado para um time, ou houve um erro no
-            processamento da sua conta.
+            Isso pode ser porque você ainda não foi convidado para uma conta, ou houve um erro de
+            processamento.
           </CardContent>
         </Card>
       </div>

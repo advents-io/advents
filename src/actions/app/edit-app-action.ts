@@ -27,7 +27,7 @@ export const editAppAction = actionClient
     })
 
     if (!team) {
-      throw new ActionError('Time não encontrado.')
+      throw new ActionError('Conta não encontrada.')
     }
 
     const slugChanged = newApp.slug !== originalApp.slug

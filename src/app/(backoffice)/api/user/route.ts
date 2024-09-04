@@ -7,7 +7,7 @@ import { IS_PRODUCTION } from '@/utils/env'
 
 const inviteUserSchema = z.object({
   email: z.string({ message: 'Email inválido.' }).email('Email inválido.'),
-  teamId: z.string({ message: 'Id do time inválido.' }).uuid('Id do time inválido.'),
+  teamId: z.string({ message: 'Id da conta inválido.' }).uuid('Id da conta inválido.'),
 })
 
 export async function POST(req: Request) {

@@ -61,11 +61,11 @@ export default async function Apps() {
         <Card className='w-full max-w-md'>
           <CardHeader>
             <CardTitle>Nenhum app encontrado</CardTitle>
-            <CardDescription>Não encontramos nenhum app associado ao seu time.</CardDescription>
+            <CardDescription>Não encontramos nenhum app associado a sua conta.</CardDescription>
           </CardHeader>
           <CardContent className='text-sm'>
-            Isso pode ocorrer se você ainda não criou um app para este time ou se houve um erro no
-            processamento dos dados do seu time.
+            Isso pode ocorrer se você ainda não criou um app para esta conta ou houve um erro no
+            processamento.
           </CardContent>
         </Card>
       </div>
