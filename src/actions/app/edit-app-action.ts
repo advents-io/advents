@@ -2,16 +2,15 @@
 
 import { redirect } from 'next/navigation'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { editAppInputSchema } from '@/actions/schemas/input/app/edit-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { prisma } from '@/lib/prisma'
-import { supabaseClient } from '@/lib/supabase'
 import { routes } from '@/utils/routes'
 
-export const editAppAction = actionClient
+export const editAppAction = authActionClient
   .schema(editAppInputSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { id, ...newApp } = parsedInput
 
     const originalApp = await prisma.app.findUnique({ where: { id } })
@@ -47,18 +46,9 @@ export const editAppAction = actionClient
       }
     }
 
-    const {
-      data: { user },
-    } = await supabaseClient().auth.getUser()
-
-    if (!user) {
-      throw new ActionError('Usuário não encontrado.')
-    }
-
     const app = {
       ...originalApp,
       ...newApp,
-      updatedBy: user.id,
     }
 
     const imageUrl = await fetchUrlOgImage(newApp.androidUrl)
@@ -71,7 +61,10 @@ export const editAppAction = actionClient
       where: {
         id,
       },
-      data: app,
+      data: {
+        ...app,
+        updatedBy: user.id,
+      },
     })
 
     redirect(routes.SETTINGS.path(team.slug, app.slug))

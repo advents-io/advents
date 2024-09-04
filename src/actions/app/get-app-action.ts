@@ -1,6 +1,6 @@
 'use server'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { getAppInputSchema } from '@/actions/schemas/input/app/get-app-input'
 import {
   getAppDefaultValuesOutputSchema,
@@ -8,7 +8,7 @@ import {
 } from '@/actions/schemas/output/app/get-app-output'
 import { prisma } from '@/lib/prisma'
 
-export const getAppAction = actionClient
+export const getAppAction = authActionClient
   .schema(getAppInputSchema)
   .outputSchema(getAppOutputSchema)
   .action(async ({ parsedInput }) => {
@@ -40,7 +40,7 @@ export const getAppAction = actionClient
     return app
   })
 
-export const getAppIdAction = actionClient
+export const getAppIdAction = authActionClient
   .schema(getAppInputSchema)
   .action(async ({ parsedInput }) => {
     const { appSlug, teamSlug } = parsedInput
@@ -64,7 +64,7 @@ export const getAppIdAction = actionClient
     return { id: app.id }
   })
 
-export const getAppDefaultValuesAction = actionClient
+export const getAppDefaultValuesAction = authActionClient
   .schema(getAppInputSchema)
   .outputSchema(getAppDefaultValuesOutputSchema)
   .action(async ({ parsedInput }) => {

@@ -2,12 +2,10 @@
 
 import { redirect } from 'next/navigation'
 
-import { actionClient } from '@/actions/safe-action'
-import { supabaseClient } from '@/lib/supabase'
+import { authActionClient } from '@/actions/safe-action'
 import { routes } from '@/utils/routes'
 
-export const signOutAction = actionClient.action(async () => {
-  const supabase = supabaseClient()
+export const signOutAction = authActionClient.action(async ({ ctx: { supabase } }) => {
   await supabase.auth.signOut()
 
   return redirect(routes.SIGN_IN.path)

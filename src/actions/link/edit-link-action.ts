@@ -1,14 +1,13 @@
 'use server'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { editLinkInputSchema } from '@/actions/schemas/input/link/edit-link-input'
 import { generateRandomSlug } from '@/helpers/link-helper'
 import { prisma } from '@/lib/prisma'
-import { supabaseClient } from '@/lib/supabase'
 
-export const editLinkAction = actionClient
+export const editLinkAction = authActionClient
   .schema(editLinkInputSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { linkId, ...newLink } = parsedInput
 
     const originalLink = await prisma.link.findUnique({ where: { id: linkId } })
@@ -38,24 +37,18 @@ export const editLinkAction = actionClient
 
     newLink.slug = newLink.slug || (await generateRandomSlug(newLink.domain))
 
-    const {
-      data: { user },
-    } = await supabaseClient().auth.getUser()
-
-    if (!user) {
-      throw new ActionError('Usuário não encontrado.')
-    }
-
     const link = {
       ...originalLink,
       ...newLink,
-      updatedBy: user.id,
     }
 
     await prisma.link.update({
       where: {
         id: linkId,
       },
-      data: link,
+      data: {
+        ...link,
+        updatedBy: user.id,
+      },
     })
   })

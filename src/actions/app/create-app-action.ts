@@ -2,24 +2,15 @@
 
 import { redirect } from 'next/navigation'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { createAppInputSchema } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { prisma } from '@/lib/prisma'
-import { supabaseClient } from '@/lib/supabase'
 import { routes } from '@/utils/routes'
 
-export const createAppAction = actionClient
+export const createAppAction = authActionClient
   .schema(createAppInputSchema)
-  .action(async ({ parsedInput: app }) => {
-    const {
-      data: { user },
-    } = await supabaseClient().auth.getUser()
-
-    if (!user) {
-      throw new ActionError('Usuário não encontrado.')
-    }
-
+  .action(async ({ parsedInput: app, ctx: { user } }) => {
     const team = await prisma.team.findFirst({
       where: {
         members: {

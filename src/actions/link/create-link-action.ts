@@ -1,14 +1,13 @@
 'use server'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { createLinkInputActionSchema } from '@/actions/schemas/input/link/create-link-input'
 import { generateRandomSlug } from '@/helpers/link-helper'
 import { prisma } from '@/lib/prisma'
-import { supabaseClient } from '@/lib/supabase'
 
-export const createLinkAction = actionClient
+export const createLinkAction = authActionClient
   .schema(createLinkInputActionSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { title, domain, slug: reqSlug, iosUrl, androidUrl, fallbackUrl, appId } = parsedInput
 
     if (reqSlug) {
@@ -28,14 +27,6 @@ export const createLinkAction = actionClient
     }
 
     const slug = reqSlug || (await generateRandomSlug(domain))
-
-    const {
-      data: { user },
-    } = await supabaseClient().auth.getUser()
-
-    if (!user) {
-      throw new ActionError('Usuário não encontrado.')
-    }
 
     await prisma.link.create({
       data: {

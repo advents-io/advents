@@ -1,10 +1,10 @@
 'use server'
 
-import { actionClient } from '@/actions/safe-action'
+import { authActionClient } from '@/actions/safe-action'
 import { deleteLinkInputSchema } from '@/actions/schemas/input/link/delete-link-input'
 import { prisma } from '@/lib/prisma'
 
-export const deleteLinkAction = actionClient
+export const deleteLinkAction = authActionClient
   .schema(deleteLinkInputSchema)
   .action(async ({ parsedInput }) => {
     const { linkId } = parsedInput

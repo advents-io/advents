@@ -1,11 +1,11 @@
 'use server'
 
-import { actionClient, ActionError } from '@/actions/safe-action'
+import { ActionError, authActionClient } from '@/actions/safe-action'
 import { getLinkInputSchema } from '@/actions/schemas/input/link/get-link-input'
 import { getLinkOutputSchema } from '@/actions/schemas/output/link/get-link-output'
 import { prisma } from '@/lib/prisma'
 
-export const getLinkAction = actionClient
+export const getLinkAction = authActionClient
   .schema(getLinkInputSchema)
   .outputSchema(getLinkOutputSchema)
   .action(async ({ parsedInput }) => {
