@@ -2,9 +2,9 @@
 
 import { actionClient, ActionError } from '@/actions/safe-action'
 import { createLinkInputActionSchema } from '@/actions/schemas/input/link/create-link-input'
+import { generateRandomSlug } from '@/helpers/link-helper'
 import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
-import { generateRandomSlug } from '@/utils/link-helper'
 
 export const createLinkAction = actionClient
   .schema(createLinkInputActionSchema)

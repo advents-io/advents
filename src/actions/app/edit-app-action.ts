@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { actionClient, ActionError } from '@/actions/safe-action'
 import { editAppInputSchema } from '@/actions/schemas/input/app/edit-app-input'
+import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
 import { routes } from '@/utils/routes'
@@ -75,16 +76,3 @@ export const editAppAction = actionClient
 
     redirect(routes.SETTINGS.path(team.slug, app.slug))
   })
-
-const fetchUrlOgImage = async (url: string) => {
-  const response = await fetch(url)
-  const html = await response.text()
-
-  const ogImageMatch = html.match(/<meta property="og:image" content="(.*?)">/)
-
-  if (!ogImageMatch || !ogImageMatch[1]) {
-    throw new ActionError('Imagem do app não encontrada.')
-  }
-
-  return ogImageMatch[1]
-}

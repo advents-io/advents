@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
+import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { prisma } from '@/lib/prisma'
 import { LINK_DOMAINS } from '@/utils/constants'
 import { IS_PRODUCTION } from '@/utils/env'
@@ -63,17 +64,4 @@ export async function POST(req: Request) {
       { status: 400 },
     )
   }
-}
-
-const fetchUrlOgImage = async (url: string) => {
-  const response = await fetch(url)
-  const html = await response.text()
-
-  const ogImageMatch = html.match(/<meta property="og:image" content="(.*?)">/)
-
-  if (!ogImageMatch) {
-    throw new Error('No OG image found')
-  }
-
-  return ogImageMatch[1]
 }
