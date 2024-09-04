@@ -8,13 +8,14 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { createAppAction } from '@/actions/app/create-app-action'
 import { editAppAction } from '@/actions/app/edit-app-action'
-import { getAppAction } from '@/actions/app/get-app-action'
+import { getAppAction, getAppIdAction } from '@/actions/app/get-app-action'
 import { formatErrors } from '@/actions/safe-action'
 import {
-  EditAppInputFormProps,
-  editAppInputSchema,
-} from '@/actions/schemas/input/app/edit-app-input'
+  CreateAppInputProps,
+  createAppInputSchema,
+} from '@/actions/schemas/input/app/create-app-input'
 import { GetAppOutputProps } from '@/actions/schemas/output/app/get-app-output'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingPageContent } from '@/components/loading-page-content'
@@ -34,37 +35,79 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { LINK_DOMAINS } from '@/utils/constants'
 
 export const CreateEditAppForm = () => {
-  const { app, team } = useParams<{ app: string; team: string }>()
+  const { app, team } = useParams<{ app?: string; team: string }>()
 
-  const form = useForm<EditAppInputFormProps>({
-    resolver: zodResolver(editAppInputSchema),
-    defaultValues: async () =>
-      (await getAppAction({ appSlug: app, teamSlug: team }))?.data as GetAppOutputProps,
-  })
+  const isCreate = !app
+
+  const onSuccess = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+
+    toast.success(isCreate ? 'App criado com sucesso.' : 'App alterado com sucesso.')
+  }
+
+  const onError = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
 
   const {
     execute: editApp,
-    isExecuting,
-    result,
+    isExecuting: isEditing,
+    result: editAppResult,
   } = useAction(editAppAction, {
-    onSuccess: () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      })
-      toast.success('App alterado com sucesso.')
-    },
-    onError: () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      })
-    },
+    onSuccess,
+    onError,
   })
 
-  const busy = isExecuting || form.formState.isSubmitting
+  const {
+    execute: createApp,
+    isExecuting: isCreating,
+    result: createAppResult,
+  } = useAction(createAppAction, {
+    onSuccess,
+    onError,
+  })
 
-  const error = formatErrors(result)
+  const error = formatErrors(editAppResult) || formatErrors(createAppResult)
+
+  const onSubmit = async (data: CreateAppInputProps) => {
+    if (isCreate) {
+      createApp(data)
+    } else {
+      const result = await getAppIdAction({ teamSlug: team, appSlug: app })
+
+      if (!result?.data) {
+        return
+      }
+
+      editApp({ ...data, id: result.data.id })
+    }
+  }
+
+  const getApp = async () => {
+    const result = await getAppAction({ appSlug: app || '', teamSlug: team })
+
+    return {
+      ...(result?.data as GetAppOutputProps),
+      defaultFallbackUrl: result?.data?.defaultFallbackUrl || undefined,
+    }
+  }
+
+  const form = useForm<CreateAppInputProps>({
+    resolver: zodResolver(createAppInputSchema),
+    defaultValues: !isCreate
+      ? async () => await getApp()
+      : {
+          defaultDomain: LINK_DOMAINS[0],
+        },
+  })
+
+  const busy = isCreating || isEditing || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
     return <LoadingPageContent className='mt-10' />
@@ -72,7 +115,7 @@ export const CreateEditAppForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(editApp)} className='space-y-10'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
         <ErrorAlert error={error} />
 
         <FormField
@@ -114,7 +157,7 @@ export const CreateEditAppForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Domínio padrão</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={LINK_DOMAINS[0]} {...field}>
+              <Select {...field}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue />
