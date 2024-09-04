@@ -10,6 +10,7 @@ import { prisma } from '@/lib/prisma'
 
 export const getAppAction = actionClient
   .schema(getAppInputSchema)
+  .outputSchema(getAppOutputSchema)
   .action(async ({ parsedInput }) => {
     const { appSlug, teamSlug } = parsedInput
 
@@ -21,7 +22,6 @@ export const getAppAction = actionClient
         },
       },
       select: {
-        id: true,
         name: true,
         slug: true,
         defaultDomain: true,
@@ -37,7 +37,7 @@ export const getAppAction = actionClient
       throw new ActionError('App não encontrado.')
     }
 
-    return getAppOutputSchema.parse(app)
+    return app
   })
 
 export const getAppIdAction = actionClient
@@ -66,6 +66,7 @@ export const getAppIdAction = actionClient
 
 export const getAppDefaultValuesAction = actionClient
   .schema(getAppInputSchema)
+  .outputSchema(getAppDefaultValuesOutputSchema)
   .action(async ({ parsedInput }) => {
     const { appSlug, teamSlug } = parsedInput
 
@@ -88,5 +89,5 @@ export const getAppDefaultValuesAction = actionClient
       throw new ActionError('App não encontrado.')
     }
 
-    return getAppDefaultValuesOutputSchema.parse(app)
+    return app
   })

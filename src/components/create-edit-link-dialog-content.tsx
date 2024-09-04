@@ -94,7 +94,7 @@ export const CreateEditLinkDialogContent = ({ closeDialog, linkId }: Props) => {
       domain: app.defaultDomain,
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
-      fallbackUrl: app.defaultFallbackUrl || LINK_DOMAINS[0],
+      fallbackUrl: app.defaultFallbackUrl || '',
     }
   }
 

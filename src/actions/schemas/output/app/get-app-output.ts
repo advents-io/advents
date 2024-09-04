@@ -4,13 +4,12 @@ export const getAppDefaultValuesOutputSchema = z.object({
   defaultDomain: z.string(),
   androidUrl: z.string().url(),
   iosUrl: z.string().url(),
-  defaultFallbackUrl: z.string().url().optional(),
+  defaultFallbackUrl: z.string().url().nullish(),
 })
 
 export type GetAppDefaultValuesOutputProps = z.infer<typeof getAppDefaultValuesOutputSchema>
 
 export const getAppOutputSchema = getAppDefaultValuesOutputSchema.extend({
-  id: z.string().uuid(),
   name: z.string(),
   slug: z.string(),
   imageUrl: z.string().url(),

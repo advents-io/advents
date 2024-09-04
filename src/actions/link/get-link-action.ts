@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma'
 
 export const getLinkAction = actionClient
   .schema(getLinkInputSchema)
+  .outputSchema(getLinkOutputSchema)
   .action(async ({ parsedInput }) => {
     const { linkId } = parsedInput
 
@@ -20,5 +21,5 @@ export const getLinkAction = actionClient
       throw new ActionError('Link não encontrado')
     }
 
-    return getLinkOutputSchema.parse(link)
+    return link
   })
