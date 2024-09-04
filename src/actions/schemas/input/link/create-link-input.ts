@@ -6,7 +6,11 @@ import { regexes } from '@/utils/regexes'
 const [first, ...rest] = LINK_DOMAINS
 
 export const createLinkInputFormSchema = z.object({
-  title: z.string().max(50, 'O título deve possuir no máximo 50 caracteres.').nullish(),
+  title: z
+    .string()
+    .max(50, 'O título deve possuir no máximo 50 caracteres.')
+    .nullish()
+    .transform(value => value || undefined),
   domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   slug: z
     .string()
@@ -15,7 +19,8 @@ export const createLinkInputFormSchema = z.object({
       regexes.CASE_INSENSITIVE_SLUG,
       'A chave do link deve conter apenas letras, números, hifen ou underline.',
     )
-    .optional(),
+    .optional()
+    .transform(value => value || undefined),
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
