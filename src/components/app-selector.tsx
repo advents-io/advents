@@ -1,4 +1,5 @@
 import { App } from '@prisma/client'
+import { CirclePlus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -33,6 +34,11 @@ export const AppSelector = ({ apps }: Props) => {
   const router = useRouter()
 
   const handleAppChange = (appSlug: string) => {
+    if (appSlug === 'new-app') {
+      router.push(routes.NEW_APP.path(team))
+      return
+    }
+
     setSelectedApp(appSlug)
     router.push(routes.LINKS.path(team, appSlug))
   }
@@ -77,6 +83,13 @@ export const AppSelector = ({ apps }: Props) => {
             </SelectItem>
           ))}
         </SelectGroup>
+
+        <SelectItem value='new-app'>
+          <div className='flex items-center gap-2'>
+            <CirclePlus size={25} strokeWidth={1.5} />
+            <span className='truncate'>Criar app</span>
+          </div>
+        </SelectItem>
       </SelectContent>
     </Select>
   )

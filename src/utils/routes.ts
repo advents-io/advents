@@ -2,6 +2,9 @@ export const routes = {
   TEAMS: {
     path: '/',
   },
+  NEW_APP: {
+    path: (team: string) => `/${team}/new`,
+  },
   APPS: {
     path: (team: string) => `/${team}`,
   },
