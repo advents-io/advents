@@ -1,6 +1,7 @@
 'use server'
 
-import { ActionError, authActionClient } from '@/actions/safe-action'
+import { ActionError } from '@/actions/action-errors'
+import { authActionClient } from '@/actions/safe-action'
 import { getAppInputSchema } from '@/actions/schemas/input/app/get-app-input'
 import {
   getAppDefaultValuesOutputSchema,

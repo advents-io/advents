@@ -1,11 +1,10 @@
+'use server'
+
 import { Prisma } from '@prisma/client'
 import { createSafeActionClient } from 'next-safe-action'
 
+import { ActionError, UnauthorizedActionError } from '@/actions/action-errors'
 import { supabaseClient } from '@/lib/supabase'
-
-export class ActionError extends Error {}
-
-export class UnauthorizedActionError extends Error {}
 
 export const actionClient = createSafeActionClient({
   handleReturnedServerError(e) {

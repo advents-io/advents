@@ -1,4 +1,4 @@
-import { ActionError } from '@/actions/safe-action'
+import { ActionError } from '@/actions/action-errors'
 
 export const fetchUrlOgImage = async (url: string) => {
   const response = await fetch(url)
