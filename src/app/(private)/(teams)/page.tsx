@@ -51,19 +51,5 @@ export default async function Teams() {
     )
   }
 
-  const app = await prisma.app.findFirst({
-    where: {
-      teamId: team.id,
-    },
-    select: { slug: true },
-    orderBy: {
-      name: 'asc',
-    },
-  })
-
-  if (!app) {
-    return redirect(routes.APPS.path(team.slug))
-  }
-
-  return redirect(routes.LINKS.path(team.slug, app.slug))
+  return redirect(routes.APPS.path(team.slug))
 }
