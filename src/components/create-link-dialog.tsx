@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusCircle } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 
 import { CreateEditLinkForm } from '@/components/create-edit-link-form'
@@ -14,7 +14,7 @@ export const CreateLinkDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size='lg'>
-          <PlusCircle className='mr-2 size-4' />
+          <Plus className='mr-2 size-4' />
           Criar link
         </Button>
       </DialogTrigger>

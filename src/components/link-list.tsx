@@ -1,6 +1,11 @@
+import Image from 'next/image'
+import Empty from 'public/illustrations/empty.svg'
+
+import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkItem } from '@/components/link-item'
 import { LinksPagination } from '@/components/links-pagination'
 import { prisma } from '@/lib/prisma'
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 
 interface Props {
   page: number
@@ -42,11 +47,18 @@ export const LinkList = async ({ page, appSlug }: Props) => {
   return (
     <>
       {links.length === 0 && (
-        <div className='py-8 text-center'>
-          <p className='text-lg'>Nenhum link encontrado.</p>
-          <p className='mt-4 text-sm text-muted-foreground'>
-            Clique no botão &quot;Criar link&quot; para começar.
-          </p>
+        <div className='flex justify-center'>
+          <Card className='w-full max-w-xl'>
+            <CardHeader>
+              <CardTitle>Nenhum link encontrado</CardTitle>
+            </CardHeader>
+
+            <CardContent className='mt-10 flex flex-col items-center gap-10'>
+              <Image src={Empty} width={200} height={200} alt='Nenhum app encontrado' />
+
+              <CreateLinkDialog />
+            </CardContent>
+          </Card>
         </div>
       )}
 

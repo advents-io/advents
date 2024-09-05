@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, PlusCircle, Save } from 'lucide-react'
+import { Loader2, Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
@@ -237,7 +237,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   </>
                 ) : (
                   <>
-                    <PlusCircle className='size-4' />
+                    <Plus className='size-4' />
                     Criar link
                   </>
                 )}
