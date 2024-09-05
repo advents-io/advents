@@ -21,7 +21,7 @@ model Link {
   installs    Int     @default(0)
 
   appId String @map("app_id")
-  app   App    @relation(fields: [appId], references: [id])
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
