@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: 'Apps | Advents',
 }
 
-export default async function Apps() {
+export default async function Apps({ params }: { params: { team: string } }) {
   const supabase = supabaseClient()
 
   const {
@@ -33,6 +33,7 @@ export default async function Apps() {
           userId: user.id,
         },
       },
+      slug: params.team,
     },
     select: {
       id: true,
