@@ -1,11 +1,14 @@
+import { PlusIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import Empty from 'public/illustrations/empty.svg'
 
 import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
+import { Button } from '@/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { routes } from '@/utils/routes'
 
 export const metadata: Metadata = {
@@ -57,15 +60,21 @@ export default async function Apps() {
 
   if (apps.length === 0) {
     return (
-      <div className='flex flex-1 items-center justify-center'>
-        <Card className='w-full max-w-md'>
+      <div className='flex justify-center'>
+        <Card className='w-full max-w-xl'>
           <CardHeader>
             <CardTitle>Nenhum app encontrado</CardTitle>
-            <CardDescription>Não encontramos nenhum app associado a sua conta.</CardDescription>
           </CardHeader>
-          <CardContent className='text-sm'>
-            Isso pode ocorrer se você ainda não criou um app para esta conta ou houve um erro no
-            processamento.
+
+          <CardContent className='mt-10 flex flex-col items-center gap-10'>
+            <Image src={Empty} width={200} height={200} alt='Nenhum app encontrado' />
+
+            <Link href={routes.NEW_APP.path(team.slug)}>
+              <Button>
+                <PlusIcon className='mr-2 size-4' />
+                Criar app
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
