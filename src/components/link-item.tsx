@@ -65,7 +65,11 @@ export const LinkItem = ({ link }: Props) => {
               </span>
             </TooltipTrigger>
 
-            <TooltipContent>{dayjs(link.createdAt).format('DD MMM YY, HH:mm')}</TooltipContent>
+            <TooltipContent>
+              {dayjs(link.createdAt).format('DD MMM YY, HH:mm')}
+              <br />
+              <span className='text-xs text-muted-foreground'>Data de criação</span>
+            </TooltipContent>
           </Tooltip>
         </div>
 

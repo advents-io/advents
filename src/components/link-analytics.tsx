@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 import { Badge } from '@/ui/badge'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 import { routes } from '@/utils/routes'
 
 interface Props {
@@ -15,19 +16,43 @@ export const LinkAnalytics = ({ clicks, installs }: Props) => {
 
   return (
     <>
-      <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
-        <Badge variant='secondary' className='py-1 font-normal'>
-          <MousePointerClick className='mr-2 size-4' />
-          {clicks} clicks
-        </Badge>
-      </Link>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
+            <Badge variant='secondary' className='py-1 font-normal'>
+              <MousePointerClick className='mr-2 size-4' />
+              {clicks} clicks
+            </Badge>
+          </Link>
+        </TooltipTrigger>
 
-      <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
-        <Badge variant='secondary' className='py-1 font-normal'>
-          <Download className='mr-2 size-4' />
-          {installs} instalações
-        </Badge>
-      </Link>
+        <TooltipContent>
+          <b>{clicks}</b> clicks
+          <br />
+          <span className='text-xs text-muted-foreground'>
+            Clicks totais desde a criação do link
+          </span>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
+            <Badge variant='secondary' className='py-1 font-normal'>
+              <Download className='mr-2 size-4' />
+              {installs} instalações
+            </Badge>
+          </Link>
+        </TooltipTrigger>
+
+        <TooltipContent>
+          <b>{installs}</b> instalações
+          <br />
+          <span className='text-xs text-muted-foreground'>
+            Instalações totais desde a criação do link
+          </span>
+        </TooltipContent>
+      </Tooltip>
     </>
   )
 }
