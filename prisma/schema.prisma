@@ -28,6 +28,8 @@ model Link {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
+  clicksArray Click[]
+
   @@unique([domain, slug])
   @@map("links")
 }
@@ -85,4 +87,40 @@ model Member {
 
   @@unique([userId])
   @@map("members")
+}
+
+model Click {
+  // Gerado pelo Postgres devido a eu criar o Click pela api do Supabase
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  linkId String @map("link_id")
+  link   Link   @relation(fields: [linkId], references: [id])
+
+  identityHash    String  @map("identity_hash")
+  destinationUrl  String  @map("destination_url")
+  referer         String
+  refererUrl      String  @map("referer_url")
+  ip              String
+  continent       String
+  country         String
+  city            String
+  region          String
+  latitude        String
+  longitude       String
+  device          String
+  deviceVendor    String  @map("device_vendor")
+  deviceModel     String  @map("device_model")
+  browser         String
+  browserVersion  String  @map("browser_version")
+  engine          String
+  engineVersion   String  @map("engine_version")
+  os              String
+  osVersion       String  @map("os_version")
+  cpuArchitecture String  @map("cpu_architecture")
+  userAgent       String  @map("user_agent")
+  isBot           Boolean @map("is_bot")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("clicks")
 }

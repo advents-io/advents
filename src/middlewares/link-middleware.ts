@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse, userAgent } from 'next/server'
+import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
+import { recordClick } from '@/helpers/click-helper'
 import { supabaseClient } from '@/lib/supabase'
 import { LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
 import { LINK_DOMAINS } from '@/utils/link-domains'
@@ -10,15 +11,13 @@ export const isLinkDomain = (req: NextRequest) => {
   return isLinkDomain
 }
 
-export const linkMiddleware = async (req: NextRequest) => {
+export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)
 
   const slug = req.nextUrl.pathname.split('/')[1]
 
   if (!slug) {
-    return NextResponse.redirect(WEBSITE_URL, {
-      status: 302,
-    })
+    return redirect(WEBSITE_URL)
   }
 
   const supabase = supabaseClient()
@@ -27,7 +26,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   const link = (
     await supabase
       .from('links')
-      .select('androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url')
+      .select('id, androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url')
       .eq('slug', slug)
       .eq('domain', domain)
       .limit(1)
@@ -35,28 +34,27 @@ export const linkMiddleware = async (req: NextRequest) => {
   ).data
 
   if (!link) {
-    return NextResponse.redirect(WEBSITE_URL, {
-      status: 302,
-    })
+    return redirect(WEBSITE_URL)
   }
 
-  const isIos = userAgent(req).os?.name === 'iOS'
+  let destinationUrl = link.fallbackUrl
 
+  const isIos = userAgent(req).os?.name === 'iOS'
   if (isIos) {
-    return NextResponse.redirect(link.iosUrl, {
-      status: 302,
-    })
+    destinationUrl = link.iosUrl
   }
 
   const isAndroid = userAgent(req).os?.name === 'Android'
-
   if (isAndroid) {
-    return NextResponse.redirect(link.androidUrl, {
-      status: 302,
-    })
+    destinationUrl = link.androidUrl
   }
 
-  return NextResponse.redirect(link.fallbackUrl, {
+  event.waitUntil(recordClick(req, link.id, destinationUrl))
+  return redirect(destinationUrl)
+}
+
+const redirect = (url: string) => {
+  return NextResponse.redirect(url, {
     status: 302,
   })
 }

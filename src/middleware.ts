@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 import { authMiddleware } from '@/middlewares/auth-middleware'
 import { isLinkDomain, linkMiddleware } from '@/middlewares/link-middleware'
@@ -17,9 +17,9 @@ export const config = {
   ],
 }
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
   if (isLinkDomain(req)) {
-    return await linkMiddleware(req)
+    return await linkMiddleware(req, event)
   }
 
   const isApiRoute = req.nextUrl.pathname.startsWith('/api')
