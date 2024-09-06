@@ -12,9 +12,9 @@ const inviteUserSchema = z.object({
 
 export async function POST(req: Request) {
   const host = req.headers.get('host')
-  const isLocalhost = !host || !host.includes('localhost') || IS_PRODUCTION
+  const isLocalhost = !host || host.includes('localhost')
 
-  if (isLocalhost) {
+  if (!isLocalhost || IS_PRODUCTION) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
