@@ -1,6 +1,6 @@
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { recordClick } from '@/helpers/click-helper'
+import { logClick } from '@/helpers/click-helper'
 import { supabaseClient } from '@/lib/supabase'
 import { LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
 import { LINK_DOMAINS } from '@/utils/link-domains'
@@ -49,7 +49,7 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
     destinationUrl = link.androidUrl
   }
 
-  event.waitUntil(recordClick(req, link.id, destinationUrl))
+  event.waitUntil(logClick(req, link.id, destinationUrl))
   return redirect(destinationUrl)
 }
 

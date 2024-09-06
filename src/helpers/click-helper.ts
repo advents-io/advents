@@ -26,7 +26,7 @@ const ALLOWED_SEARCH_PARAMS = [
 
 interface ClickInsert extends Omit<Click, 'id' | 'createdAt'> {}
 
-export const recordClick = async (req: NextRequest, linkId: string, destinationUrl: string) => {
+export const logClick = async (req: NextRequest, linkId: string, destinationUrl: string) => {
   const isBot = detectBot(req)
 
   if (isBot) {
