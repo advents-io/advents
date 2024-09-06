@@ -25,7 +25,7 @@ import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import { LINK_DOMAINS } from '@/utils/constants'
+import { LINK_DOMAINS } from '@/utils/link-domains'
 
 interface Props {
   closeDialog: () => void

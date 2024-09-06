@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { supabaseClient } from '@/lib/supabase'
-import { LINK_DOMAINS, LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
+import { LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
+import { LINK_DOMAINS } from '@/utils/link-domains'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)

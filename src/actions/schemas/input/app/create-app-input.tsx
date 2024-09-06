@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { LINK_DOMAINS } from '@/utils/constants'
+import { LINK_DOMAINS } from '@/utils/link-domains'
 import { regexes } from '@/utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
