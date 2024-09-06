@@ -87,7 +87,14 @@ const FormLabel = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { formItemId } = useFormField()
 
-  return <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
+  return (
+    <Label
+      ref={ref}
+      className={className} // shadcn-ui change: removi o error do useFormField para não alterar a label do form para destructive
+      htmlFor={formItemId}
+      {...props}
+    />
+  )
 })
 FormLabel.displayName = 'FormLabel'
 
