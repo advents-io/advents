@@ -15,9 +15,10 @@ import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
   link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clicks' | 'installs' | 'createdAt'>
+  qrcodeLogoUrl?: string
 }
 
-export const LinkItem = ({ link }: Props) => {
+export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   const shortLink = formatShortLink(link.domain, link.slug)
   const httpShortLink = formatShortLink(link.domain, link.slug, true)
 
@@ -81,6 +82,7 @@ export const LinkItem = ({ link }: Props) => {
             domain={link.domain}
             slug={link.slug}
             shortLink={shortLink}
+            qrcodeLogoUrl={qrcodeLogoUrl}
           />
         </div>
       </CardContent>

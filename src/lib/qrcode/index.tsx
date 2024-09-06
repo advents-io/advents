@@ -32,7 +32,7 @@ export const QrCodeSvg = (props: QrPropsSVG) => {
   const calculatedImageSettings = getImageSettings(cells, size, includeMargin, imageSettings)
 
   let image: null | JSX.Element = null
-  if (imageSettings != null && calculatedImageSettings != null) {
+  if (!!imageSettings && !!calculatedImageSettings) {
     if (calculatedImageSettings.excavation != null) {
       cells = excavateModules(cells, calculatedImageSettings.excavation)
     }
@@ -125,16 +125,19 @@ const getImageSettings = (
   size: number,
   includeMargin: boolean,
   imageSettings?: ImageSettings,
-): null | {
-  x: number
-  y: number
-  h: number
-  w: number
-  excavation: Excavation | null
-} => {
-  if (imageSettings == null) {
-    return null
+):
+  | {
+      x: number
+      y: number
+      h: number
+      w: number
+      excavation: Excavation | null
+    }
+  | undefined => {
+  if (!imageSettings) {
+    return
   }
+
   const margin = includeMargin ? MARGIN_SIZE : 0
   const numCells = cells.length + margin * 2
   const defaultSize = Math.floor(size * DEFAULT_IMG_SCALE)

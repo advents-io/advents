@@ -19,9 +19,10 @@ interface Props {
   domain: string
   slug: string
   shortLink: string
+  qrcodeLogoUrl?: string
 }
 
-export const LinkItemDropdown = ({ id, domain, slug, shortLink }: Props) => {
+export const LinkItemDropdown = ({ id, domain, slug, shortLink, qrcodeLogoUrl }: Props) => {
   const [open, setOpen] = useState(false)
 
   /*
@@ -49,7 +50,12 @@ export const LinkItemDropdown = ({ id, domain, slug, shortLink }: Props) => {
           </DialogTrigger>
         </EditLinkDialog>
 
-        <QrCodeDialog domain={domain} slug={slug} closeDropdown={() => setOpen(false)}>
+        <QrCodeDialog
+          domain={domain}
+          slug={slug}
+          closeDropdown={() => setOpen(false)}
+          qrcodeLogoUrl={qrcodeLogoUrl}
+        >
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
               <QrCode className='mr-2 size-4' />

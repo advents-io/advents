@@ -30,6 +30,11 @@ export const LinkList = async ({ page, appSlug }: Props) => {
         clicks: true,
         installs: true,
         createdAt: true,
+        app: {
+          select: {
+            qrcodeLogoUrl: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * pageSize,
@@ -64,7 +69,7 @@ export const LinkList = async ({ page, appSlug }: Props) => {
 
       <div className='space-y-4'>
         {links.map((link, index) => (
-          <LinkItem key={index} link={link} />
+          <LinkItem key={index} link={link} qrcodeLogoUrl={link.app.qrcodeLogoUrl ?? undefined} />
         ))}
       </div>
 
