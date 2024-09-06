@@ -100,6 +100,7 @@ export const CreateEditAppForm = () => {
     return {
       ...(result?.data as GetAppOutputProps),
       defaultFallbackUrl: result?.data?.defaultFallbackUrl || undefined,
+      qrcodeLogoUrl: result?.data?.qrcodeLogoUrl || undefined,
     }
   }
 
@@ -255,7 +256,7 @@ export const CreateEditAppForm = () => {
 
           <FormField
             control={form.control}
-            name='qrCodeLogoUrl'
+            name='qrcodeLogoUrl'
             render={({ field }) => (
               <FormItem>
                 <FormLabel optional>Url do logo do QR Code</FormLabel>

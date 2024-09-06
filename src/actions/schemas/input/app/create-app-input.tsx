@@ -33,7 +33,7 @@ export const createAppInputSchema = z.object({
     .url('Url inválida.')
     .optional()
     .transform(value => value || undefined),
-  qrCodeLogoUrl: z
+  qrcodeLogoUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')
     .optional()
