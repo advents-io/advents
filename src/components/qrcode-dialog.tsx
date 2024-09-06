@@ -15,7 +15,6 @@ import {
 } from '@/ui/dropdown-menu'
 import { Label } from '@/ui/label'
 import { Switch } from '@/ui/switch'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
@@ -129,25 +128,23 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
           <div className='mx-auto flex max-w-xs flex-col items-center gap-10'>
             <QrCodeSvg config={config} />
 
-            <div className='flex gap-2 self-start'>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Switch
-                    id='airplane-mode'
-                    checked={showLogo}
-                    onCheckedChange={setShowLogo}
-                    disabled={!qrcodeLogoUrl}
-                  />
-                </TooltipTrigger>
+            <div className='flex flex-col gap-2'>
+              <div className='relative flex gap-2'>
+                <Switch
+                  id='qrcode-logo'
+                  checked={showLogo}
+                  onCheckedChange={setShowLogo}
+                  disabled={!qrcodeLogoUrl}
+                />
 
-                <TooltipContent>
-                  {qrcodeLogoUrl
-                    ? 'Adiciona no centro do QR Code a logo definida nos ajustes do app.'
-                    : 'Para liberar essa opção, adicione a logo padrão do QR Code nos ajustes do app.'}
-                </TooltipContent>
-              </Tooltip>
+                <Label htmlFor='qrcode-logo'>Exibir logo padrão</Label>
+              </div>
 
-              <Label htmlFor='airplane-mode'>Exibir logo padrão</Label>
+              <span className='text-sm text-muted-foreground'>
+                {qrcodeLogoUrl
+                  ? 'Endereço da logo definido nos ajustes do app.'
+                  : 'Para liberar essa opção, adicione o endereço da logo do QR Code nos ajustes do app.'}
+              </span>
             </div>
 
             <div className='flex w-full justify-between'>
