@@ -116,10 +116,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='title'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Título</FormLabel>
+                <FormLabel optional>Título</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Campanha com influencer (opcional)'
+                    placeholder='Campanha com influencer João'
                     {...field}
                     value={field.value ?? ''}
                   />
@@ -130,7 +130,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           />
 
           <div className='flex flex-col'>
-            <FormLabel className='mb-3'>Link curto</FormLabel>
+            <FormLabel className='mb-3' optional>
+              Link curto
+            </FormLabel>
 
             <div className='flex items-center gap-2'>
               <FormField
@@ -165,7 +167,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                 render={({ field }) => (
                   <FormItem className='w-full'>
                     <FormControl>
-                      <Input autoFocus placeholder='(opcional)' {...field} />
+                      <Input autoFocus placeholder='abcd123' {...field} />
                     </FormControl>
                   </FormItem>
                 )}

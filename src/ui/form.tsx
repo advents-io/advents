@@ -81,21 +81,26 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
 )
 FormItem.displayName = 'FormItem'
 
-const FormLabel = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const { formItemId } = useFormField()
+// shadcn-ui change: adiciona optional ao label
+interface FormLabelProps extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
+  optional?: boolean
+}
 
-  return (
-    <Label
-      ref={ref}
-      className={className} // shadcn-ui change: removi o error do useFormField para não alterar a label do form para destructive
-      htmlFor={formItemId}
-      {...props}
-    />
-  )
-})
+const FormLabel = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, FormLabelProps>(
+  ({ className, optional = false, ...props }, ref) => {
+    const { formItemId } = useFormField()
+
+    return (
+      <Label
+        ref={ref}
+        className={className} // shadcn-ui change: removi o error do useFormField para não alterar a label do form para destructive
+        htmlFor={formItemId}
+        optional={optional}
+        {...props}
+      />
+    )
+  },
+)
 FormLabel.displayName = 'FormLabel'
 
 const FormControl = React.forwardRef<

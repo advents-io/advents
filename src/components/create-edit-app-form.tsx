@@ -238,7 +238,7 @@ export const CreateEditAppForm = () => {
             name='defaultFallbackUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Url alternativa padrão</FormLabel>
+                <FormLabel optional>Url alternativa padrão</FormLabel>
                 <FormControl>
                   <Input {...field} type='url' placeholder='https://www.meusite.com' />
                 </FormControl>
@@ -258,7 +258,7 @@ export const CreateEditAppForm = () => {
             name='qrCodeLogoUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Url do logo do QR Code</FormLabel>
+                <FormLabel optional>Url do logo do QR Code</FormLabel>
                 <FormControl>
                   <Input {...field} type='url' placeholder='https://www.meusite.com/logo.png' />
                 </FormControl>
