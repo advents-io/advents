@@ -132,7 +132,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           />
 
           <div className='flex flex-col'>
-            <FormLabel className='mb-3' optional>
+            <FormLabel className='mb-2' optional>
               Link curto
             </FormLabel>
 
