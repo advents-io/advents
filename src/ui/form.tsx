@@ -84,10 +84,11 @@ FormItem.displayName = 'FormItem'
 // shadcn-ui change: adiciona optional ao label
 interface FormLabelProps extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
   optional?: boolean
+  tooltip?: string
 }
 
 const FormLabel = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, FormLabelProps>(
-  ({ className, optional = false, ...props }, ref) => {
+  ({ className, optional = false, tooltip, ...props }, ref) => {
     const { formItemId } = useFormField()
 
     return (
@@ -96,6 +97,7 @@ const FormLabel = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>,
         className={className} // shadcn-ui change: removi o error do useFormField para não alterar a label do form para destructive
         htmlFor={formItemId}
         optional={optional}
+        tooltip={tooltip}
         {...props}
       />
     )
