@@ -100,7 +100,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
   const form = useForm<CreateLinkInputFormProps>({
     resolver: zodResolver(createLinkInputFormSchema),
-    defaultValues: linkId ? async () => getLink(linkId) : async () => getDefaultLinkValues(),
+    defaultValues: linkId
+      ? async () => await getLink(linkId)
+      : async () => await getDefaultLinkValues(),
   })
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
@@ -121,7 +123,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   <Input
                     placeholder='Campanha com influencer João'
                     {...field}
-                    value={field.value ?? ''}
+                    value={field.value || undefined}
                   />
                 </FormControl>
                 <FormMessage />
@@ -187,9 +189,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                 <FormLabel>Url do app Android</FormLabel>
                 <FormControl>
                   <Input
+                    {...field}
                     placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
                     type='url'
-                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -205,9 +207,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                 <FormLabel>Url do app iOS</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='https://apps.apple.com/br/app/exemplo-app/id123456789'
-                    type='url'
                     {...field}
+                    placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                    type='url'
                   />
                 </FormControl>
                 <FormMessage />
@@ -222,7 +224,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
               <FormItem>
                 <FormLabel>Url alternativa</FormLabel>
                 <FormControl>
-                  <Input placeholder='https://acme.com' type='url' {...field} />
+                  <Input {...field} placeholder='https://www.meusite.com' type='url' />
                 </FormControl>
                 <FormMessage />
               </FormItem>

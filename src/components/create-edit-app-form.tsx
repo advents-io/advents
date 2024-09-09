@@ -96,12 +96,7 @@ export const CreateEditAppForm = () => {
 
   const getApp = async () => {
     const result = await getAppAction({ appSlug: app || '', teamSlug: team })
-
-    return {
-      ...(result?.data as GetAppOutputProps),
-      defaultFallbackUrl: result?.data?.defaultFallbackUrl || undefined,
-      qrcodeLogoUrl: result?.data?.qrcodeLogoUrl || undefined,
-    }
+    return result?.data as GetAppOutputProps
   }
 
   const form = useForm<CreateAppInputProps>({
@@ -200,7 +195,7 @@ export const CreateEditAppForm = () => {
                   <Input
                     {...field}
                     type='url'
-                    placeholder='https://play.google.com/store/apps/details?id=com.example'
+                    placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
                   />
                 </FormControl>
                 <FormDescription>
@@ -222,7 +217,7 @@ export const CreateEditAppForm = () => {
                   <Input
                     {...field}
                     type='url'
-                    placeholder='https://apps.apple.com/br/app/example/id1234567890'
+                    placeholder='https://apps.apple.com/app/exemplo/id1234567890'
                   />
                 </FormControl>
                 <FormDescription>
@@ -241,7 +236,12 @@ export const CreateEditAppForm = () => {
               <FormItem>
                 <FormLabel optional>Url alternativa padrão</FormLabel>
                 <FormControl>
-                  <Input {...field} type='url' placeholder='https://www.meusite.com' />
+                  <Input
+                    {...field}
+                    type='url'
+                    placeholder='https://www.meusite.com'
+                    value={field.value || undefined}
+                  />
                 </FormControl>
                 <FormDescription>
                   Url alternativa padrão que será utilizada ao criar um link.
@@ -261,7 +261,12 @@ export const CreateEditAppForm = () => {
               <FormItem>
                 <FormLabel optional>Url do logo do QR Code</FormLabel>
                 <FormControl>
-                  <Input {...field} type='url' placeholder='https://www.meusite.com/logo.png' />
+                  <Input
+                    {...field}
+                    type='url'
+                    placeholder='https://www.meusite.com/logo.png'
+                    value={field.value || undefined}
+                  />
                 </FormControl>
                 <FormDescription>
                   Url da image que será utilizada para inserir no centro do QR Code de um link.

@@ -31,13 +31,15 @@ export const createAppInputSchema = z.object({
   defaultFallbackUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')
-    .optional()
-    .transform(value => value || undefined),
+    .nullable()
+    .or(z.literal(''))
+    .transform(value => value || null),
   qrcodeLogoUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')
-    .optional()
-    .transform(value => value || undefined),
+    .nullable()
+    .or(z.literal(''))
+    .transform(value => value || null),
 })
 
 export type CreateAppInputProps = z.infer<typeof createAppInputSchema>

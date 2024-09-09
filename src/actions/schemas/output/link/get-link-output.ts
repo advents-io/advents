@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const getLinkOutputSchema = z.object({
   id: z.string().uuid(),
-  title: z.string().nullish(),
+  title: z.string().nullable(),
   domain: z.string(),
   slug: z.string(),
   androidUrl: z.string().url(),
