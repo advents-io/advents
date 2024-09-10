@@ -48,7 +48,7 @@ export const logClick = async (req: NextRequest, linkId: string, destinationUrl:
     linkId,
     destinationUrl: cleanUrlSearchParams(req, destinationUrl),
     ip: typeof ip === 'string' && ip.trim().length > 0 ? ip : '',
-    continent: continent || '',
+    continent: continent || 'Unknown',
     country: geo?.country || 'Unknown',
     city: geo?.city || 'Unknown',
     region: geo?.region || 'Unknown',
