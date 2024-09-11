@@ -1,8 +1,8 @@
 import { Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import WhatsApp from 'public/icons/whatsapp.svg'
 
+import WhatsApp from '@/assets/icons/whatsapp.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,

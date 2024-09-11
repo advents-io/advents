@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Empty from 'public/illustrations/empty.svg'
 
+import Empty from '@/assets/illustrations/empty.svg'
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkItem } from '@/components/link-item'
 import { LinksPagination } from '@/components/links-pagination'

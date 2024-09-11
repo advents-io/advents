@@ -5,9 +5,9 @@ import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useAction } from 'next-safe-action/hooks'
-import AdventsLogo from 'public/advents-logo.svg'
 
 import { signOutAction } from '@/actions/auth/sign-out-action'
+import AdventsLogo from '@/assets/advents/logo.svg'
 import { AppSelector } from '@/components/app-selector'
 import { ContactDropdown } from '@/components/contact-dropdown'
 import { HeaderItem } from '@/components/header-item'
@@ -43,7 +43,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
   const includeTabs = !!team && !!app
 
   return (
-    <header className='-top-18 sticky z-10 w-full border-b bg-background px-4 md:px-14'>
+    <header className='sticky -top-18 z-10 w-full border-b bg-background px-4 md:px-14'>
       <div className='flex py-4'>
         <div className='flex flex-1 flex-row items-center'>
           <Breadcrumb>
