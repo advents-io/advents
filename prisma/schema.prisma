@@ -23,12 +23,12 @@ model Link {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
+  clicksArray Click[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
-
-  clicksArray Click[]
 
   @@unique([domain, slug])
   @@map("links")
@@ -48,7 +48,9 @@ model App {
 
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
-  links  Link[]
+
+  links   Link[]
+  apiKeys ApiKey[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -63,7 +65,7 @@ model Team {
   id String @id @default(uuid())
 
   name String
-  slug String
+  slug String @unique
 
   members Member[]
   apps    App[]
@@ -71,21 +73,19 @@ model Team {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@unique([slug])
   @@map("teams")
 }
 
 model Member {
   id String @id @default(uuid())
 
-  userId String @map("user_id")
+  userId String @unique @map("user_id")
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@unique([userId])
   @@map("members")
 }
 
@@ -123,4 +123,18 @@ model Click {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("clicks")
+}
+
+model ApiKey {
+  id String @id @default(uuid())
+
+  key String @unique
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("api_keys")
 }
