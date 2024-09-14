@@ -6,6 +6,7 @@ import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { createAppInputSchema } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
+import { nanoid } from '@/lib/nanoid'
 import { prisma } from '@/lib/prisma'
 import { routes } from '@/utils/routes'
 
@@ -41,10 +42,17 @@ export const createAppAction = authActionClient
 
     const imageUrl = await fetchUrlOgImage(app.androidUrl)
 
+    const apiKey = `advents_${nanoid(24)}`
+
     await prisma.app.create({
       data: {
         ...app,
         imageUrl,
+        apiKeys: {
+          create: {
+            key: apiKey,
+          },
+        },
         teamId: team.id,
         createdBy: user.id,
         updatedBy: user.id,
