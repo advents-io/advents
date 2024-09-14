@@ -9,8 +9,8 @@ export const createLinkInputFormSchema = z.object({
   title: z
     .string()
     .max(50, 'O título deve possuir no máximo 50 caracteres.')
-    .nullish()
-    .transform(value => value || undefined),
+    .nullable()
+    .transform(value => value || null),
   domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
   slug: z
     .string()

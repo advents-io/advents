@@ -91,6 +91,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     const app = response?.data as GetAppDefaultValuesOutputProps
 
     return {
+      title: null,
       domain: app.defaultDomain,
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
