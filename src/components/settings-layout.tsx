@@ -1,10 +1,19 @@
 'use client'
 
+import { SelectGroup } from '@radix-ui/react-select'
 import { Code, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { Button } from '@/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/select'
 import { routes } from '@/utils/routes'
 
 interface Props {
@@ -15,6 +24,7 @@ interface Props {
 
 export const SettingsLayout = ({ team, app, children }: Props) => {
   const pathname = usePathname()
+  const router = useRouter()
 
   const SIDEBAR_ITEMS = [
     {
@@ -30,8 +40,33 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
   ]
 
   return (
-    <div className='flex gap-6'>
-      <aside className='hidden w-64 flex-col sm:flex'>
+    <div className='flex flex-col gap-6 sm:flex-row'>
+      <div className='sm:hidden'>
+        <Select value={pathname} onValueChange={value => router.push(value)}>
+          <SelectTrigger className='w-full focus:ring-0 focus:ring-offset-0'>
+            <SelectValue />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel className='text-sm font-normal text-muted-foreground'>
+                Ajustes do app
+              </SelectLabel>
+
+              {SIDEBAR_ITEMS.map((item, index) => (
+                <SelectItem key={index} value={item.href}>
+                  <div className='flex items-center'>
+                    <item.icon className='mr-2 size-4' />
+                    {item.title}
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <aside className='hidden w-64 sm:block'>
         <h2 className='mb-3 text-sm text-muted-foreground'>Ajustes do app</h2>
 
         <div className='flex flex-col gap-1'>
