@@ -94,7 +94,7 @@ model Click {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
   linkId String @map("link_id")
-  link   Link   @relation(fields: [linkId], references: [id])
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
   identityHash    String  @map("identity_hash")
   destinationUrl  String  @map("destination_url")
