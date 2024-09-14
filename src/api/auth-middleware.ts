@@ -1,0 +1,33 @@
+import { createMiddleware } from 'hono/factory'
+
+import { prisma } from '@/lib/prisma'
+
+export const authMiddleware = createMiddleware(async (c, next) => {
+  const authHeader = c.req.header('Authorization')
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return c.json({ message: 'Unauthorized.' }, 401)
+  }
+
+  const key = authHeader.slice(7)
+
+  // Key length must be 32: advents_[24 chars token here]
+  if (key.length !== 32) {
+    return c.json({ message: 'Unauthorized.' }, 401)
+  }
+
+  const apiKey = await prisma.apiKey.findUnique({
+    where: {
+      key,
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  if (!apiKey) {
+    return c.json({ message: 'Unauthorized.' }, 401)
+  }
+
+  await next()
+})
