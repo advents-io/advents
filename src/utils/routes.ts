@@ -2,11 +2,11 @@ export const routes = {
   TEAMS: {
     path: '/',
   },
-  NEW_APP: {
-    path: (team: string) => `/${team}/new`,
-  },
   APPS: {
     path: (team: string) => `/${team}`,
+  },
+  APPS_NEW: {
+    path: (team: string) => `/${team}/new`,
   },
   LINKS: {
     path: (team: string, app: string) => `/${team}/${app}`,
@@ -16,6 +16,9 @@ export const routes = {
   },
   SETTINGS: {
     path: (team: string, app: string) => `/${team}/${app}/settings`,
+  },
+  SETTINGS_SDK: {
+    path: (team: string, app: string) => `/${team}/${app}/settings/sdk`,
   },
 
   SIGN_IN: {

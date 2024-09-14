@@ -64,7 +64,7 @@ export default async function Apps({ params }: { params: { team: string } }) {
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-xl font-bold'>Apps</h1>
 
-        <Link href={routes.NEW_APP.path(team.slug)}>
+        <Link href={routes.APPS_NEW.path(team.slug)}>
           <Button size='lg'>
             <PlusIcon className='mr-2 size-4' />
             Criar app
@@ -82,7 +82,7 @@ export default async function Apps({ params }: { params: { team: string } }) {
             <CardContent className='mt-10 flex flex-col items-center gap-10'>
               <Image src={Empty} width={200} height={200} alt='Nenhum app encontrado' />
 
-              <Link href={routes.NEW_APP.path(team.slug)}>
+              <Link href={routes.APPS_NEW.path(team.slug)}>
                 <Button size='lg'>
                   <PlusIcon className='mr-2 size-4' />
                   Criar app

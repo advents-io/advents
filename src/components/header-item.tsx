@@ -6,16 +6,16 @@ import { Button } from '@/ui/button'
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
-  href: string
+  href: string[]
 }
 
 export const HeaderItem = ({ children, href, className, ...props }: Props) => {
   const pathname = usePathname()
 
-  const isActive = pathname === href
+  const isActive = href.some(href => pathname === href)
 
   return (
-    <Link href={href}>
+    <Link href={href[0]}>
       <Button
         className={cn('font-normal text-muted-foreground', className)}
         variant='ghost'

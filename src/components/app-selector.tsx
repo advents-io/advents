@@ -35,7 +35,7 @@ export const AppSelector = ({ apps }: Props) => {
 
   const handleAppChange = (appSlug: string) => {
     if (appSlug === 'new-app') {
-      router.push(routes.NEW_APP.path(team))
+      router.push(routes.APPS_NEW.path(team))
       return
     }
 
