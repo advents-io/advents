@@ -89,6 +89,20 @@ model Member {
   @@map("members")
 }
 
+model ApiKey {
+  id String @id @default(uuid())
+
+  key String @unique
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("api_keys")
+}
+
 model Click {
   // Gerado pelo Postgres devido a eu criar o Click pela api do Supabase
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -123,18 +137,4 @@ model Click {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("clicks")
-}
-
-model ApiKey {
-  id String @id @default(uuid())
-
-  key String @unique
-
-  appId String @map("app_id")
-  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("api_keys")
 }
