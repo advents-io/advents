@@ -4,7 +4,7 @@
     "dev": "next dev --turbo",
     "migrate": "prisma migrate dev && prisma generate",
     "migrate:prod": "prisma migrate deploy && prisma generate",
-    "lint": "eslint . --fix && prettier . \"!**/pnpm-lock.yaml\" --write"
+    "lint": "eslint . --fix && prettier . --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
