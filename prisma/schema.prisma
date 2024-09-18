@@ -142,9 +142,33 @@ model Click {
 model Session {
   id String @id @default(uuid())
 
-  data Json
+  sdkName    String @map("sdk_name")
+  sdkVersion String @map("sdk_version")
+  os         String
+
+  androidId              String?   @map("android_id")
+  androidInstallReferrer String?   @map("android_install_referrer")
+  androidInstallTime     DateTime? @map("android_install_time")
+  userAgent              String?   @map("user_agent")
+  deviceName             String?   @map("device_name")
+  deviceBrand            String?   @map("device_brand")
+  deviceModel            String?   @map("device_model")
+  deviceYearClass        String?   @map("device_year_class")
+  osVersion              String?   @map("os_version")
+  appVersion             String?   @map("app_version")
+  timestamp              DateTime
 
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("sessions")
+}
+
+model Event {
+  id String @id @default(uuid())
+
+  data Json
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("events")
 }
