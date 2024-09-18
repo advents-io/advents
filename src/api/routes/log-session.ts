@@ -4,18 +4,11 @@ import { prisma } from '@/lib/prisma'
 
 export const logSession = (api: Hono) =>
   api.post('/session', async c => {
-    let body = null
+    let body
 
     try {
       body = await c.req.json()
-    } catch {
-      return c.json(
-        {
-          message: 'Session data is required.',
-        },
-        400,
-      )
-    }
+    } catch {}
 
     if (!body) {
       return c.json(
