@@ -138,3 +138,13 @@ model Click {
 
   @@map("clicks")
 }
+
+model Session {
+  id String @id @default(uuid())
+
+  data Json
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("sessions")
+}
