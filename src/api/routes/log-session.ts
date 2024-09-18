@@ -11,7 +11,11 @@ const schema = z.object({
 
   androidId: z.string().nullable(),
   androidInstallReferrer: z.string().nullable(),
-  androidInstallTime: z.date().nullable(),
+  androidInstallTime: z
+    .string()
+    .datetime()
+    .nullable()
+    .transform(val => (val ? new Date(val) : null)),
   userAgent: z.string().nullable(),
   deviceName: z.string().nullable(),
   deviceBrand: z.string().nullable(),
@@ -19,8 +23,10 @@ const schema = z.object({
   deviceYearClass: z.string().nullable(),
   osVersion: z.string().nullable(),
   appVersion: z.string().nullable(),
-
-  timestamp: z.date(),
+  timestamp: z
+    .string()
+    .datetime()
+    .transform(val => new Date(val)),
 })
 
 export const logSession = (api: Hono) =>
