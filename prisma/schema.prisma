@@ -105,14 +105,13 @@ model ApiKey {
 }
 
 model Click {
-  // Gerado pelo Postgres devido a eu criar o Click pela api do Supabase
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id String @id @db.Uuid
 
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
-  identityHash    String  @map("identity_hash")
   destinationUrl  String  @map("destination_url")
+  os              String
   referer         String
   refererUrl      String  @map("referer_url")
   ip              String
@@ -129,7 +128,6 @@ model Click {
   browserVersion  String  @map("browser_version")
   engine          String
   engineVersion   String  @map("engine_version")
-  os              String
   osVersion       String  @map("os_version")
   cpuArchitecture String  @map("cpu_architecture")
   userAgent       String  @map("user_agent")
@@ -143,9 +141,10 @@ model Click {
 model Session {
   id String @id @default(uuid())
 
-  sdkName    String @map("sdk_name")
-  sdkVersion String @map("sdk_version")
-  os         String
+  sdkName         String   @map("sdk_name")
+  sdkVersion      String   @map("sdk_version")
+  os              String
+  deviceTimestamp DateTime @map("device_timestamp")
 
   androidId              String?   @map("android_id")
   androidInstallReferrer String?   @map("android_install_referrer")
@@ -157,7 +156,6 @@ model Session {
   deviceYearClass        String?   @map("device_year_class")
   osVersion              String?   @map("os_version")
   appVersion             String?   @map("app_version")
-  timestamp              DateTime
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
