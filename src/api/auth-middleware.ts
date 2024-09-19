@@ -2,7 +2,13 @@ import { createMiddleware } from 'hono/factory'
 
 import { prisma } from '@/lib/prisma'
 
-export const authMiddleware = createMiddleware(async (c, next) => {
+interface AuthMiddlewareContext {
+  Variables: {
+    appId: string
+  }
+}
+
+export const authMiddleware = createMiddleware<AuthMiddlewareContext>(async (c, next) => {
   const authHeader = c.req.header('Authorization')
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -22,12 +28,15 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     },
     select: {
       id: true,
+      appId: true,
     },
   })
 
   if (!apiKey) {
     return c.json({ message: 'Unauthorized.' }, 401)
   }
+
+  c.set('appId', apiKey.appId)
 
   await next()
 })

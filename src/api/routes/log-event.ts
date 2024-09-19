@@ -1,9 +1,10 @@
 import { Hono } from 'hono'
 
+import { authMiddleware } from '@/api/auth-middleware'
 import { prisma } from '@/lib/prisma'
 
 export const logEvent = (api: Hono) =>
-  api.post('/', async c => {
+  api.post('/', authMiddleware, async c => {
     let body
 
     try {
