@@ -40,28 +40,24 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
     return redirect(WEBSITE_URL)
   }
 
+  const clickId = crypto.randomUUID()
+
   let destinationUrl = new URL(link.fallbackUrl)
 
   const isIos = userAgent(req).os?.name === 'iOS'
   if (isIos) {
     destinationUrl = new URL(link.iosUrl)
-    destinationUrl.searchParams.append('referrer', `advents_click_id=${link.id}`)
+    destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
   }
 
   const isAndroid = userAgent(req).os?.name === 'Android'
   if (isAndroid) {
     destinationUrl = new URL(link.androidUrl)
     destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
-    destinationUrl.searchParams.append('referrer', `advents_click_id=${link.id}`)
+    destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
   }
 
-  if (!isIos && !isAndroid) {
-    destinationUrl.searchParams.append('utm_source', 'advents')
-    destinationUrl.searchParams.append('utm_medium', 'link')
-    destinationUrl.searchParams.append('utm_campaign', link.id)
-  }
-
-  event.waitUntil(logClick(req, link.id, destinationUrl.toString()))
+  event.waitUntil(logClick(req, clickId, link.id, destinationUrl.toString()))
 
   return redirect(destinationUrl.toString())
 }

@@ -15,19 +15,14 @@ const LOCALHOST_GEO_DATA = {
 
 const LOCALHOST_IP = '127.0.0.1'
 
-const ALLOWED_SEARCH_PARAMS = [
-  'advents_click_id',
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_term',
-  'utm_content',
-  'ref',
-]
+interface ClickInsert extends Omit<Click, 'createdAt'> {}
 
-interface ClickInsert extends Omit<Click, 'id' | 'createdAt'> {}
-
-export const logClick = async (req: NextRequest, linkId: string, destinationUrl: string) => {
+export const logClick = async (
+  req: NextRequest,
+  clickId: string,
+  linkId: string,
+  destinationUrl: string,
+) => {
   const isBot = detectBot(req)
 
   if (isBot) {
@@ -42,12 +37,17 @@ export const logClick = async (req: NextRequest, linkId: string, destinationUrl:
   const geo = process.env.VERCEL === '1' ? req.geo : LOCALHOST_GEO_DATA
   const ua = userAgent(req)
   const referer = req.headers.get('referer')
-  const identityHash = await getIdentityHash(req)
+  const refererDomain = getDomainFromUrl(referer)
 
   const click: ClickInsert = {
-    identityHash,
+    id: clickId,
+
     linkId,
-    destinationUrl: cleanUrlSearchParams(req, destinationUrl),
+
+    destinationUrl,
+    os: ua.os.name || 'Unknown',
+    referer: refererDomain || '(direct)',
+    refererUrl: referer || '(direct)',
     ip: typeof ip === 'string' && ip.trim().length > 0 ? ip : '',
     continent: continent || 'Unknown',
     country: geo?.country || 'Unknown',
@@ -55,20 +55,17 @@ export const logClick = async (req: NextRequest, linkId: string, destinationUrl:
     region: geo?.region || 'Unknown',
     latitude: geo?.latitude || 'Unknown',
     longitude: geo?.longitude || 'Unknown',
-    device: capitalize(ua.device.type) || 'Desktop',
+    device: ua.device.type || 'Desktop',
     deviceVendor: ua.device.vendor || 'Unknown',
     deviceModel: ua.device.model || 'Unknown',
     browser: ua.browser.name || 'Unknown',
     browserVersion: ua.browser.version || 'Unknown',
     engine: ua.engine.name || 'Unknown',
     engineVersion: ua.engine.version || 'Unknown',
-    os: ua.os.name || 'Unknown',
     osVersion: ua.os.version || 'Unknown',
     cpuArchitecture: ua.cpu?.architecture || 'Unknown',
     userAgent: ua.ua || 'Unknown',
     isBot: ua.isBot,
-    referer: referer ? getDomainWithoutWWW(referer) || '(direct)' : '(direct)',
-    refererUrl: referer || '(direct)',
   }
 
   const clickSnakeCase = convertKeysToSnakeCase(click)
@@ -78,7 +75,7 @@ export const logClick = async (req: NextRequest, linkId: string, destinationUrl:
   await Promise.allSettled([
     await supabase.from('clicks').insert(clickSnakeCase),
 
-    // Chama a Postgres function increment_link_clicks que atualiza o link incrementando um click
+    // Calls the Postgres function increment_link_clicks which updates the link by incrementing a click
     await supabase.rpc('increment_link_clicks', { link_id: linkId }),
   ])
 }
@@ -109,62 +106,6 @@ const detectBot = (req: NextRequest) => {
   )
 }
 
-/**
- * Combine IP + UA to create a unique identifier for the user (for deduplication)
- */
-const getIdentityHash = async (req: Request) => {
-  const ip = ipAddress(req) || LOCALHOST_IP
-  const ua = userAgent(req)
-
-  return await hashStringSHA256(`${ip}-${ua.ua}`)
-}
-
-const hashStringSHA256 = async (value: string) => {
-  // Encode the string into bytes
-  const encoder = new TextEncoder()
-  const data = encoder.encode(value)
-
-  // Hash the data with SHA-256
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-
-  // Convert the buffer to a hexadecimal string
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-
-  return hashHex
-}
-
-const capitalize = (value?: string | null) => {
-  if (!value || typeof value !== 'string') {
-    return value
-  }
-
-  return value
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-}
-
-const cleanUrlSearchParams = (req: NextRequest, url: string) => {
-  const finalUrl = new URL(url)
-
-  const searchParams = req.nextUrl.searchParams
-
-  if (searchParams.size === 0) {
-    return finalUrl.toString()
-  }
-
-  for (const [key, value] of searchParams) {
-    const isAllowedSearchParam = ALLOWED_SEARCH_PARAMS.includes(key)
-
-    if (isAllowedSearchParam) {
-      finalUrl.searchParams.set(key, value)
-    }
-  }
-
-  return finalUrl.toString()
-}
-
 const isValidUrl = (url: string) => {
   try {
     // eslint-disable-next-line no-new
@@ -175,7 +116,11 @@ const isValidUrl = (url: string) => {
   }
 }
 
-const getDomainWithoutWWW = (url: string) => {
+const getDomainFromUrl = (url: string | null) => {
+  if (!url) {
+    return null
+  }
+
   if (isValidUrl(url)) {
     return new URL(url).hostname.replace(/^www\./, '')
   }
@@ -185,6 +130,8 @@ const getDomainWithoutWWW = (url: string) => {
       return new URL(`https://${url}`).hostname.replace(/^www\./, '')
     }
   } catch {}
+
+  return null
 }
 
 const camelToSnakeCase = (str: string) =>
