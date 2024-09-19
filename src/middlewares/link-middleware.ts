@@ -51,6 +51,7 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
   const isAndroid = userAgent(req).os?.name === 'Android'
   if (isAndroid) {
     destinationUrl = new URL(link.androidUrl)
+    destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
     destinationUrl.searchParams.append('referrer', `advents_click_id=${link.id}`)
   }
 
