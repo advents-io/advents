@@ -16,6 +16,7 @@ const LOCALHOST_GEO_DATA = {
 const LOCALHOST_IP = '127.0.0.1'
 
 const ALLOWED_SEARCH_PARAMS = [
+  'advents_click_id',
   'utm_source',
   'utm_medium',
   'utm_campaign',
