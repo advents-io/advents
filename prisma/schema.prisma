@@ -49,8 +49,9 @@ model App {
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  links   Link[]
-  apiKeys ApiKey[]
+  links    Link[]
+  sessions Session[]
+  apiKeys  ApiKey[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -157,6 +158,9 @@ model Session {
   osVersion              String?   @map("os_version")
   appVersion             String?   @map("app_version")
   timestamp              DateTime
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
 

@@ -2,6 +2,7 @@ import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
+import { authMiddleware } from '@/api/auth-middleware'
 import { prisma } from '@/lib/prisma'
 
 const schema = z.object({
@@ -30,12 +31,22 @@ const schema = z.object({
 })
 
 export const logSession = (api: Hono) =>
-  api.post('/session', zValidator('json', schema), async c => {
-    const session = c.req.valid('json')
+  api.post(
+    '/sessions', //
+    authMiddleware, //
+    zValidator('json', schema), //
+    async c => {
+      const session = c.req.valid('json')
 
-    await prisma.session.create({
-      data: session,
-    })
+      const appId = c.var.appId
 
-    return new Response()
-  })
+      await prisma.session.create({
+        data: {
+          ...session,
+          appId,
+        },
+      })
+
+      return new Response()
+    },
+  )
