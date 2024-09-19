@@ -1,0 +1,93 @@
+import { PrismaClient } from '@prisma/client'
+import { nanoid } from 'nanoid'
+
+import { CreateAppInputProps } from '@/actions/schemas/input/app/create-app-input'
+import { fetchUrlOgImage } from '@/helpers/og-helper'
+import { supabaseAdminClient } from '@/lib/supabase'
+import { LINK_DOMAINS } from '@/utils/link-domains'
+
+const prisma = new PrismaClient()
+
+const app: CreateAppInputProps = {
+  name: 'Favorito',
+  slug: 'favorito',
+  defaultDomain: LINK_DOMAINS[0],
+  androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
+  iosUrl: 'https://apps.apple.com/app/id1598991618',
+  defaultFallbackUrl: 'https://favorito.digital',
+  qrcodeLogoUrl: null,
+}
+
+async function seed() {
+  const team = await prisma.team.create({
+    data: {
+      name: 'Favorito',
+      slug: 'favorito',
+    },
+  })
+
+  const {
+    data: { users },
+  } = await supabaseAdminClient().auth.admin.listUsers()
+
+  if (!users.length) {
+    throw new Error('No users found')
+  }
+
+  const user = users.find(user => user.email === 'gabriel@advents.io')
+
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  await prisma.member.create({
+    data: {
+      userId: user.id,
+      teamId: team.id,
+    },
+  })
+
+  const imageUrl = await fetchUrlOgImage(app.androidUrl)
+
+  const apiKey = `advents_${nanoid(24)}`
+
+  await prisma.app.create({
+    data: {
+      ...app,
+      imageUrl,
+      apiKeys: {
+        create: {
+          key: apiKey,
+        },
+      },
+      teamId: team.id,
+      createdBy: user.id,
+      updatedBy: user.id,
+    },
+  })
+
+  await prisma.$executeRaw`
+      CREATE OR REPLACE FUNCTION increment_link_clicks (link_id TEXT)
+      	RETURNS void
+      	AS $$
+      BEGIN
+      	UPDATE
+      		links
+      	SET
+      		clicks = clicks + 1
+      	WHERE
+      		id = link_id;
+      END;
+      $$
+      LANGUAGE plpgsql;
+  `
+}
+
+seed()
+  .catch(e => {
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
