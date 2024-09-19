@@ -45,13 +45,13 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
   const isIos = userAgent(req).os?.name === 'iOS'
   if (isIos) {
     destinationUrl = new URL(link.iosUrl)
-    destinationUrl.searchParams.append('advents_click_id', link.id)
+    destinationUrl.searchParams.append('referrer', `advents_click_id=${link.id}`)
   }
 
   const isAndroid = userAgent(req).os?.name === 'Android'
   if (isAndroid) {
     destinationUrl = new URL(link.androidUrl)
-    destinationUrl.searchParams.append('advents_click_id', link.id)
+    destinationUrl.searchParams.append('referrer', `advents_click_id=${link.id}`)
   }
 
   if (!isIos && !isAndroid) {
