@@ -12,7 +12,7 @@ const labelVariants = cva(
   'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
 )
 
-// shadcn-ui change: adiciona optional e tooltip ao label
+// shadcn-ui change: add optional and tooltip to label
 interface LabelProps
   extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>,
     VariantProps<typeof labelVariants> {
