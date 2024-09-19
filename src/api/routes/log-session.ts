@@ -12,7 +12,7 @@ const schema = z.object({
 
   androidId: z.string().nullable(),
   androidInstallReferrer: z.string().nullable(),
-  androidInstallTime: z
+  installTime: z
     .string()
     .datetime()
     .nullable()

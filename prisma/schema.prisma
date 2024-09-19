@@ -149,7 +149,7 @@ model Session {
 
   androidId              String?   @map("android_id")
   androidInstallReferrer String?   @map("android_install_referrer")
-  androidInstallTime     DateTime? @map("android_install_time")
+  installTime            DateTime? @map("install_time")
   userAgent              String?   @map("user_agent")
   deviceName             String?   @map("device_name")
   deviceBrand            String?   @map("device_brand")

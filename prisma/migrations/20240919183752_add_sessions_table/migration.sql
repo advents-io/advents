@@ -6,7 +6,7 @@ CREATE TABLE "sessions" (
     "os" TEXT NOT NULL,
     "android_id" TEXT,
     "android_install_referrer" TEXT,
-    "android_install_time" TIMESTAMP(3),
+    "install_time" TIMESTAMP(3),
     "user_agent" TEXT,
     "device_name" TEXT,
     "device_brand" TEXT,
@@ -15,16 +15,11 @@ CREATE TABLE "sessions" (
     "os_version" TEXT,
     "app_version" TEXT,
     "timestamp" TIMESTAMP(3) NOT NULL,
+    "app_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "events" (
-    "id" TEXT NOT NULL,
-    "data" JSONB NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "events_pkey" PRIMARY KEY ("id")
-);
+-- AddForeignKey
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_app_id_fkey" FOREIGN KEY ("app_id") REFERENCES "apps"("id") ON DELETE CASCADE ON UPDATE CASCADE;
