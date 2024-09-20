@@ -105,7 +105,7 @@ model ApiKey {
 }
 
 model Click {
-  id String @id @db.Uuid
+  id String @id
 
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
@@ -135,6 +135,8 @@ model Click {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  installs Install[]
+
   @@map("clicks")
 }
 
@@ -160,9 +162,25 @@ model Session {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
+  installs Install[]
+
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("sessions")
+}
+
+model Install {
+  id String @id @default(uuid())
+
+  sessionId String  @map("session_id")
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  clickId String @map("click_id")
+  click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("installs")
 }
 
 model Event {
