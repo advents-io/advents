@@ -173,10 +173,10 @@ model Session {
 model Install {
   id String @id @default(uuid())
 
-  sessionId String  @map("session_id")
+  sessionId String  @unique @map("session_id")
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  clickId String @map("click_id")
+  clickId String @unique @map("click_id")
   click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
