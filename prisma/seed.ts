@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { nanoid } from 'nanoid'
 
 import { CreateAppInputProps } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
@@ -49,7 +48,7 @@ async function seed() {
 
   const imageUrl = await fetchUrlOgImage(app.androidUrl)
 
-  const apiKey = `advents_${nanoid(24)}`
+  const apiKey = 'advents_NqL92oPEAbY1Qs3OHFx8NK9r' // API key used in example apps
 
   await prisma.app.create({
     data: {
@@ -66,21 +65,47 @@ async function seed() {
     },
   })
 
+  // Grant all privileges to anon, authenticated and service_role roles
+  await configure()
+}
+
+const configure = async () => {
   await prisma.$executeRaw`
-      CREATE OR REPLACE FUNCTION increment_link_clicks (link_id TEXT)
-      	RETURNS void
-      	AS $$
-      BEGIN
-      	UPDATE
-      		links
-      	SET
-      		clicks = clicks + 1
-      	WHERE
-      		id = link_id;
-      END;
-      $$
-      LANGUAGE plpgsql;
-  `
+    GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;`
+
+  await prisma.$executeRaw`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;`
+
+  // Create function to increment link clicks
+  await prisma.$executeRaw`
+    CREATE OR REPLACE FUNCTION increment_link_clicks (link_id TEXT)
+      RETURNS void
+      AS $$
+    BEGIN
+      UPDATE
+        links
+      SET
+        clicks = clicks + 1
+      WHERE
+        id = link_id;
+    END;
+    $$
+    LANGUAGE plpgsql;`
 }
 
 seed()
