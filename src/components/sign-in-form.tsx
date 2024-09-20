@@ -42,76 +42,78 @@ export const SignInForm = () => {
   })
 
   return (
-    <Card className='w-full max-w-sm'>
-      <CardHeader>
-        <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(signIn)}>
+        <Card className='w-full max-w-sm'>
+          <CardHeader>
+            <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
 
-        {!emailSent && (
-          <>
-            <CardTitle>Entre na Advents</CardTitle>
+            {!emailSent && (
+              <>
+                <CardTitle>Entre na Advents</CardTitle>
 
-            <CardDescription>
-              Entre com o e-mail cadastrado para receber um link de acesso.
-            </CardDescription>
-          </>
-        )}
-      </CardHeader>
+                <CardDescription>
+                  Entre com o e-mail cadastrado para receber um link de acesso.
+                </CardDescription>
+              </>
+            )}
+          </CardHeader>
 
-      <CardContent>
-        {emailSent ? (
-          <div className='space-y-4'>
-            <p>
-              Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
-            </p>
+          <CardContent>
+            {emailSent ? (
+              <div className='space-y-4'>
+                <p>
+                  Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+                </p>
 
-            <p>Verifique sua caixa de entrada e abra o link enviado.</p>
-          </div>
-        ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(signIn)}>
-              <ErrorAlert error={error} />
+                <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+              </div>
+            ) : (
+              <>
+                <ErrorAlert error={error} />
 
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='jeff@amazon.com' type='email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        )}
-      </CardContent>
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder='jeff@amazon.com' type='email' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+          </CardContent>
 
-      <CardFooter>
-        {emailSent ? (
-          <Button variant='outline' onClick={() => setEmailSent(false)}>
-            <ArrowLeft className='mr-2 size-4' />
-            Voltar
-          </Button>
-        ) : (
-          <div className='flex flex-1 flex-col gap-3'>
-            <Button type='submit' disabled={isExecuting}>
-              <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
-            </Button>
-
-            <span className='text-sm'>
-              Não possui uma conta?{' '}
-              <ContactDropdown>
-                <Button variant='link' size='sm' className='p-0'>
-                  Entre em contato.
+          <CardFooter>
+            {emailSent ? (
+              <Button variant='outline' onClick={() => setEmailSent(false)}>
+                <ArrowLeft className='mr-2 size-4' />
+                Voltar
+              </Button>
+            ) : (
+              <div className='flex flex-1 flex-col gap-3'>
+                <Button type='submit' disabled={isExecuting}>
+                  <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
                 </Button>
-              </ContactDropdown>
-            </span>
-          </div>
-        )}
-      </CardFooter>
-    </Card>
+
+                <span className='text-sm'>
+                  Não possui uma conta?{' '}
+                  <ContactDropdown>
+                    <Button variant='link' size='sm' className='p-0'>
+                      Entre em contato.
+                    </Button>
+                  </ContactDropdown>
+                </span>
+              </div>
+            )}
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   )
 }

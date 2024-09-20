@@ -12,7 +12,7 @@ export default async function SignIn() {
   return (
     <>
       <PublicHeader />
-      <div className='flex flex-1 items-center justify-center'>
+      <div className='mx-4 flex flex-1 items-center justify-center'>
         <Suspense>
           <SignInForm />
         </Suspense>
