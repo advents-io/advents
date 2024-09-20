@@ -1,8 +1,6 @@
-import { ipAddress } from '@vercel/functions'
-import { NextRequest } from 'next/server'
+import { Geo, geolocation, ipAddress } from '@vercel/functions'
 
-const LOCALHOST_GEO_DATA = {
-  continent: 'SA',
+const LOCALHOST_GEO_DATA: Geo = {
   country: 'BR',
   city: 'Joinville',
   region: 'SC',
@@ -10,15 +8,10 @@ const LOCALHOST_GEO_DATA = {
   longitude: '-48.8824',
 }
 
-const LOCALHOST_IP = '127.0.0.1'
-
-export const getGeoData = (req: NextRequest) => {
-  const ip = process.env.VERCEL === '1' ? ipAddress(req) : LOCALHOST_IP
-  const continent =
-    process.env.VERCEL === '1'
-      ? req.headers.get('x-vercel-ip-continent')
-      : LOCALHOST_GEO_DATA.continent
-  const geo = process.env.VERCEL === '1' ? req.geo : LOCALHOST_GEO_DATA
+export const getGeoData = (req: Request) => {
+  const ip = process.env.VERCEL === '1' ? ipAddress(req) : '127.0.0.1'
+  const continent = process.env.VERCEL === '1' ? req.headers.get('x-vercel-ip-continent') : 'SA'
+  const geo = process.env.VERCEL === '1' ? geolocation(req) : LOCALHOST_GEO_DATA
 
   return {
     ip: typeof ip === 'string' && ip.trim().length > 0 ? ip : '',

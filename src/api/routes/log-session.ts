@@ -1,7 +1,7 @@
 import { zValidator } from '@hono/zod-validator'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
-import { NextRequest, userAgent } from 'next/server'
+import { userAgent } from 'next/server'
 import { z } from 'zod'
 
 import { authMiddleware } from '@/api/auth-middleware'
@@ -47,7 +47,7 @@ export const logSession = (api: Hono) =>
 
       const ua = userAgent(c.req.raw)
 
-      const geoData = getGeoData(c.req.raw as NextRequest)
+      const geoData = getGeoData(c.req.raw)
 
       const { id: sessionId } = await prisma.session.create({
         data: {
