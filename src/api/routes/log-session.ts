@@ -1,4 +1,5 @@
 import { zValidator } from '@hono/zod-validator'
+import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -52,7 +53,7 @@ export const logSession = (api: Hono) =>
         },
       })
 
-      await checkInstall(sessionId, session)
+      waitUntil(checkInstall(sessionId, session))
 
       return new Response()
     },
