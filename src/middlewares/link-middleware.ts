@@ -3,8 +3,15 @@ import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/serve
 
 import { logClick } from '@/helpers/click-helper'
 import { supabaseClient } from '@/lib/supabase'
-import { LOCALHOST_LINK_DOMAIN, WEBSITE_URL } from '@/utils/constants'
-import { LINK_DOMAINS } from '@/utils/link-domains'
+import { WEBSITE_URL } from '@/utils/constants'
+import {
+  APP_DOMAIN,
+  LINK_DOMAINS,
+  LOCALHOST_APP_DOMAIN,
+  LOCALHOST_LINK_DOMAIN,
+} from '@/utils/domains'
+
+const IOS_CLICK_ROUTE = '/api/ios/click'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
@@ -46,8 +53,12 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
 
   const isIos = userAgent(req).os?.name === 'iOS'
   if (isIos) {
-    destinationUrl = new URL(link.iosUrl)
-    destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
+    const isLocalhost = req.headers.get('host')?.includes('localhost') ?? true
+    const baseUrl = isLocalhost ? LOCALHOST_APP_DOMAIN : APP_DOMAIN
+
+    destinationUrl = new URL(IOS_CLICK_ROUTE, baseUrl)
+    destinationUrl.searchParams.append('clickId', clickId)
+    destinationUrl.searchParams.append('redirect', link.iosUrl)
   }
 
   const isAndroid = userAgent(req).os?.name === 'Android'
@@ -71,7 +82,11 @@ const redirect = (url: string) => {
 const getDomain = (req: NextRequest) => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain = domain === LOCALHOST_LINK_DOMAIN
+  const isDevLinkDomain =
+    domain === LOCALHOST_LINK_DOMAIN &&
+    // Workaround because the redirect to the iOS click route not change the host header
+    // and this methods would always return true when redirecting to the iOS click route
+    req.nextUrl.pathname !== IOS_CLICK_ROUTE
 
   if (isDevLinkDomain) {
     domain = LINK_DOMAINS[0]
