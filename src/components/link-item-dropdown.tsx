@@ -26,10 +26,9 @@ export const LinkItemDropdown = ({ id, domain, slug, shortLink, qrcodeLogoUrl }:
   const [open, setOpen] = useState(false)
 
   /*
-    BUG FIX
-    É necessário adicionar o preventDefault para evitar que o dropdown feche ao clicar em um item.
+    BUG FIX: We have to add preventDefault to avoid the dropdown to close when clicking on an item.
 
-    Por isso passamos o closeDropdown para os Dialogs, para poder fechar o dropdown depois de fechar o Dialog.
+    That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
   */
 
   return (

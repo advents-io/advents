@@ -140,6 +140,7 @@ model Click {
   @@map("clicks")
 }
 
+// TODO: add framework info (version, name)
 model Session {
   id String @id @default(uuid())
 
