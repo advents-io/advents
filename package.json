@@ -5,7 +5,8 @@
     "migrate": "prisma migrate dev && prisma generate",
     "migrate:prod": "prisma migrate deploy && prisma generate",
     "seed": "prisma db seed",
-    "lint": "eslint . --fix && prettier . --write"
+    "lint": "eslint . --fix && prettier . --write",
+    "clear": "rm -rf .next && rm -rf node_modules"
   },
   "prisma": {
     "seed": "tsx src/lib/prisma/seed.ts"
