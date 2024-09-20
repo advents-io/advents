@@ -18,7 +18,7 @@ export const getGeoData = (req: Request) => {
     continent: continent || 'Unknown',
     country: geo?.country || 'Unknown',
     city: geo?.city || 'Unknown',
-    region: geo?.region || 'Unknown',
+    region: geo?.countryRegion || 'Unknown',
     latitude: geo?.latitude || 'Unknown',
     longitude: geo?.longitude || 'Unknown',
   }
