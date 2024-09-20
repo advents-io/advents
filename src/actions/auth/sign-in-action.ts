@@ -6,7 +6,7 @@ import { ActionError } from '@/actions/action-errors'
 import { actionClient } from '@/actions/safe-action'
 import { signInInputSchema } from '@/actions/schemas/input/auth/sign-in-input'
 import { supabaseClient } from '@/lib/supabase'
-import { LOCALHOST_APP_ORIGIN } from '@/utils/constants'
+import { LOCALHOST_APP_DOMAIN } from '@/utils/domains'
 
 export const signInAction = actionClient
   .schema(signInInputSchema)
@@ -16,7 +16,7 @@ export const signInAction = actionClient
     const supabase = supabaseClient()
 
     const headersList = headers()
-    const origin = headersList.get('origin') || LOCALHOST_APP_ORIGIN
+    const origin = headersList.get('origin') || LOCALHOST_APP_DOMAIN
 
     const { error } = await supabase.auth.signInWithOtp({
       email,

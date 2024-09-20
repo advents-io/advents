@@ -35,7 +35,7 @@ import {
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
-import { LINK_DOMAINS } from '@/utils/link-domains'
+import { LINK_DOMAINS } from '@/utils/domains'
 
 import { DeleteAppDialog } from './delete-app-dialog'
 
