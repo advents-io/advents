@@ -73,28 +73,30 @@ interface InstallData {
 }
 
 const checkInstall = async (sessionId: string, session: Session) => {
-  let installData: InstallData | undefined
+  try {
+    let installData: InstallData | undefined
 
-  if (session.os === 'android') {
-    installData = await checkAndroidInstall(sessionId, session)
-  }
+    if (session.os === 'android') {
+      installData = await checkAndroidInstall(sessionId, session)
+    }
 
-  if (session.os === 'ios') {
-    installData = await checkIosInstall(sessionId, session)
-  }
+    if (session.os === 'ios') {
+      installData = await checkIosInstall(sessionId, session)
+    }
 
-  if (installData && installData.isNewInstall && installData.linkId) {
-    await prisma.link.update({
-      where: {
-        id: installData.linkId,
-      },
-      data: {
-        installs: {
-          increment: 1,
+    if (installData && installData.isNewInstall && installData.linkId) {
+      await prisma.link.update({
+        where: {
+          id: installData.linkId,
         },
-      },
-    })
-  }
+        data: {
+          installs: {
+            increment: 1,
+          },
+        },
+      })
+    }
+  } catch {}
 }
 
 const checkAndroidInstall = async (sessionId: string, session: Session): Promise<InstallData> => {
