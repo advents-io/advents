@@ -1,19 +1,8 @@
 import { Click } from '@prisma/client'
-import { ipAddress } from '@vercel/functions'
 import { NextRequest, userAgent } from 'next/server'
 
+import { getGeoData } from '@/helpers/request-helper'
 import { supabaseClient } from '@/lib/supabase'
-
-const LOCALHOST_GEO_DATA = {
-  continent: 'SA',
-  country: 'BR',
-  city: 'Joinville',
-  region: 'SC',
-  latitude: '-26.2362',
-  longitude: '-48.8824',
-}
-
-const LOCALHOST_IP = '127.0.0.1'
 
 interface ClickInsert extends Omit<Click, 'createdAt'> {}
 
@@ -29,43 +18,36 @@ export const logClick = async (
     return null
   }
 
-  const ip = process.env.VERCEL === '1' ? ipAddress(req) : LOCALHOST_IP
-  const continent =
-    process.env.VERCEL === '1'
-      ? req.headers.get('x-vercel-ip-continent')
-      : LOCALHOST_GEO_DATA.continent
-  const geo = process.env.VERCEL === '1' ? req.geo : LOCALHOST_GEO_DATA
   const ua = userAgent(req)
   const referer = req.headers.get('referer')
   const refererDomain = getDomainFromUrl(referer)
 
+  const geoData = getGeoData(req)
+
   const click: ClickInsert = {
     id: clickId,
 
-    linkId,
-
     destinationUrl,
     os: ua.os.name || 'Unknown',
+
     referer: refererDomain || '(direct)',
     refererUrl: referer || '(direct)',
-    ip: typeof ip === 'string' && ip.trim().length > 0 ? ip : '',
-    continent: continent || 'Unknown',
-    country: geo?.country || 'Unknown',
-    city: geo?.city || 'Unknown',
-    region: geo?.region || 'Unknown',
-    latitude: geo?.latitude || 'Unknown',
-    longitude: geo?.longitude || 'Unknown',
-    device: ua.device.type || 'Desktop',
-    deviceVendor: ua.device.vendor || 'Unknown',
+
+    deviceType: ua.device.type || 'Desktop',
+    deviceBrand: ua.device.vendor || 'Unknown',
     deviceModel: ua.device.model || 'Unknown',
+    osVersion: ua.os.version || 'Unknown',
+    userAgent: ua.ua || 'Unknown',
     browser: ua.browser.name || 'Unknown',
     browserVersion: ua.browser.version || 'Unknown',
     engine: ua.engine.name || 'Unknown',
     engineVersion: ua.engine.version || 'Unknown',
-    osVersion: ua.os.version || 'Unknown',
     cpuArchitecture: ua.cpu?.architecture || 'Unknown',
-    userAgent: ua.ua || 'Unknown',
     isBot: ua.isBot,
+
+    ...geoData,
+
+    linkId,
   }
 
   const clickSnakeCase = convertKeysToSnakeCase(click)

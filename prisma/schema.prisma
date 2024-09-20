@@ -23,12 +23,12 @@ model Link {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  clicksArray Click[]
-
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
+
+  clicksArray Click[]
 
   @@unique([domain, slug])
   @@map("links")
@@ -49,14 +49,14 @@ model App {
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  links    Link[]
-  sessions Session[]
-  apiKeys  ApiKey[]
-
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
+
+  links    Link[]
+  sessions Session[]
+  apiKeys  ApiKey[]
 
   @@unique([slug, teamId])
   @@map("apps")
@@ -68,11 +68,11 @@ model Team {
   name String
   slug String @unique
 
-  members Member[]
-  apps    App[]
-
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  members Member[]
+  apps    App[]
 
   @@map("teams")
 }
@@ -107,31 +107,36 @@ model ApiKey {
 model Click {
   id String @id
 
-  linkId String @map("link_id")
-  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  destinationUrl String @map("destination_url")
+  os             String
 
-  destinationUrl  String  @map("destination_url")
-  os              String
-  referer         String
-  refererUrl      String  @map("referer_url")
-  ip              String
-  continent       String
-  country         String
-  city            String
-  region          String
-  latitude        String
-  longitude       String
-  device          String
-  deviceVendor    String  @map("device_vendor")
+  referer    String
+  refererUrl String @map("referer_url")
+
+  // Request Device data
+  deviceType      String  @map("device_type")
+  deviceBrand     String  @map("device_brand")
   deviceModel     String  @map("device_model")
+  osVersion       String  @map("os_version")
+  userAgent       String  @map("user_agent")
   browser         String
   browserVersion  String  @map("browser_version")
   engine          String
   engineVersion   String  @map("engine_version")
-  osVersion       String  @map("os_version")
   cpuArchitecture String  @map("cpu_architecture")
-  userAgent       String  @map("user_agent")
   isBot           Boolean @map("is_bot")
+
+  // Request Location data
+  ip        String
+  continent String
+  country   String
+  city      String
+  region    String
+  latitude  String
+  longitude String
+
+  linkId String @map("link_id")
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -152,20 +157,33 @@ model Session {
   androidId              String?   @map("android_id")
   androidInstallReferrer String?   @map("android_install_referrer")
   installTime            DateTime? @map("install_time")
-  userAgent              String?   @map("user_agent")
-  deviceName             String?   @map("device_name")
-  deviceBrand            String?   @map("device_brand")
-  deviceModel            String?   @map("device_model")
-  deviceYearClass        String?   @map("device_year_class")
-  osVersion              String?   @map("os_version")
-  appVersion             String?   @map("app_version")
+
+  // Device data
+  deviceName      String? @map("device_name")
+  deviceBrand     String? @map("device_brand")
+  deviceModel     String? @map("device_model")
+  deviceYearClass String? @map("device_year_class")
+  osVersion       String? @map("os_version")
+  appVersion      String? @map("app_version")
+
+  // Request Device data
+  userAgent String @map("user_agent")
+
+  // Request Location data
+  ip        String
+  continent String
+  country   String
+  city      String
+  region    String
+  latitude  String
+  longitude String
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  installs Install[]
-
   createdAt DateTime @default(now()) @map("created_at")
+
+  installs Install[]
 
   @@map("sessions")
 }

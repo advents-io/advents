@@ -1,9 +1,11 @@
 import { zValidator } from '@hono/zod-validator'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
+import { NextRequest, userAgent } from 'next/server'
 import { z } from 'zod'
 
 import { authMiddleware } from '@/api/auth-middleware'
+import { getGeoData } from '@/helpers/request-helper'
 import { prisma } from '@/lib/prisma'
 
 const sessionSchema = z.object({
@@ -22,7 +24,7 @@ const sessionSchema = z.object({
     .datetime()
     .nullable()
     .transform(val => (val ? new Date(val) : null)),
-  userAgent: z.string().nullable(),
+
   deviceName: z.string().nullable(),
   deviceBrand: z.string().nullable(),
   deviceModel: z.string().nullable(),
@@ -43,9 +45,15 @@ export const logSession = (api: Hono) =>
 
       const appId = c.var.appId
 
+      const ua = userAgent(c.req.raw)
+
+      const geoData = getGeoData(c.req.raw as NextRequest)
+
       const { id: sessionId } = await prisma.session.create({
         data: {
           ...session,
+          userAgent: ua.ua || 'Unknown',
+          ...geoData,
           appId,
         },
         select: {
