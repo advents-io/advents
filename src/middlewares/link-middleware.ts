@@ -10,8 +10,7 @@ import {
   LOCALHOST_APP_DOMAIN,
   LOCALHOST_LINK_DOMAIN,
 } from '@/utils/domains'
-
-const IOS_CLICK_ROUTE = '/api/ios/click'
+import { routes } from '@/utils/routes'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
@@ -19,7 +18,7 @@ export const isLinkDomain = (req: NextRequest) => {
   return isLinkDomain
 }
 
-interface LinkProps extends Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl'> {}
+interface LinkProps extends Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId'> {}
 
 export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)
@@ -36,7 +35,7 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
   const link = (
     await supabase
       .from('links')
-      .select('id, androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url')
+      .select('id, androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url, appId:app_id')
       .eq('slug', slug)
       .eq('domain', domain)
       .limit(1)
@@ -56,8 +55,9 @@ export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) =>
     const isLocalhost = req.headers.get('host')?.includes('localhost') ?? true
     const baseUrl = isLocalhost ? LOCALHOST_APP_DOMAIN : APP_DOMAIN
 
-    destinationUrl = new URL(IOS_CLICK_ROUTE, baseUrl)
-    destinationUrl.searchParams.append('clickId', clickId)
+    destinationUrl = new URL(routes.IOS_CLICK.path, baseUrl)
+    destinationUrl.searchParams.append('click_id', clickId)
+    destinationUrl.searchParams.append('app_id', link.appId)
     destinationUrl.searchParams.append('redirect', link.iosUrl)
   }
 
@@ -86,7 +86,7 @@ const getDomain = (req: NextRequest) => {
     domain === LOCALHOST_LINK_DOMAIN &&
     // Workaround because the redirect to the iOS click route not change the host header
     // and this methods would always return true when redirecting to the iOS click route
-    req.nextUrl.pathname !== IOS_CLICK_ROUTE
+    req.nextUrl.pathname !== routes.IOS_CLICK.path
 
   if (isDevLinkDomain) {
     domain = LINK_DOMAINS[0]

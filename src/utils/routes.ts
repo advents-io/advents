@@ -24,10 +24,13 @@ export const routes = {
   SIGN_IN: {
     path: '/sign-in',
   },
+  IOS_CLICK: {
+    path: '/ios/click',
+  },
 }
 
 export function isProtectedRoute(path: string) {
-  const notProtectedRoutes = [routes.SIGN_IN.path]
+  const notProtectedRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
 
   return !notProtectedRoutes.includes(path)
 }
