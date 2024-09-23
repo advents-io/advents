@@ -5,7 +5,7 @@ import { userAgent } from 'next/server'
 
 import { authMiddleware } from '@/api/auth-middleware'
 import { sessionSchema } from '@/api/schemas/session-schema'
-import { checkAttribution } from '@/attribution/attribution-handler'
+import { handleAttribution } from '@/attribution/attribution-handler'
 import { getGeoData } from '@/helpers/request-helper'
 import { prisma } from '@/lib/prisma'
 
@@ -35,7 +35,7 @@ export const logSession = (api: Hono) =>
         },
       })
 
-      waitUntil(checkAttribution(sessionId, session))
+      waitUntil(handleAttribution(sessionId, session))
 
       return new Response()
     },

@@ -11,6 +11,7 @@ export const sessionSchema = z.object({
 
   androidId: z.string().nullable(),
   androidInstallReferrer: z.string().nullable(),
+  iosClickId: z.string().nullable(),
   installTime: z
     .string()
     .datetime()

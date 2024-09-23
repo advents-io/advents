@@ -2,23 +2,23 @@ import { Session } from '@/api/schemas/session-schema'
 import { prisma } from '@/lib/prisma'
 
 interface AttributionData {
-  isNewInstall: boolean
+  newAttributionSession: boolean
   linkId?: string
 }
 
-export const checkAttribution = async (sessionId: string, session: Session) => {
+export const handleAttribution = async (sessionId: string, session: Session) => {
   try {
     let attributionData: AttributionData | undefined
 
     if (session.os === 'android') {
-      attributionData = await checkAndroidAttribution(sessionId, session)
+      attributionData = await handleAndroidAttribution(sessionId, session)
     }
 
     if (session.os === 'ios') {
-      attributionData = await checkIosAttribution(sessionId, session)
+      attributionData = await handleIosAttribution(sessionId, session)
     }
 
-    if (attributionData && attributionData.isNewInstall && attributionData.linkId) {
+    if (attributionData && attributionData.newAttributionSession && attributionData.linkId) {
       await prisma.link.update({
         where: {
           id: attributionData.linkId,
@@ -33,7 +33,7 @@ export const checkAttribution = async (sessionId: string, session: Session) => {
   } catch {}
 }
 
-const checkAndroidAttribution = async (
+const handleAndroidAttribution = async (
   sessionId: string,
   session: Session,
 ): Promise<AttributionData> => {
@@ -41,7 +41,7 @@ const checkAndroidAttribution = async (
 
   if (!referrer || !referrer.includes('advents_click_id')) {
     return {
-      isNewInstall: false,
+      newAttributionSession: false,
     }
   }
 
@@ -49,10 +49,38 @@ const checkAndroidAttribution = async (
 
   if (!clickId) {
     return {
-      isNewInstall: false,
+      newAttributionSession: false,
     }
   }
 
+  return await handleClickIdAttribution(clickId, sessionId)
+}
+
+const handleIosAttribution = async (
+  sessionId: string,
+  session: Session,
+): Promise<AttributionData> => {
+  const clickId = session.iosClickId
+
+  if (!clickId) {
+    return {
+      newAttributionSession: false,
+    }
+  }
+
+  if (!clickId) {
+    return {
+      newAttributionSession: false,
+    }
+  }
+
+  return await handleClickIdAttribution(clickId, sessionId)
+}
+
+const handleClickIdAttribution = async (
+  clickId: string,
+  sessionId: string,
+): Promise<AttributionData> => {
   const click = await prisma.click.findUnique({
     where: {
       id: clickId,
@@ -65,7 +93,7 @@ const checkAndroidAttribution = async (
 
   if (!click) {
     return {
-      isNewInstall: false,
+      newAttributionSession: false,
     }
   }
 
@@ -80,7 +108,7 @@ const checkAndroidAttribution = async (
 
   if (hasInstall) {
     return {
-      isNewInstall: false,
+      newAttributionSession: false,
     }
   }
 
@@ -92,20 +120,7 @@ const checkAndroidAttribution = async (
   })
 
   return {
-    isNewInstall: true,
+    newAttributionSession: true,
     linkId: click.linkId,
-  }
-}
-
-const checkIosAttribution = async (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  sessionId: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  session: Session,
-): Promise<AttributionData> => {
-  // TODO: implement
-
-  return {
-    isNewInstall: false,
   }
 }
