@@ -13,7 +13,9 @@ interface Props {
 export const AppStoreRedirectButton = ({ clickId, redirect }: Props) => {
   const openAppStore = () => {
     if (clickId && redirect) {
-      navigator.clipboard.writeText(clickId)
+      const copyUrl = `https://advents.io/click_id=${clickId}`
+
+      navigator.clipboard.writeText(copyUrl)
       window.location.href = redirect
     }
   }
