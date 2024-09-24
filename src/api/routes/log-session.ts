@@ -1,4 +1,5 @@
 import { zValidator } from '@hono/zod-validator'
+import { Session } from '@prisma/client'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 import { userAgent } from 'next/server'
@@ -8,6 +9,8 @@ import { sessionSchema } from '@/api/schemas/session-schema'
 import { handleAttribution } from '@/attribution/attribution-handler'
 import { getGeoData } from '@/helpers/request-helper'
 import { prisma } from '@/lib/prisma'
+
+interface SessionInsert extends Omit<Session, 'id' | 'createdAt'> {}
 
 export const logSession = (api: Hono) =>
   api.post(
@@ -23,13 +26,17 @@ export const logSession = (api: Hono) =>
 
       const geoData = getGeoData(c.req.raw)
 
+      const sessionInsert: SessionInsert = {
+        ...session,
+        androidId: session.android?.deviceId || null,
+        androidInstallReferrer: session.android?.installReferrer || null,
+        userAgent: ua.ua || 'Unknown',
+        ...geoData,
+        appId,
+      }
+
       const { id: sessionId } = await prisma.session.create({
-        data: {
-          ...session,
-          userAgent: ua.ua || 'Unknown',
-          ...geoData,
-          appId,
-        },
+        data: sessionInsert,
         select: {
           id: true,
         },

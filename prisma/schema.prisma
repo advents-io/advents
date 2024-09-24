@@ -151,8 +151,8 @@ model Session {
 
   sdkName         String   @map("sdk_name")
   sdkVersion      String   @map("sdk_version")
-  os              String
   deviceTimestamp DateTime @map("device_timestamp")
+  os              String
 
   androidId              String?   @map("android_id")
   androidInstallReferrer String?   @map("android_install_referrer")

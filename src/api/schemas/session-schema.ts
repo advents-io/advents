@@ -3,15 +3,25 @@ import { z } from 'zod'
 export const sessionSchema = z.object({
   sdkName: z.string(),
   sdkVersion: z.string(),
-  os: z.string(),
   deviceTimestamp: z
     .string()
     .datetime()
     .transform(val => new Date(val)),
+  os: z.string(),
 
-  androidId: z.string().nullable(),
-  androidInstallReferrer: z.string().nullable(),
-  iosClickId: z.string().nullable(),
+  android: z
+    .object({
+      deviceId: z.string().nullable(),
+      installReferrer: z.string().nullable(),
+    })
+    .nullable(),
+
+  ios: z
+    .object({
+      clickId: z.string().nullable(),
+    })
+    .nullable(),
+
   installTime: z
     .string()
     .datetime()
