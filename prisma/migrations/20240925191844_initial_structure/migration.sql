@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "AttributionMethod" AS ENUM ('android_deterministic_referrer', 'ios_deterministic_click', 'ios_probabilistc');
+
 -- CreateTable
 CREATE TABLE "links" (
     "id" TEXT NOT NULL,
@@ -7,8 +10,8 @@ CREATE TABLE "links" (
     "android_url" TEXT NOT NULL,
     "ios_url" TEXT NOT NULL,
     "fallback_url" TEXT NOT NULL,
-    "clicks" INTEGER NOT NULL DEFAULT 0,
-    "installs" INTEGER NOT NULL DEFAULT 0,
+    "click_count" INTEGER NOT NULL DEFAULT 0,
+    "install_count" INTEGER NOT NULL DEFAULT 0,
     "app_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -78,11 +81,11 @@ CREATE TABLE "clicks" (
     "os" TEXT NOT NULL,
     "referer" TEXT NOT NULL,
     "referer_url" TEXT NOT NULL,
-    "device_type" TEXT NOT NULL,
+    "user_agent" TEXT NOT NULL,
     "device_brand" TEXT NOT NULL,
     "device_model" TEXT NOT NULL,
+    "device_type" TEXT NOT NULL,
     "os_version" TEXT NOT NULL,
-    "user_agent" TEXT NOT NULL,
     "browser" TEXT NOT NULL,
     "browser_version" TEXT NOT NULL,
     "engine" TEXT NOT NULL,
@@ -105,27 +108,37 @@ CREATE TABLE "clicks" (
 -- CreateTable
 CREATE TABLE "sessions" (
     "id" TEXT NOT NULL,
-    "sdk_name" TEXT NOT NULL,
-    "sdk_version" TEXT NOT NULL,
-    "os" TEXT NOT NULL,
-    "device_timestamp" TIMESTAMP(3) NOT NULL,
+    "sdk_name" TEXT,
+    "sdk_version" TEXT,
+    "framework" TEXT,
+    "device_time" TIMESTAMP(3),
+    "os" TEXT,
+    "package" TEXT,
+    "android_aaid" TEXT,
     "android_id" TEXT,
     "android_install_referrer" TEXT,
+    "ios_idfv" TEXT,
+    "ios_idfa" TEXT,
+    "ios_att_permission_status" TEXT,
+    "ios_clipboard_click_id" TEXT,
+    "ios_device_model_id" TEXT,
     "install_time" TIMESTAMP(3),
+    "user_agent" TEXT,
     "device_name" TEXT,
     "device_brand" TEXT,
     "device_model" TEXT,
+    "device_type" TEXT,
     "device_year_class" TEXT,
     "os_version" TEXT,
+    "os_build_id" TEXT,
     "app_version" TEXT,
-    "user_agent" TEXT NOT NULL,
-    "ip" TEXT NOT NULL,
-    "continent" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "region" TEXT NOT NULL,
-    "latitude" TEXT NOT NULL,
-    "longitude" TEXT NOT NULL,
+    "ip" TEXT,
+    "continent" TEXT,
+    "country" TEXT,
+    "city" TEXT,
+    "region" TEXT,
+    "latitude" TEXT,
+    "longitude" TEXT,
     "app_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -133,22 +146,14 @@ CREATE TABLE "sessions" (
 );
 
 -- CreateTable
-CREATE TABLE "installs" (
+CREATE TABLE "attributions" (
     "id" TEXT NOT NULL,
+    "method" "AttributionMethod" NOT NULL,
     "session_id" TEXT NOT NULL,
-    "click_id" TEXT NOT NULL,
+    "click_id" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "installs_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "events" (
-    "id" TEXT NOT NULL,
-    "data" JSONB NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "events_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "attributions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -167,10 +172,10 @@ CREATE UNIQUE INDEX "members_user_id_key" ON "members"("user_id");
 CREATE UNIQUE INDEX "api_keys_key_key" ON "api_keys"("key");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "installs_session_id_key" ON "installs"("session_id");
+CREATE UNIQUE INDEX "attributions_session_id_key" ON "attributions"("session_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "installs_click_id_key" ON "installs"("click_id");
+CREATE UNIQUE INDEX "attributions_click_id_key" ON "attributions"("click_id");
 
 -- AddForeignKey
 ALTER TABLE "links" ADD CONSTRAINT "links_app_id_fkey" FOREIGN KEY ("app_id") REFERENCES "apps"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -191,7 +196,7 @@ ALTER TABLE "clicks" ADD CONSTRAINT "clicks_link_id_fkey" FOREIGN KEY ("link_id"
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_app_id_fkey" FOREIGN KEY ("app_id") REFERENCES "apps"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "installs" ADD CONSTRAINT "installs_session_id_fkey" FOREIGN KEY ("session_id") REFERENCES "sessions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "attributions" ADD CONSTRAINT "attributions_session_id_fkey" FOREIGN KEY ("session_id") REFERENCES "sessions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "installs" ADD CONSTRAINT "installs_click_id_fkey" FOREIGN KEY ("click_id") REFERENCES "clicks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "attributions" ADD CONSTRAINT "attributions_click_id_fkey" FOREIGN KEY ("click_id") REFERENCES "clicks"("id") ON DELETE CASCADE ON UPDATE CASCADE;

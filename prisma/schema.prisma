@@ -11,14 +11,14 @@ datasource db {
 model Link {
   id String @id @default(uuid())
 
-  title       String?
-  domain      String
-  slug        String
-  androidUrl  String  @map("android_url")
-  iosUrl      String  @map("ios_url")
-  fallbackUrl String  @map("fallback_url")
-  clicks      Int     @default(0)
-  installs    Int     @default(0)
+  title        String?
+  domain       String
+  slug         String
+  androidUrl   String  @map("android_url")
+  iosUrl       String  @map("ios_url")
+  fallbackUrl  String  @map("fallback_url")
+  clickCount   Int     @default(0) @map("click_count")
+  installCount Int     @default(0) @map("install_count")
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
@@ -28,7 +28,7 @@ model Link {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  clicksArray Click[]
+  clicks Click[]
 
   @@unique([domain, slug])
   @@map("links")
@@ -114,11 +114,11 @@ model Click {
   refererUrl String @map("referer_url")
 
   // Request Device data
-  deviceType      String  @map("device_type")
+  userAgent       String  @map("user_agent")
   deviceBrand     String  @map("device_brand")
   deviceModel     String  @map("device_model")
+  deviceType      String  @map("device_type")
   osVersion       String  @map("os_version")
-  userAgent       String  @map("user_agent")
   browser         String
   browserVersion  String  @map("browser_version")
   engine          String
@@ -140,74 +140,81 @@ model Click {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  installs Install[]
+  attribution Attribution?
 
   @@map("clicks")
 }
 
-// TODO: add framework info (version, name)
 model Session {
   id String @id @default(uuid())
 
-  sdkName         String   @map("sdk_name")
-  sdkVersion      String   @map("sdk_version")
-  deviceTimestamp DateTime @map("device_timestamp")
-  os              String
+  sdkName    String?   @map("sdk_name")
+  sdkVersion String?   @map("sdk_version")
+  framework  String?
+  deviceTime DateTime? @map("device_time")
+  os         String?
+  package    String?
 
-  androidId              String?   @map("android_id")
-  androidInstallReferrer String?   @map("android_install_referrer")
-  installTime            DateTime? @map("install_time")
+  androidAaid            String? @map("android_aaid")
+  androidId              String? @map("android_id")
+  androidInstallReferrer String? @map("android_install_referrer")
+
+  iosIdfv                String? @map("ios_idfv")
+  iosIdfa                String? @map("ios_idfa")
+  iosAttPermissionStatus String? @map("ios_att_permission_status")
+  iosClipboardClickId    String? @map("ios_clipboard_click_id")
+  iosDeviceModelId       String? @map("ios_device_model_id")
+
+  installTime DateTime? @map("install_time")
 
   // Device data
+  userAgent       String? @map("user_agent")
   deviceName      String? @map("device_name")
   deviceBrand     String? @map("device_brand")
   deviceModel     String? @map("device_model")
+  deviceType      String? @map("device_type")
   deviceYearClass String? @map("device_year_class")
   osVersion       String? @map("os_version")
+  osBuildId       String? @map("os_build_id")
   appVersion      String? @map("app_version")
 
-  // Request Device data
-  userAgent String @map("user_agent")
-
   // Request Location data
-  ip        String
-  continent String
-  country   String
-  city      String
-  region    String
-  latitude  String
-  longitude String
+  ip        String?
+  continent String?
+  country   String?
+  city      String?
+  region    String?
+  latitude  String?
+  longitude String?
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  installs Install[]
+  attribution Attribution?
 
   @@map("sessions")
 }
 
-model Install {
+enum AttributionMethod {
+  android_deterministic_referrer
+  ios_deterministic_click
+  ios_probabilistc
+}
+
+model Attribution {
   id String @id @default(uuid())
+
+  method AttributionMethod
 
   sessionId String  @unique @map("session_id")
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  clickId String @unique @map("click_id")
-  click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
+  clickId String? @unique @map("click_id")
+  click   Click?  @relation(fields: [clickId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@map("installs")
-}
-
-model Event {
-  id String @id @default(uuid())
-
-  data Json
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@map("events")
+  @@map("attributions")
 }

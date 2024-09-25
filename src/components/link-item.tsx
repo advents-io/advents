@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
-  link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clicks' | 'installs' | 'createdAt'>
+  link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clickCount' | 'installCount' | 'createdAt'>
   qrcodeLogoUrl?: string
 }
 
@@ -75,7 +75,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
         </div>
 
         <div className='flex items-center gap-2'>
-          <LinkAnalytics clicks={link.clicks} installs={link.installs} />
+          <LinkAnalytics clicks={link.clickCount} installs={link.installCount} />
 
           <LinkItemDropdown
             id={link.id}

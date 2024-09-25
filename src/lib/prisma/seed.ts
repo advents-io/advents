@@ -97,7 +97,7 @@ const configure = async () => {
       UPDATE
         links
       SET
-        clicks = clicks + 1
+        click_count = click_count + 1
       WHERE
         id = link_id;
     END;

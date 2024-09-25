@@ -1,4 +1,6 @@
-import { Session } from '@/api/schemas/session-schema'
+import { AttributionMethod } from '@prisma/client'
+
+import { Session } from '@/api/routes/log-session'
 import { prisma } from '@/lib/prisma'
 
 interface AttributionData {
@@ -23,7 +25,7 @@ export const handleAttribution = async (sessionId: string, session: Session) => 
           id: attributionData.linkId,
         },
         data: {
-          installs: {
+          installCount: {
             increment: 1,
           },
         },
@@ -36,13 +38,9 @@ const handleAndroidAttribution = async (
   sessionId: string,
   session: Session,
 ): Promise<AttributionData | null> => {
-  if (!session.android) {
-    return null
-  }
+  const { androidInstallReferrer: referrer } = session
 
-  const referrer = session.android.installReferrer
-
-  if (!referrer || !referrer.includes('advents_click_id')) {
+  if (!referrer || !referrer.includes('advents_click_id=')) {
     return null
   }
 
@@ -52,36 +50,37 @@ const handleAndroidAttribution = async (
     return null
   }
 
-  return await handleClickIdAttribution(clickId, sessionId)
+  return await handleClickIdAttribution(clickId, sessionId, 'android_deterministic_referrer')
 }
 
 const handleIosAttribution = async (
   sessionId: string,
   session: Session,
 ): Promise<AttributionData | null> => {
-  if (!session.ios) {
-    return null
-  }
-
-  const clickId = session.ios.clickId
+  const { iosClipboardClickId: clickId } = session
 
   if (!clickId) {
     return null
   }
 
-  return await handleClickIdAttribution(clickId, sessionId)
+  return await handleClickIdAttribution(clickId, sessionId, 'ios_deterministic_click')
 }
 
 const handleClickIdAttribution = async (
   clickId: string,
   sessionId: string,
+  method: AttributionMethod,
 ): Promise<AttributionData | null> => {
   const click = await prisma.click.findUnique({
     where: {
       id: clickId,
     },
     select: {
-      id: true,
+      attribution: {
+        select: {
+          id: true,
+        },
+      },
       linkId: true,
     },
   })
@@ -90,22 +89,16 @@ const handleClickIdAttribution = async (
     return null
   }
 
-  const hasInstall = await prisma.install.findUnique({
-    where: {
-      clickId,
-    },
-    select: {
-      id: true,
-    },
-  })
+  const clickAlreadyAttributed = click.attribution
 
-  if (hasInstall) {
+  if (clickAlreadyAttributed) {
     return null
   }
 
-  await prisma.install.create({
+  await prisma.attribution.create({
     data: {
-      clickId: click.id,
+      method,
+      clickId,
       sessionId,
     },
   })

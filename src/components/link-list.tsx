@@ -27,8 +27,8 @@ export const LinkList = async ({ page, appSlug }: Props) => {
         title: true,
         domain: true,
         slug: true,
-        clicks: true,
-        installs: true,
+        clickCount: true,
+        installCount: true,
         createdAt: true,
         app: {
           select: {
