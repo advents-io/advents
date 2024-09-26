@@ -5,7 +5,7 @@
     "db": "pnpm --dir packages/db",
     "dev": "pnpm --dir apps/app dev",
     "lint": "eslint . --fix && prettier . --write",
-    "clear": "rm -rf node_modules"
+    "clear": "./scripts/clear.sh"
   },
   "dependencies": {
     "zod": "^3.23.8"

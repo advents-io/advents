@@ -4,8 +4,7 @@
     "dev": "next dev --turbo",
     "migrate": "pnpm --dir ../../packages/db migrate",
     "migrate:prod": "pnpm --dir ../../packages/db migrate:prod",
-    "seed": "prisma db seed",
-    "clear": "rm -rf .next && rm -rf node_modules"
+    "seed": "prisma db seed"
   },
   "prisma": {
     "seed": "tsx src/utils/seed.ts"
