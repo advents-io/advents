@@ -1,8 +1,8 @@
+import { logClick } from '@advents/api'
 import { Link } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { logClick } from '@/helpers/click-helper'
-import { supabaseClient } from '@/lib/supabase'
 import { WEBSITE_URL } from '@/utils/constants'
 import {
   APP_DOMAIN,

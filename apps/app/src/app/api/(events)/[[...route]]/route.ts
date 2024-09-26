@@ -1,6 +1,4 @@
-import { handle } from 'hono/vercel'
-
-import { api } from '@/api/api'
+import { api, handle } from '@advents/api'
 
 export const GET = handle(api)
 export const POST = handle(api)

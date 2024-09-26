@@ -1,8 +1,8 @@
 import { Prisma } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
 import { createSafeActionClient } from 'next-safe-action'
 
 import { ActionError, UnauthorizedActionError } from '@/actions/action-errors'
-import { supabaseClient } from '@/lib/supabase'
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {

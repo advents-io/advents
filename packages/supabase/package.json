@@ -1,0 +1,18 @@
+{
+  "name": "@advents/supabase",
+  "dependencies": {
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "15.0.0-rc.0"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}

@@ -1,4 +1,5 @@
 import { prisma } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
 import { PlusIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -6,7 +7,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import Empty from '@/assets/illustrations/empty.svg'
-import { supabaseClient } from '@/lib/supabase'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { routes } from '@/utils/routes'

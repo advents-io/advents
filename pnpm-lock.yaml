@@ -21,12 +21,15 @@ importers:
 
   apps/app:
     dependencies:
+      '@advents/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@advents/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@hono/zod-validator':
-        specifier: ^0.2.2
-        version: 0.2.2(hono@4.6.3)(zod@3.23.8)
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@19.0.0-rc-a19a8ab4-20240829))
@@ -63,15 +66,6 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.9)(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
-      '@supabase/ssr':
-        specifier: ^0.4.0
-        version: 0.4.1(@supabase/supabase-js@2.45.4)
-      '@supabase/supabase-js':
-        specifier: ^2.45.0
-        version: 2.45.4
-      '@vercel/functions':
-        specifier: ^1.4.1
-        version: 1.4.1
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -81,9 +75,6 @@ importers:
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
-      hono:
-        specifier: ^4.5.11
-        version: 4.6.3
       lucide-react:
         specifier: ^0.408.0
         version: 0.408.0(react@19.0.0-rc-a19a8ab4-20240829)
@@ -140,6 +131,31 @@ importers:
         specifier: ^4.19.1
         version: 4.19.1
 
+  packages/api:
+    dependencies:
+      '@advents/db':
+        specifier: workspace:*
+        version: link:../db
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../supabase
+      '@vercel/functions':
+        specifier: ^1.4.1
+        version: 1.4.1
+      hono:
+        specifier: ^4.5.11
+        version: 4.6.3
+      next:
+        specifier: 15.0.0-rc.0
+        version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/db:
     dependencies:
       '@prisma/client':
@@ -191,6 +207,25 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.5
         version: 0.6.8(prettier@3.3.3)
+
+  packages/supabase:
+    dependencies:
+      '@supabase/ssr':
+        specifier: ^0.4.0
+        version: 0.4.1(@supabase/supabase-js@2.45.4)
+      '@supabase/supabase-js':
+        specifier: ^2.45.0
+        version: 2.45.4
+      next:
+        specifier: 15.0.0-rc.0
+        version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/tsconfig:
     devDependencies:
@@ -383,12 +418,6 @@ packages:
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
-
-  '@hono/zod-validator@0.2.2':
-    resolution: {integrity: sha512-dSDxaPV70Py8wuIU2QNpoVEIOSzSXZ/6/B/h4xA7eOMz7+AarKTSGV8E6QwrdcCbBLkpqfJ4Q2TmBO0eP1tCBQ==}
-    peerDependencies:
-      hono: '>=3.9.0'
-      zod: ^3.19.1
 
   '@hookform/resolvers@3.9.0':
     resolution: {integrity: sha512-bU0Gr4EepJ/EQsH/IwEzYLsT/PEj5C0ynLQ4m+GSHS+xKH4TfSelhluTgOaoc4kA5s7eCsQbM4wvZLzELmWzUg==}
@@ -2927,11 +2956,6 @@ snapshots:
       react-dom: 19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829)
 
   '@floating-ui/utils@0.2.8': {}
-
-  '@hono/zod-validator@0.2.2(hono@4.6.3)(zod@3.23.8)':
-    dependencies:
-      hono: 4.6.3
-      zod: 3.23.8
 
   '@hookform/resolvers@3.9.0(react-hook-form@7.53.0(react@19.0.0-rc-a19a8ab4-20240829))':
     dependencies:

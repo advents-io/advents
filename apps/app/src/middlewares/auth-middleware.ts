@@ -1,7 +1,6 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@advents/supabase'
 import { type NextRequest, NextResponse } from 'next/server'
 
-import { env } from '@/utils/env'
 import { isProtectedRoute, routes } from '@/utils/routes'
 
 export const authMiddleware = async (req: NextRequest) => {
@@ -9,7 +8,7 @@ export const authMiddleware = async (req: NextRequest) => {
     request: req,
   })
 
-  const supabase = createServerClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!, {
+  const supabase = createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     cookies: {
       getAll() {
         return req.cookies.getAll()

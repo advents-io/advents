@@ -1,6 +1,6 @@
+import { supabaseClient } from '@advents/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { supabaseClient } from '@/lib/supabase'
 import { routes } from '@/utils/routes'
 
 export async function GET(req: NextRequest) {

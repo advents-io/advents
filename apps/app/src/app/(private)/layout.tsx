@@ -1,7 +1,7 @@
 import { prisma } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
 
 import { PrivateHeader } from '@/components/private-header'
-import { supabaseClient } from '@/lib/supabase'
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const user = await supabaseClient().auth.getUser()

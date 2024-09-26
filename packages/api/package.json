@@ -1,0 +1,20 @@
+{
+  "name": "@advents/api",
+  "dependencies": {
+    "@advents/db": "workspace:*",
+    "@advents/supabase": "workspace:*",
+    "@vercel/functions": "^1.4.1",
+    "hono": "^4.5.11",
+    "next": "15.0.0-rc.0"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}

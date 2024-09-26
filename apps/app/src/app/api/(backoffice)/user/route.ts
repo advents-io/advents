@@ -1,8 +1,8 @@
 import { prisma } from '@advents/db'
+import { supabaseAdminClient } from '@advents/supabase'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { supabaseAdminClient } from '@/lib/supabase'
 import { IS_PRODUCTION } from '@/utils/env'
 
 const inviteUserSchema = z.object({

@@ -2,12 +2,10 @@ import { createServerClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
-import { env } from '@/utils/env'
-
-export const supabaseClient = () => {
+const supabaseClient = () => {
   const cookieStore = cookies()
 
-  return createServerClient(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!, {
+  return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     cookies: {
       getAll() {
         return cookieStore.getAll()
@@ -21,11 +19,13 @@ export const supabaseClient = () => {
   })
 }
 
-export const supabaseAdminClient = () => {
-  return createClient(env.SUPABASE_URL!, env.SUPABASE_SERVICE_ROLE_KEY!, {
+const supabaseAdminClient = () => {
+  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
     },
   })
 }
+
+export { createServerClient, supabaseAdminClient, supabaseClient }

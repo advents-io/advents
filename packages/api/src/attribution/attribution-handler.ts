@@ -1,6 +1,6 @@
 import { AttributionMethod, prisma } from '@advents/db'
 
-import { Session } from '@/api/routes/log-session'
+import { Session } from '@/routes/log-session'
 
 interface AttributionData {
   linkId: string

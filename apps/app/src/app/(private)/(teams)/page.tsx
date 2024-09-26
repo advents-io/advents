@@ -1,8 +1,8 @@
 import { prisma } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
-import { supabaseClient } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { routes } from '@/utils/routes'
 
