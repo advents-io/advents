@@ -1,0 +1,75 @@
+{
+  "name": "@advents/app",
+  "scripts": {
+    "dev": "next dev --turbo",
+    "migrate": "prisma migrate dev && prisma generate",
+    "migrate:prod": "prisma migrate deploy && prisma generate",
+    "seed": "prisma db seed",
+    "clear": "rm -rf .next && rm -rf node_modules"
+  },
+  "prisma": {
+    "seed": "tsx src/lib/prisma/seed.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.2",
+    "@hookform/resolvers": "^3.9.0",
+    "@prisma/client": "^5.20.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.2",
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "@vercel/functions": "^1.4.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.12",
+    "hono": "^4.5.11",
+    "lucide-react": "^0.408.0",
+    "nanoid": "^5.0.7",
+    "next": "15.0.0-rc.0",
+    "next-safe-action": "^7.8.1",
+    "next-themes": "^0.3.0",
+    "react": "19.0.0-rc-a19a8ab4-20240829",
+    "react-dom": "19.0.0-rc-a19a8ab4-20240829",
+    "react-hook-form": "^7.52.1",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "15.0.0-rc.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-react": "^7.34.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "prisma": "^5.20.0",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}

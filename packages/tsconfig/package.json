@@ -1,0 +1,12 @@
+{
+  "name": "@advents/tsconfig",
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/node.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}
