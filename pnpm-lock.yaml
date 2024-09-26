@@ -21,12 +21,12 @@ importers:
 
   apps/app:
     dependencies:
-      '@advents/api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@advents/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@advents/engine':
+        specifier: workspace:*
+        version: link:../../packages/engine
       '@advents/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -131,7 +131,26 @@ importers:
         specifier: ^4.19.1
         version: 4.19.1
 
-  packages/api:
+  packages/db:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.20.0
+        version: 5.20.0(prisma@5.20.0)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      dotenv-cli:
+        specifier: ^7.4.2
+        version: 7.4.2
+      prisma:
+        specifier: ^5.20.0
+        version: 5.20.0
+
+  packages/engine:
     dependencies:
       '@advents/db':
         specifier: workspace:*
@@ -155,25 +174,6 @@ importers:
       '@advents/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-
-  packages/db:
-    dependencies:
-      '@prisma/client':
-        specifier: ^5.20.0
-        version: 5.20.0(prisma@5.20.0)
-    devDependencies:
-      '@advents/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@advents/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      dotenv-cli:
-        specifier: ^7.4.2
-        version: 7.4.2
-      prisma:
-        specifier: ^5.20.0
-        version: 5.20.0
 
   packages/eslint-config:
     devDependencies:

@@ -1,5 +1,5 @@
-import { logClick } from '@advents/api'
 import { Link } from '@advents/db'
+import { logClick } from '@advents/engine'
 import { supabaseClient } from '@advents/supabase'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 

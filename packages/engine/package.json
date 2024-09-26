@@ -1,5 +1,5 @@
 {
-  "name": "@advents/api",
+  "name": "@advents/engine",
   "dependencies": {
     "@advents/db": "workspace:*",
     "@advents/supabase": "workspace:*",

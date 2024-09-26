@@ -11,8 +11,8 @@
     "seed": "tsx src/utils/seed.ts"
   },
   "dependencies": {
-    "@advents/api": "workspace:*",
     "@advents/db": "workspace:*",
+    "@advents/engine": "workspace:*",
     "@advents/supabase": "workspace:*",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.20.0",
