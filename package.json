@@ -14,8 +14,8 @@
   },
   "eslintConfig": {
     "extends": [
-      "@advents/eslint-config/node.js"
+      "./packages/eslint-config/node.js"
     ]
   },
-  "prettier": "@advents/eslint-config/prettier.config.js"
+  "prettier": "./packages/eslint-config/prettier.config.js"
 }
