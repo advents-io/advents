@@ -1,10 +1,11 @@
 'use server'
 
+import { prisma } from '@advents/db'
+
 import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { createLinkInputActionSchema } from '@/actions/schemas/input/link/create-link-input'
 import { generateRandomSlug } from '@/helpers/link-helper'
-import { prisma } from '@/lib/prisma'
 
 export const createLinkAction = authActionClient
   .schema(createLinkInputActionSchema)

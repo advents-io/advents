@@ -1,11 +1,10 @@
-import { Session as DbSession } from '@prisma/client'
+import { prisma, Session as DbSession } from '@advents/db'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 
 import { authMiddleware } from '@/api/auth-middleware'
 import { handleAttribution } from '@/attribution/attribution-handler'
 import { getGeoData } from '@/helpers/request-helper'
-import { prisma } from '@/lib/prisma'
 
 export type Session = Pick<
   DbSession,

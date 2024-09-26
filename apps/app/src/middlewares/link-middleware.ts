@@ -1,4 +1,4 @@
-import { Link } from '@prisma/client'
+import { Link } from '@advents/db'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { logClick } from '@/helpers/click-helper'

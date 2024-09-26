@@ -1,5 +1,6 @@
+import { prisma } from '@advents/db'
+
 import { PrivateHeader } from '@/components/private-header'
-import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {

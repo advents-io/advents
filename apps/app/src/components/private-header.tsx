@@ -1,6 +1,6 @@
 'use client'
 
-import { App } from '@prisma/client'
+import { App } from '@advents/db'
 import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'

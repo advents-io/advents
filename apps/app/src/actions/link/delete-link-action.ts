@@ -1,8 +1,9 @@
 'use server'
 
+import { prisma } from '@advents/db'
+
 import { authActionClient } from '@/actions/safe-action'
 import { deleteLinkInputSchema } from '@/actions/schemas/input/link/delete-link-input'
-import { prisma } from '@/lib/prisma'
 
 export const deleteLinkAction = authActionClient
   .schema(deleteLinkInputSchema)

@@ -1,4 +1,4 @@
-import { App } from '@prisma/client'
+import { App } from '@advents/db'
 import { CirclePlus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

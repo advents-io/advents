@@ -1,7 +1,7 @@
+import { prisma } from '@advents/db'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { prisma } from '@/lib/prisma'
 import { supabaseAdminClient } from '@/lib/supabase'
 import { IS_PRODUCTION } from '@/utils/env'
 

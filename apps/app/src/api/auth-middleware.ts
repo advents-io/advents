@@ -1,6 +1,5 @@
+import { prisma } from '@advents/db'
 import { createMiddleware } from 'hono/factory'
-
-import { prisma } from '@/lib/prisma'
 
 interface AuthMiddlewareContext {
   Variables: {

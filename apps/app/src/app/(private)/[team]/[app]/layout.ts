@@ -1,6 +1,6 @@
+import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
-import { prisma } from '@/lib/prisma'
 import { routes } from '@/utils/routes'
 
 export default async function AppLayout({

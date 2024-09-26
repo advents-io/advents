@@ -1,6 +1,6 @@
 'use client'
 
-import { Link } from '@prisma/client'
+import { Link } from '@advents/db'
 import { ArrowRightIcon, Copy } from 'lucide-react'
 import NextLink from 'next/link'
 import { toast } from 'sonner'

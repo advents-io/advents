@@ -1,4 +1,4 @@
-import { Click as DbClick } from '@prisma/client'
+import { Click as DbClick } from '@advents/db'
 import { NextRequest, userAgent } from 'next/server'
 
 import { getGeoData } from '@/helpers/request-helper'

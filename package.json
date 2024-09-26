@@ -2,6 +2,8 @@
   "name": "advents",
   "scripts": {
     "app": "pnpm --dir apps/app",
+    "db": "pnpm --dir packages/db",
+    "dev": "pnpm --dir apps/app dev",
     "lint": "eslint . --fix && prettier . --write",
     "clear": "rm -rf node_modules"
   },

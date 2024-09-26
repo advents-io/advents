@@ -1,10 +1,10 @@
+import { prisma } from '@advents/db'
 import Image from 'next/image'
 
 import Empty from '@/assets/illustrations/empty.svg'
 import { CreateLinkDialog } from '@/components/create-link-dialog'
 import { LinkItem } from '@/components/link-item'
 import { LinksPagination } from '@/components/links-pagination'
-import { prisma } from '@/lib/prisma'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 
 interface Props {

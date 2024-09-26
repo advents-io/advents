@@ -1,8 +1,8 @@
+import { prisma } from '@advents/db'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { CreateEditAppForm } from '@/components/create-edit-app-form'
-import { prisma } from '@/lib/prisma'
 import { supabaseClient } from '@/lib/supabase'
 import { routes } from '@/utils/routes'
 

@@ -1,5 +1,7 @@
 'use server'
 
+import { prisma } from '@advents/db'
+
 import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { getAppInputSchema } from '@/actions/schemas/input/app/get-app-input'
@@ -7,7 +9,6 @@ import {
   getAppDefaultValuesOutputSchema,
   getAppOutputSchema,
 } from '@/actions/schemas/output/app/get-app-output'
-import { prisma } from '@/lib/prisma'
 
 export const getAppAction = authActionClient
   .schema(getAppInputSchema)

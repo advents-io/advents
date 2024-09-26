@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@advents/db'
 import { createSafeActionClient } from 'next-safe-action'
 
 import { ActionError, UnauthorizedActionError } from '@/actions/action-errors'

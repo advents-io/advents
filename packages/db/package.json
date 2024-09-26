@@ -1,0 +1,22 @@
+{
+  "name": "@advents/db",
+  "scripts": {
+    "migrate": "dotenv -e ../../apps/app/.env -- prisma migrate dev && prisma generate",
+    "migrate:prod": "dotenv -e ../../apps/app/.env -- prisma migrate deploy && prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*",
+    "dotenv-cli": "^7.4.2",
+    "prisma": "^5.20.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}

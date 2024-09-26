@@ -1,8 +1,8 @@
+import { prisma } from '@advents/db'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 import { AppStoreRedirectButton } from '@/components/app-store-redirect-button'
-import { prisma } from '@/lib/prisma'
 
 export default async function IosClick({
   searchParams,

@@ -1,7 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 
-import { IS_DEVELOPMENT } from '@/utils/env'
-
 const prismaClientSingleton = () => {
   return new PrismaClient()
 }
@@ -12,6 +10,8 @@ declare const globalThis: {
 
 export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
-if (IS_DEVELOPMENT) {
+export * from '@prisma/client'
+
+if (process.env.NODE_ENV === 'development') {
   globalThis.prismaGlobal = prisma
 }

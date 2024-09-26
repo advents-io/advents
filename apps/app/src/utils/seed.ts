@@ -1,6 +1,7 @@
+import { prisma } from '@advents/db'
+
 import { CreateAppInputProps } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
-import { prisma } from '@/lib/prisma'
 import { supabaseAdminClient } from '@/lib/supabase'
 import { LINK_DOMAINS } from '@/utils/domains'
 
