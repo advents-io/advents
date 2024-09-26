@@ -5,7 +5,7 @@ import { ActionError, UnauthorizedActionError } from '@/actions/action-errors'
 import { supabaseClient } from '@/lib/supabase'
 
 export const actionClient = createSafeActionClient({
-  handleReturnedServerError(e) {
+  handleServerError(e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       return e.code === 'P2002'
         ? `Já existe um registro com o mesmo valor único (${e.code})`
