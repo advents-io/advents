@@ -6,7 +6,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "@advents/eslint-config/next.js"
+      "@advents/eslint-config/node.js"
     ]
   },
   "prettier": "@advents/eslint-config/prettier.config.js"
