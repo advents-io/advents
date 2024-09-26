@@ -107,33 +107,33 @@ model ApiKey {
 model Click {
   id String @id
 
-  destinationUrl String @map("destination_url")
-  os             String
+  destinationUrl String  @map("destination_url")
+  os             String?
 
   referer    String
   refererUrl String @map("referer_url")
 
-  // Request Device data
-  userAgent       String  @map("user_agent")
-  deviceBrand     String  @map("device_brand")
-  deviceModel     String  @map("device_model")
-  deviceType      String  @map("device_type")
-  osVersion       String  @map("os_version")
-  browser         String
-  browserVersion  String  @map("browser_version")
-  engine          String
-  engineVersion   String  @map("engine_version")
-  cpuArchitecture String  @map("cpu_architecture")
+  // Request device data
+  userAgent       String? @map("user_agent")
+  deviceBrand     String? @map("device_brand")
+  deviceModel     String? @map("device_model")
+  deviceType      String? @map("device_type")
+  osVersion       String? @map("os_version")
+  browser         String?
+  browserVersion  String? @map("browser_version")
+  engine          String?
+  engineVersion   String? @map("engine_version")
+  cpuArchitecture String? @map("cpu_architecture")
   isBot           Boolean @map("is_bot")
 
-  // Request Location data
-  ip        String
-  continent String
-  country   String
-  city      String
-  region    String
-  latitude  String
-  longitude String
+  // Request geo data
+  ip        String?
+  continent String?
+  country   String?
+  city      String?
+  region    String?
+  latitude  String?
+  longitude String?
 
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
@@ -178,7 +178,7 @@ model Session {
   osBuildId       String? @map("os_build_id")
   appVersion      String? @map("app_version")
 
-  // Request Location data
+  // Request geo data
   ip        String?
   continent String?
   country   String?

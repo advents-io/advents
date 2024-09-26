@@ -33,6 +33,13 @@ export type Session = Pick<
   | 'osVersion'
   | 'osBuildId'
   | 'appVersion'
+  | 'ip'
+  | 'continent'
+  | 'country'
+  | 'city'
+  | 'region'
+  | 'latitude'
+  | 'longitude'
 >
 
 export const logSession = (api: Hono) =>

@@ -1,10 +1,10 @@
-import { Click } from '@prisma/client'
+import { Click as DbClick } from '@prisma/client'
 import { NextRequest, userAgent } from 'next/server'
 
 import { getGeoData } from '@/helpers/request-helper'
 import { supabaseClient } from '@/lib/supabase'
 
-interface ClickInsert extends Omit<Click, 'createdAt'> {}
+interface Click extends Omit<DbClick, 'createdAt'> {}
 
 export const logClick = async (
   req: NextRequest,
@@ -24,25 +24,25 @@ export const logClick = async (
 
   const geoData = getGeoData(req)
 
-  const click: ClickInsert = {
+  const click: Click = {
     id: clickId,
 
     destinationUrl,
-    os: ua.os.name || 'Unknown',
+    os: ua.os.name || null,
 
     referer: refererDomain || '(direct)',
     refererUrl: referer || '(direct)',
 
     deviceType: ua.device.type || 'Desktop',
-    deviceBrand: ua.device.vendor || 'Unknown',
-    deviceModel: ua.device.model || 'Unknown',
-    osVersion: ua.os.version || 'Unknown',
-    userAgent: ua.ua || 'Unknown',
-    browser: ua.browser.name || 'Unknown',
-    browserVersion: ua.browser.version || 'Unknown',
-    engine: ua.engine.name || 'Unknown',
-    engineVersion: ua.engine.version || 'Unknown',
-    cpuArchitecture: ua.cpu?.architecture || 'Unknown',
+    deviceBrand: ua.device.vendor || null,
+    deviceModel: ua.device.model || null,
+    osVersion: ua.os.version || null,
+    userAgent: ua.ua || null,
+    browser: ua.browser.name || null,
+    browserVersion: ua.browser.version || null,
+    engine: ua.engine.name || null,
+    engineVersion: ua.engine.version || null,
+    cpuArchitecture: ua.cpu?.architecture || null,
     isBot: ua.isBot,
 
     ...geoData,
