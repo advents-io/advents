@@ -1,10 +1,10 @@
+import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
-import { routes } from '@/utils/routes'
 
 export const metadata: Metadata = {
   title: 'Equipe | Advents',

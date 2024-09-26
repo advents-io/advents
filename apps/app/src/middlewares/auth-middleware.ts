@@ -1,7 +1,6 @@
+import { routes } from '@advents/common'
 import { createServerClient } from '@advents/supabase'
 import { type NextRequest, NextResponse } from 'next/server'
-
-import { isProtectedRoute, routes } from '@/utils/routes'
 
 export const authMiddleware = async (req: NextRequest) => {
   let response = NextResponse.next({
@@ -38,4 +37,10 @@ export const authMiddleware = async (req: NextRequest) => {
   }
 
   return response
+}
+
+const isProtectedRoute = (path: string) => {
+  const notProtectedRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
+
+  return !notProtectedRoutes.includes(path)
 }

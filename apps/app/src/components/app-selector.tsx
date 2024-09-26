@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select'
-import { routes } from '@/utils/routes'
+import { routes } from '@advents/common'
 
 interface Props {
   apps: Pick<App, 'id' | 'name' | 'slug' | 'imageUrl'>[]

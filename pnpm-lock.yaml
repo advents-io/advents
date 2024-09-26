@@ -21,6 +21,9 @@ importers:
 
   apps/app:
     dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../../packages/common
       '@advents/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -131,6 +134,15 @@ importers:
         specifier: ^4.19.1
         version: 4.19.1
 
+  packages/common:
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/db:
     dependencies:
       '@prisma/client':
@@ -152,6 +164,9 @@ importers:
 
   packages/engine:
     dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../common
       '@advents/db':
         specifier: workspace:*
         version: link:../db

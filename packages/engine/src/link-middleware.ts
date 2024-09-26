@@ -1,16 +1,16 @@
-import { Link } from '@advents/db'
-import { logClick } from '@advents/engine'
-import { supabaseClient } from '@advents/supabase'
-import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
-
-import { WEBSITE_URL } from '@/utils/constants'
 import {
   APP_DOMAIN,
   LINK_DOMAINS,
   LOCALHOST_APP_DOMAIN,
   LOCALHOST_LINK_DOMAIN,
-} from '@/utils/domains'
-import { routes } from '@/utils/routes'
+  routes,
+  WEBSITE_URL,
+} from '@advents/common'
+import { Link } from '@advents/db'
+import { supabaseClient } from '@advents/supabase'
+import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
+
+import { logClick } from '@/click-helper'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)

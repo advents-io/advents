@@ -1,10 +1,10 @@
+import { WEBSITE_URL } from '@advents/common'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import AdventsBrand from '@/assets/advents/brand.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
 import { Button } from '@/ui/button'
-import { WEBSITE_URL } from '@/utils/constants'
 
 export const PublicHeader = () => {
   return (

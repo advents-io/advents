@@ -1,12 +1,12 @@
 'use server'
 
+import { LOCALHOST_APP_DOMAIN } from '@advents/common'
 import { supabaseClient } from '@advents/supabase'
 import { headers } from 'next/headers'
 
 import { ActionError } from '@/actions/action-errors'
 import { actionClient } from '@/actions/safe-action'
 import { signInInputSchema } from '@/actions/schemas/input/auth/sign-in-input'
-import { LOCALHOST_APP_DOMAIN } from '@/utils/domains'
 
 export const signInAction = actionClient
   .schema(signInInputSchema)

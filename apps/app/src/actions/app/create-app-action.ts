@@ -8,7 +8,7 @@ import { authActionClient } from '@/actions/safe-action'
 import { createAppInputSchema } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { nanoid } from '@/lib/nanoid'
-import { routes } from '@/utils/routes'
+import { routes } from '@advents/common'
 
 export const createAppAction = authActionClient
   .schema(createAppInputSchema)

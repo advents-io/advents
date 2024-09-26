@@ -28,9 +28,3 @@ export const routes = {
     path: '/ios/click',
   },
 }
-
-export function isProtectedRoute(path: string) {
-  const notProtectedRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
-
-  return !notProtectedRoutes.includes(path)
-}

@@ -29,7 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { routes } from '@/utils/routes'
+import { routes } from '@advents/common'
 
 interface Props {
   email?: string

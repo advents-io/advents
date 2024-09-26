@@ -1,7 +1,7 @@
+import { isLinkDomain, linkMiddleware } from '@advents/engine'
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 import { authMiddleware } from '@/middlewares/auth-middleware'
-import { isLinkDomain, linkMiddleware } from '@/middlewares/link-middleware'
 
 export const config = {
   matcher: [

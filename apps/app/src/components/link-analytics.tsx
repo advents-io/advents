@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation'
 
 import { Badge } from '@/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { routes } from '@/utils/routes'
+import { routes } from '@advents/common'
 
 interface Props {
   clicks: number

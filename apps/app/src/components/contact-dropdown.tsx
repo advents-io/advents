@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL, CONTACT_WHATSAPP } from '@advents/common'
 import { Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { CONTACT_EMAIL, CONTACT_WHATSAPP } from '@/utils/constants'
 
 interface Props {
   children: React.ReactNode

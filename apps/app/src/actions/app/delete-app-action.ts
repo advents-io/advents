@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { deleteAppInputSchema } from '@/actions/schemas/input/app/delete-app-input'
-import { routes } from '@/utils/routes'
+import { routes } from '@advents/common'
 
 export const deleteAppAction = authActionClient
   .schema(deleteAppInputSchema)
