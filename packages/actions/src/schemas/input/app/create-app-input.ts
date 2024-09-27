@@ -1,7 +1,7 @@
 import { LINK_DOMAINS } from '@advents/common'
 import { z } from 'zod'
 
-import { regexes } from '@/utils/regexes'
+import { regexes } from '../../../utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
 

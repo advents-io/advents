@@ -1,16 +1,19 @@
 'use client'
 
+import {
+  formatErrors,
+  signInAction,
+  SignInInputProps,
+  signInInputSchema,
+  useAction,
+} from '@advents/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { formatErrors } from '@/actions/action-errors'
-import { signInAction } from '@/actions/auth/sign-in-action'
-import { SignInInputProps, signInInputSchema } from '@/actions/schemas/input/auth/sign-in-input'
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
 import { ErrorAlert } from '@/components/error-alert'

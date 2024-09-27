@@ -1,6 +1,6 @@
 import { prisma } from '@advents/db'
 
-import { nanoid } from '@/lib/nanoid'
+import { nanoid } from './nanoid'
 
 export const generateRandomSlug = async (domain: string): Promise<string> => {
   const slug = nanoid()

@@ -2,10 +2,10 @@
 
 import { prisma } from '@advents/db'
 
-import { ActionError } from '@/actions/action-errors'
-import { authActionClient } from '@/actions/safe-action'
-import { getLinkInputSchema } from '@/actions/schemas/input/link/get-link-input'
-import { getLinkOutputSchema } from '@/actions/schemas/output/link/get-link-output'
+import { ActionError } from '../../action-errors'
+import { authActionClient } from '../../safe-action'
+import { getLinkInputSchema } from '../../schemas/input/link/get-link-input'
+import { getLinkOutputSchema } from '../../schemas/output/link/get-link-output'
 
 export const getLinkAction = authActionClient
   .schema(getLinkInputSchema)

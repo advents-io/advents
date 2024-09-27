@@ -3,7 +3,7 @@
 import { routes } from '@advents/common'
 import { redirect } from 'next/navigation'
 
-import { authActionClient } from '@/actions/safe-action'
+import { authActionClient } from '../../safe-action'
 
 export const signOutAction = authActionClient.action(async ({ ctx: { supabase } }) => {
   await supabase.auth.signOut()

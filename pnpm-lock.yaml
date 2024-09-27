@@ -21,6 +21,9 @@ importers:
 
   apps/app:
     dependencies:
+      '@advents/actions':
+        specifier: workspace:*
+        version: link:../../packages/actions
       '@advents/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -81,15 +84,9 @@ importers:
       lucide-react:
         specifier: ^0.408.0
         version: 0.408.0(react@19.0.0-rc-a19a8ab4-20240829)
-      nanoid:
-        specifier: ^5.0.7
-        version: 5.0.7
       next:
         specifier: 15.0.0-rc.0
         version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
-      next-safe-action:
-        specifier: ^7.8.1
-        version: 7.9.3(next@15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829))(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)(zod@3.23.8)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
@@ -130,6 +127,40 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.13
+
+  packages/actions:
+    dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../common
+      '@advents/db':
+        specifier: workspace:*
+        version: link:../db
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../supabase
+      nanoid:
+        specifier: ^5.0.7
+        version: 5.0.7
+      next:
+        specifier: 15.0.0-rc.0
+        version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
+      next-safe-action:
+        specifier: ^7.8.1
+        version: 7.9.3(next@15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829))(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)(zod@3.23.8)
+      react:
+        specifier: 19.0.0-rc-a19a8ab4-20240829
+        version: 19.0.0-rc-a19a8ab4-20240829
+      react-dom:
+        specifier: 19.0.0-rc-a19a8ab4-20240829
+        version: 19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/common:
     devDependencies:

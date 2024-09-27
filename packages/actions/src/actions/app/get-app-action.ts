@@ -2,13 +2,13 @@
 
 import { prisma } from '@advents/db'
 
-import { ActionError } from '@/actions/action-errors'
-import { authActionClient } from '@/actions/safe-action'
-import { getAppInputSchema } from '@/actions/schemas/input/app/get-app-input'
+import { ActionError } from '../../action-errors'
+import { authActionClient } from '../../safe-action'
+import { getAppInputSchema } from '../../schemas/input/app/get-app-input'
 import {
   getAppDefaultValuesOutputSchema,
   getAppOutputSchema,
-} from '@/actions/schemas/output/app/get-app-output'
+} from '../../schemas/output/app/get-app-output'
 
 export const getAppAction = authActionClient
   .schema(getAppInputSchema)

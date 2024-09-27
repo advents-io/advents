@@ -1,9 +1,7 @@
-import { useAction } from 'next-safe-action/hooks'
+import { deleteAppAction, formatErrors, useAction } from '@advents/actions'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { formatErrors } from '@/actions/action-errors'
-import { deleteAppAction } from '@/actions/app/delete-app-action'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
 import {

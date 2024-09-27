@@ -4,9 +4,9 @@ import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
-import { ActionError } from '@/actions/action-errors'
-import { authActionClient } from '@/actions/safe-action'
-import { deleteAppInputSchema } from '@/actions/schemas/input/app/delete-app-input'
+import { ActionError } from '../../action-errors'
+import { authActionClient } from '../../safe-action'
+import { deleteAppInputSchema } from '../../schemas/input/app/delete-app-input'
 
 export const deleteAppAction = authActionClient
   .schema(deleteAppInputSchema)

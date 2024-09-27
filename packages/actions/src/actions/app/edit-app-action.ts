@@ -4,9 +4,9 @@ import { fetchUrlOgImage, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
-import { ActionError } from '@/actions/action-errors'
-import { authActionClient } from '@/actions/safe-action'
-import { editAppInputSchema } from '@/actions/schemas/input/app/edit-app-input'
+import { ActionError } from '../../action-errors'
+import { authActionClient } from '../../safe-action'
+import { editAppInputSchema } from '../../schemas/input/app/edit-app-input'
 
 export const editAppAction = authActionClient
   .schema(editAppInputSchema)

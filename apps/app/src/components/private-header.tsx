@@ -1,13 +1,12 @@
 'use client'
 
+import { signOutAction, useAction } from '@advents/actions'
 import { routes } from '@advents/common'
 import { App } from '@advents/db'
 import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useAction } from 'next-safe-action/hooks'
 
-import { signOutAction } from '@/actions/auth/sign-out-action'
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { AppSelector } from '@/components/app-selector'
 import { ContactDropdown } from '@/components/contact-dropdown'

@@ -1,24 +1,25 @@
 'use client'
 
+import {
+  createLinkAction,
+  CreateLinkInputFormProps,
+  createLinkInputFormSchema,
+  editLinkAction,
+  formatErrors,
+  getAppDefaultValuesAction,
+  GetAppDefaultValuesOutputProps,
+  getAppIdAction,
+  getLinkAction,
+  GetLinkOutputProps,
+  useAction,
+} from '@advents/actions'
 import { LINK_DOMAINS } from '@advents/common'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
-import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { formatErrors } from '@/actions/action-errors'
-import { getAppDefaultValuesAction, getAppIdAction } from '@/actions/app/get-app-action'
-import { createLinkAction } from '@/actions/link/create-link-action'
-import { editLinkAction } from '@/actions/link/edit-link-action'
-import { getLinkAction } from '@/actions/link/get-link-action'
-import {
-  CreateLinkInputFormProps,
-  createLinkInputFormSchema,
-} from '@/actions/schemas/input/link/create-link-input'
-import { GetAppDefaultValuesOutputProps } from '@/actions/schemas/output/app/get-app-output'
-import { GetLinkOutputProps } from '@/actions/schemas/output/link/get-link-output'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { Button } from '@/ui/button'

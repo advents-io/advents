@@ -4,9 +4,9 @@ import { LOCALHOST_APP_DOMAIN } from '@advents/common'
 import { supabaseClient } from '@advents/supabase'
 import { headers } from 'next/headers'
 
-import { ActionError } from '@/actions/action-errors'
-import { actionClient } from '@/actions/safe-action'
-import { signInInputSchema } from '@/actions/schemas/input/auth/sign-in-input'
+import { ActionError } from '../../action-errors'
+import { actionClient } from '../../safe-action'
+import { signInInputSchema } from '../../schemas/input/auth/sign-in-input'
 
 export const signInAction = actionClient
   .schema(signInInputSchema)

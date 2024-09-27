@@ -6,6 +6,7 @@
     "migrate:prod": "pnpm --dir ../../packages/db migrate:prod"
   },
   "dependencies": {
+    "@advents/actions": "workspace:*",
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/engine": "workspace:*",
@@ -26,9 +27,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.12",
     "lucide-react": "^0.408.0",
-    "nanoid": "^5.0.7",
     "next": "15.0.0-rc.0",
-    "next-safe-action": "^7.8.1",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-a19a8ab4-20240829",
     "react-dom": "19.0.0-rc-a19a8ab4-20240829",
