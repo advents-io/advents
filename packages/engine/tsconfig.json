@@ -1,13 +1,6 @@
 {
   "extends": "@advents/tsconfig/next.json",
 
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }

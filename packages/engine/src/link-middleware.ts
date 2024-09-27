@@ -10,7 +10,7 @@ import { Link } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { logClick } from '@/click-helper'
+import { logClick } from './click-helper'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)

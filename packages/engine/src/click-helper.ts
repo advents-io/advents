@@ -2,7 +2,7 @@ import { Click as DbClick } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { NextRequest, userAgent } from 'next/server'
 
-import { getGeoData } from '@/request-helper'
+import { getGeoData } from './request-helper'
 
 interface Click extends Omit<DbClick, 'createdAt'> {}
 
