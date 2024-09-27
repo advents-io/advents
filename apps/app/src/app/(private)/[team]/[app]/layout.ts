@@ -1,7 +1,6 @@
+import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
-
-import { routes } from '@advents/common'
 
 export default async function AppLayout({
   children,

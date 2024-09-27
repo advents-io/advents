@@ -1,5 +1,6 @@
 'use client'
 
+import { routes } from '@advents/common'
 import { SelectGroup } from '@radix-ui/react-select'
 import { Code, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -14,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select'
-import { routes } from '@advents/common'
 
 interface Props {
   team: string

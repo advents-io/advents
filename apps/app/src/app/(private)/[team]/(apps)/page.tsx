@@ -1,3 +1,4 @@
+import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { PlusIcon } from 'lucide-react'
@@ -9,7 +10,6 @@ import { redirect } from 'next/navigation'
 import Empty from '@/assets/illustrations/empty.svg'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
-import { routes } from '@advents/common'
 
 export const metadata: Metadata = {
   title: 'Apps | Advents',

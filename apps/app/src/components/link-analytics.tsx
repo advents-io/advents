@@ -1,10 +1,10 @@
+import { routes } from '@advents/common'
 import { Download, MousePointerClick } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 import { Badge } from '@/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { routes } from '@advents/common'
 
 interface Props {
   clicks: number

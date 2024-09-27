@@ -1,5 +1,6 @@
 'use server'
 
+import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
@@ -8,7 +9,6 @@ import { authActionClient } from '@/actions/safe-action'
 import { createAppInputSchema } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { nanoid } from '@/lib/nanoid'
-import { routes } from '@advents/common'
 
 export const createAppAction = authActionClient
   .schema(createAppInputSchema)

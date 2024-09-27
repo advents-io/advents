@@ -1,5 +1,6 @@
 'use client'
 
+import { routes } from '@advents/common'
 import { App } from '@advents/db'
 import { LogOut, Slash, User } from 'lucide-react'
 import Image from 'next/image'
@@ -29,7 +30,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { routes } from '@advents/common'
 
 interface Props {
   email?: string

@@ -1,7 +1,6 @@
+import { routes } from '@advents/common'
 import { supabaseClient } from '@advents/supabase'
 import { NextRequest, NextResponse } from 'next/server'
-
-import { routes } from '@advents/common'
 
 export async function GET(req: NextRequest) {
   const requestUrl = new URL(req.url)

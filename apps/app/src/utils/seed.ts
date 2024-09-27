@@ -1,9 +1,9 @@
+import { LINK_DOMAINS } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseAdminClient } from '@advents/supabase'
 
 import { CreateAppInputProps } from '@/actions/schemas/input/app/create-app-input'
 import { fetchUrlOgImage } from '@/helpers/og-helper'
-import { LINK_DOMAINS } from '@advents/common'
 
 const app: CreateAppInputProps = {
   name: 'Favorito',

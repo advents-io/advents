@@ -1,10 +1,10 @@
+import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { CreateEditAppForm } from '@/components/create-edit-app-form'
-import { routes } from '@advents/common'
 
 export const metadata: Metadata = {
   title: 'Novo app | Advents',

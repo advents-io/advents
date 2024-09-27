@@ -1,5 +1,6 @@
 'use client'
 
+import { LINK_DOMAINS } from '@advents/common'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -25,7 +26,6 @@ import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import { LINK_DOMAINS } from '@advents/common'
 
 interface Props {
   closeDialog: () => void
