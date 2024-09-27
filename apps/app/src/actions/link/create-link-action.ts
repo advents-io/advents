@@ -5,7 +5,7 @@ import { prisma } from '@advents/db'
 import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { createLinkInputActionSchema } from '@/actions/schemas/input/link/create-link-input'
-import { generateRandomSlug } from '@/helpers/link-helper'
+import { generateRandomSlug } from '@/utils/link-helper'
 
 export const createLinkAction = authActionClient
   .schema(createLinkInputActionSchema)
