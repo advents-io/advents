@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "AttributionMethod" AS ENUM ('android_deterministic_referrer', 'ios_deterministic_click', 'ios_probabilistc');
+CREATE TYPE "AttributionMethod" AS ENUM ('android_deterministic_referrer', 'android_probabilistic', 'ios_deterministic_click', 'ios_probabilistic');
 
 -- CreateTable
 CREATE TABLE "links" (
@@ -150,7 +150,7 @@ CREATE TABLE "attributions" (
     "id" TEXT NOT NULL,
     "method" "AttributionMethod" NOT NULL,
     "session_id" TEXT NOT NULL,
-    "click_id" TEXT,
+    "click_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "attributions_pkey" PRIMARY KEY ("id")
