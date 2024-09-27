@@ -1,13 +1,12 @@
 'use server'
 
-import { routes } from '@advents/common'
+import { fetchUrlOgImage, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '@/actions/action-errors'
 import { authActionClient } from '@/actions/safe-action'
 import { createAppInputSchema } from '@/actions/schemas/input/app/create-app-input'
-import { fetchUrlOgImage } from '@/helpers/og-helper'
 import { nanoid } from '@/lib/nanoid'
 
 export const createAppAction = authActionClient
@@ -41,6 +40,10 @@ export const createAppAction = authActionClient
     }
 
     const imageUrl = await fetchUrlOgImage(app.androidUrl)
+
+    if (!imageUrl) {
+      throw new ActionError('Erro ao buscar a imagem do app.')
+    }
 
     const apiKey = `advents_${nanoid(24)}`
 

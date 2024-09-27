@@ -2,16 +2,23 @@
   "name": "@advents/db",
   "scripts": {
     "migrate": "dotenv -e ../../apps/app/.env -- prisma migrate dev && prisma generate",
-    "migrate:prod": "dotenv -e ../../apps/app/.env -- prisma migrate deploy && prisma generate"
+    "migrate:prod": "dotenv -e ../../apps/app/.env -- prisma migrate deploy && prisma generate",
+    "seed": "dotenv -e ../../apps/app/.env -- prisma db seed"
+  },
+  "prisma": {
+    "seed": "tsx seed.ts"
   },
   "dependencies": {
+    "@advents/common": "workspace:*",
+    "@advents/supabase": "workspace:*",
     "@prisma/client": "^5.20.0"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
     "@advents/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.2",
-    "prisma": "^5.20.0"
+    "prisma": "^5.20.0",
+    "tsx": "^4.19.1"
   },
   "eslintConfig": {
     "extends": [

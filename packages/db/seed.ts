@@ -1,11 +1,9 @@
-import { LINK_DOMAINS } from '@advents/common'
-import { prisma } from '@advents/db'
+import { fetchUrlOgImage, LINK_DOMAINS } from '@advents/common'
 import { supabaseAdminClient } from '@advents/supabase'
 
-import { CreateAppInputProps } from '@/actions/schemas/input/app/create-app-input'
-import { fetchUrlOgImage } from '@/helpers/og-helper'
+import { prisma } from '.'
 
-const app: CreateAppInputProps = {
+const app = {
   name: 'Favorito',
   slug: 'favorito',
   defaultDomain: LINK_DOMAINS[0],
@@ -45,6 +43,10 @@ async function seed() {
   })
 
   const imageUrl = await fetchUrlOgImage(app.androidUrl)
+
+  if (!imageUrl) {
+    throw new Error('App image not found')
+  }
 
   const apiKey = 'advents_NqL92oPEAbY1Qs3OHFx8NK9r' // API key used in example apps
 

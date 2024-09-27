@@ -130,9 +130,6 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.13
-      tsx:
-        specifier: ^4.19.1
-        version: 4.19.1
 
   packages/common:
     devDependencies:
@@ -145,6 +142,12 @@ importers:
 
   packages/db:
     dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../common
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../supabase
       '@prisma/client':
         specifier: ^5.20.0
         version: 5.20.0(prisma@5.20.0)
@@ -161,6 +164,9 @@ importers:
       prisma:
         specifier: ^5.20.0
         version: 5.20.0
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
 
   packages/engine:
     dependencies:
