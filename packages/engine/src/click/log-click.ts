@@ -2,7 +2,7 @@ import { Click as DbClick } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { NextRequest, userAgent } from 'next/server'
 
-import { getGeoData } from './request-helper'
+import { getGeolocation } from '../utils/geolocation'
 
 interface Click extends Omit<DbClick, 'createdAt'> {}
 
@@ -22,7 +22,7 @@ export const logClick = async (
   const referer = req.headers.get('referer')
   const refererDomain = getDomainFromUrl(referer)
 
-  const geoData = getGeoData(req)
+  const geolocation = getGeolocation(req)
 
   const click: Click = {
     id: clickId,
@@ -45,7 +45,7 @@ export const logClick = async (
     cpuArchitecture: ua.cpu?.architecture || null,
     isBot: ua.isBot,
 
-    ...geoData,
+    ...geolocation,
 
     linkId,
   }

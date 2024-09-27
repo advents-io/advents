@@ -10,7 +10,7 @@ import { Link } from '@advents/db'
 import { supabaseClient } from '@advents/supabase'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { logClick } from './click-helper'
+import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
@@ -20,7 +20,7 @@ export const isLinkDomain = (req: NextRequest) => {
 
 interface LinkProps extends Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId'> {}
 
-export const linkMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
+export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)
 
   const slug = req.nextUrl.pathname.split('/')[1]

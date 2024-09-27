@@ -2,9 +2,9 @@ import { prisma, Session as DbSession } from '@advents/db'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 
-import { handleAttribution } from '../attribution/attribution-handler'
+import { handleAttribution } from '../../attribution'
+import { getGeolocation } from '../../utils/geolocation'
 import { authMiddleware } from '../auth-middleware'
-import { getGeoData } from '../request-helper'
 
 export type Session = Pick<
   DbSession,
@@ -48,12 +48,12 @@ export const logSession = (api: Hono) =>
     async c => {
       const session = (await c.req.json()) as Session
       const appId = c.var.appId
-      const geoData = getGeoData(c.req.raw)
+      const geolocation = getGeolocation(c.req.raw)
 
       const { id: sessionId } = await prisma.session.create({
         data: {
           ...session,
-          ...geoData,
+          ...geolocation,
           appId,
         },
         select: {

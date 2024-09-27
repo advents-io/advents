@@ -1,4 +1,4 @@
-import { isLinkDomain, linkMiddleware } from '@advents/engine'
+import { clickMiddleware, isLinkDomain } from '@advents/engine'
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 import { authMiddleware } from '@/utils/auth-middleware'
@@ -19,7 +19,7 @@ export const config = {
 
 export async function middleware(req: NextRequest, event: NextFetchEvent) {
   if (isLinkDomain(req)) {
-    return await linkMiddleware(req, event)
+    return await clickMiddleware(req, event)
   }
 
   const isApiRoute = req.nextUrl.pathname.startsWith('/api')

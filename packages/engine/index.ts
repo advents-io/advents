@@ -1,6 +1,6 @@
 import { handle } from 'hono/vercel'
 
 import { api } from './src/api'
-import { isLinkDomain, linkMiddleware } from './src/link-middleware'
+import { clickMiddleware, isLinkDomain } from './src/click/middleware'
 
-export { api, handle, isLinkDomain, linkMiddleware }
+export { api, clickMiddleware, handle, isLinkDomain }

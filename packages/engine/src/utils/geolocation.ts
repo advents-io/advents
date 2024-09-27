@@ -8,7 +8,7 @@ const LOCALHOST_GEO_DATA: Geo = {
   longitude: '-48.8824',
 }
 
-interface GeoData {
+interface Geolocation {
   ip: string | null
   continent: string | null
   country: string | null
@@ -18,7 +18,7 @@ interface GeoData {
   longitude: string | null
 }
 
-export const getGeoData = (req: Request): GeoData => {
+export const getGeolocation = (req: Request): Geolocation => {
   const ip = process.env.VERCEL === '1' ? ipAddress(req) : '127.0.0.1'
   const continent = process.env.VERCEL === '1' ? req.headers.get('x-vercel-ip-continent') : 'SA'
   const geo = process.env.VERCEL === '1' ? geolocation(req) : LOCALHOST_GEO_DATA
