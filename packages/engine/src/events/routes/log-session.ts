@@ -61,7 +61,7 @@ export const logSession = (api: Hono) =>
         },
       })
 
-      waitUntil(handleAttribution(sessionId, session))
+      waitUntil(handleAttribution(sessionId, session, appId))
 
       return new Response()
     },
