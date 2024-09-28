@@ -50,7 +50,9 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   let destinationUrl = new URL(link.fallbackUrl)
 
-  const isIos = userAgent(req).os?.name === 'iOS'
+  const ua = userAgent(req)
+
+  const isIos = ua.os?.name === 'iOS'
   if (isIos) {
     const isLocalhost = req.headers.get('host')?.includes('localhost') ?? true
     const baseUrl = isLocalhost ? LOCALHOST_APP_DOMAIN : APP_DOMAIN
@@ -61,7 +63,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
     destinationUrl.searchParams.append('redirect', link.iosUrl)
   }
 
-  const isAndroid = userAgent(req).os?.name === 'Android'
+  const isAndroid = ua.os?.name === 'Android'
   if (isAndroid) {
     destinationUrl = new URL(link.androidUrl)
     destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
