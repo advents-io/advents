@@ -50,7 +50,7 @@ async function seed() {
 
   const apiKey = 'advents_NqL92oPEAbY1Qs3OHFx8NK9r' // API key used in example apps
 
-  await prisma.app.create({
+  const { id: appId } = await prisma.app.create({
     data: {
       ...app,
       imageUrl,
@@ -65,11 +65,27 @@ async function seed() {
     },
   })
 
-  // Grant all privileges to anon, authenticated and service_role roles
-  await configure()
+  await prisma.link.create({
+    data: {
+      title: 'Teste',
+      domain: app.defaultDomain,
+      slug: 'teste',
+      iosUrl: app.iosUrl,
+      androidUrl: app.androidUrl,
+      fallbackUrl: app.defaultFallbackUrl,
+      appId,
+      createdBy: user.id,
+      updatedBy: user.id,
+    },
+  })
+
+  await grantAccessAndPrivileges()
+  await createIncrementLinkClicksFunction()
 }
 
-const configure = async () => {
+const grantAccessAndPrivileges = async () => {
+  // Grant all privileges to anon, authenticated and service_role roles
+
   await prisma.$executeRaw`
     GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;`
 
@@ -90,22 +106,23 @@ const configure = async () => {
 
   await prisma.$executeRaw`
     ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;`
+}
 
-  // Create function to increment link clicks
+const createIncrementLinkClicksFunction = async () => {
   await prisma.$executeRaw`
-    CREATE OR REPLACE FUNCTION increment_link_clicks (link_id TEXT)
-      RETURNS void
-      AS $$
-    BEGIN
-      UPDATE
-        links
-      SET
-        click_count = click_count + 1
-      WHERE
-        id = link_id;
-    END;
-    $$
-    LANGUAGE plpgsql;`
+  CREATE OR REPLACE FUNCTION increment_link_clicks (link_id TEXT)
+    RETURNS void
+    AS $$
+  BEGIN
+    UPDATE
+      links
+    SET
+      click_count = click_count + 1
+    WHERE
+      id = link_id;
+  END;
+  $$
+  LANGUAGE plpgsql;`
 }
 
 seed()
