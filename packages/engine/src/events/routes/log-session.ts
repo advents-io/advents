@@ -6,7 +6,7 @@ import { handleAttribution } from '../../attributions'
 import { getGeolocation } from '../../utils/geolocation'
 import { authMiddleware } from '../auth-middleware'
 
-export type Session = Pick<
+export type SessionInput = Pick<
   DbSession,
   | 'sdkName'
   | 'sdkVersion'
@@ -46,7 +46,7 @@ export const logSession = (api: Hono) =>
     '/sessions', //
     authMiddleware, //
     async c => {
-      const session = (await c.req.json()) as Session
+      const session = (await c.req.json()) as SessionInput
       const appId = c.var.appId
       const geolocation = getGeolocation(c.req.raw)
 
