@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     type: 'website',
     title,
     description,
+    siteName: 'Advents',
     url: '/',
     images: {
       url: '/og.png',
