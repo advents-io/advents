@@ -1,5 +1,6 @@
 import './globals.css'
 
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -74,6 +75,7 @@ export default async function RootLayout({
       <body className='relative flex min-h-screen flex-col'>
         <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         <Toaster richColors closeButton theme='light' />
+        <SpeedInsights />
       </body>
     </html>
   )
