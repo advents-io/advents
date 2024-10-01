@@ -1,0 +1,6 @@
+[submodule "apps/docs"]
+	path = apps/docs
+	url = git@github.com:advents-io/docs.git
+[submodule "apps/react-native"]
+	path = apps/react-native
+	url = git@github.com:advents-io/advents-react-native.git
