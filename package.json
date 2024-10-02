@@ -1,11 +1,11 @@
 {
   "name": "advents",
   "scripts": {
-    "dev": "pnpm --dir apps/app dev",
-    "app": "pnpm --dir apps/app",
-    "db": "pnpm --dir packages/db",
-    "doc": "pnpm --dir apps/docs",
-    "sdk": "pnpm --dir apps/react-native",
+    "dev": "pnpm --dir apps/app run dev",
+    "app": "pnpm --dir apps/app run",
+    "db": "pnpm --dir packages/db run",
+    "doc": "pnpm --dir apps/docs run",
+    "sdk": "pnpm --dir apps/react-native run",
     "lint": "eslint . --fix && prettier . --write",
     "clear": "./scripts/clear.sh"
   },
