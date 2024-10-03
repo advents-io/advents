@@ -1,10 +1,11 @@
 'use client'
 
 import { signOutAction, useAction } from '@advents/actions'
-import { routes } from '@advents/common'
+import { DOCS_URL, routes } from '@advents/common'
 import { App } from '@advents/db'
-import { LogOut, Slash, User } from 'lucide-react'
+import { LogOut, MoveUpRight, Slash, User } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
@@ -64,12 +65,19 @@ export const PrivateHeader = ({ email, apps }: Props) => {
           </Breadcrumb>
         </div>
 
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-1'>
           <ContactDropdown>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Ajuda
             </Button>
           </ContactDropdown>
+
+          <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
+            <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
+              Documentação
+              <MoveUpRight className='ml-1 size-4' />
+            </Button>
+          </Link>
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
