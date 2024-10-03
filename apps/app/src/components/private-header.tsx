@@ -81,14 +81,14 @@ export const PrivateHeader = ({ email, apps }: Props) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
-              <Avatar className='size-8'>
+              <Avatar className='size-10'>
                 <AvatarFallback>
-                  <User className='size-4' />
+                  <User className='size-5' />
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent>
+            <DropdownMenuContent align='end'>
               <DropdownMenuLabel className='flex items-center gap-2 font-normal text-muted-foreground'>
                 <User className='size-4' />
                 {email}

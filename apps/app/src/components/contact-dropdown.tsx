@@ -14,14 +14,16 @@ import {
 interface Props {
   children: React.ReactNode
   showDocs?: boolean
+  modal?: boolean
+  align?: 'center' | 'end' | 'start'
 }
 
-export const ContactDropdown = ({ children, showDocs = true }: Props) => {
+export const ContactDropdown = ({ children, showDocs = true, modal = true, align }: Props) => {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={modal}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
-      <DropdownMenuContent>
+      <DropdownMenuContent loop={false} align={align}>
         {showDocs && (
           <Link href={DOCS_URL} target='_blank'>
             <DropdownMenuItem>

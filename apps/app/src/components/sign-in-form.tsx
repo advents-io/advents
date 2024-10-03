@@ -8,7 +8,6 @@ import {
   useAction,
 } from '@advents/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -92,13 +91,8 @@ export const SignInForm = () => {
             )}
           </CardContent>
 
-          <CardFooter>
-            {emailSent ? (
-              <Button variant='outline' onClick={() => setEmailSent(false)}>
-                <ArrowLeft className='mr-2 size-4' />
-                Voltar
-              </Button>
-            ) : (
+          {!emailSent && (
+            <CardFooter>
               <div className='flex flex-1 flex-col gap-3'>
                 <Button type='submit' disabled={isExecuting}>
                   <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
@@ -113,8 +107,8 @@ export const SignInForm = () => {
                   </ContactDropdown>
                 </span>
               </div>
-            )}
-          </CardFooter>
+            </CardFooter>
+          )}
         </Card>
       </form>
     </Form>

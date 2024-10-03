@@ -5,6 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { HelpButton } from '@/components/help-button'
 import { Toaster } from '@/ui/sonner'
 import { TooltipProvider } from '@/ui/tooltip'
 
@@ -75,6 +76,7 @@ export default async function RootLayout({
     <html lang='pt-BR' className={interFont.className}>
       <body className='relative flex min-h-screen flex-col'>
         <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
+        <HelpButton />
         <Toaster richColors closeButton theme='light' />
         <SpeedInsights />
         <Analytics />
