@@ -28,7 +28,6 @@ export type SessionInput = Pick<
   | 'deviceBrand'
   | 'deviceModel'
   | 'deviceType'
-  | 'deviceYearClass'
   | 'osVersion'
   | 'osBuildId'
   | 'appVersion'

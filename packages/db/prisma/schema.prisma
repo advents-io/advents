@@ -168,15 +168,14 @@ model Session {
   installTime DateTime? @map("install_time")
 
   // Device data
-  userAgent       String? @map("user_agent")
-  deviceName      String? @map("device_name")
-  deviceBrand     String? @map("device_brand")
-  deviceModel     String? @map("device_model")
-  deviceType      String? @map("device_type")
-  deviceYearClass String? @map("device_year_class")
-  osVersion       String? @map("os_version")
-  osBuildId       String? @map("os_build_id")
-  appVersion      String? @map("app_version")
+  userAgent   String? @map("user_agent")
+  deviceName  String? @map("device_name")
+  deviceBrand String? @map("device_brand")
+  deviceModel String? @map("device_model")
+  deviceType  String? @map("device_type")
+  osVersion   String? @map("os_version")
+  osBuildId   String? @map("os_build_id")
+  appVersion  String? @map("app_version")
 
   // Request geo data
   ip        String?
