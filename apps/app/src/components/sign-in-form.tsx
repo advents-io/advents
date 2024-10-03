@@ -106,7 +106,7 @@ export const SignInForm = () => {
 
                 <span className='text-sm'>
                   Não possui uma conta?{' '}
-                  <ContactDropdown>
+                  <ContactDropdown showDocs={false}>
                     <Button variant='link' size='sm' className='p-0'>
                       Entre em contato.
                     </Button>

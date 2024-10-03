@@ -1,4 +1,4 @@
-import { DOCS_URL, MAIN_EMAIL, SUPPORT_WHATSAPP } from '@advents/common'
+import { CONTACT_EMAIL, DOCS_URL, SUPPORT_WHATSAPP } from '@advents/common'
 import { BookOpen, Mail } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,20 +13,23 @@ import {
 
 interface Props {
   children: React.ReactNode
+  showDocs?: boolean
 }
 
-export const ContactDropdown = ({ children }: Props) => {
+export const ContactDropdown = ({ children, showDocs = true }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <Link href={DOCS_URL} target='_blank'>
-          <DropdownMenuItem>
-            <BookOpen className='mr-2 size-4' />
-            Documentação
-          </DropdownMenuItem>
-        </Link>
+        {showDocs && (
+          <Link href={DOCS_URL} target='_blank'>
+            <DropdownMenuItem>
+              <BookOpen className='mr-2 size-4' />
+              Documentação
+            </DropdownMenuItem>
+          </Link>
+        )}
 
         <Link href={SUPPORT_WHATSAPP} target='_blank'>
           <DropdownMenuItem>
@@ -35,7 +38,7 @@ export const ContactDropdown = ({ children }: Props) => {
           </DropdownMenuItem>
         </Link>
 
-        <Link href={`mailto:${MAIN_EMAIL}`} target='_blank'>
+        <Link href={`mailto:${CONTACT_EMAIL}`} target='_blank'>
           <DropdownMenuItem>
             <Mail className='mr-2 size-4' />
             E-mail
