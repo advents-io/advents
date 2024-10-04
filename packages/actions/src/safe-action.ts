@@ -6,7 +6,7 @@ import { ActionError, UnauthorizedActionError } from './action-errors'
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+    if (e instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
       return e.code === 'P2002'
         ? `Já existe um registro com o mesmo valor único (${e.code})`
         : `Erro ao processar a requisição (Erro ${e.code})`
