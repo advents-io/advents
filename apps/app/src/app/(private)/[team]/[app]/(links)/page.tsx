@@ -20,7 +20,7 @@ export default async function Links({
 
   return (
     <div className='flex flex-1 flex-col'>
-      <div className='mb-4 flex items-center justify-between'>
+      <div className='mb-4 flex items-start justify-between'>
         <h1 className='text-xl font-bold'>Links</h1>
 
         <CreateLinkDialog />
