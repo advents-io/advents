@@ -21,11 +21,11 @@ export const MetricCard = ({ title, value, increase, icon, tooltip, className }:
   const formatedIncrease = increase
     ? Number.isInteger(increase)
       ? increase.toString()
-      : increase.toFixed(1)
+      : increase.toFixed(1).replace('.', ',')
     : '0'
 
-  const increaseIsPositive = increase && increase > 0
-  const increaseIsNegative = increase && increase < 0
+  const increaseIsPositive = !!increase && increase > 0
+  const increaseIsNegative = !!increase && increase < 0
 
   return (
     <Card className={cn(className)}>
@@ -54,6 +54,7 @@ export const MetricCard = ({ title, value, increase, icon, tooltip, className }:
         <div className='flex items-center gap-1'>
           {increaseIsPositive && <ArrowUp className='size-3 text-green-600' />}
           {increaseIsNegative && <ArrowDown className='size-3 text-red-500' />}
+
           <p className='text-xs text-muted-foreground'>
             <span
               data-ispositive={increaseIsPositive}

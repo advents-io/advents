@@ -1,7 +1,7 @@
 {
   "name": "@advents/app",
   "scripts": {
-    "dev": "open http://localhost:3000 && next dev --turbo",
+    "dev": "next dev --turbo",
     "build": "next build",
     "migrate:prod": "pnpm --dir ../../packages/db migrate:prod"
   },
