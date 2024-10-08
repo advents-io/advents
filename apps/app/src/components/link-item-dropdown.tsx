@@ -25,8 +25,8 @@ interface Props {
 export const LinkItemDropdown = ({ id, domain, slug, shortLink, qrcodeLogoUrl }: Props) => {
   const [open, setOpen] = useState(false)
 
-  /*
-    BUG FIX: We have to add preventDefault to avoid the dropdown to close when clicking on an item.
+  /* BUG
+    We have to add preventDefault to avoid the dropdown to close when clicking on an item.
 
     That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
   */

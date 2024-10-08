@@ -31,7 +31,7 @@ export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
   },
   {
     accessorKey: 'clicks',
-    header: ({ column }) => <TableColumnHeader column={column} title='Clicks' />,
+    header: ({ column }) => <TableColumnHeader column={column} title='Cliques' />,
     cell: ({ row }) => {
       return (
         <div className='flex w-[100px] items-center'>

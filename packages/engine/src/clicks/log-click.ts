@@ -71,7 +71,7 @@ const detectBot = (req: NextRequest) => {
 
   const ua = req.headers.get('User-Agent')
 
-  /* Note:
+  /* INFO:
    * - bot is for most bots & crawlers
    * - ChatGPT is for ChatGPT
    * - facebookexternalhit is for Facebook crawler

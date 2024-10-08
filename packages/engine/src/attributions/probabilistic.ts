@@ -1,4 +1,4 @@
-/*
+/* TODO
   Verifications before running probabilistic attribution:
     - device not already attributed || is first session
 
