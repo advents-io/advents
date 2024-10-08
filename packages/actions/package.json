@@ -4,6 +4,7 @@
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/supabase": "workspace:*",
+    "@prisma/client": "^5.20.0",
     "nanoid": "^5.0.7",
     "next": "15.0.0-rc.0",
     "next-safe-action": "^7.8.1",

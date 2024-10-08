@@ -1,4 +1,4 @@
-import Prisma, { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
@@ -14,5 +14,5 @@ if (process.env.NODE_ENV === 'development') {
   globalThis.prismaGlobal = prisma
 }
 
-export { Prisma, prisma }
+export { prisma }
 export * from '@prisma/client'
