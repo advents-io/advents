@@ -1,4 +1,7 @@
+import { DOCS_URL } from '@advents/common'
+import { MoveUpRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import AdventsBrand from '@/assets/advents/brand.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
@@ -10,11 +13,20 @@ export const PublicHeader = () => {
       <nav className='flex flex-1 items-center justify-between gap-5'>
         <Image src={AdventsBrand} alt='Logo da Advents' className='w-24' />
 
-        <ContactDropdown align='end'>
-          <Button variant='ghost' size='sm'>
-            Contato
-          </Button>
-        </ContactDropdown>
+        <div className='flex items-center gap-1'>
+          <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
+            <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
+              Documentação
+              <MoveUpRight className='ml-1 size-4' />
+            </Button>
+          </Link>
+
+          <ContactDropdown align='end' showDocs={false}>
+            <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
+              Contato
+            </Button>
+          </ContactDropdown>
+        </div>
       </nav>
     </header>
   )

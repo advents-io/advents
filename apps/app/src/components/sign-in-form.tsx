@@ -7,14 +7,15 @@ import {
   signInInputSchema,
   useAction,
 } from '@advents/actions'
+import { SIGN_UP_URL } from '@advents/common'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
-import { ContactDropdown } from '@/components/contact-dropdown'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
 import { Button } from '@/ui/button'
@@ -100,11 +101,9 @@ export const SignInForm = () => {
 
                 <span className='text-sm'>
                   Não possui uma conta?{' '}
-                  <ContactDropdown showDocs={false}>
-                    <Button variant='link' size='sm' className='p-0'>
-                      Entre em contato.
-                    </Button>
-                  </ContactDropdown>
+                  <Link href={SIGN_UP_URL} className='font-semibold underline' target='_blank'>
+                    Cadastre-se.
+                  </Link>
                 </span>
               </div>
             </CardFooter>
