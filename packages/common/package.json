@@ -1,5 +1,8 @@
 {
   "name": "@advents/common",
+  "dependencies": {
+    "dayjs": "^1.11.12"
+  },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
     "@advents/tsconfig": "workspace:*"

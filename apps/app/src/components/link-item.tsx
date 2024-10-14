@@ -1,5 +1,6 @@
 'use client'
 
+import { dayjs } from '@advents/common'
 import { Link } from '@advents/db'
 import { ArrowRightIcon, Copy } from 'lucide-react'
 import NextLink from 'next/link'
@@ -7,7 +8,6 @@ import { toast } from 'sonner'
 
 import { LinkAnalytics } from '@/components/link-analytics'
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
-import { dayjs } from '@/lib/dayjs'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
