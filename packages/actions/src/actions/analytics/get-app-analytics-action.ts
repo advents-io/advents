@@ -27,8 +27,8 @@ export const getAppAnalyticsAction = authActionClient
             },
           },
           createdAt: {
-            gte: startDate,
-            lte: endDate,
+            gte: dayjs(startDate).startOf('day').toDate(),
+            lte: dayjs(endDate).endOf('day').toDate(),
           },
         },
       }),
@@ -41,8 +41,8 @@ export const getAppAnalyticsAction = authActionClient
             },
           },
           createdAt: {
-            gte: lastPeriodStartDate,
-            lte: lastPeriodEndDate,
+            gte: dayjs(lastPeriodStartDate).startOf('day').toDate(),
+            lte: dayjs(lastPeriodEndDate).endOf('day').toDate(),
           },
         },
       }),
@@ -55,8 +55,8 @@ export const getAppAnalyticsAction = authActionClient
             },
           },
           createdAt: {
-            gte: startDate,
-            lte: endDate,
+            gte: dayjs(startDate).startOf('day').toDate(),
+            lte: dayjs(endDate).endOf('day').toDate(),
           },
         },
       }),
@@ -69,8 +69,8 @@ export const getAppAnalyticsAction = authActionClient
             },
           },
           createdAt: {
-            gte: lastPeriodStartDate,
-            lte: lastPeriodEndDate,
+            gte: dayjs(lastPeriodStartDate).startOf('day').toDate(),
+            lte: dayjs(lastPeriodEndDate).endOf('day').toDate(),
           },
         },
       }),
