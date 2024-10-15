@@ -13,9 +13,7 @@ export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
     accessorKey: 'slug',
     header: ({ column }) => <TableColumnHeader column={column} title='Link' />,
     cell: ({ row }) => (
-      <div className='w-[80px]'>
-        {formatShortLink(row.getValue('domain'), row.getValue('slug'))}
-      </div>
+      <div className='w-[80px]'>{formatShortLink('adv.sh', row.getValue('slug'))}</div> // TODO: change adv.sh to dynamically get domain
     ),
   },
   {
@@ -59,10 +57,6 @@ export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
   },
   {
     id: 'actions',
-    cell: () => (
-      <div className='w-10'>
-        <TableRowActions />
-      </div>
-    ),
+    cell: () => <TableRowActions />,
   },
 ]

@@ -11,11 +11,18 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   increase?: number
   icon: React.ReactNode
   tooltip?: string
+  loading?: boolean
 }
 
-export const MetricCard = ({ title, value, increase, icon, tooltip, className }: Props) => {
-  const loading = !value
-
+export const MetricCard = ({
+  title,
+  value,
+  increase,
+  icon,
+  tooltip,
+  className,
+  loading = false,
+}: Props) => {
   const formatedValue = value || '-'
 
   const formatedIncrease = increase
@@ -39,9 +46,7 @@ export const MetricCard = ({ title, value, increase, icon, tooltip, className }:
                 <Info className='size-3' />
               </TooltipTrigger>
 
-              <TooltipContent>
-                <span className='text-xs text-muted-foreground'>{tooltip}</span>
-              </TooltipContent>
+              <TooltipContent>{tooltip}</TooltipContent>
             </Tooltip>
           )}
         </CardTitle>
