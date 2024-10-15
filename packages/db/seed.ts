@@ -14,10 +14,10 @@ const app = {
 }
 
 async function seed() {
-  const { team, user } = await createMember()
-  const { appId } = await createApp({ teamId: team.id, userId: user.id })
+  const { teamId, userId } = await createMember()
+  const { appId } = await createApp(teamId, userId)
 
-  await createLinks(appId, user.id)
+  await createLinks(appId, userId)
   await createAnalyticsData(appId)
 
   await grantAccessAndPrivileges()
@@ -102,41 +102,45 @@ const createAnalyticsData = async (appId: string) => {
 }
 
 const createMember = async () => {
-  const team = await prisma.team.create({
-    data: {
-      name: 'Favorito',
-      slug: 'favorito',
-    },
-  })
-
   const {
     data: { users },
   } = await supabaseAdminClient().auth.admin.listUsers()
 
   if (!users.length) {
-    throw new Error('No users found')
+    throw new Error('No created users found.')
   }
 
-  const user = users.find(user => user.email === 'gabriel@advents.io')
+  const adminUser = users.find(user => user.email === 'gabriel@advents.io')
 
-  if (!user) {
-    throw new Error('User not found')
+  if (!adminUser) {
+    throw new Error('Admin user not found.')
   }
+
+  const team = await prisma.team.create({
+    data: {
+      name: 'Favorito',
+      slug: 'favorito',
+      createdBy: adminUser.id,
+      updatedBy: adminUser.id,
+    },
+  })
 
   await prisma.member.create({
     data: {
-      userId: user.id,
+      userId: adminUser.id,
       teamId: team.id,
+      createdBy: adminUser.id,
+      updatedBy: adminUser.id,
     },
   })
 
   return {
-    team,
-    user,
+    teamId: team.id,
+    userId: adminUser.id,
   }
 }
 
-const createApp = async ({ teamId, userId }: { teamId: string; userId: string }) => {
+const createApp = async (teamId: string, userId: string) => {
   const imageUrl = await fetchUrlOgImage(app.androidUrl)
 
   if (!imageUrl) {
@@ -152,6 +156,8 @@ const createApp = async ({ teamId, userId }: { teamId: string; userId: string })
       apiKeys: {
         create: {
           key: apiKey,
+          createdBy: userId,
+          updatedBy: userId,
         },
       },
       teamId,
