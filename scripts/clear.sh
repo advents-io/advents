@@ -1,17 +1,15 @@
 #!/bin/bash
 
-# Remove root node_modules
-if [ -d "./node_modules" ]; then
-  echo "Removing root node_modules..."
-  rm -rf ./node_modules
-fi
+echo "1️⃣ Removing node_modules from root..."
+find ./ -name "node_modules" -type d -prune -exec rm -rf {} +
 
-# Remove node_modules and .next from apps
-echo "Removing node_modules and .next from apps..."
-find ./apps -type d \( -name "node_modules" -o -name ".next" \) -prune -exec rm -rf {} +
+echo "2️⃣ Removing node_modules and .next from apps..."
+find ./apps \( -name "node_modules" -o -name ".next" \) -type d -prune -exec rm -rf {} +
 
-# Remove node_modules from packages
-echo "Removing node_modules from packages..."
+echo "3️⃣ Removing node_modules from packages..."
 find ./packages -name "node_modules" -type d -prune -exec rm -rf {} +
+
+echo "4️⃣ Removing node_modules and dist from modules..."
+find ./modules \( -name "node_modules" -o -name "dist" \) -type d -prune -exec rm -rf {} +
 
 echo "✅ Project cleaned 🧹"
