@@ -14,6 +14,28 @@ const app = {
 }
 
 async function seed() {
+  const { team, user } = await createMember()
+  const { appId } = await createApp({ teamId: team.id, userId: user.id })
+
+  await prisma.link.create({
+    data: {
+      title: 'Teste',
+      domain: app.defaultDomain,
+      slug: 'teste',
+      iosUrl: app.iosUrl,
+      androidUrl: app.androidUrl,
+      fallbackUrl: app.defaultFallbackUrl,
+      appId,
+      createdBy: user.id,
+      updatedBy: user.id,
+    },
+  })
+
+  await grantAccessAndPrivileges()
+  await createIncrementLinkClicksFunction()
+}
+
+const createMember = async () => {
   const team = await prisma.team.create({
     data: {
       name: 'Favorito',
@@ -42,6 +64,13 @@ async function seed() {
     },
   })
 
+  return {
+    team,
+    user,
+  }
+}
+
+const createApp = async ({ teamId, userId }: { teamId: string; userId: string }) => {
   const imageUrl = await fetchUrlOgImage(app.androidUrl)
 
   if (!imageUrl) {
@@ -59,28 +88,13 @@ async function seed() {
           key: apiKey,
         },
       },
-      teamId: team.id,
-      createdBy: user.id,
-      updatedBy: user.id,
+      teamId,
+      createdBy: userId,
+      updatedBy: userId,
     },
   })
 
-  await prisma.link.create({
-    data: {
-      title: 'Teste',
-      domain: app.defaultDomain,
-      slug: 'teste',
-      iosUrl: app.iosUrl,
-      androidUrl: app.androidUrl,
-      fallbackUrl: app.defaultFallbackUrl,
-      appId,
-      createdBy: user.id,
-      updatedBy: user.id,
-    },
-  })
-
-  await grantAccessAndPrivileges()
-  await createIncrementLinkClicksFunction()
+  return { appId }
 }
 
 const grantAccessAndPrivileges = async () => {
