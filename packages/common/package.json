@@ -1,7 +1,8 @@
 {
   "name": "@advents/common",
   "dependencies": {
-    "dayjs": "^1.11.12"
+    "dayjs": "^1.11.12",
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
