@@ -53,6 +53,8 @@ export const createAppAction = authActionClient
         apiKeys: {
           create: {
             key: apiKey,
+            createdBy: user.id,
+            updatedBy: user.id,
           },
         },
         teamId: team.id,

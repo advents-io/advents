@@ -4,6 +4,10 @@ CREATE TYPE "AttributionMethod" AS ENUM ('android_deterministic_referrer', 'andr
 -- CreateTable
 CREATE TABLE "links" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT NOT NULL,
     "title" TEXT,
     "domain" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
@@ -13,10 +17,6 @@ CREATE TABLE "links" (
     "click_count" INTEGER NOT NULL DEFAULT 0,
     "install_count" INTEGER NOT NULL DEFAULT 0,
     "app_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT NOT NULL,
 
     CONSTRAINT "links_pkey" PRIMARY KEY ("id")
 );
@@ -24,6 +24,10 @@ CREATE TABLE "links" (
 -- CreateTable
 CREATE TABLE "apps" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "default_domain" TEXT NOT NULL,
@@ -33,10 +37,6 @@ CREATE TABLE "apps" (
     "default_fallback_url" TEXT,
     "qrcode_logo_url" TEXT,
     "team_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT NOT NULL,
 
     CONSTRAINT "apps_pkey" PRIMARY KEY ("id")
 );
@@ -44,10 +44,12 @@ CREATE TABLE "apps" (
 -- CreateTable
 CREATE TABLE "teams" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "slug" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "teams_pkey" PRIMARY KEY ("id")
 );
@@ -55,10 +57,12 @@ CREATE TABLE "teams" (
 -- CreateTable
 CREATE TABLE "members" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "team_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "team_id" TEXT NOT NULL,
 
     CONSTRAINT "members_pkey" PRIMARY KEY ("id")
 );
@@ -66,10 +70,12 @@ CREATE TABLE "members" (
 -- CreateTable
 CREATE TABLE "api_keys" (
     "id" TEXT NOT NULL,
-    "key" TEXT NOT NULL,
-    "app_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT NOT NULL,
+    "key" TEXT NOT NULL,
+    "app_id" TEXT NOT NULL,
 
     CONSTRAINT "api_keys_pkey" PRIMARY KEY ("id")
 );
@@ -77,6 +83,7 @@ CREATE TABLE "api_keys" (
 -- CreateTable
 CREATE TABLE "clicks" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "destination_url" TEXT NOT NULL,
     "os" TEXT,
     "referer" TEXT NOT NULL,
@@ -100,7 +107,6 @@ CREATE TABLE "clicks" (
     "latitude" TEXT,
     "longitude" TEXT,
     "link_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "clicks_pkey" PRIMARY KEY ("id")
 );
@@ -108,6 +114,7 @@ CREATE TABLE "clicks" (
 -- CreateTable
 CREATE TABLE "sessions" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "sdk_name" TEXT,
     "sdk_version" TEXT,
     "framework" TEXT,
@@ -128,7 +135,6 @@ CREATE TABLE "sessions" (
     "device_brand" TEXT,
     "device_model" TEXT,
     "device_type" TEXT,
-    "device_year_class" TEXT,
     "os_version" TEXT,
     "os_build_id" TEXT,
     "app_version" TEXT,
@@ -140,7 +146,6 @@ CREATE TABLE "sessions" (
     "latitude" TEXT,
     "longitude" TEXT,
     "app_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
 );
@@ -148,10 +153,10 @@ CREATE TABLE "sessions" (
 -- CreateTable
 CREATE TABLE "attributions" (
     "id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "method" "AttributionMethod" NOT NULL,
     "session_id" TEXT NOT NULL,
     "click_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "attributions_pkey" PRIMARY KEY ("id")
 );

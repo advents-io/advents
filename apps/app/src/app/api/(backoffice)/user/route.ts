@@ -31,10 +31,26 @@ export async function POST(req: Request) {
       throw new Error(inviteUserError?.message || 'Erro ao enviar convite para o usuário.')
     }
 
+    const {
+      data: { users },
+    } = await supabaseAdminClient().auth.admin.listUsers()
+
+    if (!users.length) {
+      throw new Error('No created users found.')
+    }
+
+    const adminUser = users.find(user => user.email === 'gabriel@advents.io')
+
+    if (!adminUser) {
+      throw new Error('Admin user not found.')
+    }
+
     const member = await prisma.member.create({
       data: {
         userId: user.id,
         teamId,
+        createdBy: adminUser.id,
+        updatedBy: adminUser.id,
       },
     })
 
