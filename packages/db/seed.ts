@@ -17,22 +17,88 @@ async function seed() {
   const { team, user } = await createMember()
   const { appId } = await createApp({ teamId: team.id, userId: user.id })
 
-  await prisma.link.create({
-    data: {
-      title: 'Teste',
-      domain: app.defaultDomain,
-      slug: 'teste',
-      iosUrl: app.iosUrl,
-      androidUrl: app.androidUrl,
-      fallbackUrl: app.defaultFallbackUrl,
-      appId,
-      createdBy: user.id,
-      updatedBy: user.id,
-    },
-  })
+  await createLinks(appId, user.id)
+  await createAnalyticsData(appId)
 
   await grantAccessAndPrivileges()
   await createIncrementLinkClicksFunction()
+}
+
+const createLinks = async (appId: string, userId: string) => {
+  const numLinks = Math.floor(Math.random() * 20) + 5 // 5 to 24 links
+
+  for (let i = 0; i < numLinks; i++) {
+    await prisma.link.create({
+      data: {
+        title: `Link ${i + 1}`,
+        domain: app.defaultDomain,
+        slug: `link-${i + 1}`,
+        iosUrl: app.iosUrl,
+        androidUrl: app.androidUrl,
+        fallbackUrl: app.defaultFallbackUrl,
+        appId,
+        createdBy: userId,
+        updatedBy: userId,
+      },
+    })
+  }
+}
+
+const createAnalyticsData = async (appId: string) => {
+  const links = await prisma.link.findMany({ where: { appId } })
+
+  for (const link of links) {
+    const numClicks = Math.floor(Math.random() * 1001) // 0 to 1000 clicks
+    const numSessions = Math.floor(Math.random() * (numClicks + 1)) // 0 to numClicks sessions
+    const numAttributions = Math.floor(Math.random() * (numSessions + 1)) // 0 to numSessions attributions
+
+    // Create clicks
+    await prisma.click.createMany({
+      data: Array.from({ length: numClicks }, () => ({
+        id: crypto.randomUUID(),
+        destinationUrl: link.iosUrl,
+        referer: '(direct)',
+        refererUrl: '(direct)',
+        isBot: false,
+        linkId: link.id,
+      })),
+    })
+
+    // Get the created clicks
+    const clicks = await prisma.click.findMany({
+      where: { linkId: link.id },
+      select: { id: true },
+      take: numAttributions,
+    })
+
+    const sessions = Array.from({ length: numSessions }, () => ({
+      id: crypto.randomUUID(),
+      appId,
+    }))
+
+    // Create sessions
+    await prisma.session.createMany({
+      data: sessions,
+    })
+
+    // Create attributions using the click IDs and session IDs
+    await prisma.attribution.createMany({
+      data: clicks.map((click, index) => ({
+        method: 'ios_deterministic_click',
+        clickId: click.id,
+        sessionId: sessions[index].id,
+      })),
+    })
+
+    // Increment click_count and install_count for the link
+    await prisma.link.update({
+      where: { id: link.id },
+      data: {
+        clickCount: numClicks,
+        installCount: numAttributions,
+      },
+    })
+  }
 }
 
 const createMember = async () => {
