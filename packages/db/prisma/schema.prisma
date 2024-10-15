@@ -9,7 +9,11 @@ datasource db {
 }
 
 model Link {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
 
   title        String?
   domain       String
@@ -23,11 +27,6 @@ model Link {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  createdBy String   @map("created_by")
-  updatedBy String   @map("updated_by")
-
   clicks Click[]
 
   @@unique([domain, slug])
@@ -35,7 +34,11 @@ model Link {
 }
 
 model App {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
 
   name               String
   slug               String
@@ -49,11 +52,6 @@ model App {
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  createdBy String   @map("created_by")
-  updatedBy String   @map("updated_by")
-
   links    Link[]
   sessions Session[]
   apiKeys  ApiKey[]
@@ -63,13 +61,12 @@ model App {
 }
 
 model Team {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   name String
   slug String @unique
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
 
   members Member[]
   apps    App[]
@@ -78,34 +75,33 @@ model Team {
 }
 
 model Member {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   userId String @unique @map("user_id")
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("members")
 }
 
 model ApiKey {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   key String @unique
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("api_keys")
 }
 
 model Click {
-  id String @id
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
 
   destinationUrl String  @map("destination_url")
   os             String?
@@ -138,15 +134,14 @@ model Click {
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at")
-
   attribution Attribution?
 
   @@map("clicks")
 }
 
 model Session {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
 
   sdkName    String?   @map("sdk_name")
   sdkVersion String?   @map("sdk_version")
@@ -189,8 +184,6 @@ model Session {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @map("created_at")
-
   attribution Attribution?
 
   @@map("sessions")
@@ -204,7 +197,8 @@ enum AttributionMethod {
 }
 
 model Attribution {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
 
   method AttributionMethod
 
@@ -213,8 +207,6 @@ model Attribution {
 
   clickId String @unique @map("click_id")
   click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("attributions")
 }
