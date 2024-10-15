@@ -1,4 +1,4 @@
-import { fetchUrlOgImage, LINK_DOMAINS } from '@advents/common'
+import { fetchUrlOgImage, LINK_DOMAINS, nanoid } from '@advents/common'
 import { supabaseAdminClient } from '@advents/supabase'
 
 import { prisma } from '.'
@@ -25,14 +25,14 @@ async function seed() {
 }
 
 const createLinks = async (appId: string, userId: string) => {
-  const numLinks = Math.floor(Math.random() * 20) + 5 // 5 to 24 links
+  const numLinks = Math.floor(Math.random() * 91) + 10 // 10 to 100 links
 
   for (let i = 0; i < numLinks; i++) {
     await prisma.link.create({
       data: {
         title: `Link ${i + 1}`,
         domain: app.defaultDomain,
-        slug: `link-${i + 1}`,
+        slug: nanoid(),
         iosUrl: app.iosUrl,
         androidUrl: app.androidUrl,
         fallbackUrl: app.defaultFallbackUrl,
@@ -48,7 +48,7 @@ const createAnalyticsData = async (appId: string) => {
   const links = await prisma.link.findMany({ where: { appId } })
 
   for (const link of links) {
-    const numClicks = Math.floor(Math.random() * 1001) // 0 to 1000 clicks
+    const numClicks = Math.floor(Math.random() * 10001) // 0 to 10000 clicks
     const numSessions = Math.floor(Math.random() * (numClicks + 1)) // 0 to numClicks sessions
     const numAttributions = Math.floor(Math.random() * (numSessions + 1)) // 0 to numSessions attributions
 
@@ -61,6 +61,7 @@ const createAnalyticsData = async (appId: string) => {
         refererUrl: '(direct)',
         isBot: false,
         linkId: link.id,
+        createdAt: getRandomDateWithinLast90Days(),
       })),
     })
 
@@ -74,6 +75,7 @@ const createAnalyticsData = async (appId: string) => {
     const sessions = Array.from({ length: numSessions }, () => ({
       id: crypto.randomUUID(),
       appId,
+      createdAt: getRandomDateWithinLast90Days(),
     }))
 
     // Create sessions
@@ -87,6 +89,7 @@ const createAnalyticsData = async (appId: string) => {
         method: 'ios_deterministic_click',
         clickId: click.id,
         sessionId: sessions[index].id,
+        createdAt: getRandomDateWithinLast90Days(),
       })),
     })
 
@@ -209,6 +212,10 @@ const createIncrementLinkClicksFunction = async () => {
   END;
   $$
   LANGUAGE plpgsql;`
+}
+
+const getRandomDateWithinLast90Days = () => {
+  return new Date(Date.now() - Math.floor(Math.random() * 90 * 24 * 60 * 60 * 1000))
 }
 
 seed()
