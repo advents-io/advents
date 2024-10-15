@@ -1,5 +1,5 @@
 {
-  "extends": "@advents/tsconfig/node.json",
+  "extends": "@advents/tsconfig/next.json",
 
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
