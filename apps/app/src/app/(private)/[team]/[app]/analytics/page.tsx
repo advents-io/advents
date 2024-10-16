@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
-import { AnalyticsTable } from './analytics-table'
 import { DatePicker } from './date-picker'
 import { Metrics } from './metrics'
+import { Table } from './table'
 
 export const metadata: Metadata = {
   title: 'Analytics | Advents',
@@ -19,7 +19,7 @@ export default async function Analytics({ params }: { params: { app: string } })
 
       <Metrics appSlug={params.app} />
 
-      <AnalyticsTable className='mt-6' appSlug={params.app} />
+      <Table className='mt-6' appSlug={params.app} />
     </div>
   )
 }

@@ -17,7 +17,14 @@ import {
 import { HTMLAttributes, useState } from 'react'
 
 import { cn } from '@/lib/tailwind'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table'
+import {
+  Table as TableUi,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/ui/table'
 
 import { tableColumns } from './table-columns'
 import { TablePagination } from './table-pagination'
@@ -27,7 +34,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   appSlug: string
 }
 
-export const AnalyticsTable = ({ appSlug, className }: Props) => {
+export const Table = ({ appSlug, className }: Props) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
@@ -64,7 +71,7 @@ export const AnalyticsTable = ({ appSlug, className }: Props) => {
       <TableToolbar table={table} />
 
       <div className='rounded-md border'>
-        <Table>
+        <TableUi>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
@@ -100,7 +107,7 @@ export const AnalyticsTable = ({ appSlug, className }: Props) => {
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </TableUi>
       </div>
 
       <TablePagination table={table} />

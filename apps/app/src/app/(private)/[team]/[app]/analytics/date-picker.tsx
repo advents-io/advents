@@ -72,7 +72,7 @@ export const DatePicker = () => {
           initialFocus
           showOutsideDays={false}
           mode='range'
-          defaultMonth={dayjs(range?.from).add(-1, 'month').toDate()}
+          defaultMonth={dayjs(range?.to).add(-1, 'month').toDate()}
           selected={range}
           onSelect={setRange}
           numberOfMonths={2}
