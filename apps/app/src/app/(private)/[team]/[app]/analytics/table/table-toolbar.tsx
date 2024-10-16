@@ -12,7 +12,7 @@ interface Props<TData> {
   table: Table<TData>
 }
 
-export function TableToolbar<TData>({ table }: Props<TData>) {
+export const TableToolbar = <TData,>({ table }: Props<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
 
   return (

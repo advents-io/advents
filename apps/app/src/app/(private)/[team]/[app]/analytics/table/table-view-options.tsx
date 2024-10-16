@@ -17,7 +17,7 @@ interface Props<TData> {
   table: Table<TData>
 }
 
-export function TableViewOptions<TData>({ table }: Props<TData>) {
+export const TableViewOptions = <TData,>({ table }: Props<TData>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 
-export function TableRowActions() {
+export const TableRowActions = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

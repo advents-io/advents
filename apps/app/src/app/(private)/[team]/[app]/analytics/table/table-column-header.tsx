@@ -16,11 +16,11 @@ interface Props<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   title: string
 }
 
-export function TableColumnHeader<TData, TValue>({
+export const TableColumnHeader = <TData, TValue>({
   column,
   title,
   className,
-}: Props<TData, TValue>) {
+}: Props<TData, TValue>) => {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>
   }
