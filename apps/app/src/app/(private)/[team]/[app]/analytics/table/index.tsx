@@ -9,7 +9,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -30,7 +29,6 @@ import {
 
 import { useStartEndDate } from '../use-start-end-date'
 import { tableColumns } from './table-columns'
-import { TablePagination } from './table-pagination'
 import { TableToolbar } from './table-toolbar'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -72,7 +70,6 @@ export const Table = ({ appSlug, className }: Props) => {
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -129,8 +126,6 @@ export const Table = ({ appSlug, className }: Props) => {
           </TableBody>
         </TableUi>
       </div>
-
-      <TablePagination table={table} />
     </div>
   )
 }
