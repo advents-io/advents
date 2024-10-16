@@ -19,7 +19,7 @@ export default async function Analytics({ params }: { params: { app: string } })
 
       <Metrics appSlug={params.app} />
 
-      <Table className='mt-6' appSlug={params.app} />
+      <Table className='mt-10' appSlug={params.app} />
     </div>
   )
 }

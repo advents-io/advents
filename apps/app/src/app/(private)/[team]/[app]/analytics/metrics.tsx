@@ -20,6 +20,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
   const {
     execute: getAppAnalytics,
     isExecuting,
+    isIdle,
     result: { data },
   } = useAction(getAppAnalyticsAction)
 
@@ -43,7 +44,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={clicks}
         increase={data?.clicksIncrease}
         icon={<MousePointerClick className='size-4 text-muted-foreground' />}
-        loading={isExecuting}
+        loading={isExecuting || isIdle}
       />
 
       <MetricCard
@@ -51,7 +52,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={installs}
         increase={data?.installsIncrease}
         icon={<Download className='size-4 text-muted-foreground' />}
-        loading={isExecuting}
+        loading={isExecuting || isIdle}
       />
 
       <MetricCard
@@ -59,7 +60,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={cti}
         increase={data?.ctiIncrease}
         icon={<RedoDot className='size-4 text-muted-foreground' />}
-        loading={isExecuting}
+        loading={isExecuting || isIdle}
         tooltip='Taxa de conversão de cliques para instalações.'
       />
 
@@ -68,7 +69,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={revenue}
         increase={data?.revenueIncrease}
         icon={<DollarSign className='size-4 text-muted-foreground' />}
-        loading={isExecuting}
+        loading={isExecuting || isIdle}
       />
     </div>
   )

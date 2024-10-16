@@ -14,6 +14,7 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
+import { Loader2 } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { cn } from '@/lib/tailwind'
@@ -41,6 +42,8 @@ export const Table = ({ appSlug, className }: Props) => {
 
   const {
     result: { data: links },
+    isExecuting,
+    isIdle,
   } = useAction(getLinksAnalyticsAction, {
     executeOnMount: {
       input: { appSlug },
@@ -102,7 +105,13 @@ export const Table = ({ appSlug, className }: Props) => {
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
-                  No results.
+                  {isExecuting || isIdle ? (
+                    <div className='flex justify-center'>
+                      <Loader2 className='size-6 animate-spin' />
+                    </div>
+                  ) : (
+                    'Sem resultados.'
+                  )}
                 </TableCell>
               </TableRow>
             )}
