@@ -1,6 +1,7 @@
 'use client'
 
 import { getLinksAnalyticsAction, useAction } from '@advents/actions'
+import { dayjs } from '@advents/common'
 import {
   ColumnFiltersState,
   flexRender,
@@ -15,7 +16,7 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 import { Loader2 } from 'lucide-react'
-import { HTMLAttributes, useState } from 'react'
+import { HTMLAttributes, useEffect, useState } from 'react'
 
 import { cn } from '@/lib/tailwind'
 import {
@@ -27,6 +28,7 @@ import {
   TableRow,
 } from '@/ui/table'
 
+import { useStartEndDate } from '../use-start-end-date'
 import { tableColumns } from './table-columns'
 import { TablePagination } from './table-pagination'
 import { TableToolbar } from './table-toolbar'
@@ -40,15 +42,22 @@ export const Table = ({ appSlug, className }: Props) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
 
+  const [{ startDate, endDate }] = useStartEndDate()
+
   const {
+    execute: getLinksAnalytics,
     result: { data: links },
     isExecuting,
     isIdle,
-  } = useAction(getLinksAnalyticsAction, {
-    executeOnMount: {
-      input: { appSlug },
-    },
-  })
+  } = useAction(getLinksAnalyticsAction)
+
+  useEffect(() => {
+    getLinksAnalytics({
+      appSlug,
+      startDate: dayjs(startDate).toDate(),
+      endDate: dayjs(endDate).toDate(),
+    })
+  }, [appSlug, startDate, endDate, getLinksAnalytics])
 
   const table = useReactTable({
     data: links ?? [],
@@ -92,10 +101,18 @@ export const Table = ({ appSlug, className }: Props) => {
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map(cell => (
+            {isExecuting || isIdle ? (
+              <TableRow>
+                <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
+                  <div className='flex justify-center'>
+                    <Loader2 className='size-6 animate-spin' />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(link => (
+                <TableRow key={link.id} data-state={link.getIsSelected() && 'selected'}>
+                  {link.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
@@ -105,13 +122,7 @@ export const Table = ({ appSlug, className }: Props) => {
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
-                  {isExecuting || isIdle ? (
-                    <div className='flex justify-center'>
-                      <Loader2 className='size-6 animate-spin' />
-                    </div>
-                  ) : (
-                    'Sem resultados.'
-                  )}
+                  Sem resultados.
                 </TableCell>
               </TableRow>
             )}

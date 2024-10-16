@@ -1,5 +1,6 @@
 'use server'
 
+import { dayjs } from '@advents/common'
 import { prisma } from '@advents/db'
 
 import { authActionClient } from '../../safe-action'
@@ -10,27 +11,75 @@ export const getLinksAnalyticsAction = authActionClient
   .schema(getLinksAnalyticsInputSchema)
   .outputSchema(getLinksAnalyticsOutputSchema)
   .action(async ({ parsedInput }) => {
-    const links = await prisma.link.findMany({
+    const { appSlug, startDate, endDate } = parsedInput
+
+    const clicks = await prisma.click.findMany({
       select: {
-        slug: true,
-        domain: true,
-        title: true,
-        clickCount: true,
-        installCount: true,
-        createdAt: true,
+        link: {
+          select: {
+            id: true,
+            slug: true,
+            domain: true,
+            title: true,
+            createdAt: true,
+          },
+        },
+        attribution: {
+          select: {
+            id: true,
+          },
+        },
       },
       where: {
-        app: {
-          slug: parsedInput.appSlug,
+        link: {
+          app: {
+            slug: appSlug,
+          },
+        },
+        createdAt: {
+          gte: dayjs(startDate).startOf('day').toDate(),
+          lte: dayjs(endDate).endOf('day').toDate(),
         },
       },
     })
 
-    return links.map(({ clickCount, installCount, ...item }) => {
-      return {
-        clicks: clickCount,
-        installs: installCount,
-        ...item,
-      }
-    })
+    const links = Object.values(
+      clicks.reduce(
+        (acc, click) => {
+          const { id } = click.link
+
+          if (!acc[id]) {
+            acc[id] = {
+              slug: click.link.slug,
+              domain: click.link.domain,
+              title: click.link.title,
+              clicks: 0,
+              installs: 0,
+              createdAt: click.link.createdAt,
+            }
+          }
+
+          acc[id].clicks++
+
+          if (click.attribution) {
+            acc[id].installs++
+          }
+
+          return acc
+        },
+        {} as Record<
+          string,
+          {
+            slug: string
+            domain: string
+            title: string | null
+            clicks: number
+            installs: number
+            createdAt: Date
+          }
+        >,
+      ),
+    )
+
+    return links
   })
