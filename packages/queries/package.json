@@ -1,7 +1,9 @@
 {
   "name": "@advents/queries",
   "dependencies": {
-    "hono": "^4.5.11"
+    "@advents/supabase": "workspace:*",
+    "hono": "^4.5.11",
+    "next": "15.0.0-rc.0"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
