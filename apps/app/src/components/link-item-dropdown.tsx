@@ -13,17 +13,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
+import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
   id: string
   domain: string
   slug: string
-  shortLink: string
   qrcodeLogoUrl?: string
 }
 
-export const LinkItemDropdown = ({ id, domain, slug, shortLink, qrcodeLogoUrl }: Props) => {
+export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl }: Props) => {
   const [open, setOpen] = useState(false)
+
+  const shortLink = formatShortLink(domain, slug)
 
   /* BUG
     We have to add preventDefault to avoid the dropdown to close when clicking on an item.

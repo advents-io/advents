@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 const getLinkAnalyticsOutputSchema = z.object({
+  id: z.string().uuid(),
   slug: z.string(),
   domain: z.string(),
   title: z.string().nullable(),

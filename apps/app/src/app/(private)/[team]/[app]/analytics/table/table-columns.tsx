@@ -3,10 +3,10 @@
 import { GetLinkAnalyticsOutput } from '@advents/actions'
 import { ColumnDef } from '@tanstack/react-table'
 
+import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import { formatShortLink } from '@/utils/link-formatter'
 
 import { TableColumnHeader } from './table-column-header'
-import { TableRowActions } from './table-row-actions'
 import { TableRowCell } from './table-row-cell'
 
 export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
@@ -40,9 +40,13 @@ export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
   },
   {
     id: 'actions',
-    cell: () => (
+    cell: ({ row }) => (
       <TableRowCell className='justify-end'>
-        <TableRowActions />
+        <LinkItemDropdown // BUG: edit dialog is not fetching the link data
+          id={row.getValue('id')}
+          domain={row.getValue('domain')}
+          slug={row.getValue('slug')}
+        />
       </TableRowCell>
     ),
   },

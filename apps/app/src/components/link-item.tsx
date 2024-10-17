@@ -81,7 +81,6 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
             id={link.id}
             domain={link.domain}
             slug={link.slug}
-            shortLink={shortLink}
             qrcodeLogoUrl={qrcodeLogoUrl}
           />
         </div>

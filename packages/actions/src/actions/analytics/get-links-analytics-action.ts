@@ -50,6 +50,7 @@ export const getLinksAnalyticsAction = authActionClient
 
           if (!acc[id]) {
             acc[id] = {
+              id,
               slug: click.link.slug,
               domain: click.link.domain,
               title: click.link.title,
@@ -70,6 +71,7 @@ export const getLinksAnalyticsAction = authActionClient
         {} as Record<
           string,
           {
+            id: string
             slug: string
             domain: string
             title: string | null
