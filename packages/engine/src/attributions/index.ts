@@ -1,24 +1,19 @@
-import { prisma } from '@advents/db'
+import { prisma, Session } from '@advents/db'
 
-import { SessionInput } from '../events/routes/log-session'
 import { AttributionData } from './attribution-data'
 import { handleClickIdAttribution } from './deterministic'
 import { handleProbabilisticAttribution } from './probabilistic'
 
-export const handleAttribution = async (
-  sessionId: string,
-  session: SessionInput,
-  appId: string,
-) => {
+export const handleAttribution = async (session: Session) => {
   try {
     let attributionData: AttributionData | null = null
 
     if (session.os === 'android') {
-      attributionData = await handleAndroidAttribution(session, appId)
+      attributionData = await handleAndroidAttribution(session)
     }
 
     if (session.os === 'ios') {
-      attributionData = await handleIosAttribution(session, appId)
+      attributionData = await handleIosAttribution(session)
     }
 
     if (attributionData) {
@@ -27,7 +22,7 @@ export const handleAttribution = async (
           data: {
             method: attributionData.method,
             clickId: attributionData.clickId,
-            sessionId,
+            sessionId: session.id,
           },
         }),
 
@@ -46,10 +41,7 @@ export const handleAttribution = async (
   } catch {}
 }
 
-const handleAndroidAttribution = async (
-  session: SessionInput,
-  appId: string,
-): Promise<AttributionData | null> => {
+const handleAndroidAttribution = async (session: Session): Promise<AttributionData | null> => {
   const { androidInstallReferrer: referrer } = session
 
   if (
@@ -62,18 +54,15 @@ const handleAndroidAttribution = async (
     return await handleClickIdAttribution(clickId, 'android_deterministic_referrer')
   }
 
-  return await handleProbabilisticAttribution(session, appId, 'android_probabilistic')
+  return await handleProbabilisticAttribution(session, 'android_probabilistic')
 }
 
-const handleIosAttribution = async (
-  session: SessionInput,
-  appId: string,
-): Promise<AttributionData | null> => {
+const handleIosAttribution = async (session: Session): Promise<AttributionData | null> => {
   const { iosClipboardClickId: clickId } = session
 
   if (clickId) {
     return await handleClickIdAttribution(clickId, 'ios_deterministic_click')
   }
 
-  return await handleProbabilisticAttribution(session, appId, 'ios_probabilistic')
+  return await handleProbabilisticAttribution(session, 'ios_probabilistic')
 }

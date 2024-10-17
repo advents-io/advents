@@ -16,9 +16,8 @@
     - device model
 */
 
-import { AttributionMethod, Click, prisma } from '@advents/db'
+import { AttributionMethod, Click, prisma, Session } from '@advents/db'
 
-import { SessionInput } from '../events/routes/log-session'
 import { AttributionData } from './attribution-data'
 
 interface ClickProbabilisticMatch {
@@ -28,8 +27,7 @@ interface ClickProbabilisticMatch {
 }
 
 export const handleProbabilisticAttribution = async (
-  session: SessionInput,
-  appId: string,
+  session: Session,
   method: AttributionMethod,
 ): Promise<AttributionData | null> => {
   // TODO: remove in the future, after improve the method
@@ -47,7 +45,7 @@ export const handleProbabilisticAttribution = async (
         gte: attributionWindowStart,
       },
       link: {
-        appId,
+        appId: session.appId,
       },
       os: session.os,
       country: session.country,
@@ -77,7 +75,7 @@ export const handleProbabilisticAttribution = async (
 
 const matchClickAndSession = (
   clicks: Click[],
-  session: SessionInput,
+  session: Session,
 ): ClickProbabilisticMatch | null => {
   let bestMatch: ClickProbabilisticMatch | null = null
 
@@ -96,7 +94,7 @@ const matchClickAndSession = (
   return bestMatch
 }
 
-const calculateConfidence = (click: Click, session: SessionInput): number => {
+const calculateConfidence = (click: Click, session: Session): number => {
   let matchScore = 0
   let totalScore = 0
 
