@@ -1,0 +1,16 @@
+{
+  "name": "@advents/queries",
+  "dependencies": {
+    "hono": "^4.5.11"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/tsconfig": "workspace:*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}
