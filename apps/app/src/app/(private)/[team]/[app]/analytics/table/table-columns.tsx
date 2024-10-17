@@ -7,36 +7,25 @@ import { formatShortLink } from '@/utils/link-formatter'
 
 import { TableColumnHeader } from './table-column-header'
 import { TableRowActions } from './table-row-actions'
+import { TableRowCell } from './table-row-cell'
 
 export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
   {
     accessorKey: 'slug',
-    header: ({ column }) => <TableColumnHeader column={column} title='Link' />,
+    header: ({ column }) => <TableColumnHeader column={column} title='Link' border />,
     cell: ({ row }) => (
-      <div className='w-[80px]'>{formatShortLink('adv.sh', row.getValue('slug'))}</div> // TODO: change adv.sh to dynamically get domain
+      <TableRowCell border>{formatShortLink('adv.sh', row.getValue('slug'))}</TableRowCell> // TODO: change adv.sh to dynamically get domain
     ),
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => <TableColumnHeader column={column} title='Título' />,
-    cell: ({ row }) => {
-      return (
-        <div className='flex space-x-2'>
-          <span className='max-w-[500px] truncate font-medium'>{row.getValue('title')}</span>
-        </div>
-      )
-    },
+    header: ({ column }) => <TableColumnHeader column={column} title='Título' border />,
+    cell: ({ row }) => <TableRowCell border>{row.getValue('title')}</TableRowCell>,
   },
   {
     accessorKey: 'clicks',
-    header: ({ column }) => <TableColumnHeader column={column} title='Cliques' />,
-    cell: ({ row }) => {
-      return (
-        <div className='flex w-[100px] items-center'>
-          <span>{row.getValue('clicks')}</span>
-        </div>
-      )
-    },
+    header: ({ column }) => <TableColumnHeader column={column} title='Cliques' border />,
+    cell: ({ row }) => <TableRowCell border>{row.getValue('clicks')}</TableRowCell>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
@@ -44,19 +33,17 @@ export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
   {
     accessorKey: 'installs',
     header: ({ column }) => <TableColumnHeader column={column} title='Instalações' />,
-    cell: ({ row }) => {
-      return (
-        <div className='flex items-center'>
-          <span>{row.getValue('installs')}</span>
-        </div>
-      )
-    },
+    cell: ({ row }) => <TableRowCell>{row.getValue('installs')}</TableRowCell>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
   },
   {
     id: 'actions',
-    cell: () => <TableRowActions />,
+    cell: () => (
+      <TableRowCell className='justify-end'>
+        <TableRowActions />
+      </TableRowCell>
+    ),
   },
 ]

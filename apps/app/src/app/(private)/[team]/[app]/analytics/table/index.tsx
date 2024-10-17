@@ -84,15 +84,13 @@ export const Table = ({ appSlug, className }: Props) => {
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map(header => (
+                  <TableHead key={header.id} colSpan={header.colSpan} className='p-0'>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -108,9 +106,9 @@ export const Table = ({ appSlug, className }: Props) => {
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(link => (
-                <TableRow key={link.id} data-state={link.getIsSelected() && 'selected'}>
+                <TableRow key={link.id}>
                   {link.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className='p-0'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

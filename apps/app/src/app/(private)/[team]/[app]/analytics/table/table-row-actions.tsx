@@ -14,21 +14,16 @@ import {
 
 export const TableRowActions = () => {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='flex size-8 p-0 data-[state=open]:bg-muted'>
           <EllipsisVertical className='size-4' />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-
-        <DropdownMenuItem>Delete</DropdownMenuItem>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuItem>Editar</DropdownMenuItem>
+        <DropdownMenuItem>Excluir</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
