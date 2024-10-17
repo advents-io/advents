@@ -26,40 +26,39 @@ export const TableColumnHeader = <TData, TValue>({
   }
 
   return (
-    <div className={cn('flex items-center space-x-2', className)}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant='ghost' size='sm' className='-ml-3 h-8 data-[state=open]:bg-accent'>
-            <span>{title}</span>
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className='ml-2 size-4' />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className='ml-2 size-4' />
-            ) : (
-              <ChevronsUpDown className='ml-2 size-4' />
-            )}
-          </Button>
-        </DropdownMenuTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' size='sm' className='-ml-3 h-8 data-[state=open]:bg-accent'>
+          <span>{title}</span>
 
-        <DropdownMenuContent align='start'>
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUpIcon className='mr-2 size-3.5 text-muted-foreground/70' />
-            Asc
-          </DropdownMenuItem>
+          {column.getIsSorted() === 'desc' ? (
+            <ArrowDownIcon className='ml-2 size-4' />
+          ) : column.getIsSorted() === 'asc' ? (
+            <ArrowUpIcon className='ml-2 size-4' />
+          ) : (
+            <ChevronsUpDown className='ml-2 size-4' />
+          )}
+        </Button>
+      </DropdownMenuTrigger>
 
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownIcon className='mr-2 size-3.5 text-muted-foreground/70' />
-            Desc
-          </DropdownMenuItem>
+      <DropdownMenuContent align='start'>
+        <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+          <ArrowUpIcon className='mr-2 size-3.5 text-muted-foreground/70' />
+          Asc
+        </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+          <ArrowDownIcon className='mr-2 size-3.5 text-muted-foreground/70' />
+          Desc
+        </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOff className='mr-2 size-3.5 text-muted-foreground/70' />
-            Hide
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+          <EyeOff className='mr-2 size-3.5 text-muted-foreground/70' />
+          Ocultar
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
