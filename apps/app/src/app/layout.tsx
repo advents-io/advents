@@ -7,7 +7,8 @@ import { Inter } from 'next/font/google'
 
 import { HelpButton } from '@/components/help-button'
 import { Toaster } from '@/ui/sonner'
-import { TooltipProvider } from '@/ui/tooltip'
+
+import { Providers } from './providers'
 
 const interFont = Inter({
   subsets: ['latin'],
@@ -75,7 +76,7 @@ export default async function RootLayout({
   return (
     <html lang='pt-BR' className={interFont.className}>
       <body className='relative flex min-h-screen flex-col'>
-        <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
+        <Providers>{children}</Providers>
         <HelpButton />
         <Toaster richColors closeButton theme='light' />
         <SpeedInsights />
