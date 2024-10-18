@@ -2,7 +2,7 @@ import { routes } from '@advents/common'
 import { createServerClient } from '@advents/supabase'
 import { type NextRequest, NextResponse } from 'next/server'
 
-export const authMiddleware = async (req: NextRequest) => {
+export const appAuthMiddleware = async (req: NextRequest) => {
   let response = NextResponse.next({
     request: req,
   })
@@ -26,21 +26,21 @@ export const authMiddleware = async (req: NextRequest) => {
 
   const user = await supabase.auth.getUser()
 
-  const isProtectedRouteValue = isProtectedRoute(req.nextUrl.pathname)
+  const isPrivateRoute = getIsPrivateRoute(req.nextUrl.pathname)
 
-  if (isProtectedRouteValue && user.error) {
+  if (isPrivateRoute && user.error) {
     return NextResponse.redirect(new URL(routes.SIGN_IN.path, req.url))
   }
 
-  if (!isProtectedRouteValue && !user.error) {
+  if (!isPrivateRoute && !user.error) {
     return NextResponse.redirect(new URL(routes.TEAMS.path, req.url))
   }
 
   return response
 }
 
-const isProtectedRoute = (path: string) => {
-  const notProtectedRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
+const getIsPrivateRoute = (path: string) => {
+  const publicRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
 
-  return !notProtectedRoutes.includes(path)
+  return !publicRoutes.includes(path)
 }

@@ -1,19 +1,22 @@
 import { clickMiddleware, isLinkDomain } from '@advents/engine'
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
+import { NextFetchEvent, NextRequest } from 'next/server'
 
-import { authMiddleware } from '@/utils/auth-middleware'
+import { apiAuthMiddleware } from '@/middlewares/api-auth-middleware'
+import { appAuthMiddleware } from '@/middlewares/app-auth-middleware'
 
 export const config = {
   matcher: [
     /*
      * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
+     * - _next/static
+     * - _next/image
+     * - favicon.ico
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
-     * - /ios/click route
+     * - /ios/click
+     * - /api/auth/confirm
+     * - /api/events
      */
-    '/((?!_next/static|_next/image|favicon.ico|ios/click|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|ios/click|api/auth/confirm|api/events|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 
@@ -24,9 +27,9 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
 
   const isApiRoute = req.nextUrl.pathname.startsWith('/api')
 
-  if (!isApiRoute) {
-    return await authMiddleware(req)
+  if (isApiRoute) {
+    return await apiAuthMiddleware(req)
   }
 
-  return NextResponse.next()
+  return await appAuthMiddleware(req)
 }
