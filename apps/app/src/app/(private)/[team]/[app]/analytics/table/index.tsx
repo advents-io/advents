@@ -1,6 +1,6 @@
 'use client'
 
-import { GetLinksAnalyticsOutput } from '@advents/queries'
+import { GetAppQrCodeUrlOutput, GetLinksAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
 import {
   ColumnFiltersState,
@@ -18,6 +18,7 @@ import ky from 'ky'
 import { Loader2 } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
+import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import { cn } from '@/lib/tailwind'
 import {
   Table as TableUi,
@@ -30,6 +31,7 @@ import {
 
 import { useStartEndDate } from '../use-start-end-date'
 import { tableColumns } from './table-columns'
+import { TableRowCell } from './table-row-cell'
 import { TableToolbar } from './table-toolbar'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -54,6 +56,19 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
             teamSlug,
             startDate,
             endDate,
+          },
+        })
+        .json(),
+  })
+
+  const { data: qrCodeUrl } = useQuery({
+    queryKey: ['app-qr-code-url', appSlug, teamSlug],
+    queryFn: () =>
+      ky
+        .get<GetAppQrCodeUrlOutput>('/api/app/qrcode', {
+          searchParams: {
+            appSlug,
+            teamSlug,
           },
         })
         .json(),
@@ -107,13 +122,23 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(link => (
-                <TableRow key={link.id}>
-                  {link.getVisibleCells().map(cell => (
+              table.getRowModel().rows.map(row => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} className='p-0'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
+
+                  <TableRowCell className='justify-end'>
+                    <LinkItemDropdown
+                      id={row.original.id}
+                      domain={row.original.domain}
+                      slug={row.original.slug}
+                      qrcodeLogoUrl={qrCodeUrl?.url || undefined}
+                      className='size-8'
+                    />
+                  </TableRowCell>
                 </TableRow>
               ))
             ) : (

@@ -3,7 +3,6 @@
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import { formatShortLink } from '@/utils/link-formatter'
 
 import { TableColumnHeader } from './table-column-header'
@@ -28,29 +27,12 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     accessorKey: 'clicks',
     header: ({ column }) => <TableColumnHeader column={column} title='Cliques' border />,
     cell: ({ row }) => <TableRowCell border>{row.getValue('clicks')}</TableRowCell>,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
+    filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },
   {
     accessorKey: 'installs',
     header: ({ column }) => <TableColumnHeader column={column} title='Instalações' />,
     cell: ({ row }) => <TableRowCell>{row.getValue('installs')}</TableRowCell>,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => (
-      <TableRowCell className='justify-end'>
-        <LinkItemDropdown
-          id={row.original.id}
-          domain={row.original.domain}
-          slug={row.original.slug}
-          className='size-8'
-        />
-      </TableRowCell>
-    ),
+    filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },
 ]
