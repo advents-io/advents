@@ -1,5 +1,5 @@
-import { Copy, Download, ImageIcon } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { Copy, Download, ImageIcon, Loader2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
@@ -29,6 +29,25 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
   const [showLogo, setShowLogo] = useState(!!qrcodeLogoUrl)
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!qrcodeLogoUrl) {
+      setIsLogoLoaded(true)
+      return
+    }
+
+    try {
+      const image = new Image()
+
+      image.onload = () => setIsLogoLoaded(true)
+      image.onerror = () => setIsLogoLoaded(true)
+
+      image.src = qrcodeLogoUrl
+    } catch {
+      setIsLogoLoaded(true)
+    }
+  }, [qrcodeLogoUrl])
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -126,7 +145,17 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
 
         <div className='w-full pt-10'>
           <div className='mx-auto flex max-w-xs flex-col items-center gap-10'>
-            <QrCodeSvg config={config} />
+            <div className='relative'>
+              <QrCodeSvg config={config} />
+
+              {!isLogoLoaded && (
+                <div className='absolute inset-0 flex items-center justify-center'>
+                  <div className='flex size-[60px] items-center justify-center bg-white'>
+                    <Loader2 className='size-8 animate-spin' />
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className='flex flex-col gap-2'>
               <div className='relative flex gap-2'>
