@@ -50,7 +50,10 @@ export const DatePicker = () => {
   return (
     <Popover open={open} onOpenChange={handleOnOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant='outline' className={cn('w-[250px] justify-between text-left font-normal')}>
+        <Button
+          variant='outline'
+          className={cn('justify-between text-left font-normal md:w-[250px]')}
+        >
           <div className='flex items-center'>
             <CalendarIcon className='mr-2 size-4' />
 

@@ -14,7 +14,9 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     accessorKey: 'slug',
     header: ({ column }) => <TableColumnHeader column={column} title='Link' border />,
     cell: ({ row }) => (
-      <TableRowCell border>{formatShortLink('adv.sh', row.getValue('slug'))}</TableRowCell> // TODO: change adv.sh to dynamically get domain
+      <TableRowCell border>
+        {formatShortLink(row.original.domain, row.getValue('slug'))}
+      </TableRowCell>
     ),
   },
   {
@@ -42,10 +44,10 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     id: 'actions',
     cell: ({ row }) => (
       <TableRowCell className='justify-end'>
-        <LinkItemDropdown // BUG: edit dialog is not fetching the link data
-          id={row.getValue('id')}
-          domain={row.getValue('domain')}
-          slug={row.getValue('slug')}
+        <LinkItemDropdown
+          id={row.original.id}
+          domain={row.original.domain}
+          slug={row.original.slug}
         />
       </TableRowCell>
     ),
