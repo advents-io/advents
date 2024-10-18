@@ -296,6 +296,9 @@ importers:
 
   packages/queries:
     dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../common
       '@advents/db':
         specifier: workspace:*
         version: link:../db
