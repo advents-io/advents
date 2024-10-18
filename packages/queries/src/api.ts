@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 
+import { getAppAnalytics } from './routes/analytics/get-app-analytics'
 import { getApiStatus } from './routes/get-api-status'
 
 export const api = new Hono({
@@ -7,3 +8,4 @@ export const api = new Hono({
 }).basePath('/api')
 
 getApiStatus(api)
+getAppAnalytics(api)

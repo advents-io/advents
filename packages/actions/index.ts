@@ -1,6 +1,5 @@
 export * from './src/action-errors'
 //
-export * from './src/actions/analytics/get-app-analytics-action'
 export * from './src/actions/analytics/get-links-analytics-action'
 export * from './src/actions/app/create-app-action'
 export * from './src/actions/app/delete-app-action'

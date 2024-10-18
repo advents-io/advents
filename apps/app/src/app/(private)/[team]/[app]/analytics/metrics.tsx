@@ -1,9 +1,10 @@
 'use client'
 
-import { getAppAnalyticsAction, useAction } from '@advents/actions'
-import { dayjs } from '@advents/common'
+import { GetAppAnalyticsOutput } from '@advents/queries'
+import { useQuery } from '@tanstack/react-query'
+import ky from 'ky'
 import { DollarSign, Download, MousePointerClick, RedoDot } from 'lucide-react'
-import { HTMLAttributes, useEffect } from 'react'
+import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/tailwind'
 
@@ -17,20 +18,19 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 export const Metrics = ({ appSlug, className }: Props) => {
   const [{ startDate, endDate }] = useStartEndDate()
 
-  const {
-    execute: getAppAnalytics,
-    isExecuting,
-    isIdle,
-    result: { data },
-  } = useAction(getAppAnalyticsAction)
-
-  useEffect(() => {
-    getAppAnalytics({
-      appSlug,
-      startDate: dayjs(startDate).toDate(),
-      endDate: dayjs(endDate).toDate(),
-    })
-  }, [appSlug, startDate, endDate, getAppAnalytics])
+  const { data, isPending } = useQuery({
+    queryKey: ['app-analytics', appSlug, startDate, endDate],
+    queryFn: () =>
+      ky
+        .get<GetAppAnalyticsOutput>('/api/analytics/app', {
+          searchParams: {
+            appSlug,
+            startDate,
+            endDate,
+          },
+        })
+        .json(),
+  })
 
   const clicks = data ? data.clicks.toLocaleString('en-US').replace(',', '.') : undefined
   const installs = data ? data.installs.toLocaleString('en-US').replace(',', '.') : undefined
@@ -44,7 +44,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={clicks}
         increase={data?.clicksIncrease}
         icon={<MousePointerClick className='size-4 text-muted-foreground' />}
-        loading={isExecuting || isIdle}
+        loading={isPending}
       />
 
       <MetricCard
@@ -52,7 +52,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={installs}
         increase={data?.installsIncrease}
         icon={<Download className='size-4 text-muted-foreground' />}
-        loading={isExecuting || isIdle}
+        loading={isPending}
       />
 
       <MetricCard
@@ -60,7 +60,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={cti}
         increase={data?.ctiIncrease}
         icon={<RedoDot className='size-4 text-muted-foreground' />}
-        loading={isExecuting || isIdle}
+        loading={isPending}
         tooltip='Taxa de conversão de cliques para instalações.'
       />
 
@@ -69,7 +69,7 @@ export const Metrics = ({ appSlug, className }: Props) => {
         value={revenue}
         increase={data?.revenueIncrease}
         icon={<DollarSign className='size-4 text-muted-foreground' />}
-        loading={isExecuting || isIdle}
+        loading={isPending}
       />
     </div>
   )

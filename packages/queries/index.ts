@@ -4,4 +4,4 @@ import { api } from './src/api'
 
 export { api, handle }
 
-export { api, handle, query }
+export * from './src/types/analytics/get-app-analytics-types'
