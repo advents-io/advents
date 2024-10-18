@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Analytics({ params }: { params: { app: string } }) {
   return (
     <div className='flex flex-1 flex-col gap-4'>
-      <div className='flex items-start justify-between'>
+      <div className='flex items-center justify-between'>
         <h1 className='text-xl font-bold'>Analytics</h1>
 
         <DatePicker />

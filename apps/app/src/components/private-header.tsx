@@ -43,7 +43,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
   const includeTabs = !!team && !!app
 
   return (
-    <header className='sticky -top-18 z-10 w-full border-b bg-background px-4 md:px-14'>
+    <header className='sticky -top-18 z-10 w-full border-b bg-background px-4 md:px-20'>
       <div className='flex py-4'>
         <div className='flex flex-1 flex-row items-center'>
           <Breadcrumb>
