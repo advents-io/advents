@@ -25,10 +25,7 @@ export const HeaderItem = ({ children, href, className, ...props }: Props) => {
         {children}
       </Button>
 
-      <div
-        data-isactive={isActive}
-        className='mt-1 hidden h-0.5 w-full bg-black data-[isactive=true]:flex'
-      />
+      <div className={cn('mt-1 hidden h-0.5 w-full rounded-full bg-black', isActive && 'flex')} />
     </Link>
   )
 }

@@ -6,6 +6,7 @@ import { Code, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
+import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import {
   Select,
@@ -73,9 +74,11 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
           {SIDEBAR_ITEMS.map((item, index) => (
             <Link key={index} href={item.href}>
               <Button
-                data-isactive={pathname === item.href}
                 variant='ghost'
-                className='w-full justify-start font-normal data-[isactive=true]:bg-gray-100'
+                className={cn(
+                  'w-full justify-start font-normal',
+                  pathname === item.href && 'bg-gray-100',
+                )}
                 size='sm'
               >
                 <item.icon className='mr-2 size-4' />

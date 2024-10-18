@@ -62,9 +62,11 @@ export const MetricCard = ({
 
           <p className='text-xs text-muted-foreground'>
             <span
-              data-ispositive={increaseIsPositive}
-              data-isnegative={increaseIsNegative}
-              className='font-bold data-[isnegative=true]:text-red-500 data-[ispositive=true]:text-green-600'
+              className={cn(
+                'font-bold',
+                increaseIsPositive && 'text-green-600',
+                increaseIsNegative && 'text-red-500',
+              )}
             >
               {formatedIncrease}%
             </span>{' '}

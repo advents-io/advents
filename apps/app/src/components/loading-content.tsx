@@ -1,5 +1,7 @@
 import { Loader2 } from 'lucide-react'
 
+import { cn } from '@/lib/tailwind'
+
 interface Props {
   children: React.ReactNode
   loading: boolean
@@ -7,7 +9,7 @@ interface Props {
 
 export const LoadingContent = ({ children, loading }: Props) => {
   return (
-    <div data-loading={loading} className='flex items-center gap-2 px-3 data-[loading=true]:px-0'>
+    <div className={cn('flex items-center gap-2 px-3', loading && 'px-0')}>
       {loading && <Loader2 className='size-4 animate-spin' />}
       {children}
     </div>
