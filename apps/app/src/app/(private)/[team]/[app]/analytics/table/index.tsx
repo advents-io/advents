@@ -108,6 +108,9 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
                       : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
+
+                {/* Actions column header. Without this, the header will have an empty space */}
+                <TableHead className='p-0'>{flexRender(<div />, {})}</TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -130,15 +133,24 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
                     </TableCell>
                   ))}
 
-                  <TableRowCell className='justify-end'>
-                    <LinkItemDropdown
-                      id={row.original.id}
-                      domain={row.original.domain}
-                      slug={row.original.slug}
-                      qrcodeLogoUrl={qrCodeUrl?.url || undefined}
-                      className='size-8'
-                    />
-                  </TableRowCell>
+                  {/**
+                   * Actions column. We can't pass it on `table-columns.tsx` because we have to pass the qrCodeUrl,
+                   * which is fetched on the server, and this was causing an error on rendering the table
+                   */}
+                  <TableCell className='p-0'>
+                    {flexRender(
+                      <TableRowCell className='justify-end'>
+                        <LinkItemDropdown
+                          id={row.original.id}
+                          domain={row.original.domain}
+                          slug={row.original.slug}
+                          qrcodeLogoUrl={qrCodeUrl?.url || undefined}
+                          className='size-8'
+                        />
+                      </TableRowCell>,
+                      {},
+                    )}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
