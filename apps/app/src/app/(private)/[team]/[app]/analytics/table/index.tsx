@@ -34,9 +34,10 @@ import { TableToolbar } from './table-toolbar'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   appSlug: string
+  teamSlug: string
 }
 
-export const Table = ({ appSlug, className }: Props) => {
+export const Table = ({ appSlug, teamSlug, className }: Props) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
@@ -44,12 +45,13 @@ export const Table = ({ appSlug, className }: Props) => {
   const [{ startDate, endDate }] = useStartEndDate()
 
   const { data: links, isPending } = useQuery({
-    queryKey: ['links-analytics', appSlug, startDate, endDate],
+    queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate],
     queryFn: () =>
       ky
         .get<GetLinksAnalyticsOutput>('/api/analytics/links', {
           searchParams: {
             appSlug,
+            teamSlug,
             startDate,
             endDate,
           },

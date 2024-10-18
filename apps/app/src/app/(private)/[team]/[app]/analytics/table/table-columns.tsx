@@ -48,6 +48,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           id={row.original.id}
           domain={row.original.domain}
           slug={row.original.slug}
+          className='size-8'
         />
       </TableRowCell>
     ),

@@ -49,7 +49,7 @@ export const TableColumnHeader = <TData, TValue>({
             ) : column.getIsSorted() === 'asc' ? (
               <ArrowUpIcon className='ml-2 size-4' />
             ) : (
-              <ChevronsUpDown className='ml-2 size-4' />
+              <ChevronsUpDown className='ml-2 size-3 text-muted-foreground' />
             )}
           </Button>
         </div>

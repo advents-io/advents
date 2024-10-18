@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Analytics | Advents',
 }
 
-export default async function Analytics({ params }: { params: { app: string } }) {
+export default async function Analytics({ params }: { params: { app: string; team: string } }) {
   return (
     <div className='flex flex-1 flex-col gap-4'>
       <div className='flex items-center justify-between'>
@@ -17,9 +17,9 @@ export default async function Analytics({ params }: { params: { app: string } })
         <DatePicker />
       </div>
 
-      <Metrics appSlug={params.app} />
+      <Metrics appSlug={params.app} teamSlug={params.team} />
 
-      <Table className='mt-10' appSlug={params.app} />
+      <Table className='mt-10' appSlug={params.app} teamSlug={params.team} />
     </div>
   )
 }

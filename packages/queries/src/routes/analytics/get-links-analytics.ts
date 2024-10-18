@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 const getLinksAnalyticsInputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
+  teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
   startDate: z
     .string({ message: 'Data de início é obrigatória.' })
     .transform(date => new Date(date)),
@@ -31,7 +32,7 @@ export const getLinksAnalytics = (api: Hono) =>
     '/analytics/links', //
     zValidator('query', getLinksAnalyticsInputSchema),
     async c => {
-      const { appSlug, startDate, endDate } = c.req.valid('query')
+      const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
       const clicks = await prisma.click.findMany({
         select: {
@@ -54,6 +55,9 @@ export const getLinksAnalytics = (api: Hono) =>
           link: {
             app: {
               slug: appSlug,
+              team: {
+                slug: teamSlug,
+              },
             },
           },
           createdAt: {

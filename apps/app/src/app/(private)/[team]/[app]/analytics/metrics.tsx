@@ -13,18 +13,20 @@ import { useStartEndDate } from './use-start-end-date'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   appSlug: string
+  teamSlug: string
 }
 
-export const Metrics = ({ appSlug, className }: Props) => {
+export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
   const [{ startDate, endDate }] = useStartEndDate()
 
   const { data, isPending } = useQuery({
-    queryKey: ['app-analytics', appSlug, startDate, endDate],
+    queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
     queryFn: () =>
       ky
         .get<GetAppAnalyticsOutput>('/api/analytics/app', {
           searchParams: {
             appSlug,
+            teamSlug,
             startDate,
             endDate,
           },

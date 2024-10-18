@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 const getAppAnalyticsInputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
+  teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
   startDate: z
     .string({ message: 'Data de início é obrigatória.' })
     .transform(date => new Date(date)),
@@ -30,7 +31,7 @@ export const getAppAnalytics = (api: Hono) =>
     '/analytics/app', //
     zValidator('query', getAppAnalyticsInputSchema),
     async c => {
-      const { appSlug, startDate, endDate } = c.req.valid('query')
+      const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
       const range = endDate.getTime() - startDate.getTime()
 
@@ -43,6 +44,9 @@ export const getAppAnalytics = (api: Hono) =>
             link: {
               app: {
                 slug: appSlug,
+                team: {
+                  slug: teamSlug,
+                },
               },
             },
             createdAt: {

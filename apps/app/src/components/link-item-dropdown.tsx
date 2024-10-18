@@ -1,5 +1,5 @@
 import { EllipsisVertical, Pencil, QrCode, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { HTMLAttributes, useState } from 'react'
 
 import { DeleteLinkDialog } from '@/components/delete-link-dialog'
 import { EditLinkDialog } from '@/components/edit-link-dialog'
@@ -15,14 +15,14 @@ import {
 } from '@/ui/dropdown-menu'
 import { formatShortLink } from '@/utils/link-formatter'
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLButtonElement> {
   id: string
   domain: string
   slug: string
   qrcodeLogoUrl?: string
 }
 
-export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl }: Props) => {
+export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: Props) => {
   const [open, setOpen] = useState(false)
 
   const shortLink = formatShortLink(domain, slug)
@@ -36,7 +36,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl }: Props) => 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='icon'>
+        <Button variant='ghost' size='icon' {...props}>
           <EllipsisVertical className='size-4' />
         </Button>
       </DropdownMenuTrigger>
