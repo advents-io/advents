@@ -1,7 +1,7 @@
 'use client'
 
-import { getLinksAnalyticsAction, useAction } from '@advents/actions'
-import { dayjs } from '@advents/common'
+import { GetLinksAnalyticsOutput } from '@advents/queries'
+import { useQuery } from '@tanstack/react-query'
 import {
   ColumnFiltersState,
   flexRender,
@@ -14,8 +14,9 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
+import ky from 'ky'
 import { Loader2 } from 'lucide-react'
-import { HTMLAttributes, useEffect, useState } from 'react'
+import { HTMLAttributes, useState } from 'react'
 
 import { cn } from '@/lib/tailwind'
 import {
@@ -42,20 +43,19 @@ export const Table = ({ appSlug, className }: Props) => {
 
   const [{ startDate, endDate }] = useStartEndDate()
 
-  const {
-    execute: getLinksAnalytics,
-    result: { data: links },
-    isExecuting,
-    isIdle,
-  } = useAction(getLinksAnalyticsAction)
-
-  useEffect(() => {
-    getLinksAnalytics({
-      appSlug,
-      startDate: dayjs(startDate).toDate(),
-      endDate: dayjs(endDate).toDate(),
-    })
-  }, [appSlug, startDate, endDate, getLinksAnalytics])
+  const { data: links, isPending } = useQuery({
+    queryKey: ['links-analytics', appSlug, startDate, endDate],
+    queryFn: () =>
+      ky
+        .get<GetLinksAnalyticsOutput>('/api/analytics/links', {
+          searchParams: {
+            appSlug,
+            startDate,
+            endDate,
+          },
+        })
+        .json(),
+  })
 
   const table = useReactTable({
     data: links ?? [],
@@ -96,7 +96,7 @@ export const Table = ({ appSlug, className }: Props) => {
           </TableHeader>
 
           <TableBody>
-            {isExecuting || isIdle ? (
+            {isPending ? (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
                   <div className='flex justify-center'>

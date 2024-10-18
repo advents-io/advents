@@ -1,6 +1,6 @@
 'use client'
 
-import { GetLinkAnalyticsOutput } from '@advents/actions'
+import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
@@ -9,7 +9,7 @@ import { formatShortLink } from '@/utils/link-formatter'
 import { TableColumnHeader } from './table-column-header'
 import { TableRowCell } from './table-row-cell'
 
-export const tableColumns: ColumnDef<GetLinkAnalyticsOutput>[] = [
+export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
   {
     accessorKey: 'slug',
     header: ({ column }) => <TableColumnHeader column={column} title='Link' border />,

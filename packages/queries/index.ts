@@ -4,4 +4,5 @@ import { api } from './src/api'
 
 export { api, handle }
 
-export * from './src/types/analytics/get-app-analytics-types'
+export { type GetAppAnalyticsOutput } from './src/routes/analytics/get-app-analytics'
+export { type GetLinksAnalyticsOutput } from './src/routes/analytics/get-links-analytics'

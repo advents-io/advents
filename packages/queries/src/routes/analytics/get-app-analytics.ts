@@ -4,7 +4,7 @@ import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-export const getAppAnalyticsInputSchema = z.object({
+const getAppAnalyticsInputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   startDate: z
     .string({ message: 'Data de início é obrigatória.' })
@@ -12,7 +12,7 @@ export const getAppAnalyticsInputSchema = z.object({
   endDate: z.string({ message: 'Data de fim é obrigatória.' }).transform(date => new Date(date)),
 })
 
-export const getAppAnalyticsOutputSchema = z.object({
+const getAppAnalyticsOutputSchema = z.object({
   clicks: z.number(),
   clicksIncrease: z.number(),
   installs: z.number(),
@@ -22,6 +22,8 @@ export const getAppAnalyticsOutputSchema = z.object({
   revenue: z.number(),
   revenueIncrease: z.number(),
 })
+
+export type GetAppAnalyticsOutput = z.infer<typeof getAppAnalyticsOutputSchema>
 
 export const getAppAnalytics = (api: Hono) =>
   api.get(
