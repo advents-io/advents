@@ -28,6 +28,8 @@ const createLinks = async (appId: string, userId: string) => {
   const numLinks = Math.floor(Math.random() * 91) + 10 // 10 to 100 links
 
   for (let i = 0; i < numLinks; i++) {
+    const createdAt = getRandomDateWithinLast90Days()
+
     await prisma.link.create({
       data: {
         title: `Link ${i + 1}`,
@@ -37,6 +39,8 @@ const createLinks = async (appId: string, userId: string) => {
         androidUrl: app.androidUrl,
         fallbackUrl: app.defaultFallbackUrl,
         appId,
+        createdAt,
+        updatedAt: createdAt,
         createdBy: userId,
         updatedBy: userId,
       },
