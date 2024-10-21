@@ -15,8 +15,9 @@ export const config = {
      * - /ios/click
      * - /api/auth/confirm
      * - /api/events
+     * - /api/internal
      */
-    '/((?!_next/static|_next/image|favicon.ico|ios/click|api/auth/confirm|api/events|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|ios/click|api/auth/confirm|api/events|api/internal|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 
