@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { CreateLinkDialog } from '@/components/create-link-dialog'
-import { LinkList } from '@/components/link-list'
 import { LoadingPageContent } from '@/components/loading-page-content'
+
+import { CreateLinkDialog } from './create-link-dialog'
+import { LinkList } from './link-list'
 
 export const metadata: Metadata = {
   title: 'Links | Advents',

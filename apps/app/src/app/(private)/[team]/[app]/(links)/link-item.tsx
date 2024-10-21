@@ -4,11 +4,12 @@ import { dayjs } from '@advents/common'
 import { Link } from '@advents/db'
 import { ArrowRightIcon } from 'lucide-react'
 
-import { LinkAnalytics } from '@/components/link-analytics'
 import { LinkItemCopy } from '@/components/link-item-copy'
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
+
+import { LinkAnalytics } from './link-analytics'
 
 interface Props {
   link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clickCount' | 'installCount' | 'createdAt'>

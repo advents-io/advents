@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { SettingsLayout as SettingsLayoutComponent } from '@/components/settings-layout'
+import { SettingsLayout as SettingsLayoutComponent } from './settings-layout'
 
 export const metadata: Metadata = {
   title: 'Ajustes | Advents',

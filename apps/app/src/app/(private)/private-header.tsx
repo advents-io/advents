@@ -9,9 +9,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
-import { AppSelector } from '@/components/app-selector'
 import { ContactDropdown } from '@/components/contact-dropdown'
-import { HeaderItem } from '@/components/header-item'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { Avatar, AvatarFallback } from '@/ui/avatar'
 import {
@@ -30,6 +28,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
+
+import { AppSelector } from './app-selector'
+import { HeaderItem } from './header-item'
 
 interface Props {
   email?: string

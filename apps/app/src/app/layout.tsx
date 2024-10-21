@@ -5,9 +5,9 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { HelpButton } from '@/components/help-button'
 import { Toaster } from '@/ui/sonner'
 
+import { HelpButton } from './help-button'
 import { Providers } from './providers'
 
 const interFont = Inter({

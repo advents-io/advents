@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { PublicHeader } from '@/components/public-header'
-import { SignInForm } from '@/components/sign-in-form'
+import { PublicHeader } from './public-header'
+import { SignInForm } from './sign-in-form'
 
 export const metadata: Metadata = {
   title: 'Entrar | Advents',

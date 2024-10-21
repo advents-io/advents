@@ -1,7 +1,8 @@
 import { prisma } from '@advents/db'
 
-import { ApiKeyField } from '@/components/api-key-field'
 import { ErrorAlert } from '@/components/error-alert'
+
+import { ApiKeyField } from './api-key-field'
 
 export default async function Sdk({ params }: { params: { app: string } }) {
   const apiKey = await prisma.apiKey.findFirst({
