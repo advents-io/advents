@@ -13,16 +13,17 @@ import {
 
 interface Props<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
-  title: string
   border?: boolean
 }
 
 export const TableColumnHeader = <TData, TValue>({
   column,
-  title,
   border = false,
   className,
 }: Props<TData, TValue>) => {
+  // @ts-expect-error meta has title property
+  const title = column.columnDef.meta?.title
+
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>
   }

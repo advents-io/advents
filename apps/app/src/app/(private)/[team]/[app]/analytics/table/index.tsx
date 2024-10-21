@@ -137,6 +137,7 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
                    * Actions column. We can't pass it on `table-columns.tsx` because we have to pass the qrCodeUrl,
                    * which is fetched on the server, and this was causing an error on rendering the table
                    */}
+                  {/* TODO: implement link dropdown options */}
                   <TableCell className='p-0'>
                     {flexRender(
                       <TableRowCell className='justify-end'>

@@ -1,5 +1,6 @@
 'use client'
 
+import { dayjs } from '@advents/common'
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
 
@@ -11,7 +12,10 @@ import { TableRowCell } from './table-row-cell'
 export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
   {
     accessorKey: 'slug',
-    header: ({ column }) => <TableColumnHeader column={column} title='Link' border />,
+    meta: {
+      title: 'Link',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => (
       <TableRowCell border>
         {formatShortLink(row.original.domain, row.getValue('slug'))}
@@ -20,19 +24,36 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => <TableColumnHeader column={column} title='Título' border />,
+    meta: {
+      title: 'Título',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => <TableRowCell border>{row.getValue('title')}</TableRowCell>,
   },
   {
     accessorKey: 'clicks',
-    header: ({ column }) => <TableColumnHeader column={column} title='Cliques' border />,
+    meta: {
+      title: 'Cliques',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => <TableRowCell border>{row.getValue('clicks')}</TableRowCell>,
-    filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },
   {
     accessorKey: 'installs',
-    header: ({ column }) => <TableColumnHeader column={column} title='Instalações' />,
-    cell: ({ row }) => <TableRowCell>{row.getValue('installs')}</TableRowCell>,
-    filterFn: (row, id, value) => value.includes(row.getValue(id)),
+    meta: {
+      title: 'Instalações',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
+    cell: ({ row }) => <TableRowCell border>{row.getValue('installs')}</TableRowCell>,
+  },
+  {
+    accessorKey: 'createdAt',
+    meta: {
+      title: 'Criado em',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} />,
+    cell: ({ row }) => (
+      <TableRowCell>{dayjs(row.getValue('createdAt')).format('DD MMM YY, HH:mm')}</TableRowCell>
+    ),
   },
 ]

@@ -42,7 +42,8 @@ export const TableViewOptions = <TData,>({ table }: Props<TData>) => {
                 checked={column.getIsVisible()}
                 onCheckedChange={value => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {/* @ts-expect-error meta has title property */}
+                {column.columnDef.meta?.title}
               </DropdownMenuCheckboxItem>
             )
           })}
