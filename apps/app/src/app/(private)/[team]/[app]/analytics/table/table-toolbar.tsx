@@ -17,6 +17,7 @@ export const TableToolbar = <TData,>({ table }: Props<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
   const filterValue = (table.getColumn('title')?.getFilterValue() as string) ?? ''
 
+  // TODO: implement filter in title and slug columns
   const applyFilter = (event: ChangeEvent<HTMLInputElement>) => {
     table.getColumn('title')?.setFilterValue(event.target.value)
   }
