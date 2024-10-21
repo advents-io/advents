@@ -1,4 +1,4 @@
-import { deleteLinkAction, formatErrors, useAction } from '@advents/actions'
+import { deleteLinkAction, formatErrors, useAction } from '@advents/mutations'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'

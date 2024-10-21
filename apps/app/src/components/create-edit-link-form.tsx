@@ -1,5 +1,6 @@
 'use client'
 
+import { LINK_DOMAINS } from '@advents/common'
 import {
   createLinkAction,
   CreateLinkInputFormProps,
@@ -12,8 +13,7 @@ import {
   getLinkAction,
   GetLinkOutputProps,
   useAction,
-} from '@advents/actions'
-import { LINK_DOMAINS } from '@advents/common'
+} from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'

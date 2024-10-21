@@ -1,4 +1,4 @@
-import { deleteAppAction, formatErrors, useAction } from '@advents/actions'
+import { deleteAppAction, formatErrors, useAction } from '@advents/mutations'
 import { useState } from 'react'
 import { toast } from 'sonner'
 

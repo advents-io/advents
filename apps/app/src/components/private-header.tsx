@@ -1,8 +1,8 @@
 'use client'
 
-import { signOutAction, useAction } from '@advents/actions'
 import { DOCS_URL, routes } from '@advents/common'
 import { App } from '@advents/db'
+import { signOutAction, useAction } from '@advents/mutations'
 import { LogOut, MoveUpRight, Slash, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

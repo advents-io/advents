@@ -21,9 +21,6 @@ importers:
 
   apps/app:
     dependencies:
-      '@advents/actions':
-        specifier: workspace:*
-        version: link:../../packages/actions
       '@advents/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -33,6 +30,9 @@ importers:
       '@advents/engine':
         specifier: workspace:*
         version: link:../../packages/engine
+      '@advents/mutations':
+        specifier: workspace:*
+        version: link:../../packages/mutations
       '@advents/queries':
         specifier: workspace:*
         version: link:../../packages/queries
@@ -152,40 +152,6 @@ importers:
         specifier: ^3.4.1
         version: 3.4.13
 
-  packages/actions:
-    dependencies:
-      '@advents/common':
-        specifier: workspace:*
-        version: link:../common
-      '@advents/db':
-        specifier: workspace:*
-        version: link:../db
-      '@advents/supabase':
-        specifier: workspace:*
-        version: link:../supabase
-      '@prisma/client':
-        specifier: ^5.20.0
-        version: 5.20.0(prisma@5.20.0)
-      next:
-        specifier: 15.0.0-rc.0
-        version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
-      next-safe-action:
-        specifier: ^7.8.1
-        version: 7.9.3(next@15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829))(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)(zod@3.23.8)
-      react:
-        specifier: 19.0.0-rc-a19a8ab4-20240829
-        version: 19.0.0-rc-a19a8ab4-20240829
-      react-dom:
-        specifier: 19.0.0-rc-a19a8ab4-20240829
-        version: 19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829)
-    devDependencies:
-      '@advents/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@advents/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-
   packages/common:
     dependencies:
       dayjs:
@@ -293,6 +259,40 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.5
         version: 0.6.8(prettier@3.3.3)
+
+  packages/mutations:
+    dependencies:
+      '@advents/common':
+        specifier: workspace:*
+        version: link:../common
+      '@advents/db':
+        specifier: workspace:*
+        version: link:../db
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../supabase
+      '@prisma/client':
+        specifier: ^5.20.0
+        version: 5.20.0(prisma@5.20.0)
+      next:
+        specifier: 15.0.0-rc.0
+        version: 15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)
+      next-safe-action:
+        specifier: ^7.8.1
+        version: 7.9.3(next@15.0.0-rc.0(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829))(react-dom@19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829))(react@19.0.0-rc-a19a8ab4-20240829)(zod@3.23.8)
+      react:
+        specifier: 19.0.0-rc-a19a8ab4-20240829
+        version: 19.0.0-rc-a19a8ab4-20240829
+      react-dom:
+        specifier: 19.0.0-rc-a19a8ab4-20240829
+        version: 19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829)
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/queries:
     dependencies:

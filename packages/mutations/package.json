@@ -1,5 +1,5 @@
 {
-  "name": "@advents/actions",
+  "name": "@advents/mutations",
   "dependencies": {
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",

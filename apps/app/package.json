@@ -6,7 +6,7 @@
     "migrate:prod": "pnpm --dir ../../packages/db migrate:prod"
   },
   "dependencies": {
-    "@advents/actions": "workspace:*",
+    "@advents/mutations": "workspace:*",
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/engine": "workspace:*",
