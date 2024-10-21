@@ -4,7 +4,7 @@ import { dayjs } from '@advents/common'
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { formatShortLink } from '@/utils/link-formatter'
+import { LinkItemCopy } from '@/components/link-item-copy'
 
 import { TableColumnHeader } from './table-column-header'
 import { TableRowCell } from './table-row-cell'
@@ -18,7 +18,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => (
       <TableRowCell border>
-        {formatShortLink(row.original.domain, row.getValue('slug'))}
+        <LinkItemCopy domain={row.original.domain} slug={row.getValue('slug')} />
       </TableRowCell>
     ),
   },

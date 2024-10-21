@@ -8,7 +8,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const TableRowCell = ({ children, className, border = false }: Props) => {
   return (
     <div className={cn('flex h-10 items-center px-4', className, border && '-mr-[0.5px] border-r')}>
-      <span className='truncate'>{children}</span>
+      {typeof children === 'object' ? children : <span className='truncate'>{children}</span>}
     </div>
   )
 }

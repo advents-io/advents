@@ -2,16 +2,13 @@
 
 import { dayjs } from '@advents/common'
 import { Link } from '@advents/db'
-import { ArrowRightIcon, Copy } from 'lucide-react'
-import NextLink from 'next/link'
-import { toast } from 'sonner'
+import { ArrowRightIcon } from 'lucide-react'
 
 import { LinkAnalytics } from '@/components/link-analytics'
+import { LinkItemCopy } from '@/components/link-item-copy'
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
-import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
   link: Pick<Link, 'id' | 'title' | 'domain' | 'slug' | 'clickCount' | 'installCount' | 'createdAt'>
@@ -19,15 +16,6 @@ interface Props {
 }
 
 export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
-  const shortLink = formatShortLink(link.domain, link.slug)
-  const httpShortLink = formatShortLink(link.domain, link.slug, true)
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(httpShortLink)
-
-    toast('Link copiado')
-  }
-
   return (
     <Card>
       <CardContent className='flex px-6 py-4 text-sm'>
@@ -36,28 +24,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
 
           {link.title && <ArrowRightIcon className='hidden size-4 text-muted-foreground sm:flex' />}
 
-          <NextLink
-            href={httpShortLink}
-            className='max-w-44 truncate font-semibold sm:max-w-none'
-            target='_blank'
-          >
-            {shortLink}
-          </NextLink>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className='h-8 w-8 rounded-full'
-                onClick={copyToClipboard}
-                variant='ghost'
-                size='icon'
-              >
-                <Copy className='size-4' />
-              </Button>
-            </TooltipTrigger>
-
-            <TooltipContent>Copiar link</TooltipContent>
-          </Tooltip>
+          <LinkItemCopy domain={link.domain} slug={link.slug} />
 
           <Tooltip>
             <TooltipTrigger asChild>
