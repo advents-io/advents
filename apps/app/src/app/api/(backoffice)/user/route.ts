@@ -3,8 +3,6 @@ import { supabaseAdminClient } from '@advents/supabase'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { IS_PRODUCTION } from '@/utils/env'
-
 const inviteUserSchema = z.object({
   email: z.string({ message: 'Email inválido.' }).email('Email inválido.'),
   teamId: z.string({ message: 'Id da conta inválido.' }).uuid('Id da conta inválido.'),
@@ -14,7 +12,7 @@ export async function POST(req: Request) {
   const host = req.headers.get('host')
   const isLocalhost = !host || host.includes('localhost')
 
-  if (!isLocalhost || IS_PRODUCTION) {
+  if (!isLocalhost || process.env.NODE_ENV === 'production') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
