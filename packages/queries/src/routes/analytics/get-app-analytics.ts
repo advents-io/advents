@@ -50,8 +50,8 @@ export const getAppAnalytics = (api: Hono) =>
               },
             },
             createdAt: {
-              gte: dayjs(startDate).startOf('day').toDate(),
-              lte: dayjs(endDate).endOf('day').toDate(),
+              gte: dayjs(startDate).utc().startOf('day').toDate(),
+              lte: dayjs(endDate).utc().endOf('day').toDate(),
             },
           },
         }),
@@ -64,8 +64,8 @@ export const getAppAnalytics = (api: Hono) =>
               },
             },
             createdAt: {
-              gte: dayjs(lastPeriodStartDate).startOf('day').toDate(),
-              lte: dayjs(lastPeriodEndDate).endOf('day').toDate(),
+              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
+              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
             },
           },
         }),
@@ -78,8 +78,8 @@ export const getAppAnalytics = (api: Hono) =>
               },
             },
             createdAt: {
-              gte: dayjs(startDate).startOf('day').toDate(),
-              lte: dayjs(endDate).endOf('day').toDate(),
+              gte: dayjs(startDate).utc().startOf('day').toDate(),
+              lte: dayjs(endDate).utc().endOf('day').toDate(),
             },
           },
         }),
@@ -92,8 +92,8 @@ export const getAppAnalytics = (api: Hono) =>
               },
             },
             createdAt: {
-              gte: dayjs(lastPeriodStartDate).startOf('day').toDate(),
-              lte: dayjs(lastPeriodEndDate).endOf('day').toDate(),
+              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
+              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
             },
           },
         }),

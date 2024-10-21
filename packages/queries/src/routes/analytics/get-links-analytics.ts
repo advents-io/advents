@@ -61,8 +61,8 @@ export const getLinksAnalytics = (api: Hono) =>
             },
           },
           createdAt: {
-            gte: dayjs(startDate).startOf('day').toDate(),
-            lte: dayjs(endDate).endOf('day').toDate(),
+            gte: dayjs(startDate).utc().startOf('day').toDate(),
+            lte: dayjs(endDate).utc().endOf('day').toDate(),
           },
         },
       })
