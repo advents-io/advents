@@ -4,7 +4,9 @@ import { ErrorAlert } from '@/components/error-alert'
 
 import { ApiKeyField } from './api-key-field'
 
-export default async function Sdk({ params }: { params: { app: string } }) {
+export default async function Sdk(props: { params: Promise<{ app: string }> }) {
+  const params = await props.params
+
   const apiKey = await prisma.apiKey.findFirst({
     where: {
       app: {

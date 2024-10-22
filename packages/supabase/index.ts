@@ -3,15 +3,15 @@ import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 const supabaseClient = () => {
-  const cookieStore = cookies()
-
   return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     cookies: {
-      getAll() {
-        return cookieStore.getAll()
+      async getAll() {
+        return (await cookies()).getAll()
       },
-      setAll(cookiesToSet) {
+      async setAll(cookiesToSet) {
         try {
+          const cookieStore = await cookies()
+
           cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
         } catch {}
       },

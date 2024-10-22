@@ -10,13 +10,12 @@ export const metadata: Metadata = {
   title: 'Links | Advents',
 }
 
-export default async function Links({
-  searchParams,
-  params,
-}: {
-  searchParams: { page?: string }
-  params: { app: string }
+export default async function Links(props: {
+  searchParams: Promise<{ page?: string }>
+  params: Promise<{ app: string }>
 }) {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const page = Number(searchParams.page) || 1
 
   return (

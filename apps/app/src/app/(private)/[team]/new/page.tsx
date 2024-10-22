@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: 'Novo app | Advents',
 }
 
-export default async function NewApp({ params: { team: teamSlug } }: { params: { team: string } }) {
+export default async function NewApp(props: { params: Promise<{ team: string }> }) {
+  const { team: teamSlug } = await props.params
+
   const supabase = supabaseClient()
 
   const {

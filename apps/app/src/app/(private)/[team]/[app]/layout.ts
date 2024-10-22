@@ -2,13 +2,14 @@ import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
-export default async function AppLayout({
-  children,
-  params,
-}: {
+export default async function AppLayout(props: {
   children: React.ReactNode
-  params: { team: string; app: string }
+  params: Promise<{ team: string; app: string }>
 }) {
+  const params = await props.params
+
+  const { children } = props
+
   const app = await prisma.app.findFirst({
     where: {
       slug: params.app,

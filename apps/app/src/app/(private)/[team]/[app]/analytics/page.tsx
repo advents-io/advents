@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   title: 'Analytics | Advents',
 }
 
-export default async function Analytics({ params }: { params: { app: string; team: string } }) {
+export default async function Analytics(props: { params: Promise<{ app: string; team: string }> }) {
+  const params = await props.params
+
   return (
     <div className='flex flex-1 flex-col gap-4'>
       <div className='flex items-center justify-between'>

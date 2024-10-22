@@ -15,7 +15,7 @@ export const signInAction = actionClient
 
     const supabase = supabaseClient()
 
-    const headersList = headers()
+    const headersList = await headers()
     const origin = headersList.get('origin') || LOCALHOST_APP_DOMAIN
 
     const { error } = await supabase.auth.signInWithOtp({

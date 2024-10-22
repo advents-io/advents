@@ -6,13 +6,14 @@ export const metadata: Metadata = {
   title: 'Ajustes | Advents',
 }
 
-export default function SettingsLayout({
-  children,
-  params,
-}: {
+export default async function SettingsLayout(props: {
   children: React.ReactNode
-  params: { team: string; app: string }
+  params: Promise<{ team: string; app: string }>
 }) {
+  const params = await props.params
+
+  const { children } = props
+
   return (
     <SettingsLayoutComponent team={params.team} app={params.app}>
       {children}

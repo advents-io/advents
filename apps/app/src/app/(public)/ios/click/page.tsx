@@ -4,12 +4,10 @@ import { notFound } from 'next/navigation'
 
 import { AppStoreRedirectButton } from './app-store-redirect-button'
 
-export default async function IosClick({
-  searchParams,
-}: {
-  searchParams: { app_id?: string; click_id?: string; redirect?: string }
+export default async function IosClick(props: {
+  searchParams: Promise<{ app_id?: string; click_id?: string; redirect?: string }>
 }) {
-  const { app_id: appId, click_id: clickId, redirect } = searchParams
+  const { app_id: appId, click_id: clickId, redirect } = await props.searchParams
 
   if (!appId || !clickId || !redirect) {
     return notFound()
