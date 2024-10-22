@@ -1,6 +1,6 @@
 import { prisma } from '@advents/db'
-import { supabaseAdminClient } from '@advents/supabase'
-import { NextResponse } from 'next/server'
+import { supabaseServer } from '@advents/supabase'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const teamSchema = z.object({
@@ -8,7 +8,7 @@ const teamSchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
 })
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const host = req.headers.get('host')
   const isLocalhost = !host || host.includes('localhost')
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     const {
       data: { users },
-    } = await supabaseAdminClient().auth.admin.listUsers()
+    } = await supabaseServer(true).auth.admin.listUsers()
 
     if (!users.length) {
       throw new Error('No created users found.')

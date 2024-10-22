@@ -1,7 +1,5 @@
 export class ActionError extends Error {}
 
-export class UnauthorizedActionError extends Error {}
-
 export const formatErrors = (result: {
   serverError?: string
   validationErrors?: {

@@ -1,8 +1,8 @@
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { Prisma } from '@prisma/client'
 import { createSafeActionClient } from 'next-safe-action'
 
-import { ActionError, UnauthorizedActionError } from './action-errors'
+import { ActionError } from './action-errors'
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
@@ -10,10 +10,6 @@ export const actionClient = createSafeActionClient({
       return e.code === 'P2002'
         ? `Já existe um registro com o mesmo valor único (${e.code})`
         : `Erro ao processar a requisição (Erro ${e.code})`
-    }
-
-    if (e instanceof UnauthorizedActionError) {
-      return 'Usuário não autorizado.'
     }
 
     if (e instanceof ActionError) {
@@ -26,18 +22,15 @@ export const actionClient = createSafeActionClient({
 })
 
 export const authActionClient = actionClient.use(async ({ next }) => {
-  const supabase = supabaseClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const supabase = supabaseServer()
 
-  if (!user) {
-    throw new UnauthorizedActionError()
-  }
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
   return next({
     ctx: {
-      user,
+      user: session!.user,
       supabase,
     },
   })

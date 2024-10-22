@@ -1,5 +1,5 @@
 import { Click as DbClick } from '@advents/db'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { NextRequest, userAgent } from 'next/server'
 
 import { getGeolocation } from '../utils/geolocation'
@@ -52,7 +52,7 @@ export const logClick = async (
 
   const clickSnakeCase = convertKeysToSnakeCase(click)
 
-  const supabase = supabaseClient()
+  const supabase = supabaseServer()
 
   await Promise.allSettled([
     await supabase.from('clicks').insert(clickSnakeCase),

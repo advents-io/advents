@@ -1,5 +1,5 @@
 import { routes } from '@advents/common'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -15,7 +15,8 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  const supabase = supabaseClient()
+  const supabase = supabaseServer()
+
   const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' })
 
   if (error) {

@@ -1,31 +1,50 @@
 import { createServerClient } from '@supabase/ssr'
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
 
-const supabaseClient = () => {
-  return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+const supabaseServer = (admin = false) =>
+  createServerClient(
+    process.env.SUPABASE_URL!,
+    admin ? process.env.SUPABASE_SERVICE_ROLE_KEY! : process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        async getAll() {
+          const cookiesStore = await cookies()
+          return cookiesStore.getAll()
+        },
+        setAll() {},
+      },
+    },
+  )
+
+const supabaseMiddleware = (request: NextRequest) => {
+  let response = NextResponse.next({
+    request,
+  })
+
+  const supabase = createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     cookies: {
-      async getAll() {
-        return (await cookies()).getAll()
+      getAll() {
+        return request.cookies.getAll()
       },
-      async setAll(cookiesToSet) {
-        try {
-          const cookieStore = await cookies()
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
 
-          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-        } catch {}
+        response = NextResponse.next({
+          request,
+        })
+
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options),
+        )
       },
     },
   })
+
+  return {
+    response,
+    supabase,
+  }
 }
 
-const supabaseAdminClient = () => {
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  })
-}
-
-export { createServerClient, supabaseAdminClient, supabaseClient }
+export { supabaseMiddleware, supabaseServer }

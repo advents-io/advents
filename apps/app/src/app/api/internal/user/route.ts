@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { supabaseAdminClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -20,10 +20,12 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email, teamId } = inviteUserSchema.parse(body)
 
+    const supabase = supabaseServer(true)
+
     const {
       data: { user },
       error: inviteUserError,
-    } = await supabaseAdminClient().auth.admin.inviteUserByEmail(email)
+    } = await supabase.auth.admin.inviteUserByEmail(email)
 
     if (!user) {
       throw new Error(inviteUserError?.message || 'Erro ao enviar convite para o usuário.')
@@ -31,7 +33,7 @@ export async function POST(req: Request) {
 
     const {
       data: { users },
-    } = await supabaseAdminClient().auth.admin.listUsers()
+    } = await supabase.auth.admin.listUsers()
 
     if (!users.length) {
       throw new Error('No created users found.')

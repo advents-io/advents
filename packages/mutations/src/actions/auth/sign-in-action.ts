@@ -1,7 +1,7 @@
 'use server'
 
 import { LOCALHOST_APP_DOMAIN } from '@advents/common'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { headers } from 'next/headers'
 
 import { ActionError } from '../../action-errors'
@@ -13,7 +13,7 @@ export const signInAction = actionClient
   .action(async ({ parsedInput }) => {
     const { email } = parsedInput
 
-    const supabase = supabaseClient()
+    const supabase = supabaseServer()
 
     const headersList = await headers()
     const origin = headersList.get('origin') || LOCALHOST_APP_DOMAIN

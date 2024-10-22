@@ -7,7 +7,7 @@ import {
   WEBSITE_URL,
 } from '@advents/common'
 import { Link } from '@advents/db'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { logClick } from './log-click'
@@ -29,7 +29,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
     return redirect(WEBSITE_URL)
   }
 
-  const supabase = supabaseClient()
+  const supabase = supabaseServer()
 
   // This was necessary because Prisma was not able to run on edge middleware in the Supabase database
   const link = (
