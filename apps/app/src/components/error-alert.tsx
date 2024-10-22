@@ -3,17 +3,17 @@ import React from 'react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
 
-interface Props {
+interface Props extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   error?: string | null
 }
 
-export const ErrorAlert = ({ error }: Props) => {
+export const ErrorAlert = ({ error, className }: Props) => {
   if (!error) {
     return null
   }
 
   return (
-    <Alert variant='destructive'>
+    <Alert variant='destructive' className={className}>
       <AlertCircle className='size-4' />
       <AlertTitle>Ops!</AlertTitle>
       <AlertDescription>{error}</AlertDescription>

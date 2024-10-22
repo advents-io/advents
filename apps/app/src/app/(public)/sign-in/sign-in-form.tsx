@@ -42,6 +42,9 @@ export const SignInForm = () => {
 
   const form = useForm<SignInInputProps>({
     resolver: zodResolver(signInInputSchema),
+    defaultValues: {
+      email: '',
+    },
   })
 
   return (
@@ -73,7 +76,7 @@ export const SignInForm = () => {
               </div>
             ) : (
               <>
-                <ErrorAlert error={error} />
+                <ErrorAlert error={error} className='mb-4' />
 
                 <FormField
                   control={form.control}
