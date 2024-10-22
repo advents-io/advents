@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
-    "@advents/tsconfig": "workspace:*",
+    "@advents/typescript-config": "workspace:*",
     "typescript": "^5.5.3"
   },
   "eslintConfig": {

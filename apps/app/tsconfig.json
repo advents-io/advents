@@ -1,5 +1,5 @@
 {
-  "extends": "@advents/tsconfig/base.json",
+  "extends": "@advents/typescript-config/base.json",
 
   "compilerOptions": {
     "baseUrl": ".",

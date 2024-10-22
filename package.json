@@ -10,7 +10,7 @@
     "mutations": "pnpm --dir packages/mutations",
     "queries": "pnpm --dir packages/queries",
     "supabase": "pnpm --dir packages/supabase",
-    "tsconfig": "pnpm --dir packages/tsconfig",
+    "typescript-config": "pnpm --dir packages/typescript-config",
     "doc": "pnpm --dir modules/docs",
     "sdk": "pnpm --dir modules/advents-react-native",
     "lint": "eslint . --fix && prettier . --write",

@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
-    "@advents/tsconfig": "workspace:*",
+    "@advents/typescript-config": "workspace:*",
     "dotenv-cli": "^7.4.2",
     "prisma": "^5.20.0",
     "tsx": "^4.19.1",
