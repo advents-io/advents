@@ -3,16 +3,18 @@
   "scripts": {
     "dev": "pnpm --dir apps/app run dev",
     "app": "pnpm --dir apps/app",
-    "engine": "pnpm --dir packages/engine",
-    "actions": "pnpm --dir packages/actions",
+    "common": "pnpm --dir packages/common",
     "db": "pnpm --dir packages/db",
+    "engine": "pnpm --dir packages/engine",
+    "eslint-config": "pnpm --dir packages/eslint-config",
+    "mutations": "pnpm --dir packages/mutations",
+    "queries": "pnpm --dir packages/queries",
+    "supabase": "pnpm --dir packages/supabase",
+    "tsconfig": "pnpm --dir packages/tsconfig",
     "doc": "pnpm --dir modules/docs",
     "sdk": "pnpm --dir modules/advents-react-native",
     "lint": "eslint . --fix && prettier . --write",
     "clear": "./scripts/clear.sh"
-  },
-  "dependencies": {
-    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

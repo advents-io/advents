@@ -6,10 +6,10 @@
     "migrate:prod": "pnpm --dir ../../packages/db migrate:prod"
   },
   "dependencies": {
-    "@advents/mutations": "workspace:*",
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/engine": "workspace:*",
+    "@advents/mutations": "workspace:*",
     "@advents/queries": "workspace:*",
     "@advents/supabase": "workspace:*",
     "@hookform/resolvers": "^3.9.0",
@@ -42,7 +42,8 @@
     "react-hook-form": "^7.52.1",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",

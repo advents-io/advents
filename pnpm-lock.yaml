@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
     devDependencies:
       '@types/node':
         specifier: ^20
@@ -132,6 +128,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.13)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@advents/eslint-config':
         specifier: workspace:*
@@ -286,6 +285,9 @@ importers:
       react-dom:
         specifier: 19.0.0-rc-a19a8ab4-20240829
         version: 19.0.0-rc-a19a8ab4-20240829(react@19.0.0-rc-a19a8ab4-20240829)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@advents/eslint-config':
         specifier: workspace:*
@@ -308,6 +310,9 @@ importers:
       hono:
         specifier: ^4.5.11
         version: 4.6.3
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@advents/eslint-config':
         specifier: workspace:*

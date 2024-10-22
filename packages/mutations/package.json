@@ -8,7 +8,8 @@
     "next": "15.0.0-rc.0",
     "next-safe-action": "^7.8.1",
     "react": "19.0.0-rc-a19a8ab4-20240829",
-    "react-dom": "19.0.0-rc-a19a8ab4-20240829"
+    "react-dom": "19.0.0-rc-a19a8ab4-20240829",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
