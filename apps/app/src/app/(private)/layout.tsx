@@ -1,12 +1,15 @@
 import { prisma } from '@advents/db'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 
 import { PrivateHeader } from './private-header'
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
-  const user = await supabaseClient().auth.getUser()
-  const email = user.data.user?.email
-  const userId = user.data.user?.id
+  const {
+    data: { session },
+  } = await supabaseServer().auth.getSession()
+
+  const email = session?.user.email
+  const userId = session?.user.id
 
   const apps = await prisma.app.findMany({
     where: {

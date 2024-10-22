@@ -1,6 +1,6 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { supabaseClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { PlusIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -18,21 +18,17 @@ export const metadata: Metadata = {
 export default async function Apps(props: { params: Promise<{ team: string }> }) {
   const params = await props.params
 
-  const supabase = supabaseClient()
+  const supabase = supabaseServer()
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return redirect(routes.SIGN_IN.path)
-  }
+    data: { session },
+  } = await supabase.auth.getSession()
 
   const team = await prisma.team.findFirst({
     where: {
       members: {
         some: {
-          userId: user.id,
+          userId: session?.user.id,
         },
       },
       slug: params.team,
