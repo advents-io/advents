@@ -20,6 +20,11 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  settings: {
+    next: {
+      rootDir: ['apps/app/'],
+    },
+  },
   plugins: ['react', '@typescript-eslint', 'simple-import-sort'],
   rules: {
     'simple-import-sort/imports': 'error',
