@@ -2,7 +2,7 @@
   "name": "@advents/typescript-config",
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
-    "typescript": "^5.5.3"
+    "typescript": "~5.4.5"
   },
   "eslintConfig": {
     "extends": [
