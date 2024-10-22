@@ -1,20 +1,19 @@
-/* TODO
-  Verifications before running probabilistic attribution:
-    - device not already attributed || is first session
-
-  Add filters:
-    - app_id
-    - date
-    - os
-    - country
-    - device model
-    - clicks not already attributed
-
-  Match confidence:
-    - ip
-    - distance from latitude and longitude between click and session
-    - device model
-*/
+/* TODO: Verifications before running probabilistic attribution:
+ *   - device not already attributed || is first session
+ *
+ * Add filters:
+ *   - app_id
+ *   - date
+ *   - os
+ *   - country
+ *   - device model
+ *   - clicks not already attributed
+ *
+ * Match confidence:
+ *   - ip
+ *   - distance from latitude and longitude between click and session
+ *   - device model
+ */
 
 import { AttributionMethod, Click, prisma, Session } from '@advents/db'
 

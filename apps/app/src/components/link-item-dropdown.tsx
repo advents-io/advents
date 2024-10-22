@@ -27,11 +27,9 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
 
   const shortLink = formatShortLink(domain, slug)
 
-  /* BUG
-    We have to add preventDefault to avoid the dropdown to close when clicking on an item.
-
-    That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
-  */
+  /* BUG: We have to add preventDefault to avoid the dropdown to close when clicking on an item.
+   * That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
+   */
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
