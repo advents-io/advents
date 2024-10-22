@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@types/node':
-        specifier: ^20
-        version: 20.16.9
       typescript:
         specifier: ^5.5.3
         version: 5.6.2
