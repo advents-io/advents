@@ -2,24 +2,34 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-const supabaseServer = (admin = false) =>
-  createServerClient(
+const supabaseServer = (admin = false) => {
+  /* BUG: this is preventing some pages from being static rendered on build, because the cookies make the page dynamic.
+   * This started with the upgrade to Next.js 15.
+   * Look at new versions os supabase js client to see if there is a workaround to it.
+   */
+  const cookiesStore = cookies()
+
+  return createServerClient(
     process.env.SUPABASE_URL!,
     admin ? process.env.SUPABASE_SERVICE_ROLE_KEY! : process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         async getAll() {
-          /* BUG: this is preventing some pages from being static rendered on build, because the cookies make the page dynamic.
-           * This started with the upgrade to Next.js 15.
-           * Look at new versions os supabase js client to see if there is a workaround to it.
-           */
-          const cookiesStore = await cookies()
-          return cookiesStore.getAll()
+          return (await cookiesStore).getAll()
         },
-        setAll() {},
+        async setAll(cookiesToSet) {
+          try {
+            const resolvedCookiesStore = await cookiesStore
+
+            cookiesToSet.forEach(({ name, value, options }) =>
+              resolvedCookiesStore.set(name, value, options),
+            )
+          } catch {}
+        },
       },
     },
   )
+}
 
 const supabaseMiddleware = (request: NextRequest) => {
   let response = NextResponse.next({
