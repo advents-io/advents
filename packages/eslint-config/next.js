@@ -4,7 +4,6 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  ignorePatterns: ['node_modules', 'pnpm-lock.yaml', '.next', '.vercel', 'next-env.d.ts'],
   extends: [
     'plugin:react/recommended',
     'standard',

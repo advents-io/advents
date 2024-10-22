@@ -21,9 +21,6 @@
   "eslintConfig": {
     "extends": [
       "./packages/eslint-config/node.js"
-    ],
-    "ignorePatterns": [
-      "modules/advents-react-native/examples"
     ]
   },
   "prettier": "./packages/eslint-config/prettier.config.js"

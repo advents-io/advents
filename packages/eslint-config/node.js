@@ -4,7 +4,6 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  ignorePatterns: ['node_modules', 'pnpm-lock.yaml'],
   extends: ['standard', 'plugin:@typescript-eslint/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
