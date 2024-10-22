@@ -6,7 +6,7 @@
 export const SUPPORTS_PATH2D = (function () {
   try {
     new Path2D().addPath(new Path2D())
-  } catch (e) {
+  } catch {
     return false
   }
   return true

@@ -18,7 +18,7 @@ export const isLinkDomain = (req: NextRequest) => {
   return isLinkDomain
 }
 
-interface LinkProps extends Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId'> {}
+type LinkProps = Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId'>
 
 export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)

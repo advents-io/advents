@@ -4,7 +4,7 @@ import { NextRequest, userAgent } from 'next/server'
 
 import { getGeolocation } from '../utils/geolocation'
 
-interface Click extends Omit<DbClick, 'createdAt'> {}
+type Click = Omit<DbClick, 'createdAt'>
 
 export const logClick = async (
   req: NextRequest,
@@ -93,7 +93,7 @@ const isValidUrl = (url: string) => {
     // eslint-disable-next-line no-new
     new URL(url)
     return true
-  } catch (e) {
+  } catch {
     return false
   }
 }
