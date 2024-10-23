@@ -1,5 +1,5 @@
 import { fetchUrlOgImage, LINK_DOMAINS, nanoid } from '@advents/common'
-import { supabaseAdminClient } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 
 import { prisma } from '.'
 
@@ -109,9 +109,11 @@ const createAnalyticsData = async (appId: string) => {
 }
 
 const createMember = async () => {
+  const supabase = await supabaseServer(true)
+
   const {
     data: { users },
-  } = await supabaseAdminClient().auth.admin.listUsers()
+  } = await supabase.auth.admin.listUsers()
 
   if (!users.length) {
     throw new Error('No created users found.')
