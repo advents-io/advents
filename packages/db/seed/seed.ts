@@ -5,6 +5,8 @@ import { faker } from '@faker-js/faker'
 import { Link as LinkDb, prisma } from '..'
 import { APP, LINKS } from './data'
 
+type Link = Omit<LinkDb, 'clickCount' | 'installCount'>
+
 async function seed() {
   console.log('1/5 - Creating member...')
   const { teamId, userId } = await createMember()
@@ -23,7 +25,75 @@ async function seed() {
   await createIncrementLinkClicksFunction()
 }
 
-type Link = Omit<LinkDb, 'clickCount' | 'installCount'>
+const createMember = async () => {
+  const supabase = await supabaseServerAdmin()
+
+  const {
+    data: { users },
+  } = await supabase.auth.admin.listUsers()
+
+  if (!users.length) {
+    throw new Error('No created users found.')
+  }
+
+  const adminUser = users.find(user => user.email === 'gabriel@advents.io')
+
+  if (!adminUser) {
+    throw new Error('Admin user not found.')
+  }
+
+  const team = await prisma.team.create({
+    data: {
+      name: 'Favorito',
+      slug: 'favorito',
+      createdBy: adminUser.id,
+      updatedBy: adminUser.id,
+    },
+  })
+
+  await prisma.member.create({
+    data: {
+      userId: adminUser.id,
+      teamId: team.id,
+      createdBy: adminUser.id,
+      updatedBy: adminUser.id,
+    },
+  })
+
+  return {
+    teamId: team.id,
+    userId: adminUser.id,
+  }
+}
+
+const createApp = async (teamId: string, userId: string) => {
+  const imageUrl = await fetchUrlOgImage(APP.androidUrl)
+
+  if (!imageUrl) {
+    throw new Error('App image not found')
+  }
+
+  const apiKey = 'advents_NqL92oPEAbY1Qs3OHFx8NK9r' // API key used in example apps
+
+  const { id: appId } = await prisma.app.create({
+    data: {
+      ...APP,
+      imageUrl,
+      apiKeys: {
+        create: {
+          key: apiKey,
+          createdBy: userId,
+          updatedBy: userId,
+        },
+      },
+      teamId,
+      createdBy: userId,
+      updatedBy: userId,
+    },
+  })
+
+  return { appId }
+}
 
 const createLinks = async (appId: string, userId: string) => {
   const linkCount = faker.number.int({ min: 10, max: 100 })
@@ -121,76 +191,6 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       },
     })
   }
-}
-
-const createMember = async () => {
-  const supabase = await supabaseServerAdmin()
-
-  const {
-    data: { users },
-  } = await supabase.auth.admin.listUsers()
-
-  if (!users.length) {
-    throw new Error('No created users found.')
-  }
-
-  const adminUser = users.find(user => user.email === 'gabriel@advents.io')
-
-  if (!adminUser) {
-    throw new Error('Admin user not found.')
-  }
-
-  const team = await prisma.team.create({
-    data: {
-      name: 'Favorito',
-      slug: 'favorito',
-      createdBy: adminUser.id,
-      updatedBy: adminUser.id,
-    },
-  })
-
-  await prisma.member.create({
-    data: {
-      userId: adminUser.id,
-      teamId: team.id,
-      createdBy: adminUser.id,
-      updatedBy: adminUser.id,
-    },
-  })
-
-  return {
-    teamId: team.id,
-    userId: adminUser.id,
-  }
-}
-
-const createApp = async (teamId: string, userId: string) => {
-  const imageUrl = await fetchUrlOgImage(APP.androidUrl)
-
-  if (!imageUrl) {
-    throw new Error('App image not found')
-  }
-
-  const apiKey = 'advents_NqL92oPEAbY1Qs3OHFx8NK9r' // API key used in example apps
-
-  const { id: appId } = await prisma.app.create({
-    data: {
-      ...APP,
-      imageUrl,
-      apiKeys: {
-        create: {
-          key: apiKey,
-          createdBy: userId,
-          updatedBy: userId,
-        },
-      },
-      teamId,
-      createdBy: userId,
-      updatedBy: userId,
-    },
-  })
-
-  return { appId }
 }
 
 const grantAccessAndPrivileges = async () => {
