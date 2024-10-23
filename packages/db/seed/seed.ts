@@ -127,6 +127,10 @@ const createLinks = async (appId: string, userId: string) => {
 
 const createAnalyticsData = async (links: Link[], appId: string) => {
   for (const link of links) {
+    process.stdout.clearLine(0)
+    process.stdout.cursorTo(0)
+    process.stdout.write(`Link ${links.indexOf(link) + 1} of ${links.length}`)
+
     const clickCount = faker.number.int({ min: 0, max: 10000 })
 
     // Create clicks
