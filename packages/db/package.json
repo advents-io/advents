@@ -6,7 +6,7 @@
     "seed": "dotenv -e ../../apps/app/.env -- prisma db seed"
   },
   "prisma": {
-    "seed": "tsx seed.ts"
+    "seed": "tsx seed/seed.ts"
   },
   "dependencies": {
     "@advents/common": "workspace:*",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
     "@advents/typescript-config": "workspace:*",
+    "@faker-js/faker": "^9.0.3",
     "dotenv-cli": "^7.4.2",
     "prisma": "^5.20.0",
     "tsx": "^4.19.1",

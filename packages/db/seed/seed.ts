@@ -1,99 +1,114 @@
-import { fetchUrlOgImage, LINK_DOMAINS, nanoid } from '@advents/common'
-import { supabaseServer } from '@advents/supabase'
+import { dayjs, fetchUrlOgImage, nanoid } from '@advents/common'
+import { supabaseServerAdmin } from '@advents/supabase'
+import { faker } from '@faker-js/faker'
 
-import { prisma } from '.'
-
-const app = {
-  name: 'Favorito',
-  slug: 'favorito',
-  defaultDomain: LINK_DOMAINS[0],
-  androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
-  iosUrl: 'https://apps.apple.com/app/id1598991618',
-  defaultFallbackUrl: 'https://favorito.digital',
-  qrcodeLogoUrl: null,
-}
+import { Link as LinkDb, prisma } from '..'
+import { APP, LINKS } from './data'
 
 async function seed() {
+  console.log('1/5 - Creating member...')
   const { teamId, userId } = await createMember()
+
+  console.log('2/5 - Creating app...')
   const { appId } = await createApp(teamId, userId)
 
-  await createLinks(appId, userId)
-  await createAnalyticsData(appId)
+  console.log('3/5 - Creating links...')
+  const links = await createLinks(appId, userId)
 
+  console.log('4/5 - Creating analytics data...')
+  await createAnalyticsData(links, appId)
+
+  console.log('5/5 - Running scripts...')
   await grantAccessAndPrivileges()
   await createIncrementLinkClicksFunction()
 }
 
+type Link = Omit<LinkDb, 'clickCount' | 'installCount'>
+
 const createLinks = async (appId: string, userId: string) => {
-  const numLinks = Math.floor(Math.random() * 91) + 10 // 10 to 100 links
+  const linkCount = faker.number.int({ min: 10, max: 100 })
 
-  for (let i = 0; i < numLinks; i++) {
-    const createdAt = getRandomDateWithinLast90Days()
-
-    await prisma.link.create({
-      data: {
-        title: `Link ${i + 1}`,
-        domain: app.defaultDomain,
-        slug: nanoid(),
-        iosUrl: app.iosUrl,
-        androidUrl: app.androidUrl,
-        fallbackUrl: app.defaultFallbackUrl,
-        appId,
-        createdAt,
-        updatedAt: createdAt,
-        createdBy: userId,
-        updatedBy: userId,
-      },
+  const links: Link[] = Array.from({ length: linkCount }, (_, index) => {
+    const createdAt = faker.date.between({
+      from: dayjs().add(-90, 'days').toDate(),
+      to: Date.now(),
     })
-  }
+
+    return {
+      id: crypto.randomUUID(),
+      title: LINKS[index].name,
+      domain: APP.defaultDomain,
+      slug: Math.random() < 0.4 ? LINKS[index].slug : nanoid(),
+      iosUrl: APP.iosUrl,
+      androidUrl: APP.androidUrl,
+      fallbackUrl: APP.defaultFallbackUrl,
+      appId,
+      createdAt,
+      updatedAt: createdAt,
+      createdBy: userId,
+      updatedBy: userId,
+    }
+  })
+
+  await prisma.link.createMany({
+    data: links,
+  })
+
+  return links
 }
 
-const createAnalyticsData = async (appId: string) => {
-  const links = await prisma.link.findMany({ where: { appId } })
-
+const createAnalyticsData = async (links: Link[], appId: string) => {
   for (const link of links) {
-    const numClicks = Math.floor(Math.random() * 10001) // 0 to 10000 clicks
-    const numSessions = Math.floor(Math.random() * (numClicks + 1)) // 0 to numClicks sessions
-    const numAttributions = Math.floor(Math.random() * (numSessions + 1)) // 0 to numSessions attributions
+    const clickCount = faker.number.int({ min: 0, max: 10000 })
 
     // Create clicks
-    await prisma.click.createMany({
-      data: Array.from({ length: numClicks }, () => ({
-        id: crypto.randomUUID(),
-        destinationUrl: link.iosUrl,
-        referer: '(direct)',
-        refererUrl: '(direct)',
-        isBot: false,
-        linkId: link.id,
-        createdAt: getRandomDateWithinLast90Days(),
-      })),
-    })
-
-    // Get the created clicks
-    const clicks = await prisma.click.findMany({
-      where: { linkId: link.id },
-      select: { id: true },
-      take: numAttributions,
-    })
-
-    const sessions = Array.from({ length: numSessions }, () => ({
+    const clicks = Array.from({ length: clickCount }, () => ({
       id: crypto.randomUUID(),
-      appId,
-      createdAt: getRandomDateWithinLast90Days(),
+      destinationUrl: link.iosUrl,
+      referer: '(direct)',
+      refererUrl: '(direct)',
+      isBot: false,
+      linkId: link.id,
+      createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
+    }))
+
+    await prisma.click.createMany({
+      data: clicks,
+    })
+
+    const clicksAndSessions = clicks.map(click => ({
+      click,
+      session: {
+        id: crypto.randomUUID(),
+        appId,
+        createdAt: faker.date.between({
+          from: click.createdAt,
+          to: dayjs(click.createdAt).add(1, 'hour').toDate(),
+        }),
+      },
     }))
 
     // Create sessions
     await prisma.session.createMany({
-      data: sessions,
+      data: clicksAndSessions.map(item => item.session),
     })
+
+    const installCount = Math.round(
+      faker.number.int({ min: clickCount * 0.05, max: clickCount * 0.18 }),
+    )
+
+    const clicksAndSessionsConvertedToInstalls = faker.helpers.arrayElements(
+      clicksAndSessions,
+      installCount,
+    )
 
     // Create attributions using the click IDs and session IDs
     await prisma.attribution.createMany({
-      data: clicks.map((click, index) => ({
+      data: clicksAndSessionsConvertedToInstalls.map(({ click, session }) => ({
         method: 'ios_deterministic_click',
         clickId: click.id,
-        sessionId: sessions[index].id,
-        createdAt: getRandomDateWithinLast90Days(),
+        sessionId: session.id,
+        createdAt: dayjs(session.createdAt).add(1, 'minute').toDate(),
       })),
     })
 
@@ -101,15 +116,15 @@ const createAnalyticsData = async (appId: string) => {
     await prisma.link.update({
       where: { id: link.id },
       data: {
-        clickCount: numClicks,
-        installCount: numAttributions,
+        clickCount,
+        installCount,
       },
     })
   }
 }
 
 const createMember = async () => {
-  const supabase = await supabaseServer(true)
+  const supabase = await supabaseServerAdmin()
 
   const {
     data: { users },
@@ -150,7 +165,7 @@ const createMember = async () => {
 }
 
 const createApp = async (teamId: string, userId: string) => {
-  const imageUrl = await fetchUrlOgImage(app.androidUrl)
+  const imageUrl = await fetchUrlOgImage(APP.androidUrl)
 
   if (!imageUrl) {
     throw new Error('App image not found')
@@ -160,7 +175,7 @@ const createApp = async (teamId: string, userId: string) => {
 
   const { id: appId } = await prisma.app.create({
     data: {
-      ...app,
+      ...APP,
       imageUrl,
       apiKeys: {
         create: {
@@ -218,10 +233,6 @@ const createIncrementLinkClicksFunction = async () => {
   END;
   $$
   LANGUAGE plpgsql;`
-}
-
-const getRandomDateWithinLast90Days = () => {
-  return new Date(Date.now() - Math.floor(Math.random() * 90 * 24 * 60 * 60 * 1000))
 }
 
 seed()
