@@ -133,7 +133,6 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
 
     const clickCount = faker.number.int({ min: 0, max: 10000 })
 
-    // Create clicks
     const clicks = Array.from({ length: clickCount }, () => ({
       id: crypto.randomUUID(),
       destinationUrl: link.iosUrl,
@@ -144,10 +143,6 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
     }))
 
-    await prisma.click.createMany({
-      data: clicks,
-    })
-
     const clicksAndSessions = clicks.map(click => ({
       click,
       session: {
@@ -156,11 +151,6 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         createdAt: click.createdAt,
       },
     }))
-
-    // Create sessions
-    await prisma.session.createMany({
-      data: clicksAndSessions.map(item => item.session),
-    })
 
     const installCount = Math.round(
       faker.number.int({ min: clickCount * 0.01, max: clickCount * 0.2 }),
@@ -171,25 +161,37 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       installCount,
     )
 
-    // Create attributions using the click IDs and session IDs
-    await prisma.attribution.createMany({
-      data: clicksAndSessionsConvertedToInstalls.map(({ click, session }) => ({
-        method: 'ios_deterministic_click',
-        clickId: click.id,
-        sessionId: session.id,
-        createdAt: session.createdAt,
-      })),
-    })
+    await prisma.$transaction([
+      prisma.click.createMany({ data: clicks }),
 
-    // Increment click_count and install_count for the link
-    await prisma.link.update({
-      where: { id: link.id },
-      data: {
-        clickCount,
-        installCount,
-      },
-    })
+      prisma.session.createMany({
+        data: clicksAndSessions.map(item => item.session),
+      }),
+
+      prisma.attribution.createMany({
+        data: clicksAndSessionsConvertedToInstalls.map(({ click, session }) => ({
+          method: 'ios_deterministic_click',
+          clickId: click.id,
+          sessionId: session.id,
+          createdAt: session.createdAt,
+        })),
+      }),
+
+      prisma.link.update({
+        where: { id: link.id },
+        data: {
+          clickCount,
+          installCount,
+        },
+      }),
+    ])
+
+    process.stdout.clearLine(0)
+    process.stdout.cursorTo(0)
+    process.stdout.write(`Link ${links.indexOf(link) + 1} of ${links.length}`)
   }
+
+  process.stdout.write('\n')
 }
 
 const grantAccessAndPrivileges = async () => {
