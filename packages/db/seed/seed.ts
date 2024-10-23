@@ -96,11 +96,9 @@ const createApp = async (teamId: string, userId: string) => {
 }
 
 const createLinks = async (appId: string, userId: string) => {
-  const linkCount = faker.number.int({ min: 10, max: 100 })
-
-  const links: Link[] = Array.from({ length: linkCount }, (_, index) => {
+  const links: Link[] = Array.from({ length: LINKS.length }, (_, index) => {
     const createdAt = faker.date.between({
-      from: dayjs().add(-90, 'days').toDate(),
+      from: dayjs().add(-180, 'days').toDate(),
       to: Date.now(),
     })
 
@@ -151,10 +149,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       session: {
         id: crypto.randomUUID(),
         appId,
-        createdAt: faker.date.between({
-          from: click.createdAt,
-          to: dayjs(click.createdAt).add(1, 'hour').toDate(),
-        }),
+        createdAt: click.createdAt,
       },
     }))
 
@@ -164,7 +159,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
     })
 
     const installCount = Math.round(
-      faker.number.int({ min: clickCount * 0.05, max: clickCount * 0.18 }),
+      faker.number.int({ min: clickCount * 0.01, max: clickCount * 0.2 }),
     )
 
     const clicksAndSessionsConvertedToInstalls = faker.helpers.arrayElements(
@@ -178,7 +173,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         method: 'ios_deterministic_click',
         clickId: click.id,
         sessionId: session.id,
-        createdAt: dayjs(session.createdAt).add(1, 'minute').toDate(),
+        createdAt: session.createdAt,
       })),
     })
 
