@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function Apps(props: { params: Promise<{ team: string }> }) {
   const params = await props.params
 
-  const supabase = supabaseServer()
+  const supabase = await supabaseServer()
 
   const {
     data: { session },

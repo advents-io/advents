@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  const supabase = supabaseServer()
+  const supabase = await supabaseServer()
 
   const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' })
 

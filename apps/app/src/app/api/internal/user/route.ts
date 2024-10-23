@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email, teamId } = inviteUserSchema.parse(body)
 
-    const supabase = supabaseServer(true)
+    const supabase = await supabaseServer(true)
 
     const {
       data: { user },

@@ -29,7 +29,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
     return redirect(WEBSITE_URL)
   }
 
-  const supabase = supabaseServer()
+  const supabase = await supabaseServer()
 
   // This was necessary because Prisma was not able to run on edge middleware in the Supabase database
   const link = (

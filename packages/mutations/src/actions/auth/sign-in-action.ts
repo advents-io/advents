@@ -13,7 +13,7 @@ export const signInAction = actionClient
   .action(async ({ parsedInput }) => {
     const { email } = parsedInput
 
-    const supabase = supabaseServer()
+    const supabase = await supabaseServer()
 
     const headersList = await headers()
     const origin = headersList.get('origin') || LOCALHOST_APP_DOMAIN

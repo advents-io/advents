@@ -4,9 +4,11 @@ import { supabaseServer } from '@advents/supabase'
 import { PrivateHeader } from './private-header'
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await supabaseServer()
+
   const {
     data: { session },
-  } = await supabaseServer().auth.getSession()
+  } = await supabase.auth.getSession()
 
   const email = session?.user.email
   const userId = session?.user.id

@@ -20,9 +20,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const data = teamSchema.parse(body)
 
+    const supabase = await supabaseServer(true)
+
     const {
       data: { users },
-    } = await supabaseServer(true).auth.admin.listUsers()
+    } = await supabase.auth.admin.listUsers()
 
     if (!users.length) {
       throw new Error('No created users found.')

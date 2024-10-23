@@ -22,7 +22,7 @@ export const actionClient = createSafeActionClient({
 })
 
 export const authActionClient = actionClient.use(async ({ next }) => {
-  const supabase = supabaseServer()
+  const supabase = await supabaseServer()
 
   const {
     data: { session },

@@ -52,7 +52,7 @@ export const logClick = async (
 
   const clickSnakeCase = convertKeysToSnakeCase(click)
 
-  const supabase = supabaseServer()
+  const supabase = await supabaseServer()
 
   await Promise.allSettled([
     await supabase.from('clicks').insert(clickSnakeCase),
