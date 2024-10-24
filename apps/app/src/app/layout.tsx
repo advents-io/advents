@@ -79,8 +79,8 @@ export default async function RootLayout({
         <Providers>{children}</Providers>
         <HelpButton />
         <Toaster richColors closeButton theme='light' />
-        <SpeedInsights />
-        <Analytics />
+        <SpeedInsights debug={false} />
+        <Analytics debug={false} />
       </body>
     </html>
   )
