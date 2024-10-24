@@ -1,15 +1,14 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseServer } from '@advents/supabase'
-import { PlusIcon } from 'lucide-react'
+import { PlusIcon, Smartphone } from 'lucide-react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-import Empty from '@/assets/illustrations/empty.svg'
 import { Button } from '@/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Card, CardContent } from '@/ui/card'
 
 export const metadata: Metadata = {
   title: 'Apps | Advents',
@@ -71,23 +70,21 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
       </div>
 
       {apps.length === 0 ? (
-        <div className='flex justify-center'>
-          <Card className='w-full max-w-xl'>
-            <CardHeader>
-              <CardTitle>Nenhum app encontrado</CardTitle>
-            </CardHeader>
+        <div className='mx-auto'>
+          <div className='flex h-72 max-w-72 flex-col justify-center'>
+            <div className='w-fit rounded-lg border bg-gray-50 p-2 shadow-md'>
+              <Smartphone className='h-8 w-8' />
+            </div>
 
-            <CardContent className='mt-10 flex flex-col items-center gap-10'>
-              <Image src={Empty} width={200} height={200} alt='Nenhum app encontrado' />
+            <span className='mt-6 text-xl font-semibold'>Apps</span>
+            <span className='mt-4 text-sm text-muted-foreground'>
+              Crie seu primeiro app para começar a utilizar a Advents!
+            </span>
 
-              <Link href={routes.APPS_NEW.path(team.slug)}>
-                <Button size='lg'>
-                  <PlusIcon className='mr-2 size-4' />
-                  Criar app
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+            <Link className='mt-6' href={routes.APPS_NEW.path(team.slug)}>
+              <Button size='sm'>Criar novo app</Button>
+            </Link>
+          </div>
         </div>
       ) : (
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>

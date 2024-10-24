@@ -1,8 +1,7 @@
 import { prisma } from '@advents/db'
-import Image from 'next/image'
+import { Link } from 'lucide-react'
 
-import Empty from '@/assets/illustrations/empty.svg'
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Button } from '@/ui/button'
 
 import { CreateLinkDialog } from './create-link-dialog'
 import { LinkItem } from './link-item'
@@ -53,18 +52,24 @@ export const LinkList = async ({ page, appSlug }: Props) => {
   return (
     <>
       {links.length === 0 && (
-        <div className='flex justify-center'>
-          <Card className='w-full max-w-xl'>
-            <CardHeader>
-              <CardTitle>Nenhum link encontrado</CardTitle>
-            </CardHeader>
+        <div className='mx-auto'>
+          <div className='flex h-72 max-w-72 flex-col justify-center'>
+            <div className='w-fit rounded-lg border bg-gray-50 p-2 shadow-md'>
+              <Link className='h-8 w-8' />
+            </div>
 
-            <CardContent className='mt-10 flex flex-col items-center gap-10'>
-              <Image src={Empty} width={200} height={200} alt='Nenhum app encontrado' />
+            <span className='mt-6 text-xl font-semibold'>Links</span>
+            <span className='mt-4 text-sm text-muted-foreground'>
+              Crie links para utilizar em suas campanhas de instalação do seu app.
+              <br />
+              <br />
+              Com o link também será possível criar QR Codes para suas campanhas.
+            </span>
 
-              <CreateLinkDialog />
-            </CardContent>
-          </Card>
+            <CreateLinkDialog className='mt-6'>
+              <Button size='sm'>Criar novo link</Button>
+            </CreateLinkDialog>
+          </div>
         </div>
       )}
 
