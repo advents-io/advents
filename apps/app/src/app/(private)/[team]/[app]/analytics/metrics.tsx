@@ -2,10 +2,10 @@
 
 import { GetAppAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
-import ky from 'ky'
 import { DollarSign, Download, MousePointerClick, RedoDot } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
+import { api } from '@/lib/api'
 import { cn } from '@/lib/tailwind'
 
 import { MetricCard } from './metric-card'
@@ -22,8 +22,8 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
   const { data, isPending } = useQuery({
     queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
     queryFn: () =>
-      ky
-        .get<GetAppAnalyticsOutput>('/api/analytics/app', {
+      api
+        .get<GetAppAnalyticsOutput>('analytics/app', {
           searchParams: {
             appSlug,
             teamSlug,

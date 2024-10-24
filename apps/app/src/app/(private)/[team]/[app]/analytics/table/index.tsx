@@ -14,11 +14,11 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import ky from 'ky'
 import { Loader2 } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
+import { api } from '@/lib/api'
 import { cn } from '@/lib/tailwind'
 import {
   Table as TableUi,
@@ -49,8 +49,8 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
   const { data: links, isPending } = useQuery({
     queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate],
     queryFn: () =>
-      ky
-        .get<GetLinksAnalyticsOutput>('/api/analytics/links', {
+      api
+        .get<GetLinksAnalyticsOutput>('analytics/links', {
           searchParams: {
             appSlug,
             teamSlug,
@@ -64,8 +64,8 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
   const { data: qrCodeUrl } = useQuery({
     queryKey: ['app-qr-code-url', appSlug, teamSlug],
     queryFn: () =>
-      ky
-        .get<GetAppQrCodeUrlOutput>('/api/app/qrcode', {
+      api
+        .get<GetAppQrCodeUrlOutput>('app/qrcode', {
           searchParams: {
             appSlug,
             teamSlug,
