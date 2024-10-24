@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      husky:
+        specifier: ^9.1.6
+        version: 9.1.6
       typescript:
         specifier: ~5.4.5
         version: 5.4.5
@@ -2192,6 +2195,11 @@ packages:
   hono@4.6.6:
     resolution: {integrity: sha512-euUj5qwvtkG+p38GFs0LYacwaoS2hYRAGn9ysAggiwT2QBcPnT1XYUCW3hatW4C1KzAXTYuQ08BlVDJtAGuhlg==}
     engines: {node: '>=16.9.0'}
+
+  husky@9.1.6:
+    resolution: {integrity: sha512-sqbjZKK7kf44hfdE94EoX8MZNk0n7HeW37O4YrVGCF4wzgQjp+akPAkfUK5LZ6KuR/6sqeAVuXHji+RzQgOn5A==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -5122,6 +5130,8 @@ snapshots:
       function-bind: 1.1.2
 
   hono@4.6.6: {}
+
+  husky@9.1.6: {}
 
   ignore@5.3.2: {}
 

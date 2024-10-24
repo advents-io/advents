@@ -14,9 +14,11 @@
     "doc": "pnpm --dir modules/docs",
     "sdk": "pnpm --dir modules/advents-react-native",
     "lint": "eslint . --fix && prettier . --write",
-    "clear": "./scripts/clear.sh"
+    "clear": "./scripts/clear.sh",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.6",
     "typescript": "~5.4.5"
   },
   "eslintConfig": {
