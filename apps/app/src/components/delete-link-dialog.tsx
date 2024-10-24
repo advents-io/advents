@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
+import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -26,6 +27,7 @@ interface Props {
 export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
   const { refresh } = useRouter()
+  const { removeLink: removeAnalyticsTableLink } = useAnalyticsTableLinks()
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -42,7 +44,13 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }:
   } = useAction(deleteLinkAction, {
     onSuccess: () => {
       handleSetOpen(false)
+
       toast('Link excluído com sucesso.')
+
+      if (removeAnalyticsTableLink) {
+        removeAnalyticsTableLink(linkId)
+      }
+
       refresh()
     },
   })

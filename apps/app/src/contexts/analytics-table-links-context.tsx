@@ -7,6 +7,7 @@ interface AnalyticsTableLinksContextData {
   links: GetLinksAnalyticsOutput
   setLinks: (links: GetLinksAnalyticsOutput) => void
   editLink: (link: EditLinkProps) => void
+  removeLink: (linkId: string) => void
 }
 
 const AnalyticsTableLinksContext = createContext({} as AnalyticsTableLinksContextData)
@@ -26,12 +27,16 @@ export const AnalyticsTableLinksProvider = ({ children }: { children: ReactNode 
       ),
     )
 
+  const removeLink = (linkId: string) =>
+    setLinks(prevLinks => prevLinks.filter(prevLink => prevLink.id !== linkId))
+
   return (
     <AnalyticsTableLinksContext.Provider
       value={{
         links,
         setLinks,
         editLink,
+        removeLink,
       }}
     >
       {children}
