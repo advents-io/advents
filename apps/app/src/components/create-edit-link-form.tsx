@@ -22,6 +22,7 @@ import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
+import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
@@ -36,6 +37,7 @@ interface Props {
 export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const { refresh } = useRouter()
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
+  const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
 
   const onSuccess = () => {
     form.reset()
@@ -57,7 +59,18 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     isExecuting: isEditing,
     result: editLinkResult,
   } = useAction(editLinkAction, {
-    onSuccess,
+    onSuccess: ({ data }) => {
+      if (editAnalyticsTableLink && data) {
+        editAnalyticsTableLink({
+          id: data.id,
+          title: data.title,
+          domain: data.domain,
+          slug: data.slug,
+        })
+      }
+
+      onSuccess()
+    },
   })
 
   const onSubmit = async (link: CreateLinkInputFormProps) => {

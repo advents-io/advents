@@ -44,7 +44,7 @@ export const editLinkAction = authActionClient
       ...newLink,
     }
 
-    await prisma.link.update({
+    return await prisma.link.update({
       where: {
         id: linkId,
       },

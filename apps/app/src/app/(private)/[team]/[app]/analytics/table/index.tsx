@@ -18,6 +18,10 @@ import { Loader2 } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
+import {
+  AnalyticsTableLinksProvider,
+  useAnalyticsTableLinks,
+} from '@/contexts/analytics-table-links-context'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/tailwind'
 import {
@@ -39,17 +43,24 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   teamSlug: string
 }
 
-export const Table = ({ appSlug, teamSlug, className }: Props) => {
+export const Table = (props: Props) => (
+  <AnalyticsTableLinksProvider>
+    <TableComp {...props} />
+  </AnalyticsTableLinksProvider>
+)
+
+const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
+  const { links, setLinks } = useAnalyticsTableLinks()
 
   const [{ startDate, endDate }] = useStartEndDate()
 
-  const { data: links, isPending } = useQuery({
-    queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate],
-    queryFn: () =>
-      api
+  const { isPending } = useQuery({
+    queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
+    queryFn: async () => {
+      const links = await api
         .get<GetLinksAnalyticsOutput>('analytics/links', {
           searchParams: {
             appSlug,
@@ -58,7 +69,14 @@ export const Table = ({ appSlug, teamSlug, className }: Props) => {
             endDate,
           },
         })
-        .json(),
+        .json()
+
+      if (setLinks) {
+        setLinks(links)
+      }
+
+      return links
+    },
   })
 
   const { data: qrCodeUrl } = useQuery({
