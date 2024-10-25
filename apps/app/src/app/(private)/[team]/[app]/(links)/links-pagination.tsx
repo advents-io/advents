@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { Button } from '@/ui/button'
+import { Card, CardHeader } from '@/ui/card'
 
 interface Props {
   page: number
@@ -29,29 +30,33 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
   }
 
   return (
-    <div className='mt-4 flex items-center gap-2'>
-      <div className='flex-1'>
-        <p className='text-sm text-muted-foreground'>
-          Exibindo {start} - {end} de {total} links
-        </p>
-      </div>
+    <Card className='mt-10'>
+      <CardHeader>
+        <div className='flex items-center gap-2'>
+          <div className='flex-1'>
+            <p className='text-sm text-muted-foreground'>
+              Exibindo {start} - {end} de {total} links
+            </p>
+          </div>
 
-      <div className='flex gap-2'>
-        <Button size='sm' variant='secondary' disabled={page === 1} onClick={() => addPage(-1)}>
-          <ChevronLeft className='size-5 sm:size-3' />
-          <span className='ml-1 hidden sm:flex'>Anterior</span>
-        </Button>
+          <div className='flex gap-2'>
+            <Button size='sm' variant='secondary' disabled={page === 1} onClick={() => addPage(-1)}>
+              <ChevronLeft className='size-5 sm:size-3' />
+              <span className='ml-1 hidden sm:flex'>Anterior</span>
+            </Button>
 
-        <Button
-          size='sm'
-          variant='secondary'
-          disabled={page === totalPages}
-          onClick={() => addPage(1)}
-        >
-          <span className='mr-1 hidden sm:flex'>Próximo</span>
-          <ChevronRight className='size-5 sm:size-3' />
-        </Button>
-      </div>
-    </div>
+            <Button
+              size='sm'
+              variant='secondary'
+              disabled={page === totalPages}
+              onClick={() => addPage(1)}
+            >
+              <span className='mr-1 hidden sm:flex'>Próximo</span>
+              <ChevronRight className='size-5 sm:size-3' />
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
+    </Card>
   )
 }
