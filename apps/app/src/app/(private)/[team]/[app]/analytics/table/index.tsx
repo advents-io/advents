@@ -57,7 +57,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
 
   const [{ startDate, endDate }] = useStartEndDate()
 
-  const { isPending } = useQuery({
+  const { isFetching } = useQuery({
     queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
     queryFn: async () => {
       const links = await api
@@ -93,7 +93,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   })
 
   const table = useReactTable({
-    data: links ?? [],
+    data: links,
     columns: tableColumns,
     state: {
       sorting,
@@ -134,15 +134,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
           </TableHeader>
 
           <TableBody>
-            {isPending ? (
-              <TableRow>
-                <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
-                  <div className='flex justify-center'>
-                    <Loader2 className='size-6 animate-spin' />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map(cell => (
@@ -172,6 +164,14 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                   </TableCell>
                 </TableRow>
               ))
+            ) : isFetching ? (
+              <TableRow>
+                <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
+                  <div className='flex justify-center'>
+                    <Loader2 className='size-6 animate-spin' />
+                  </div>
+                </TableCell>
+              </TableRow>
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
