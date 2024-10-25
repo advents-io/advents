@@ -1,6 +1,5 @@
+import { Separator } from '@radix-ui/react-dropdown-menu'
 import React, { HtmlHTMLAttributes } from 'react'
-
-import { cn } from '@/lib/tailwind'
 
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
@@ -10,14 +9,16 @@ interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
 
 export const PageContainer = ({ children, title, actions, className }: Props) => {
   return (
-    <div className={cn('flex flex-1 flex-col', className)}>
-      <div className='mb-4 flex items-center justify-between'>
-        <h1 className='text-xl font-bold'>{title}</h1>
+    <div className='flex flex-1 flex-col'>
+      <div className='mb-6 flex h-14 items-center justify-between'>
+        <h1 className='text-3xl font-medium'>{title}</h1>
 
         {actions}
       </div>
 
-      {children}
+      <Separator className='-mx-[9999px] my-4 h-[1px] bg-gray-200' />
+
+      <div className={className}>{children}</div>
     </div>
   )
 }
