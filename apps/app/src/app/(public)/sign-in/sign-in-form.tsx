@@ -9,19 +9,17 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import AdventsLogo from '@/assets/advents/logo.svg'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
 import { Button } from '@/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
+import { Separator } from '@/ui/separator'
 
 export const SignInForm = () => {
   const [emailSent, setEmailSent] = useState(false)
@@ -49,69 +47,60 @@ export const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(signIn)}>
-        <Card className='w-full max-w-sm'>
-          <CardHeader>
-            <Image src={AdventsLogo} alt='Logo da Advents' className='mb-10 size-8' />
+      <form onSubmit={form.handleSubmit(signIn)} className='mx-auto w-full max-w-xs space-y-6'>
+        <p className='text-2xl font-bold'>Entre na Advents</p>
 
-            {!emailSent && (
-              <>
-                <CardTitle>Entre na Advents</CardTitle>
+        {emailSent && (
+          <>
+            <p>
+              Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+            </p>
 
-                <CardDescription>
-                  Entre com o e-mail cadastrado para receber um link de acesso.
-                </CardDescription>
-              </>
-            )}
-          </CardHeader>
+            <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+          </>
+        )}
 
-          <CardContent>
-            {emailSent ? (
-              <div className='space-y-4'>
-                <p>
-                  Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
-                </p>
+        {!emailSent && (
+          <>
+            <ErrorAlert error={error} />
 
-                <p>Verifique sua caixa de entrada e abra o link enviado.</p>
-              </div>
-            ) : (
-              <>
-                <ErrorAlert error={error} className='mb-4' />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Informe seu e-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='jeff@amazon.com'
+                      className='w-full'
+                      type='email'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder='jeff@amazon.com' type='email' {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            )}
-          </CardContent>
+            <Button type='submit' size='lg' className='w-full' disabled={isExecuting}>
+              <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
+            </Button>
 
-          {!emailSent && (
-            <CardFooter>
-              <div className='flex flex-1 flex-col gap-3'>
-                <Button type='submit' disabled={isExecuting}>
-                  <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
-                </Button>
+            <Separator />
 
-                <span className='text-sm'>
-                  Não possui uma conta?{' '}
-                  <Link href={SIGN_UP_URL} className='font-semibold underline' target='_blank'>
-                    Cadastre-se.
-                  </Link>
-                </span>
-              </div>
-            </CardFooter>
-          )}
-        </Card>
+            <p className='text-sm text-muted-foreground'>
+              Não possui uma conta?{' '}
+              <Link
+                href={SIGN_UP_URL}
+                className='font-semibold text-primary underline'
+                target='_blank'
+              >
+                Cadastre-se.
+              </Link>
+            </p>
+          </>
+        )}
       </form>
     </Form>
   )
