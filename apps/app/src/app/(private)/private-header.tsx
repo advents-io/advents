@@ -44,7 +44,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
   const includeTabs = !!team && !!app
 
   return (
-    <header className='sticky -top-18 z-10 w-full border-b bg-background px-4 md:px-18'>
+    <header className='sticky -top-18 z-10 w-full border-b bg-background px-4 md:px-8'>
       <div className='flex py-4'>
         <div className='flex flex-1 flex-row items-center'>
           <Breadcrumb>
@@ -82,9 +82,9 @@ export const PrivateHeader = ({ email, apps }: Props) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
-              <Avatar className='size-10'>
+              <Avatar className='size-8'>
                 <AvatarFallback>
-                  <User className='size-5' />
+                  <User className='size-4' />
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
@@ -113,7 +113,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
       </div>
 
       {includeTabs && (
-        <nav className='flex gap-4 pt-2'>
+        <nav className='flex gap-4'>
           <HeaderItem href={[routes.LINKS.path(team, app)]}>Links</HeaderItem>
           <HeaderItem href={[routes.ANALYTICS.path(team, app)]}>Analytics</HeaderItem>
           <HeaderItem href={[routes.SETTINGS.path(team, app), routes.SETTINGS_SDK.path(team, app)]}>

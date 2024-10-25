@@ -75,7 +75,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='pt-BR' className={interFont.className}>
-      <body className='relative flex min-h-screen flex-col'>
+      <body className='relative flex min-h-screen flex-col bg-gray-50'>
         <Providers>{children}</Providers>
         <HelpButton />
         <Toaster richColors closeButton theme='light' />

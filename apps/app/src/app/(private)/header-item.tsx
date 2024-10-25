@@ -17,7 +17,7 @@ export const HeaderItem = ({ children, href, className, ...props }: Props) => {
   return (
     <Link href={href[0]}>
       <Button
-        className={cn('font-normal text-muted-foreground', className)}
+        className={cn('font-normal', className, !isActive && 'text-muted-foreground')}
         variant='ghost'
         size='sm'
         {...props}

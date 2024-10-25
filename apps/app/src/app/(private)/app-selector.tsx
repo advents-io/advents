@@ -51,7 +51,7 @@ export const AppSelector = ({ apps }: Props) => {
   return (
     <Select value={selectedApp} onValueChange={handleAppChange} open={open} onOpenChange={setOpen}>
       <SelectTrigger className='w-40 font-medium text-foreground focus:ring-0 focus:ring-offset-0 md:w-72'>
-        <SelectValue placeholder='Selecione um app' className='text-nowrap bg-red-400' />
+        <SelectValue placeholder='Selecione um app' className='text-nowrap' />
       </SelectTrigger>
 
       <SelectContent>
