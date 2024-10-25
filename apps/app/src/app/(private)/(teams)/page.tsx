@@ -1,10 +1,16 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseServer } from '@advents/supabase'
+import { UsersIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
+import {
+  EmptyScreen,
+  EmptyScreenDescription,
+  EmptyScreenIcon,
+  EmptyScreenTitle,
+} from '@/components/empty-screen'
 
 export const metadata: Metadata = {
   title: 'Equipe | Advents',
@@ -30,20 +36,21 @@ export default async function Teams() {
 
   if (!team) {
     return (
-      <div className='flex flex-1 items-center justify-center'>
-        <Card className='w-full max-w-md'>
-          <CardHeader>
-            <CardTitle>Conta não encontrada</CardTitle>
-            <CardDescription>
-              Não conseguimos encontrar uma conta associada ao seu usuário.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className='text-sm'>
-            Isso pode ser porque você ainda não foi convidado para uma conta, ou houve um erro de
-            processamento.
-          </CardContent>
-        </Card>
-      </div>
+      <EmptyScreen>
+        <EmptyScreenIcon>
+          <UsersIcon />
+        </EmptyScreenIcon>
+
+        <EmptyScreenTitle>Time não encontrado</EmptyScreenTitle>
+
+        <EmptyScreenDescription>
+          Não conseguimos encontrar um time associado ao seu usuário.
+          <br />
+          <br />
+          Isso pode ser porque você ainda não foi convidado para um time, ou houve um erro de
+          processamento.
+        </EmptyScreenDescription>
+      </EmptyScreen>
     )
   }
 
