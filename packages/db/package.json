@@ -1,9 +1,9 @@
 {
   "name": "@advents/db",
   "scripts": {
-    "migrate": "dotenv -e ../../apps/app/.env -- prisma migrate dev && prisma generate",
-    "migrate:prod": "dotenv -e ../../apps/app/.env -- prisma migrate deploy && prisma generate",
-    "seed": "dotenv -e ../../apps/app/.env -- prisma db seed"
+    "migrate": "dotenv -e ../../apps/app/.env.local -- prisma migrate dev && prisma generate",
+    "migrate:prod": "prisma migrate deploy && prisma generate",
+    "seed": "dotenv -e ../../apps/app/.env.local -- prisma db seed"
   },
   "prisma": {
     "seed": "tsx seed/seed.ts"
