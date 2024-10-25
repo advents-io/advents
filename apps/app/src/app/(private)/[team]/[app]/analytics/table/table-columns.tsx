@@ -18,7 +18,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => (
       <TableRowCell border>
-        <LinkItemCopy domain={row.original.domain} slug={row.getValue('slug')} />
+        <LinkItemCopy domain={row.original.domain} slug={row.original.slug} />
       </TableRowCell>
     ),
   },
@@ -28,7 +28,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
       title: 'Título',
     },
     header: ({ column }) => <TableColumnHeader column={column} border />,
-    cell: ({ row }) => <TableRowCell border>{row.getValue('title')}</TableRowCell>,
+    cell: ({ row }) => <TableRowCell border>{row.original.title}</TableRowCell>,
   },
   {
     accessorKey: 'clicks',
@@ -36,7 +36,11 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
       title: 'Cliques',
     },
     header: ({ column }) => <TableColumnHeader column={column} border />,
-    cell: ({ row }) => <TableRowCell border>{row.getValue('clicks')}</TableRowCell>,
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {row.original.clicks.toLocaleString('en-US').replace(',', '.')}
+      </TableRowCell>
+    ),
   },
   {
     accessorKey: 'installs',
@@ -44,7 +48,11 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
       title: 'Instalações',
     },
     header: ({ column }) => <TableColumnHeader column={column} border />,
-    cell: ({ row }) => <TableRowCell border>{row.getValue('installs')}</TableRowCell>,
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {row.original.installs.toLocaleString('en-US').replace(',', '.')}
+      </TableRowCell>
+    ),
   },
   {
     accessorKey: 'createdAt',
@@ -53,7 +61,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     },
     header: ({ column }) => <TableColumnHeader column={column} />,
     cell: ({ row }) => (
-      <TableRowCell>{dayjs(row.getValue('createdAt')).format('DD MMM YY, HH:mm')}</TableRowCell>
+      <TableRowCell>{dayjs(row.original.createdAt).format('DD MMM YY, HH:mm')}</TableRowCell>
     ),
   },
 ]

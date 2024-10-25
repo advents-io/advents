@@ -21,9 +21,15 @@ interface Props {
 }
 
 export const AppCard = ({ app, teamSlug }: Props) => {
-  const linksCount = app.links.length
-  const clicksCount = app.links.reduce((acc, link) => acc + link.clickCount, 0)
-  const installCount = app.links.reduce((acc, link) => acc + link.installCount, 0)
+  const linksCount = app.links.length.toLocaleString('en-US').replace(',', '.')
+  const clicksCount = app.links
+    .reduce((acc, link) => acc + link.clickCount, 0)
+    .toLocaleString('en-US')
+    .replace(',', '.')
+  const installCount = app.links
+    .reduce((acc, link) => acc + link.installCount, 0)
+    .toLocaleString('en-US')
+    .replace(',', '.')
 
   return (
     <Link href={routes.LINKS.path(teamSlug, app.slug)}>
@@ -47,7 +53,7 @@ export const AppCard = ({ app, teamSlug }: Props) => {
             </div>
           </div>
 
-          <div className='flex gap-1'>
+          <div className='flex gap-2'>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Badge variant='secondary' className='truncate py-1 font-normal'>
@@ -60,7 +66,7 @@ export const AppCard = ({ app, teamSlug }: Props) => {
                 <b>{linksCount}</b> links
                 <br />
                 <span className='text-xs text-muted-foreground'>
-                  Total de links criados no <b>{app.name}</b>
+                  Total de links criados da <b>{app.name}</b>
                 </span>
               </TooltipContent>
             </Tooltip>
@@ -77,7 +83,7 @@ export const AppCard = ({ app, teamSlug }: Props) => {
                 <b>{clicksCount}</b> cliques
                 <br />
                 <span className='text-xs text-muted-foreground'>
-                  Total de cliques nos links do <b>{app.name}</b>
+                  Total de cliques nos links da <b>{app.name}</b>
                 </span>
               </TooltipContent>
             </Tooltip>
@@ -94,7 +100,7 @@ export const AppCard = ({ app, teamSlug }: Props) => {
                 <b>{installCount}</b> instalações
                 <br />
                 <span className='text-xs text-muted-foreground'>
-                  Total de instalações através dos links do <b>{app.name}</b>
+                  Total de instalações através dos links da <b>{app.name}</b>
                 </span>
               </TooltipContent>
             </Tooltip>
