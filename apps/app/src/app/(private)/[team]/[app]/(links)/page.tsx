@@ -21,7 +21,7 @@ export default async function Links(props: {
 
   return (
     <PageContainer title='Links' actions={<CreateLinkDialog />}>
-      <Suspense fallback={<LoadingPageContent className='mt-6' />}>
+      <Suspense fallback={<LoadingPageContent />}>
         <LinkList page={page} appSlug={params.app} />
       </Suspense>
     </PageContainer>

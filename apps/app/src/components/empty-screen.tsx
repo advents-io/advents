@@ -4,11 +4,7 @@ import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 
 export const EmptyScreen = ({ children }: { children?: React.ReactNode }) => {
-  return (
-    <div className='mx-auto'>
-      <div className='flex h-72 max-w-72 flex-col justify-center gap-4'>{children}</div>
-    </div>
-  )
+  return <div className='mx-auto flex h-72 max-w-72 flex-col justify-center gap-4'>{children}</div>
 }
 
 export const EmptyScreenIcon = ({ children }: { children: React.ReactNode }) => {
