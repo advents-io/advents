@@ -5,6 +5,8 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { CreateEditAppForm } from '@/components/create-edit-app-form'
+import { PageContainer } from '@/components/page-container'
+import { Card, CardHeader } from '@/ui/card'
 
 export const metadata: Metadata = {
   title: 'Novo app | Advents',
@@ -39,10 +41,12 @@ export default async function NewApp(props: { params: Promise<{ team: string }> 
   }
 
   return (
-    <div className='mx-auto max-w-xl'>
-      <h1 className='mb-4 text-xl font-bold'>Novo app</h1>
-
-      <CreateEditAppForm />
-    </div>
+    <PageContainer title='Novo app'>
+      <Card>
+        <CardHeader className='mx-auto max-w-xl gap-8 p-4 md:p-10'>
+          <CreateEditAppForm />
+        </CardHeader>
+      </Card>
+    </PageContainer>
   )
 }

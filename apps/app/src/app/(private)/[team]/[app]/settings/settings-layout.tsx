@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
+import { Card, CardHeader } from '@/ui/card'
 import {
   Select,
   SelectContent,
@@ -50,7 +51,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
 
           <SelectContent>
             <SelectGroup>
-              <SelectLabel className='text-sm font-normal text-muted-foreground'>
+              <SelectLabel className='text-xs font-semibold text-muted-foreground'>
                 Ajustes do app
               </SelectLabel>
 
@@ -68,7 +69,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
       </div>
 
       <aside className='hidden w-64 sm:block'>
-        <h2 className='mb-3 text-sm text-muted-foreground'>Ajustes do app</h2>
+        <h2 className='mb-3 text-xs font-semibold text-muted-foreground'>Ajustes do app</h2>
 
         <div className='flex flex-col gap-1'>
           {SIDEBAR_ITEMS.map((item, index) => (
@@ -76,8 +77,8 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
               <Button
                 variant='ghost'
                 className={cn(
-                  'w-full justify-start font-normal',
-                  pathname === item.href && 'bg-gray-100',
+                  'w-full justify-start font-normal hover:bg-gray-200',
+                  pathname === item.href && 'bg-gray-200',
                 )}
                 size='sm'
               >
@@ -89,7 +90,11 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
         </div>
       </aside>
 
-      <main className='max-w-lg flex-1'>{children}</main>
+      <main className='w-full'>
+        <Card>
+          <CardHeader className='mx-auto max-w-xl gap-8 p-4 md:p-10'>{children}</CardHeader>
+        </Card>
+      </main>
     </div>
   )
 }

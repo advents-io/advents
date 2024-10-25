@@ -112,7 +112,7 @@ export const CreateEditAppForm = () => {
   const busy = isCreating || isEditing || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
-    return <LoadingPageContent className='mt-10' />
+    return <LoadingPageContent className='my-10' />
   }
 
   return (
@@ -288,9 +288,9 @@ export const CreateEditAppForm = () => {
 
       {!isCreate && (
         <>
-          <Separator className='mt-10' />
+          <Separator />
 
-          <Card className='mt-10 border-destructive'>
+          <Card className='border-destructive'>
             <CardHeader>
               <CardTitle className='text-lg'>Excluir app</CardTitle>
             </CardHeader>

@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 
+import { PageContainer } from '@/components/page-container'
+
 import { SettingsLayout as SettingsLayoutComponent } from './settings-layout'
 
 export const metadata: Metadata = {
@@ -15,8 +17,10 @@ export default async function SettingsLayout(props: {
   const { children } = props
 
   return (
-    <SettingsLayoutComponent team={params.team} app={params.app}>
-      {children}
-    </SettingsLayoutComponent>
+    <PageContainer title='Ajustes'>
+      <SettingsLayoutComponent team={params.team} app={params.app}>
+        {children}
+      </SettingsLayoutComponent>
+    </PageContainer>
   )
 }
