@@ -9,6 +9,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -47,60 +48,76 @@ export const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(signIn)} className='mx-auto w-full max-w-xs space-y-6'>
-        <p className='text-2xl font-bold'>Entre na Advents</p>
+      <form onSubmit={form.handleSubmit(signIn)} className='mx-auto min-h-72 w-full max-w-xs'>
+        <p className='mb-6 text-2xl font-bold'>Entre na Advents</p>
 
-        {emailSent && (
-          <>
-            <p>
-              Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
-            </p>
+        <AnimatePresence mode='wait'>
+          {emailSent ? (
+            <motion.div
+              key='emailSent'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className='space-y-6'>
+                <p>
+                  Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+                </p>
 
-            <p>Verifique sua caixa de entrada e abra o link enviado.</p>
-          </>
-        )}
+                <p>Verifique sua caixa de entrada e abra o link enviado.</p>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key='signInForm'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className='space-y-6'>
+                <ErrorAlert error={error} />
 
-        {!emailSent && (
-          <>
-            <ErrorAlert error={error} />
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Informe seu e-mail</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='jeff@amazon.com'
+                          className='w-full'
+                          type='email'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>Informe seu e-mail</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder='jeff@amazon.com'
-                      className='w-full'
-                      type='email'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <Button type='submit' size='lg' className='w-full' disabled={isExecuting}>
+                  <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
+                </Button>
 
-            <Button type='submit' size='lg' className='w-full' disabled={isExecuting}>
-              <LoadingContent loading={isExecuting}>Entrar</LoadingContent>
-            </Button>
+                <Separator />
 
-            <Separator />
-
-            <p className='text-sm text-muted-foreground'>
-              Não possui uma conta?{' '}
-              <Link
-                href={SIGN_UP_URL}
-                className='font-semibold text-primary underline'
-                target='_blank'
-              >
-                Cadastre-se.
-              </Link>
-            </p>
-          </>
-        )}
+                <p className='text-sm text-muted-foreground'>
+                  Não possui uma conta?{' '}
+                  <Link
+                    href={SIGN_UP_URL}
+                    className='font-semibold text-primary underline'
+                    target='_blank'
+                  >
+                    Cadastre-se.
+                  </Link>
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </form>
     </Form>
   )
