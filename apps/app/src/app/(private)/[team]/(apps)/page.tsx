@@ -14,6 +14,7 @@ import {
   EmptyScreenIcon,
   EmptyScreenTitle,
 } from '@/components/empty-screen'
+import { PageContainer } from '@/components/page-container'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 
@@ -64,18 +65,17 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
   })
 
   return (
-    <div className='flex flex-1 flex-col'>
-      <div className='mb-4 flex items-center justify-between'>
-        <h1 className='text-xl font-bold'>Apps</h1>
-
+    <PageContainer
+      title='Apps'
+      actions={
         <Link href={routes.APPS_NEW.path(team.slug)}>
           <Button size='lg'>
             <PlusIcon className='mr-2 size-4' />
             Criar app
           </Button>
         </Link>
-      </div>
-
+      }
+    >
       {apps.length === 0 ? (
         <EmptyScreen>
           <EmptyScreenIcon>
@@ -112,6 +112,6 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   )
 }
