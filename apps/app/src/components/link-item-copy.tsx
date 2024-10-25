@@ -33,7 +33,7 @@ export const LinkItemCopy = ({ domain, slug }: Props) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            className='h-8 w-8 rounded-full'
+            className='ml-1 h-8 w-8 rounded-full'
             onClick={copyToClipboard}
             variant='ghost'
             size='icon'

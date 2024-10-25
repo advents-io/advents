@@ -114,7 +114,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
     <div className={cn('space-y-4', className)}>
       <TableToolbar table={table} />
 
-      <div className='rounded-md border'>
+      <div className='rounded-md border bg-white'>
         <TableUi>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (

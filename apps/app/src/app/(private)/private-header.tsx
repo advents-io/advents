@@ -11,7 +11,6 @@ import { useParams } from 'next/navigation'
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { Avatar, AvatarFallback } from '@/ui/avatar'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -82,11 +81,9 @@ export const PrivateHeader = ({ email, apps }: Props) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
-              <Avatar className='size-8'>
-                <AvatarFallback>
-                  <User className='size-4' />
-                </AvatarFallback>
-              </Avatar>
+              <Button variant='outline' size='icon' className='size-8 rounded-full'>
+                <User className='size-4' />
+              </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align='end'>

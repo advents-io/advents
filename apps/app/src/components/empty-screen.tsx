@@ -9,7 +9,7 @@ export const EmptyScreen = ({ children }: { children?: React.ReactNode }) => {
 
 export const EmptyScreenIcon = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='mb-1 w-fit rounded-lg border bg-gray-50 p-4 shadow-md'>
+    <div className='mb-1 w-fit rounded-lg border bg-white p-4 shadow-md'>
       <div className='flex size-5 items-center justify-center'>{children}</div>
     </div>
   )
