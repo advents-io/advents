@@ -3,7 +3,6 @@ import { prisma } from '@advents/db'
 import { supabaseServer } from '@advents/supabase'
 import { PlusIcon, Smartphone } from 'lucide-react'
 import { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -16,7 +15,8 @@ import {
 } from '@/components/empty-screen'
 import { PageContainer } from '@/components/page-container'
 import { Button } from '@/ui/button'
-import { Card, CardContent } from '@/ui/card'
+
+import { AppCard } from './app-card'
 
 export const metadata: Metadata = {
   title: 'Apps | Advents',
@@ -58,6 +58,12 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
       name: true,
       slug: true,
       imageUrl: true,
+      links: {
+        select: {
+          clickCount: true,
+          installCount: true,
+        },
+      },
     },
     orderBy: {
       name: 'asc',
@@ -93,22 +99,9 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
           </Link>
         </EmptyScreen>
       ) : (
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           {apps.map((app, index) => (
-            <Link href={routes.LINKS.path(team.slug, app.slug)} key={index}>
-              <Card>
-                <CardContent className='flex items-center gap-4 py-6 text-lg'>
-                  <Image
-                    src={app.imageUrl}
-                    alt={app.name}
-                    width={40}
-                    height={40}
-                    className='rounded-full'
-                  />
-                  {app.name}
-                </CardContent>
-              </Card>
-            </Link>
+            <AppCard key={index} app={app} teamSlug={team.slug} />
           ))}
         </div>
       )}
