@@ -1,6 +1,13 @@
 import { prisma } from '@advents/db'
 import { Link } from 'lucide-react'
 
+import {
+  EmptyScreen,
+  EmptyScreenButton,
+  EmptyScreenDescription,
+  EmptyScreenIcon,
+  EmptyScreenTitle,
+} from '@/components/empty-screen'
 import { Button } from '@/ui/button'
 
 import { CreateLinkDialog } from './create-link-dialog'
@@ -52,25 +59,26 @@ export const LinkList = async ({ page, appSlug }: Props) => {
   return (
     <>
       {links.length === 0 && (
-        <div className='mx-auto'>
-          <div className='flex h-72 max-w-72 flex-col justify-center'>
-            <div className='w-fit rounded-lg border bg-gray-50 p-2 shadow-md'>
-              <Link className='h-8 w-8' />
-            </div>
+        <EmptyScreen>
+          <EmptyScreenIcon>
+            <Link />
+          </EmptyScreenIcon>
 
-            <span className='mt-6 text-xl font-semibold'>Links</span>
-            <span className='mt-4 text-sm text-muted-foreground'>
-              Crie links para utilizar em suas campanhas de instalação do seu app.
-              <br />
-              <br />
-              Com o link também será possível criar QR Codes para suas campanhas.
-            </span>
+          <EmptyScreenTitle>Links</EmptyScreenTitle>
 
-            <CreateLinkDialog className='mt-6'>
+          <EmptyScreenDescription>
+            Crie links para utilizar em suas campanhas de instalação do seu app.
+            <br />
+            <br />
+            Com o link também será possível criar QR Codes para suas campanhas.
+          </EmptyScreenDescription>
+
+          <EmptyScreenButton>
+            <CreateLinkDialog>
               <Button size='sm'>Criar novo link</Button>
             </CreateLinkDialog>
-          </div>
-        </div>
+          </EmptyScreenButton>
+        </EmptyScreen>
       )}
 
       <div className='space-y-4'>

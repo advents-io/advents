@@ -7,6 +7,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
+import {
+  EmptyScreen,
+  EmptyScreenButton,
+  EmptyScreenDescription,
+  EmptyScreenIcon,
+  EmptyScreenTitle,
+} from '@/components/empty-screen'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 
@@ -70,22 +77,21 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
       </div>
 
       {apps.length === 0 ? (
-        <div className='mx-auto'>
-          <div className='flex h-72 max-w-72 flex-col justify-center'>
-            <div className='w-fit rounded-lg border bg-gray-50 p-2 shadow-md'>
-              <Smartphone className='h-8 w-8' />
-            </div>
+        <EmptyScreen>
+          <EmptyScreenIcon>
+            <Smartphone />
+          </EmptyScreenIcon>
 
-            <span className='mt-6 text-xl font-semibold'>Apps</span>
-            <span className='mt-4 text-sm text-muted-foreground'>
-              Crie seu primeiro app para começar a utilizar a Advents!
-            </span>
+          <EmptyScreenTitle>Apps</EmptyScreenTitle>
 
-            <Link className='mt-6' href={routes.APPS_NEW.path(team.slug)}>
-              <Button size='sm'>Criar novo app</Button>
-            </Link>
-          </div>
-        </div>
+          <EmptyScreenDescription>
+            Crie seu primeiro app para começar a utilizar a Advents!
+          </EmptyScreenDescription>
+
+          <Link href={routes.APPS_NEW.path(team.slug)}>
+            <EmptyScreenButton>Criar novo app</EmptyScreenButton>
+          </Link>
+        </EmptyScreen>
       ) : (
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {apps.map((app, index) => (
