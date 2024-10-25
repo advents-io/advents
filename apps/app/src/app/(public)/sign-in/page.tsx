@@ -12,7 +12,7 @@ export default async function SignIn() {
   return (
     <>
       <PublicHeader />
-      <div className='mx-4 flex flex-1 items-center justify-center'>
+      <div className='flex flex-1 items-center justify-center bg-white px-4'>
         {/* useSearchParams() from `SignInForm` should be wrapped in a Suspense. */}
         <Suspense>
           <SignInForm />
