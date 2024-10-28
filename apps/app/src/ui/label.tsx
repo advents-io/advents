@@ -2,7 +2,7 @@
 
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { Info } from 'lucide-react'
+import { CircleHelpIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/tailwind'
@@ -28,8 +28,8 @@ const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, Lab
       {tooltip && (
         <>
           <Tooltip>
-            <TooltipTrigger>
-              <Info className='ml-1.5 size-3.5 text-muted-foreground' />
+            <TooltipTrigger asChild>
+              <CircleHelpIcon className='ml-1.5 size-3.5 text-muted-foreground' />
             </TooltipTrigger>
             <TooltipContent>{tooltip}</TooltipContent>
           </Tooltip>
