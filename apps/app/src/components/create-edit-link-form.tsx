@@ -17,6 +17,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -38,6 +39,13 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const { refresh } = useRouter()
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
   const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
+
+  const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutputProps>()
+  const [isDefaultAndroidUrl, setIsDefaultAndroidUrl] = useState(true)
+  const [isDefaultIosUrl, setIsDefaultIosUrl] = useState(true)
+  const [isDefaultFallbackUrl, setIsDefaultFallbackUrl] = useState(true)
+
+  const hasDefaultFallbackUrl = !!defaultAppValues?.defaultFallbackUrl
 
   const onSuccess = () => {
     form.reset()
@@ -96,13 +104,28 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const error = createLinkError || editLinkError
 
   const getLink = async (linkId: string) => {
-    const response = await getLinkAction({ linkId })
-    return response?.data as GetLinkOutputProps
+    const [response, appResponse] = await Promise.all([
+      getLinkAction({ linkId }),
+      getAppDefaultValuesAction({ appSlug, teamSlug }),
+    ])
+
+    const link = response?.data as GetLinkOutputProps
+    const app = appResponse?.data as GetAppDefaultValuesOutputProps
+    setDefaultAppValues(app)
+
+    setIsDefaultAndroidUrl(link.androidUrl === app.androidUrl)
+    setIsDefaultIosUrl(link.iosUrl === app.iosUrl)
+    setIsDefaultFallbackUrl(!!app.defaultFallbackUrl && link.fallbackUrl === app.defaultFallbackUrl)
+
+    return link
   }
 
   const getDefaultLinkValues = async () => {
     const response = await getAppDefaultValuesAction({ appSlug, teamSlug })
     const app = response?.data as GetAppDefaultValuesOutputProps
+    setDefaultAppValues(app)
+
+    setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
 
     return {
       title: null,
@@ -120,6 +143,36 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
       : async () => await getDefaultLinkValues(),
   })
 
+  const changeAndroidUrlType = (value: string) => {
+    const isDefault = value === 'true'
+
+    setIsDefaultAndroidUrl(isDefault)
+
+    if (defaultAppValues && isDefault) {
+      form.setValue('androidUrl', defaultAppValues.androidUrl)
+    }
+  }
+
+  const changeIosUrlType = (value: string) => {
+    const isDefault = value === 'true'
+
+    setIsDefaultIosUrl(isDefault)
+
+    if (defaultAppValues && isDefault) {
+      form.setValue('iosUrl', defaultAppValues.iosUrl)
+    }
+  }
+
+  const changeFallbackUrlType = (value: string) => {
+    const isDefault = value === 'true'
+
+    setIsDefaultFallbackUrl(isDefault)
+
+    if (defaultAppValues && isDefault && defaultAppValues.defaultFallbackUrl) {
+      form.setValue('fallbackUrl', defaultAppValues.defaultFallbackUrl)
+    }
+  }
+
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
   return (
@@ -133,7 +186,12 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='title'
             render={({ field }) => (
               <FormItem>
-                <FormLabel optional>Título</FormLabel>
+                <FormLabel
+                  tooltip='Título do link utilizado para melhor identificação na lista de links.'
+                  optional
+                >
+                  Título
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder='Campanha com influencer João'
@@ -147,7 +205,19 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           />
 
           <div className='flex flex-col'>
-            <FormLabel className='mb-2' optional>
+            <FormLabel
+              className='mb-2'
+              optional
+              tooltip={
+                <span className='leading-loose text-muted-foreground'>
+                  Link curto utilizado para compartilhamento.
+                  <br />
+                  <span className='font-semibold text-primary'>
+                    https://{form.getValues('domain')}/{form.getValues('slug') || 'abcd123'}
+                  </span>
+                </span>
+              }
+            >
               Link curto
             </FormLabel>
 
@@ -202,13 +272,39 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Url do app Android</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
-                    type='url'
-                  />
-                </FormControl>
+
+                <div className='flex gap-2'>
+                  <Select
+                    onValueChange={changeAndroidUrlType}
+                    value={isDefaultAndroidUrl.toString()}
+                  >
+                    <SelectTrigger className='w-44'>
+                      <SelectValue />
+                    </SelectTrigger>
+
+                    <SelectContent className='overflow-visible'>
+                      <SelectItem
+                        value='true'
+                        tooltip='Url padrão informada na configuração do app.'
+                      >
+                        Padrão
+                      </SelectItem>
+                      <SelectItem value='false' tooltip='Usar url personalizada.'>
+                        Personalizado
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className='w-full'
+                      disabled={isDefaultAndroidUrl}
+                      placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
+                      type='url'
+                    />
+                  </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -220,13 +316,35 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Url do app iOS</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='https://apps.apple.com/app/exemplo/id1234567890'
-                    type='url'
-                  />
-                </FormControl>
+
+                <div className='flex gap-2'>
+                  <Select onValueChange={changeIosUrlType} value={isDefaultIosUrl.toString()}>
+                    <SelectTrigger className='w-44'>
+                      <SelectValue />
+                    </SelectTrigger>
+
+                    <SelectContent className='overflow-visible'>
+                      <SelectItem
+                        value='true'
+                        tooltip='Url padrão informada na configuração do app.'
+                      >
+                        Padrão
+                      </SelectItem>
+                      <SelectItem value='false' tooltip='Usar url personalizada.'>
+                        Personalizado
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isDefaultIosUrl}
+                      placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                      type='url'
+                    />
+                  </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -238,9 +356,40 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Url alternativa</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='https://www.meusite.com' type='url' />
-                </FormControl>
+
+                <div className='flex gap-2'>
+                  {hasDefaultFallbackUrl && (
+                    <Select
+                      onValueChange={changeFallbackUrlType}
+                      value={isDefaultFallbackUrl.toString()}
+                    >
+                      <SelectTrigger className='w-44'>
+                        <SelectValue />
+                      </SelectTrigger>
+
+                      <SelectContent className='overflow-visible'>
+                        <SelectItem
+                          value='true'
+                          tooltip='Url padrão informada na configuração do app.'
+                        >
+                          Padrão
+                        </SelectItem>
+                        <SelectItem value='false' tooltip='Usar url personalizada.'>
+                          Personalizado
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isDefaultFallbackUrl}
+                      placeholder='https://www.meusite.com'
+                      type='url'
+                    />
+                  </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
