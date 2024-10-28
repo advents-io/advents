@@ -4,10 +4,6 @@ import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const supabaseServer = async () => {
-  /* BUG: this is preventing some pages from being static rendered on build, because the cookies make the page dynamic.
-   * This started with the upgrade to Next.js 15.
-   * Look at new versions os supabase js client to see if there is a workaround to it.
-   */
   const cookiesStore = await cookies()
 
   return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
