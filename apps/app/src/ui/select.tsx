@@ -136,7 +136,7 @@ const SelectItem = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item
             asChild
             className='absolute bottom-0 right-2 top-0 flex h-full items-center justify-center'
           >
-            <CircleHelpIcon className='size-3.5' />
+            <CircleHelpIcon className='size-3.5 text-muted-foreground' />
           </TooltipTrigger>
 
           <TooltipContent>{tooltip}</TooltipContent>

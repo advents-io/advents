@@ -43,7 +43,7 @@ export const MetricCard = ({
           {tooltip && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircleIcon className='size-3' />
+                <HelpCircleIcon className='size-3.5 text-muted-foreground' />
               </TooltipTrigger>
 
               <TooltipContent>{tooltip}</TooltipContent>

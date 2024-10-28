@@ -24,7 +24,9 @@ const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, Lab
   ({ className, optional = false, tooltip, ...props }, ref) => (
     <div className={cn('flex items-center py-1', className)}>
       <LabelPrimitive.Root ref={ref} className={cn(labelVariants())} {...props} />
-      {optional && <span className='ml-1 text-xs text-muted-foreground'>(opcional)</span>}
+      {optional && (
+        <span className='ml-1 text-xs leading-none text-muted-foreground'>(opcional)</span>
+      )}
       {tooltip && (
         <>
           <Tooltip>

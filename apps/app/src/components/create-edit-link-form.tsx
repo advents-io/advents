@@ -15,7 +15,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Plus, Save } from 'lucide-react'
+import { Plus, Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,6 +29,7 @@ import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
+import { Skeleton } from '@/ui/skeleton'
 
 interface Props {
   closeDialog: () => void
@@ -175,8 +176,43 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
+  if (form.formState.isLoading) {
+    return (
+      <div className='space-y-5 pt-4'>
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
+        <div className='flex justify-end'>
+          <Skeleton className='h-10 w-[98px]' />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className='relative space-y-4 pt-4'>
+    <div className='space-y-4 pt-4'>
       <ErrorAlert error={error} />
 
       <Form {...form}>
@@ -206,7 +242,6 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
           <div className='flex flex-col'>
             <FormLabel
-              className='mb-2'
               optional
               tooltip={
                 <span className='leading-loose text-muted-foreground'>
@@ -221,7 +256,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
               Link curto
             </FormLabel>
 
-            <div className='flex items-center gap-2'>
+            <div className='mt-2 flex items-center gap-2'>
               <FormField
                 control={form.control}
                 name='domain'
@@ -420,12 +455,6 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           </DialogFooter>
         </form>
       </Form>
-
-      {form.formState.isLoading && (
-        <div className='absolute -inset-2 flex items-center justify-center bg-white'>
-          <Loader2 className='animate-spin' />
-        </div>
-      )}
     </div>
   )
 }
