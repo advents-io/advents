@@ -23,7 +23,7 @@ export const CreateLinkDialog = ({ children, className }: HTMLAttributes<HTMLDiv
         </div>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className='max-w-3xl'>
         <DialogHeader>
           <DialogTitle>Criar novo link</DialogTitle>
         </DialogHeader>

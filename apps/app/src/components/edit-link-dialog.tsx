@@ -26,7 +26,7 @@ export const EditLinkDialog = ({ children, linkId, closeDropdown }: Props) => {
     <Dialog open={open} onOpenChange={handleSetOpen}>
       {children}
 
-      <DialogContent>
+      <DialogContent className='max-w-3xl'>
         <DialogHeader>
           <DialogTitle>Editar link</DialogTitle>
         </DialogHeader>
