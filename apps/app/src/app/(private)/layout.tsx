@@ -38,7 +38,9 @@ export default async function PrivateLayout({ children }: { children: React.Reac
     <>
       <PrivateHeader email={email} apps={apps} />
       <div className='overflow-x-hidden'>
-        <div className='mx-auto w-full max-w-7xl px-4 py-8'>{children}</div>
+        <div className='mx-auto w-full max-w-7xl px-4 py-8 md:px-8 lg:px-12 2xl:px-0'>
+          {children}
+        </div>
       </div>
     </>
   )
