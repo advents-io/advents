@@ -271,7 +271,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='androidUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Url do app Android</FormLabel>
+                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos Android.'>
+                  Url do app Android
+                </FormLabel>
 
                 <div className='flex gap-2'>
                   <Select
@@ -315,7 +317,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='iosUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Url do app iOS</FormLabel>
+                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos iOS.'>
+                  Url do app iOS
+                </FormLabel>
 
                 <div className='flex gap-2'>
                   <Select onValueChange={changeIosUrlType} value={isDefaultIosUrl.toString()}>
@@ -355,7 +359,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='fallbackUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Url alternativa</FormLabel>
+                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos que não sejam Android ou iOS.'>
+                  Url alternativa
+                </FormLabel>
 
                 <div className='flex gap-2'>
                   {hasDefaultFallbackUrl && (
