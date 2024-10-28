@@ -84,7 +84,7 @@ FormItem.displayName = 'FormItem'
 // shadcn-ui change: add optional to label
 interface FormLabelProps extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
   optional?: boolean
-  tooltip?: string
+  tooltip?: React.ReactNode
 }
 
 const FormLabel = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, FormLabelProps>(

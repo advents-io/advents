@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, Info, Loader2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, HelpCircleIcon, Loader2 } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/tailwind'
@@ -43,7 +43,7 @@ export const MetricCard = ({
           {tooltip && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <Info className='size-3' />
+                <HelpCircleIcon className='size-3' />
               </TooltipTrigger>
 
               <TooltipContent>{tooltip}</TooltipContent>

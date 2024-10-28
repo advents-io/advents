@@ -17,7 +17,7 @@ interface LabelProps
   extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>,
     VariantProps<typeof labelVariants> {
   optional?: boolean
-  tooltip?: string
+  tooltip?: React.ReactNode
 }
 
 const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
