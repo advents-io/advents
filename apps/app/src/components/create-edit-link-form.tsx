@@ -29,6 +29,7 @@ import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
+import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
 
 interface Props {
@@ -111,6 +112,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     ])
 
     const link = response?.data as GetLinkOutputProps
+
     const app = appResponse?.data as GetAppDefaultValuesOutputProps
     setDefaultAppValues(app)
 
@@ -134,6 +136,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
       fallbackUrl: app.defaultFallbackUrl || '',
+      campaignCost: null,
     }
   }
 
@@ -204,6 +207,15 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           <Skeleton className='h-10 w-full' />
         </div>
 
+        <div className='py-2'>
+          <div className='h-[1px] w-full' />
+        </div>
+
+        <div className='space-y-2'>
+          <Skeleton className='h-[22px] w-40' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+
         <div className='flex justify-end'>
           <Skeleton className='h-10 w-[98px]' />
         </div>
@@ -232,7 +244,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   <Input
                     placeholder='Campanha com influencer João'
                     {...field}
-                    value={field.value || undefined}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -431,6 +443,55 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                     />
                   </FormControl>
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className='py-2'>
+            <Separator />
+          </div>
+
+          <FormField
+            control={form.control}
+            name='campaignCost'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  tooltip={
+                    <span>
+                      Valor investido na divulgação do link / campanha.
+                      <br />
+                      <br />
+                      Esse valor é utilizado para calcular ROI, custo por clique, custo por
+                      instalação, entre outros.
+                    </span>
+                  }
+                  optional
+                >
+                  Custo da campanha
+                </FormLabel>
+
+                <FormControl>
+                  <Input
+                    placeholder='R$ 100,00'
+                    className='w-40'
+                    {...field}
+                    value={
+                      field.value !== null && field.value !== undefined
+                        ? new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                          }).format(Number(field.value))
+                        : ''
+                    }
+                    onChange={e => {
+                      // Remove non-numeric characters and convert to number
+                      const value = e.target.value.replace(/[^0-9]/g, '')
+                      field.onChange(value ? Number(value) / 100 : null)
+                    }}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

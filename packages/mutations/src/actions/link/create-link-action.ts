@@ -10,7 +10,16 @@ import { generateRandomSlug } from '../../utils/link-helper'
 export const createLinkAction = authActionClient
   .schema(createLinkInputActionSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { title, domain, slug: reqSlug, iosUrl, androidUrl, fallbackUrl, appId } = parsedInput
+    const {
+      title,
+      domain,
+      slug: reqSlug,
+      iosUrl,
+      androidUrl,
+      fallbackUrl,
+      campaignCost,
+      appId,
+    } = parsedInput
 
     if (reqSlug) {
       const linkExists = await prisma.link.findUnique({
@@ -38,6 +47,7 @@ export const createLinkAction = authActionClient
         iosUrl,
         androidUrl,
         fallbackUrl,
+        campaignCost,
         appId,
         createdBy: user.id,
         updatedBy: user.id,

@@ -24,6 +24,11 @@ export const createLinkInputFormSchema = z.object({
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
+  campaignCost: z
+    .number({ message: 'Custo da campanha inválido.' })
+    .min(0.01, 'O custo da campanha deve ser maior que zero.')
+    .nullable()
+    .transform(value => value || null),
 })
 
 export const createLinkInputActionSchema = createLinkInputFormSchema.extend({

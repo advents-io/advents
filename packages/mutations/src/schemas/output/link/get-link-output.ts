@@ -8,6 +8,7 @@ export const getLinkOutputSchema = z.object({
   androidUrl: z.string().url(),
   iosUrl: z.string().url(),
   fallbackUrl: z.string().url(),
+  campaignCost: z.number().nullable(),
 })
 
 export type GetLinkOutputProps = z.infer<typeof getLinkOutputSchema>

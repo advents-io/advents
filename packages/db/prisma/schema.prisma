@@ -21,8 +21,10 @@ model Link {
   androidUrl   String  @map("android_url")
   iosUrl       String  @map("ios_url")
   fallbackUrl  String  @map("fallback_url")
-  clickCount   Int     @default(0) @map("click_count")
-  installCount Int     @default(0) @map("install_count")
+  campaignCost Float?  @map("campaign_cost")
+
+  clickCount   Int @default(0) @map("click_count")
+  installCount Int @default(0) @map("install_count")
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
