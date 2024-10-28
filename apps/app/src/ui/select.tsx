@@ -1,10 +1,11 @@
 'use client'
 
 import * as SelectPrimitive from '@radix-ui/react-select'
-import { Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, CircleHelpIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/tailwind'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 const Select = SelectPrimitive.Root
 
@@ -104,27 +105,46 @@ const SelectLabel = React.forwardRef<
 ))
 SelectLabel.displayName = SelectPrimitive.Label.displayName
 
-const SelectItem = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Item
-    ref={ref}
-    className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className,
-    )}
-    {...props}
-  >
-    <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
-      <SelectPrimitive.ItemIndicator>
-        <Check className='h-4 w-4' />
-      </SelectPrimitive.ItemIndicator>
-    </span>
+// shadcn-ui change: add tooltip to select item
 
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-  </SelectPrimitive.Item>
-))
+interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  tooltip?: React.ReactNode
+}
+
+const SelectItem = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item>, SelectItemProps>(
+  ({ className, children, tooltip, ...props }, ref) => (
+    <SelectPrimitive.Item
+      ref={ref}
+      className={cn(
+        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        !!tooltip && 'pr-8',
+        className,
+      )}
+      {...props}
+    >
+      <span className='absolute left-2 flex h-3.5 w-3.5 items-center justify-center'>
+        <SelectPrimitive.ItemIndicator>
+          <Check className='h-4 w-4' />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+
+      {tooltip && (
+        <Tooltip>
+          <TooltipTrigger
+            asChild
+            className='absolute bottom-0 right-2 top-0 flex h-full items-center justify-center'
+          >
+            <CircleHelpIcon className='size-3.5' />
+          </TooltipTrigger>
+
+          <TooltipContent>{tooltip}</TooltipContent>
+        </Tooltip>
+      )}
+    </SelectPrimitive.Item>
+  ),
+)
 SelectItem.displayName = SelectPrimitive.Item.displayName
 
 const SelectSeparator = React.forwardRef<
