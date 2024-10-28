@@ -76,6 +76,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           title: data.title,
           domain: data.domain,
           slug: data.slug,
+          campaignCost: data.campaignCost,
         })
       }
 

@@ -1,5 +1,5 @@
 import { Column } from '@tanstack/react-table'
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, EyeOff } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, CircleHelpIcon, EyeOff } from 'lucide-react'
 
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
@@ -10,15 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 interface Props<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
   border?: boolean
+  tooltip?: React.ReactNode
 }
 
 export const TableColumnHeader = <TData, TValue>({
   column,
   border = false,
+  tooltip,
   className,
 }: Props<TData, TValue>) => {
   // @ts-expect-error meta has title property
@@ -33,26 +36,34 @@ export const TableColumnHeader = <TData, TValue>({
       <DropdownMenuTrigger asChild>
         <div
           className={cn(
-            'flex h-full items-center px-4',
+            'flex h-full items-center pl-4',
             border && '-mr-[0.5px] border-r',
             className,
           )}
         >
-          <Button
-            variant='ghost'
-            size='sm'
-            className='-ml-3 h-8 text-foreground data-[state=open]:bg-accent'
-          >
-            <span>{title}</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                className='-ml-3 h-8 text-foreground data-[state=open]:bg-accent'
+              >
+                <span>{title}</span>
 
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className='ml-2 size-4' />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className='ml-2 size-4' />
-            ) : (
-              <ChevronsUpDown className='ml-2 size-3 text-muted-foreground' />
-            )}
-          </Button>
+                {tooltip && <CircleHelpIcon className='ml-2 size-3 text-muted-foreground' />}
+
+                {column.getIsSorted() === 'desc' ? (
+                  <ArrowDownIcon className='ml-2 size-4' />
+                ) : column.getIsSorted() === 'asc' ? (
+                  <ArrowUpIcon className='ml-2 size-4' />
+                ) : (
+                  <ChevronsUpDown className='ml-2 size-3 text-muted-foreground' />
+                )}
+              </Button>
+            </TooltipTrigger>
+
+            {tooltip && <TooltipContent className='font-normal'>{tooltip}</TooltipContent>}
+          </Tooltip>
         </div>
       </DropdownMenuTrigger>
 

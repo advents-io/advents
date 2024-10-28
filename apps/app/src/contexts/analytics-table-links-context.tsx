@@ -1,7 +1,10 @@
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-type EditLinkProps = Pick<GetLinksAnalyticsOutput[number], 'id' | 'slug' | 'title' | 'domain'>
+type EditLinkProps = Pick<
+  GetLinksAnalyticsOutput[number],
+  'id' | 'slug' | 'title' | 'domain' | 'campaignCost'
+>
 
 interface AnalyticsTableLinksContextData {
   links: GetLinksAnalyticsOutput

@@ -21,6 +21,7 @@ const getLinksAnalyticsOutputSchema = z.array(
     title: z.string().nullable(),
     clicks: z.number(),
     installs: z.number(),
+    campaignCost: z.number().nullable(),
     createdAt: z.date(),
   }),
 )
@@ -42,6 +43,7 @@ export const getLinksAnalytics = (api: Hono) =>
               slug: true,
               domain: true,
               title: true,
+              campaignCost: true,
               createdAt: true,
             },
           },
@@ -80,6 +82,7 @@ export const getLinksAnalytics = (api: Hono) =>
                 title: click.link.title,
                 clicks: 0,
                 installs: 0,
+                campaignCost: click.link.campaignCost,
                 createdAt: click.link.createdAt,
               }
             }
@@ -101,6 +104,7 @@ export const getLinksAnalytics = (api: Hono) =>
               title: string | null
               clicks: number
               installs: number
+              campaignCost: number | null
               createdAt: Date
             }
           >,

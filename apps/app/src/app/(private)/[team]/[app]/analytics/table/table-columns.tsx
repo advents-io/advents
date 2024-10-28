@@ -43,6 +43,23 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     ),
   },
   {
+    accessorKey: 'costPerClick',
+    meta: {
+      title: 'CPC',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border tooltip='Custo por clique' />,
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {!!row.original.campaignCost && row.original.campaignCost > 0 && row.original.clicks > 0
+          ? new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(row.original.campaignCost / row.original.clicks)
+          : ''}
+      </TableRowCell>
+    ),
+  },
+  {
     accessorKey: 'installs',
     meta: {
       title: 'Instalações',
@@ -51,6 +68,25 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     cell: ({ row }) => (
       <TableRowCell border>
         {row.original.installs.toLocaleString('en-US').replace(',', '.')}
+      </TableRowCell>
+    ),
+  },
+  {
+    accessorKey: 'costPerInstall',
+    meta: {
+      title: 'CPI',
+    },
+    header: ({ column }) => (
+      <TableColumnHeader column={column} border tooltip='Custo por instalação' />
+    ),
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {!!row.original.campaignCost && row.original.campaignCost > 0 && row.original.installs > 0
+          ? new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(row.original.campaignCost / row.original.installs)
+          : ''}
       </TableRowCell>
     ),
   },
