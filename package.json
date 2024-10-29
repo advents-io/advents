@@ -13,7 +13,7 @@
     "typescript-config": "pnpm --dir packages/typescript-config",
     "doc": "pnpm --dir modules/docs",
     "sdk": "pnpm --dir modules/advents-react-native",
-    "lint": "eslint . --fix && prettier . --write",
+    "lint": "eslint . --fix --ignore-pattern modules/advents-react-native && prettier . \"!modules/advents-react-native\" --write && pnpm run sdk lint",
     "clear": "./scripts/clear.sh",
     "prepare": "husky"
   },
