@@ -8,6 +8,7 @@ import { authMiddleware } from '../auth-middleware'
 
 type SessionInput = Pick<
   Session,
+  | 'id'
   | 'sdkName'
   | 'sdkVersion'
   | 'framework'
