@@ -192,7 +192,8 @@ model Session {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  attribution Attribution?
+  attribution    Attribution?
+  purchaseEvents PurchaseEvent[]
 
   @@map("sessions")
 }
@@ -217,4 +218,16 @@ model Attribution {
   click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
 
   @@map("attributions")
+}
+
+model PurchaseEvent {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  value Float
+
+  sessionId String  @map("session_id")
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("purchase_events")
 }

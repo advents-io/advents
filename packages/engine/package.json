@@ -4,11 +4,13 @@
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/supabase": "workspace:*",
+    "@hono/zod-validator": "^0.4.1",
     "@vercel/functions": "^1.4.1",
     "hono": "^4.6.7",
     "next": "15.0.1-canary.1",
     "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021"
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",
