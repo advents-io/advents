@@ -14,7 +14,6 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { Loader2 } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
@@ -24,6 +23,7 @@ import {
 } from '@/contexts/analytics-table-links-context'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/tailwind'
+import { Skeleton } from '@/ui/skeleton'
 import {
   Table as TableUi,
   TableBody,
@@ -164,13 +164,22 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                 </TableRow>
               ))
             ) : isFetching ? (
-              <TableRow>
-                <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
-                  <div className='flex justify-center'>
-                    <Loader2 className='size-6 animate-spin' />
-                  </div>
-                </TableCell>
-              </TableRow>
+              <>
+                {Array.from({ length: 20 }).map((_, index) => (
+                  <TableRow key={index}>
+                    {Array.from({ length: tableColumns.length }).map((_, index) => (
+                      <TableCell key={index} className='p-0'>
+                        {flexRender(
+                          <TableRowCell border={index !== tableColumns.length - 1}>
+                            <Skeleton className='h-[24px] w-full' />
+                          </TableRowCell>,
+                          {},
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>

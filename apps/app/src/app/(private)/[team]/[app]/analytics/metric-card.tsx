@@ -1,8 +1,9 @@
-import { ArrowDown, ArrowUp, HelpCircleIcon, Loader2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, HelpCircleIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/tailwind'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Skeleton } from '@/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -53,31 +54,34 @@ export const MetricCard = ({
         {icon}
       </CardHeader>
 
-      <CardContent className='relative'>
-        <p className='text-2xl font-bold'>{formatedValue}</p>
+      <CardContent>
+        {!loading ? (
+          <>
+            <p className='text-2xl font-bold'>{formatedValue}</p>
 
-        <div className='flex items-center gap-1'>
-          {increaseIsPositive && <ArrowUp className='size-3 text-green-600' />}
-          {increaseIsNegative && <ArrowDown className='size-3 text-red-500' />}
+            <div className='flex items-center gap-1'>
+              {increaseIsPositive && <ArrowUp className='size-3 text-green-600' />}
+              {increaseIsNegative && <ArrowDown className='size-3 text-red-500' />}
 
-          <p className='text-xs text-muted-foreground'>
-            <span
-              className={cn(
-                'font-bold',
-                increaseIsPositive && 'text-green-600',
-                increaseIsNegative && 'text-red-500',
-              )}
-            >
-              {formatedIncrease}%
-            </span>{' '}
-            em relação ao último período
-          </p>
-        </div>
-
-        {loading && (
-          <div className='absolute inset-x-0 bottom-1 top-0 bg-white pl-6 pt-1'>
-            <Loader2 className='size-6 animate-spin' />
-          </div>
+              <p className='text-xs text-muted-foreground'>
+                <span
+                  className={cn(
+                    'font-bold',
+                    increaseIsPositive && 'text-green-600',
+                    increaseIsNegative && 'text-red-500',
+                  )}
+                >
+                  {formatedIncrease}%
+                </span>{' '}
+                em relação ao último período
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <Skeleton className='h-[26px] w-[100px]' />
+            <Skeleton className='mt-2 h-[14px] w-[240px]' />
+          </>
         )}
       </CardContent>
     </Card>
