@@ -195,17 +195,26 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
         <div className='space-y-2'>
           <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
+          <div className='flex flex-col gap-2 sm:flex-row'>
+            <Skeleton className='h-10 w-44' />
+            <Skeleton className='h-10 w-full' />
+          </div>
         </div>
 
         <div className='space-y-2'>
           <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
+          <div className='flex flex-col gap-2 sm:flex-row'>
+            <Skeleton className='h-10 w-44' />
+            <Skeleton className='h-10 w-full' />
+          </div>
         </div>
 
         <div className='space-y-2'>
           <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
+          <div className='flex flex-col gap-2 sm:flex-row'>
+            <Skeleton className='h-10 w-44' />
+            <Skeleton className='h-10 w-full' />
+          </div>
         </div>
 
         <div className='py-2'>
@@ -214,11 +223,11 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
         <div className='space-y-2'>
           <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-44' />
         </div>
 
         <div className='flex justify-end'>
-          <Skeleton className='h-10 w-[98px]' />
+          <Skeleton className='h-10 w-full sm:w-[98px]' />
         </div>
       </div>
     )
@@ -323,7 +332,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   Url do app Android
                 </FormLabel>
 
-                <div className='flex gap-2'>
+                <div className='flex flex-col gap-2 sm:flex-row'>
                   <Select
                     onValueChange={changeAndroidUrlType}
                     value={isDefaultAndroidUrl.toString()}
@@ -369,7 +378,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   Url do app iOS
                 </FormLabel>
 
-                <div className='flex gap-2'>
+                <div className='flex flex-col gap-2 sm:flex-row'>
                   <Select onValueChange={changeIosUrlType} value={isDefaultIosUrl.toString()}>
                     <SelectTrigger className='w-44'>
                       <SelectValue />
@@ -411,7 +420,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   Url alternativa
                 </FormLabel>
 
-                <div className='flex gap-2'>
+                <div className='flex flex-col gap-2 sm:flex-row'>
                   {hasDefaultFallbackUrl && (
                     <Select
                       onValueChange={changeFallbackUrlType}
