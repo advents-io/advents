@@ -21,11 +21,25 @@ export const logPurchase = (api: Hono) =>
     authMiddleware,
     async c => {
       const { sessionId, value } = c.req.valid('json')
+      const appId = c.var.appId
 
-      await prisma.purchaseEvent.create({
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+        select: {
+          attribution: {
+            select: {
+              linkId: true,
+            },
+          },
+        },
+      })
+
+      await prisma.purchase.create({
         data: {
           value,
           sessionId,
+          linkId: session?.attribution?.linkId,
+          appId,
         },
       })
 

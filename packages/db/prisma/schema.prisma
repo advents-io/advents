@@ -29,7 +29,9 @@ model Link {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  clicks Click[]
+  clicks       Click[]
+  attributions Attribution[]
+  purchases    Purchase[]
 
   @@unique([domain, slug])
   @@map("links")
@@ -54,9 +56,12 @@ model App {
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  links    Link[]
-  sessions Session[]
-  apiKeys  ApiKey[]
+  links        Link[]
+  sessions     Session[]
+  apiKeys      ApiKey[]
+  clicks       Click[]
+  attributions Attribution[]
+  purchases    Purchase[]
 
   @@unique([slug, teamId])
   @@map("apps")
@@ -142,6 +147,9 @@ model Click {
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
   attribution Attribution?
 
   @@map("clicks")
@@ -192,8 +200,8 @@ model Session {
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
-  attribution    Attribution?
-  purchaseEvents PurchaseEvent[]
+  attribution Attribution?
+  purchases   Purchase[]
 
   @@map("sessions")
 }
@@ -217,10 +225,16 @@ model Attribution {
   clickId String @unique @map("click_id")
   click   Click  @relation(fields: [clickId], references: [id], onDelete: Cascade)
 
+  linkId String @map("link_id")
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
   @@map("attributions")
 }
 
-model PurchaseEvent {
+model Purchase {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -229,5 +243,11 @@ model PurchaseEvent {
   sessionId String  @map("session_id")
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  @@map("purchase_events")
+  linkId String? @map("link_id")
+  link   Link?   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@map("purchases")
 }

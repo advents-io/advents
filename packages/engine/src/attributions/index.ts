@@ -21,8 +21,10 @@ export const handleAttribution = async (session: Session) => {
         prisma.attribution.create({
           data: {
             method: attributionData.method,
-            clickId: attributionData.clickId,
             sessionId: session.id,
+            clickId: attributionData.clickId,
+            appId: session.appId,
+            linkId: attributionData.linkId,
           },
         }),
 

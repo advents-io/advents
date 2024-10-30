@@ -10,6 +10,7 @@ export const logClick = async (
   req: NextRequest,
   clickId: string,
   linkId: string,
+  appId: string,
   destinationUrl: string,
 ) => {
   const isBot = detectBot(req)
@@ -48,6 +49,7 @@ export const logClick = async (
     ...geolocation,
 
     linkId,
+    appId,
   }
 
   const clickSnakeCase = convertKeysToSnakeCase(click)

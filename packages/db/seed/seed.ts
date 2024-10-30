@@ -140,7 +140,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
     process.stdout.cursorTo(0)
     process.stdout.write(`Link ${links.indexOf(link) + 1} of ${links.length}`)
 
-    const clickCount = faker.number.int({ min: 0, max: 10000 })
+    const clickCount = faker.datatype.boolean(0.7) ? faker.number.int({ min: 0, max: 10000 }) : 0
 
     const clicks = Array.from({ length: clickCount }, () => ({
       id: crypto.randomUUID(),
@@ -149,6 +149,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       refererUrl: '(direct)',
       isBot: false,
       linkId: link.id,
+      appId,
       createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
     }))
 
@@ -162,7 +163,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
     }))
 
     const installCount = Math.round(
-      faker.number.int({ min: clickCount * 0.01, max: clickCount * 0.2 }),
+      faker.number.int({ min: clickCount * 0.001, max: clickCount * 0.2 }),
     )
 
     const clicksAndSessionsConvertedToInstalls = faker.helpers.arrayElements(
@@ -180,8 +181,10 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       prisma.attribution.createMany({
         data: clicksAndSessionsConvertedToInstalls.map(({ click, session }) => ({
           method: 'ios_deterministic_click',
-          clickId: click.id,
           sessionId: session.id,
+          clickId: click.id,
+          linkId: link.id,
+          appId,
           createdAt: session.createdAt,
         })),
       }),

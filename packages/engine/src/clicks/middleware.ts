@@ -70,7 +70,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
     destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
   }
 
-  event.waitUntil(logClick(req, clickId, link.id, destinationUrl.toString()))
+  event.waitUntil(logClick(req, clickId, link.id, link.appId, destinationUrl.toString()))
 
   return redirect(destinationUrl.toString())
 }
