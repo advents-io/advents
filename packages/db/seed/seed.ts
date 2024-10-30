@@ -110,6 +110,7 @@ const createLinks = async (appId: string, userId: string) => {
       iosUrl: APP.iosUrl,
       androidUrl: APP.androidUrl,
       fallbackUrl: APP.defaultFallbackUrl,
+      campaignCost: faker.datatype.boolean() ? 0 : faker.number.int({ min: 10, max: 1000 }),
       appId,
       createdAt,
       updatedAt: createdAt,

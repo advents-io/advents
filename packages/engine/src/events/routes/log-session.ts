@@ -40,6 +40,7 @@ export const logSession = (api: Hono) =>
     authMiddleware, //
     async c => {
       const sessionInput = (await c.req.json()) as SessionInput
+
       const appId = c.var.appId
       const geolocation = getGeolocation(c.req.raw)
 
