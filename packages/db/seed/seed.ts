@@ -96,7 +96,15 @@ const createApp = async (teamId: string, userId: string) => {
 }
 
 const createLinks = async (appId: string, userId: string) => {
-  const links: Link[] = Array.from({ length: LINKS.length }, (_, index) => {
+  const LINKS_TO_CREATE = 20
+
+  if (LINKS_TO_CREATE > LINKS.length) {
+    throw new Error('Links count to create is greater than the number of available links data.')
+  }
+
+  const RANDOM_LINKS = faker.helpers.arrayElements(LINKS, LINKS_TO_CREATE)
+
+  const links: Link[] = Array.from({ length: LINKS_TO_CREATE }, (_, index) => {
     const createdAt = faker.date.between({
       from: dayjs().add(-180, 'days').toDate(),
       to: Date.now(),
@@ -104,9 +112,9 @@ const createLinks = async (appId: string, userId: string) => {
 
     return {
       id: crypto.randomUUID(),
-      title: LINKS[index].name,
+      title: RANDOM_LINKS[index].name,
       domain: APP.defaultDomain,
-      slug: Math.random() < 0.4 ? LINKS[index].slug : nanoid(),
+      slug: Math.random() < 0.4 ? RANDOM_LINKS[index].slug : nanoid(),
       iosUrl: APP.iosUrl,
       androidUrl: APP.androidUrl,
       fallbackUrl: APP.defaultFallbackUrl,
