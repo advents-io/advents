@@ -22,6 +22,7 @@ const getLinksAnalyticsOutputSchema = z.array(
     clicks: z.number(),
     installs: z.number(),
     campaignCost: z.number().nullable(),
+    revenue: z.number(),
     createdAt: z.date(),
   }),
 )
@@ -45,6 +46,17 @@ export const getLinksAnalytics = (api: Hono) =>
               title: true,
               campaignCost: true,
               createdAt: true,
+              purchases: {
+                select: {
+                  value: true,
+                },
+                where: {
+                  createdAt: {
+                    gte: dayjs(startDate).utc().startOf('day').toDate(),
+                    lte: dayjs(endDate).utc().endOf('day').toDate(),
+                  },
+                },
+              },
             },
           },
           attribution: {
@@ -73,6 +85,11 @@ export const getLinksAnalytics = (api: Hono) =>
             const { id } = click.link
 
             if (!acc[id]) {
+              const revenue = click.link.purchases.reduce(
+                (acc, purchase) => acc + purchase.value,
+                0,
+              )
+
               acc[id] = {
                 id,
                 slug: click.link.slug,
@@ -81,6 +98,7 @@ export const getLinksAnalytics = (api: Hono) =>
                 clicks: 0,
                 installs: 0,
                 campaignCost: click.link.campaignCost,
+                revenue,
                 createdAt: click.link.createdAt,
               }
             }
@@ -103,12 +121,15 @@ export const getLinksAnalytics = (api: Hono) =>
               clicks: number
               installs: number
               campaignCost: number | null
+              revenue: number
               createdAt: Date
             }
           >,
         ),
       )
 
-      return c.json(getLinksAnalyticsOutputSchema.parse(links))
+      const result = getLinksAnalyticsOutputSchema.parse(links)
+
+      return c.json(result)
     },
   )

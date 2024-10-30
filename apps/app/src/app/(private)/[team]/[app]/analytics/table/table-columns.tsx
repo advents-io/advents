@@ -91,6 +91,69 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     ),
   },
   {
+    accessorKey: 'campaignCost',
+    meta: {
+      title: 'Custo',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {!!row.original.campaignCost && row.original.campaignCost > 0
+          ? new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(row.original.campaignCost)
+          : ''}
+      </TableRowCell>
+    ),
+  },
+  {
+    accessorKey: 'revenue',
+    meta: {
+      title: 'Receita',
+    },
+    header: ({ column }) => <TableColumnHeader column={column} border />,
+    cell: ({ row }) => (
+      <TableRowCell border>
+        {row.original.revenue > 0
+          ? new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(row.original.revenue)
+          : ''}
+      </TableRowCell>
+    ),
+  },
+  {
+    accessorKey: 'roas',
+    meta: {
+      title: 'ROAS',
+    },
+    header: ({ column }) => (
+      <TableColumnHeader
+        column={column}
+        border
+        tooltip='Return on Ad Spend (Retorno do investimento na campanha)'
+      />
+    ),
+    cell: ({ row }) => {
+      const { campaignCost, revenue } = row.original
+
+      const roas =
+        !!campaignCost && campaignCost > 0 ? ((revenue - campaignCost) / campaignCost) * 100 : null
+
+      const formatedRoasNumber = !roas
+        ? null
+        : Number.isInteger(roas)
+          ? roas.toString()
+          : roas.toFixed(2).replace('.', ',')
+
+      return (
+        <TableRowCell border>{formatedRoasNumber ? `${formatedRoasNumber}%` : ''}</TableRowCell>
+      )
+    },
+  },
+  {
     accessorKey: 'createdAt',
     meta: {
       title: 'Criado em',
