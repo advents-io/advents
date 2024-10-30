@@ -34,7 +34,7 @@ export const logPurchase = (api: Hono) =>
         },
       })
 
-      await prisma.purchase.create({
+      const createPurchaseQuery = prisma.purchase.create({
         data: {
           value,
           sessionId,
@@ -42,6 +42,26 @@ export const logPurchase = (api: Hono) =>
           appId,
         },
       })
+
+      // Smell alert: sorry, I not found a better way to do this.
+      if (session?.attribution?.linkId) {
+        await prisma.$transaction([
+          createPurchaseQuery,
+
+          prisma.link.update({
+            where: {
+              id: session?.attribution?.linkId,
+            },
+            data: {
+              installCount: {
+                increment: 1,
+              },
+            },
+          }),
+        ])
+      } else {
+        await createPurchaseQuery
+      }
 
       return new Response()
     },
