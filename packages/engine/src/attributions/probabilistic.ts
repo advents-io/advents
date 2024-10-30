@@ -43,9 +43,7 @@ export const handleProbabilisticAttribution = async (
       createdAt: {
         gte: attributionWindowStart,
       },
-      link: {
-        appId: session.appId,
-      },
+      appId: session.appId,
       os: session.os,
       country: session.country,
       deviceModel: session.deviceModel,

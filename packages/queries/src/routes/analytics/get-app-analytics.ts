@@ -38,15 +38,20 @@ export const getAppAnalytics = (api: Hono) =>
       const lastPeriodStartDate = new Date(startDate.getTime() - range)
       const lastPeriodEndDate = new Date(endDate.getTime() - range)
 
-      const [clicks, lastPeriodClicks, installs, lastPeriodInstalls] = await prisma.$transaction([
+      const [
+        clicks,
+        lastPeriodClicks,
+        installs,
+        lastPeriodInstalls,
+        revenueSum,
+        lastPeriodRevenueSum,
+      ] = await prisma.$transaction([
         prisma.click.count({
           where: {
-            link: {
-              app: {
-                slug: appSlug,
-                team: {
-                  slug: teamSlug,
-                },
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
               },
             },
             createdAt: {
@@ -58,9 +63,10 @@ export const getAppAnalytics = (api: Hono) =>
 
         prisma.click.count({
           where: {
-            link: {
-              app: {
-                slug: appSlug,
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
               },
             },
             createdAt: {
@@ -72,9 +78,10 @@ export const getAppAnalytics = (api: Hono) =>
 
         prisma.attribution.count({
           where: {
-            session: {
-              app: {
-                slug: appSlug,
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
               },
             },
             createdAt: {
@@ -86,9 +93,46 @@ export const getAppAnalytics = (api: Hono) =>
 
         prisma.attribution.count({
           where: {
-            session: {
-              app: {
-                slug: appSlug,
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
+              },
+            },
+            createdAt: {
+              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
+              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
+            },
+          },
+        }),
+
+        prisma.purchase.aggregate({
+          _sum: {
+            value: true,
+          },
+          where: {
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
+              },
+            },
+            createdAt: {
+              gte: dayjs(startDate).utc().startOf('day').toDate(),
+              lte: dayjs(endDate).utc().endOf('day').toDate(),
+            },
+          },
+        }),
+
+        prisma.purchase.aggregate({
+          _sum: {
+            value: true,
+          },
+          where: {
+            app: {
+              slug: appSlug,
+              team: {
+                slug: teamSlug,
               },
             },
             createdAt: {
@@ -107,18 +151,23 @@ export const getAppAnalytics = (api: Hono) =>
 
       const ctiIncrease = calculateIncrease(cti, lastPeriodCti)
 
-      return c.json(
-        getAppAnalyticsOutputSchema.parse({
-          clicks,
-          clicksIncrease,
-          installs,
-          installsIncrease,
-          cti,
-          ctiIncrease,
-          revenue: 0, // TODO: implement revenue
-          revenueIncrease: 0, // TODO: implement revenue
-        }),
-      )
+      const revenue = revenueSum._sum.value || 0
+      const lastPeriodRevenue = lastPeriodRevenueSum._sum.value || 0
+
+      const revenueIncrease = calculateIncrease(revenue, lastPeriodRevenue)
+
+      const response = getAppAnalyticsOutputSchema.parse({
+        clicks,
+        clicksIncrease,
+        installs,
+        installsIncrease,
+        cti,
+        ctiIncrease,
+        revenue,
+        revenueIncrease,
+      })
+
+      return c.json(response)
     },
   )
 

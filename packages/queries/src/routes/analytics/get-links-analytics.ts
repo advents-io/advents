@@ -54,12 +54,10 @@ export const getLinksAnalytics = (api: Hono) =>
           },
         },
         where: {
-          link: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
+          app: {
+            slug: appSlug,
+            team: {
+              slug: teamSlug,
             },
           },
           createdAt: {
