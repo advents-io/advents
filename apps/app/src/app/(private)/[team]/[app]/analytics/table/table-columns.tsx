@@ -3,10 +3,14 @@
 import { dayjs } from '@advents/common'
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowDown, ArrowUp } from 'lucide-react'
+import { ArrowDown, ArrowUp, CopyIcon } from 'lucide-react'
+import Link from 'next/link'
+import { toast } from 'sonner'
 
-import { LinkItemCopy } from '@/components/link-item-copy'
 import { cn } from '@/lib/tailwind'
+import { Button } from '@/ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
+import { formatShortLink } from '@/utils/link-formatter'
 
 import { TableColumnHeader } from './table-column-header'
 import { TableRowCell } from './table-row-cell'
@@ -18,11 +22,34 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
       title: 'Link',
     },
     header: ({ column }) => <TableColumnHeader column={column} border />,
-    cell: ({ row }) => (
-      <TableRowCell border>
-        <LinkItemCopy domain={row.original.domain} slug={row.original.slug} />
-      </TableRowCell>
-    ),
+    cell: ({ row }) => {
+      const httpShortLink = formatShortLink(row.original.domain, row.original.slug, true)
+
+      return (
+        <TableRowCell border>
+          <Link href={httpShortLink} className='max-w-44 truncate sm:max-w-none' target='_blank'>
+            {row.original.domain}/<span className='font-semibold'>{row.original.slug}</span>
+          </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className='ml-1 h-8 w-8 rounded-full'
+                onClick={() => {
+                  navigator.clipboard.writeText(httpShortLink)
+                  toast('Link copiado')
+                }}
+                variant='ghost'
+                size='icon'
+              >
+                <CopyIcon className='size-4' />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Copiar link</TooltipContent>
+          </Tooltip>
+        </TableRowCell>
+      )
+    },
   },
   {
     accessorKey: 'title',

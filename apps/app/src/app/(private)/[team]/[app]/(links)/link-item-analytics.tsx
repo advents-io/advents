@@ -11,7 +11,7 @@ interface Props {
   installs: number
 }
 
-export const LinkAnalytics = ({ clicks, installs }: Props) => {
+export const LinkItemAnalytics = ({ clicks, installs }: Props) => {
   const { team, app } = useParams<{ team: string; app: string }>()
 
   return (
