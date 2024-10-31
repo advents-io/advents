@@ -27,13 +27,14 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
 
       return (
         <TableRowCell border>
-          <Link href={httpShortLink} className='max-w-44 truncate sm:max-w-none' target='_blank'>
-            {row.original.domain}/<span className='font-semibold'>{row.original.slug}</span>
+          <Link href={httpShortLink} className='truncate text-muted-foreground' target='_blank'>
+            {row.original.domain}/
+            <span className='font-semibold text-foreground'>{row.original.slug}</span>
           </Link>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className='ml-1 h-8 w-8 rounded-full'
+                className='ml-2 size-8 rounded-full text-muted-foreground'
                 onClick={() => {
                   navigator.clipboard.writeText(httpShortLink)
                   toast('Link copiado')

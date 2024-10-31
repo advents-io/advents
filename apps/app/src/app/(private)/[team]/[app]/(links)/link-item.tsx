@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
-import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
@@ -34,24 +33,24 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
 
   return (
     <Card>
-      <CardContent className='flex px-6 py-4 text-sm'>
-        <div className='flex min-h-16 items-center gap-4 truncate'>
-          <div className='flex flex-col gap-2'>
-            {link.title && <span className='truncate text-base font-medium'>{link.title}</span>}
+      <CardContent className='px-6 py-4'>
+        <div className='flex min-h-16'>
+          <div className='flex flex-col justify-center gap-2'>
+            {link.title && <span className='font-medium'>{link.title}</span>}
 
             <div className='flex items-center gap-2'>
               <Link
                 href={httpShortLink}
-                className={cn('text-muted-foreground', !link.title && 'text-base')}
+                className='font-mono text-sm text-muted-foreground'
                 target='_blank'
               >
-                {link.domain}/<span className='font-medium text-foreground'>{link.slug}</span>
+                {link.domain}/<span className='font-semibold text-foreground'>{link.slug}</span>
               </Link>
 
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    className='ml-1 h-8 w-8 rounded-full'
+                    className='ml-1 size-8 rounded-full text-muted-foreground'
                     onClick={copyToClipboard}
                     variant='ghost'
                     size='icon'
@@ -65,30 +64,30 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
             </div>
           </div>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className='ml-2 hidden text-muted-foreground lg:flex'>
-                {formatDate(link.createdAt)}
-              </span>
-            </TooltipTrigger>
+          <div className='flex flex-1 items-center justify-end gap-2'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className='mr-2 hidden text-sm text-muted-foreground lg:flex'>
+                  {formatDate(link.createdAt)}
+                </span>
+              </TooltipTrigger>
 
-            <TooltipContent>
-              {dayjs(link.createdAt).format('DD MMM YY, HH:mm')}
-              <br />
-              <span className='text-xs text-muted-foreground'>Data de criação</span>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+              <TooltipContent>
+                {dayjs(link.createdAt).format('DD MMM YY, HH:mm')}
+                <br />
+                <span className='text-xs text-muted-foreground'>Data de criação</span>
+              </TooltipContent>
+            </Tooltip>
 
-        <div className='flex flex-1 items-center justify-end gap-2'>
-          <LinkItemAnalytics clicks={link.clickCount} installs={link.installCount} />
+            <LinkItemAnalytics clicks={link.clickCount} installs={link.installCount} />
 
-          <LinkItemDropdown
-            id={link.id}
-            domain={link.domain}
-            slug={link.slug}
-            qrcodeLogoUrl={qrcodeLogoUrl}
-          />
+            <LinkItemDropdown
+              id={link.id}
+              domain={link.domain}
+              slug={link.slug}
+              qrcodeLogoUrl={qrcodeLogoUrl}
+            />
+          </div>
         </div>
       </CardContent>
     </Card>
