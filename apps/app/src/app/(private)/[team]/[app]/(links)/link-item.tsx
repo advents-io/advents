@@ -20,16 +20,18 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   return (
     <Card>
       <CardContent className='flex px-6 py-4 text-sm'>
-        <div className='flex flex-1 items-center gap-2'>
-          <span className='text-md hidden text-muted-foreground sm:flex'>{link.title}</span>
+        <div className='flex items-center gap-2 truncate'>
+          <span className='text-md hidden truncate text-muted-foreground md:flex'>
+            {link.title}
+          </span>
 
-          {link.title && <ArrowRightIcon className='hidden size-4 text-muted-foreground sm:flex' />}
+          {link.title && <ArrowRightIcon className='hidden size-4 text-muted-foreground md:flex' />}
 
           <LinkItemCopy domain={link.domain} slug={link.slug} />
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className='ml-2 hidden text-muted-foreground sm:flex'>
+              <span className='ml-2 hidden text-muted-foreground lg:flex'>
                 {formatDate(link.createdAt)}
               </span>
             </TooltipTrigger>
@@ -42,7 +44,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
           </Tooltip>
         </div>
 
-        <div className='flex items-center gap-2'>
+        <div className='flex flex-1 items-center justify-end gap-2'>
           <LinkAnalytics clicks={link.clickCount} installs={link.installCount} />
 
           <LinkItemDropdown

@@ -15,13 +15,15 @@ export const LinkAnalytics = ({ clicks, installs }: Props) => {
   const { team, app } = useParams<{ team: string; app: string }>()
 
   return (
-    <>
+    <div className='hidden gap-2 truncate sm:flex'>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
-            <Badge variant='secondary' className='py-1 font-normal'>
+          <Link href={routes.ANALYTICS.path(team, app)} className='flex truncate'>
+            <Badge variant='secondary' className='truncate py-1 font-normal'>
               <MousePointerClick className='mr-2 size-4' />
-              {clicks.toLocaleString('en-US').replace(',', '.')} cliques
+              <span className='truncate'>
+                {clicks.toLocaleString('en-US').replace(',', '.')} cliques
+              </span>
             </Badge>
           </Link>
         </TooltipTrigger>
@@ -37,10 +39,12 @@ export const LinkAnalytics = ({ clicks, installs }: Props) => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link href={routes.ANALYTICS.path(team, app)} className='hidden sm:flex'>
-            <Badge variant='secondary' className='py-1 font-normal'>
+          <Link href={routes.ANALYTICS.path(team, app)} className='flex truncate'>
+            <Badge variant='secondary' className='truncate py-1 font-normal'>
               <Download className='mr-2 size-4' />
-              {installs.toLocaleString('en-US').replace(',', '.')} instalações
+              <span className='truncate'>
+                {installs.toLocaleString('en-US').replace(',', '.')} instalações
+              </span>
             </Badge>
           </Link>
         </TooltipTrigger>
@@ -53,6 +57,6 @@ export const LinkAnalytics = ({ clicks, installs }: Props) => {
           </span>
         </TooltipContent>
       </Tooltip>
-    </>
+    </div>
   )
 }
