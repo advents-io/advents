@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { LoadingPageContent } from '@/components/loading-page-content'
 import { PageContainer } from '@/components/page-container'
 
 import { CreateLinkDialog } from './create-link-dialog'
 import { LinkList } from './link-list'
+import { LinkListLoading } from './link-list-loading'
 
 export const metadata: Metadata = {
   title: 'Links | Advents',
@@ -21,7 +21,7 @@ export default async function Links(props: {
 
   return (
     <PageContainer title='Links' actions={<CreateLinkDialog />}>
-      <Suspense fallback={<LoadingPageContent />}>
+      <Suspense fallback={<LinkListLoading />}>
         <LinkList page={page} appSlug={params.app} />
       </Suspense>
     </PageContainer>
