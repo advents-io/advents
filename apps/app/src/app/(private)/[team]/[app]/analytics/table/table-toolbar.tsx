@@ -1,7 +1,7 @@
 'use client'
 
 import { Table } from '@tanstack/react-table'
-import { X } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import { ChangeEvent } from 'react'
 
 import { Button } from '@/ui/button'
@@ -35,7 +35,7 @@ export const TableToolbar = <TData,>({ table }: Props<TData>) => {
         {isFiltered && (
           <Button variant='ghost' onClick={() => table.resetColumnFilters()}>
             Limpar
-            <X className='ml-2 size-4' />
+            <XIcon className='ml-2 size-4' />
           </Button>
         )}
       </div>

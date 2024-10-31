@@ -1,7 +1,7 @@
 'use client'
 
 import { dayjs } from '@advents/common'
-import { Calendar as CalendarIcon, ChevronDown } from 'lucide-react'
+import { CalendarIcon, ChevronDownIcon } from 'lucide-react'
 import * as React from 'react'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -66,7 +66,7 @@ export const DatePicker = () => {
             )}
           </div>
 
-          <ChevronDown className='ml-2 size-4' />
+          <ChevronDownIcon className='ml-2 size-4' />
         </Button>
       </PopoverTrigger>
 

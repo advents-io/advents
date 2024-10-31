@@ -3,7 +3,7 @@
 import { dayjs } from '@advents/common'
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowDown, ArrowUp, CopyIcon } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
@@ -191,8 +191,12 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
                 roasIsNegative && 'font-medium text-red-500',
               )}
             >
-              {roasIsPositive && <ArrowUp className='size-3 text-green-600' strokeWidth={2.5} />}
-              {roasIsNegative && <ArrowDown className='size-3 text-red-500' strokeWidth={2.5} />}
+              {roasIsPositive && (
+                <ArrowUpIcon className='size-3 text-green-600' strokeWidth={2.5} />
+              )}
+              {roasIsNegative && (
+                <ArrowDownIcon className='size-3 text-red-500' strokeWidth={2.5} />
+              )}
               {`${formatedRoasNumber}%`}
             </span>
           ) : (

@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, HelpCircleIcon } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, HelpCircleIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/tailwind'
@@ -61,10 +61,10 @@ export const MetricCard = ({
 
             <div className='flex items-center gap-1'>
               {increaseIsPositive && (
-                <ArrowUp className='size-3 text-green-600' strokeWidth={2.5} />
+                <ArrowUpIcon className='size-3 text-green-600' strokeWidth={2.5} />
               )}
               {increaseIsNegative && (
-                <ArrowDown className='size-3 text-red-500' strokeWidth={2.5} />
+                <ArrowDownIcon className='size-3 text-red-500' strokeWidth={2.5} />
               )}
 
               <p className='text-xs text-muted-foreground'>

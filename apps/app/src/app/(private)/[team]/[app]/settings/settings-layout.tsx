@@ -2,7 +2,7 @@
 
 import { routes } from '@advents/common'
 import { SelectGroup } from '@radix-ui/react-select'
-import { Code, SettingsIcon } from 'lucide-react'
+import { CodeIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -35,7 +35,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
       href: routes.SETTINGS.path(team, app),
     },
     {
-      icon: Code,
+      icon: CodeIcon,
       title: 'SDK',
       href: routes.SETTINGS_SDK.path(team, app),
     },

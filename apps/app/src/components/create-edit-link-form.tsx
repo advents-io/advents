@@ -15,7 +15,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus, Save } from 'lucide-react'
+import { PlusIcon, SaveIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -512,12 +512,12 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
               <LoadingSpinner loading={isExecuting}>
                 {linkId ? (
                   <>
-                    <Save className='size-4' />
+                    <SaveIcon className='size-4' />
                     Salvar
                   </>
                 ) : (
                   <>
-                    <Plus className='size-4' />
+                    <PlusIcon className='size-4' />
                     Criar link
                   </>
                 )}

@@ -2,7 +2,7 @@
 
 import { GetAppAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
-import { DollarSign, Download, MousePointerClick, RedoDot } from 'lucide-react'
+import { DollarSignIcon, DownloadIcon, MousePointerClickIcon, RedoDotIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
 import { api } from '@/lib/api'
@@ -45,7 +45,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         title='Cliques'
         value={clicks}
         increase={data?.clicksIncrease}
-        icon={<MousePointerClick className='size-4 text-muted-foreground' />}
+        icon={<MousePointerClickIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
       />
 
@@ -53,7 +53,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         title='Instalações'
         value={installs}
         increase={data?.installsIncrease}
-        icon={<Download className='size-4 text-muted-foreground' />}
+        icon={<DownloadIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
       />
 
@@ -61,7 +61,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         title='Cliques para Instalações'
         value={cti}
         increase={data?.ctiIncrease}
-        icon={<RedoDot className='size-4 text-muted-foreground' />}
+        icon={<RedoDotIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
         tooltip='Taxa de conversão de cliques para instalações.'
       />
@@ -70,7 +70,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         title='Receita'
         value={revenue}
         increase={data?.revenueIncrease}
-        icon={<DollarSign className='size-4 text-muted-foreground' />}
+        icon={<DollarSignIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
       />
     </div>

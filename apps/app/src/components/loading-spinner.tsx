@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { Loader2Icon } from 'lucide-react'
 
 import { cn } from '@/lib/tailwind'
 
@@ -22,7 +22,7 @@ export const LoadingSpinner = ({ children, loading, className, ...rest }: Props)
       </div>
       {loading && (
         <div className='absolute inset-0 flex items-center justify-center'>
-          <Loader2 className='size-4 animate-spin' />
+          <Loader2Icon className='size-4 animate-spin' />
         </div>
       )}
     </div>

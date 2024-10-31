@@ -1,6 +1,6 @@
 'use client'
 
-import { Plus } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { CreateEditLinkForm } from '@/components/create-edit-link-form'
@@ -16,7 +16,7 @@ export const CreateLinkDialog = ({ children, className }: HTMLAttributes<HTMLDiv
         <div className={className}>
           {children || (
             <Button size='lg'>
-              <Plus className='mr-2 size-4' />
+              <PlusIcon className='mr-2 size-4' />
               Criar link
             </Button>
           )}

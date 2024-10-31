@@ -1,4 +1,4 @@
-import { AlertCircle } from 'lucide-react'
+import { AlertCircleIcon } from 'lucide-react'
 import React from 'react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
@@ -14,7 +14,7 @@ export const ErrorAlert = ({ error, className }: Props) => {
 
   return (
     <Alert variant='destructive' className={className}>
-      <AlertCircle className='size-4' />
+      <AlertCircleIcon className='size-4' />
       <AlertTitle>Ops!</AlertTitle>
       <AlertDescription>{error}</AlertDescription>
     </Alert>

@@ -1,5 +1,5 @@
 import { CONTACT_EMAIL, DOCS_URL, MEET_SCHEDULER_URL, SUPPORT_WHATSAPP } from '@advents/common'
-import { BookOpen, Mail, Video } from 'lucide-react'
+import { BookOpenIcon, MailIcon, VideoIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -27,7 +27,7 @@ export const ContactDropdown = ({ children, showDocs = true, modal = true, align
         {showDocs && (
           <Link href={DOCS_URL} target='_blank'>
             <DropdownMenuItem>
-              <BookOpen className='mr-2 size-4' />
+              <BookOpenIcon className='mr-2 size-4' />
               Documentação
             </DropdownMenuItem>
           </Link>
@@ -42,14 +42,14 @@ export const ContactDropdown = ({ children, showDocs = true, modal = true, align
 
         <Link href={`mailto:${CONTACT_EMAIL}`} target='_blank'>
           <DropdownMenuItem>
-            <Mail className='mr-2 size-4' />
+            <MailIcon className='mr-2 size-4' />
             E-mail
           </DropdownMenuItem>
         </Link>
 
         <Link href={MEET_SCHEDULER_URL} target='_blank'>
           <DropdownMenuItem>
-            <Video className='mr-2 size-4' />
+            <VideoIcon className='mr-2 size-4' />
             Agendar Reunião
           </DropdownMenuItem>
         </Link>

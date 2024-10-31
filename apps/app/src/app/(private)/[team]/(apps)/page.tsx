@@ -1,7 +1,7 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { supabaseServer } from '@advents/supabase'
-import { PlusIcon, Smartphone } from 'lucide-react'
+import { PlusIcon, SmartphoneIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -85,7 +85,7 @@ export default async function Apps(props: { params: Promise<{ team: string }> })
       {apps.length === 0 ? (
         <EmptyScreen>
           <EmptyScreenIcon>
-            <Smartphone />
+            <SmartphoneIcon />
           </EmptyScreenIcon>
 
           <EmptyScreenTitle>Apps</EmptyScreenTitle>

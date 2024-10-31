@@ -1,5 +1,11 @@
 import { Column } from '@tanstack/react-table'
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, CircleHelpIcon, EyeOff } from 'lucide-react'
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChevronsUpDownIcon,
+  CircleHelpIcon,
+  EyeOffIcon,
+} from 'lucide-react'
 
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
@@ -57,7 +63,7 @@ export const TableColumnHeader = <TData, TValue>({
                 ) : column.getIsSorted() === 'asc' ? (
                   <ArrowUpIcon className='ml-2 size-4' />
                 ) : (
-                  <ChevronsUpDown className='ml-2 size-3 text-muted-foreground' />
+                  <ChevronsUpDownIcon className='ml-2 size-3 text-muted-foreground' />
                 )}
               </Button>
             </TooltipTrigger>
@@ -81,7 +87,7 @@ export const TableColumnHeader = <TData, TValue>({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-          <EyeOff className='mr-2 size-3.5' />
+          <EyeOffIcon className='mr-2 size-3.5' />
           Ocultar
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { Link } from 'lucide-react'
+import { LinkIcon } from 'lucide-react'
 
 import {
   EmptyScreen,
@@ -61,7 +61,7 @@ export const LinkList = async ({ page, appSlug }: Props) => {
       {links.length === 0 && (
         <EmptyScreen>
           <EmptyScreenIcon>
-            <Link />
+            <LinkIcon />
           </EmptyScreenIcon>
 
           <EmptyScreenTitle>Links</EmptyScreenTitle>

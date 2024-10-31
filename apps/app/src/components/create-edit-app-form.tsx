@@ -13,7 +13,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Save } from 'lucide-react'
+import { SaveIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -279,7 +279,7 @@ export const CreateEditAppForm = () => {
 
           <Button type='submit' className='w-full md:w-auto' disabled={busy}>
             <LoadingSpinner loading={busy}>
-              <Save className='size-4' />
+              <SaveIcon className='size-4' />
               Salvar
             </LoadingSpinner>
           </Button>

@@ -1,6 +1,6 @@
 import { routes } from '@advents/common'
 import { App } from '@advents/db'
-import { CirclePlus } from 'lucide-react'
+import { CirclePlusIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -86,7 +86,7 @@ export const AppSelector = ({ apps }: Props) => {
 
         <SelectItem value='new-app'>
           <div className='flex items-center gap-2'>
-            <CirclePlus size={25} strokeWidth={1.5} />
+            <CirclePlusIcon size={25} strokeWidth={1.5} />
             <span className='truncate'>Criar app</span>
           </div>
         </SelectItem>

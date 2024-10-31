@@ -1,4 +1,4 @@
-import { Copy, Download, ImageIcon, Loader2 } from 'lucide-react'
+import { CopyIcon, DownloadIcon, ImageIcon, Loader2Icon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -151,7 +151,7 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
               {!isLogoLoaded && (
                 <div className='absolute inset-0 flex items-center justify-center'>
                   <div className='flex size-[60px] items-center justify-center bg-white'>
-                    <Loader2 className='size-8 animate-spin' />
+                    <Loader2Icon className='size-8 animate-spin' />
                   </div>
                 </div>
               )}
@@ -178,14 +178,14 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
 
             <div className='flex w-full justify-between'>
               <Button className='w-36' onClick={copyToClipboard}>
-                <Copy className='mr-2 size-4' />
+                <CopyIcon className='mr-2 size-4' />
                 Copiar
               </Button>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className='w-36'>
-                    <Download className='mr-2 size-4' />
+                    <DownloadIcon className='mr-2 size-4' />
                     Baixar
                   </Button>
                 </DropdownMenuTrigger>

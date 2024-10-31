@@ -2,7 +2,7 @@
 
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { Table } from '@tanstack/react-table'
-import { EyeOff } from 'lucide-react'
+import { EyeOffIcon } from 'lucide-react'
 
 import { Button } from '@/ui/button'
 import {
@@ -22,7 +22,7 @@ export const TableViewOptions = <TData,>({ table }: Props<TData>) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='outline' size='icon' className='ml-auto'>
-          <EyeOff className='size-4' />
+          <EyeOffIcon className='size-4' />
         </Button>
       </DropdownMenuTrigger>
 

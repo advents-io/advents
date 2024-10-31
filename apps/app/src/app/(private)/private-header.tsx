@@ -3,7 +3,7 @@
 import { DOCS_URL, routes } from '@advents/common'
 import { App } from '@advents/db'
 import { signOutAction, useAction } from '@advents/mutations'
-import { LogOut, MoveUpRight, Slash, User } from 'lucide-react'
+import { LogOutIcon, MoveUpRightIcon, SlashIcon, UserIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -55,7 +55,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
               </BreadcrumbItem>
 
               <BreadcrumbSeparator className='hidden md:flex'>
-                <Slash className='text-gray-300' />
+                <SlashIcon className='text-gray-300' />
               </BreadcrumbSeparator>
 
               <BreadcrumbItem>
@@ -75,20 +75,20 @@ export const PrivateHeader = ({ email, apps }: Props) => {
           <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Documentação
-              <MoveUpRight className='ml-1 size-4' />
+              <MoveUpRightIcon className='ml-1 size-4' />
             </Button>
           </Link>
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
               <Button variant='outline' size='icon' className='size-8 rounded-full'>
-                <User className='size-4' />
+                <UserIcon className='size-4' />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel className='flex items-center gap-2 font-normal text-muted-foreground'>
-                <User className='size-4' />
+                <UserIcon className='size-4' />
                 {email}
               </DropdownMenuLabel>
 
@@ -100,7 +100,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
                 onSelect={e => e.preventDefault()}
               >
                 <LoadingSpinner loading={isExecuting} className='justify-start'>
-                  <LogOut className='mr-2 size-4' />
+                  <LogOutIcon className='mr-2 size-4' />
                   Sair
                 </LoadingSpinner>
               </DropdownMenuItem>

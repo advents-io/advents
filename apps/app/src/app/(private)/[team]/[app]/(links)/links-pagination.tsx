@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { Button } from '@/ui/button'
@@ -41,7 +41,7 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
 
           <div className='flex gap-2'>
             <Button size='sm' variant='secondary' disabled={page === 1} onClick={() => addPage(-1)}>
-              <ChevronLeft className='size-5 sm:size-3' />
+              <ChevronLeftIcon className='size-5 sm:size-3' />
               <span className='ml-1 hidden sm:flex'>Anterior</span>
             </Button>
 
@@ -52,7 +52,7 @@ export const LinksPagination = ({ page, pageSize, total }: Props) => {
               onClick={() => addPage(1)}
             >
               <span className='mr-1 hidden sm:flex'>Próximo</span>
-              <ChevronRight className='size-5 sm:size-3' />
+              <ChevronRightIcon className='size-5 sm:size-3' />
             </Button>
           </div>
         </div>

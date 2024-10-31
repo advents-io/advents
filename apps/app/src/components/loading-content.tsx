@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { Loader2Icon } from 'lucide-react'
 
 import { cn } from '@/lib/tailwind'
 
@@ -10,7 +10,7 @@ interface Props {
 export const LoadingContent = ({ children, loading }: Props) => {
   return (
     <div className={cn('flex items-center gap-2 px-3', loading && 'px-0')}>
-      {loading && <Loader2 className='size-4 animate-spin' />}
+      {loading && <Loader2Icon className='size-4 animate-spin' />}
       {children}
     </div>
   )

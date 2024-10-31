@@ -1,4 +1,4 @@
-import { EllipsisVertical, Pencil, QrCode, Trash2 } from 'lucide-react'
+import { EllipsisVerticalIcon, PencilIcon, QrCodeIcon, Trash2Icon } from 'lucide-react'
 import { HTMLAttributes, useState } from 'react'
 
 import { DeleteLinkDialog } from '@/components/delete-link-dialog'
@@ -35,7 +35,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' {...props}>
-          <EllipsisVertical className='size-4' />
+          <EllipsisVerticalIcon className='size-4' />
         </Button>
       </DropdownMenuTrigger>
 
@@ -43,7 +43,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         <EditLinkDialog linkId={id} closeDropdown={() => setOpen(false)}>
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <Pencil className='mr-2 size-4' />
+              <PencilIcon className='mr-2 size-4' />
               Editar
             </DropdownMenuItem>
           </DialogTrigger>
@@ -57,7 +57,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         >
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <QrCode className='mr-2 size-4' />
+              <QrCodeIcon className='mr-2 size-4' />
               <span>QR Code</span>
             </DropdownMenuItem>
           </DialogTrigger>
@@ -66,7 +66,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         <DeleteLinkDialog linkId={id} shortLink={shortLink} closeDropdown={() => setOpen(false)}>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <Trash2 className='mr-2 size-4 text-destructive' />
+              <Trash2Icon className='mr-2 size-4 text-destructive' />
               <span className='text-destructive'>Excluir</span>
             </DropdownMenuItem>
           </AlertDialogTrigger>
