@@ -3,8 +3,10 @@
 import { dayjs } from '@advents/common'
 import { GetLinksAnalyticsOutput } from '@advents/queries'
 import { ColumnDef } from '@tanstack/react-table'
+import { ArrowDown, ArrowUp } from 'lucide-react'
 
 import { LinkItemCopy } from '@/components/link-item-copy'
+import { cn } from '@/lib/tailwind'
 
 import { TableColumnHeader } from './table-column-header'
 import { TableRowCell } from './table-row-cell'
@@ -148,8 +150,27 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           ? roas.toString()
           : roas.toFixed(2).replace('.', ',')
 
+      const roasIsPositive = !!roas && roas > 0
+      const roasIsNegative = !!roas && roas < 0
+
       return (
-        <TableRowCell border>{formatedRoasNumber ? `${formatedRoasNumber}%` : ''}</TableRowCell>
+        <TableRowCell border>
+          {formatedRoasNumber ? (
+            <span
+              className={cn(
+                'flex items-center gap-1',
+                roasIsPositive && 'font-medium text-green-600',
+                roasIsNegative && 'font-medium text-red-500',
+              )}
+            >
+              {roasIsPositive && <ArrowUp className='size-3 text-green-600' strokeWidth={2.5} />}
+              {roasIsNegative && <ArrowDown className='size-3 text-red-500' strokeWidth={2.5} />}
+              {`${formatedRoasNumber}%`}
+            </span>
+          ) : (
+            ''
+          )}
+        </TableRowCell>
       )
     },
   },

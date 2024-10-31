@@ -60,8 +60,12 @@ export const MetricCard = ({
             <p className='text-2xl font-bold'>{formatedValue}</p>
 
             <div className='flex items-center gap-1'>
-              {increaseIsPositive && <ArrowUp className='size-3 text-green-600' />}
-              {increaseIsNegative && <ArrowDown className='size-3 text-red-500' />}
+              {increaseIsPositive && (
+                <ArrowUp className='size-3 text-green-600' strokeWidth={2.5} />
+              )}
+              {increaseIsNegative && (
+                <ArrowDown className='size-3 text-red-500' strokeWidth={2.5} />
+              )}
 
               <p className='text-xs text-muted-foreground'>
                 <span
