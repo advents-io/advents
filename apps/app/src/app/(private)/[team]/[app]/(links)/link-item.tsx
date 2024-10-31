@@ -34,14 +34,14 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   return (
     <Card>
       <CardContent className='px-6 py-4'>
-        <div className='flex min-h-16'>
-          <div className='flex flex-col justify-center gap-2'>
-            {link.title && <span className='font-medium'>{link.title}</span>}
+        <div className='flex min-h-16 gap-4'>
+          <div className='flex flex-col justify-center gap-2 truncate'>
+            {link.title && <span className='max-w-md truncate font-medium'>{link.title}</span>}
 
             <div className='flex items-center gap-2'>
               <Link
                 href={httpShortLink}
-                className='font-mono text-sm text-muted-foreground'
+                className='truncate font-mono text-sm text-muted-foreground'
                 target='_blank'
               >
                 {link.domain}/<span className='font-semibold text-foreground'>{link.slug}</span>
@@ -67,7 +67,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
           <div className='flex flex-1 items-center justify-end gap-2'>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className='mr-2 hidden text-sm text-muted-foreground lg:flex'>
+                <span className='mr-2 hidden truncate text-sm text-muted-foreground md:flex'>
                   {formatDate(link.createdAt)}
                 </span>
               </TooltipTrigger>
