@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 import { Link as LinkDb, prisma } from '..'
 import { APP, LINKS } from './data'
 
-type Link = Omit<LinkDb, 'clickCount' | 'installCount'>
+type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount'>
 
 async function seed() {
   console.log('1/5 - Creating member...')

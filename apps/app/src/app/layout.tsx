@@ -4,7 +4,10 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Suspense } from 'react'
 
+import { PostHogPageView } from '@/lib/posthog/page-view'
+import { PostHogProvider } from '@/lib/posthog/provider'
 import { Toaster } from '@/ui/sonner'
 
 import { HelpButton } from './help-button'
@@ -75,13 +78,18 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='pt-BR' className={interFont.className}>
-      <body className='relative flex min-h-screen flex-col bg-gray-50'>
-        <Providers>{children}</Providers>
-        <HelpButton />
-        <Toaster richColors closeButton theme='light' />
-        <SpeedInsights debug={false} />
-        <Analytics debug={false} />
-      </body>
+      <PostHogProvider>
+        <body className='relative flex min-h-screen flex-col bg-gray-50'>
+          <Suspense>
+            <PostHogPageView />
+          </Suspense>
+          <Providers>{children}</Providers>
+          <HelpButton />
+          <Toaster richColors closeButton theme='light' />
+          <SpeedInsights debug={false} />
+          <Analytics debug={false} />
+        </body>
+      </PostHogProvider>
     </html>
   )
 }
