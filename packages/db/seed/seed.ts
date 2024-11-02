@@ -96,7 +96,7 @@ const createApp = async (teamId: string, userId: string) => {
 }
 
 const createLinks = async (appId: string, userId: string) => {
-  const LINKS_TO_CREATE = 20
+  const LINKS_TO_CREATE = 5
 
   if (LINKS_TO_CREATE > LINKS.length) {
     throw new Error('Links count to create is greater than the number of available links data.')
@@ -207,28 +207,26 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
 }
 
 const grantAccessAndPrivileges = async () => {
-  // Grant all privileges to anon, authenticated and service_role roles
+  await prisma.$executeRaw`
+    GRANT USAGE ON SCHEMA public TO service_role;`
 
   await prisma.$executeRaw`
-    GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;`
+    GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;`
 
   await prisma.$executeRaw`
-    GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;`
+    GRANT ALL ON ALL ROUTINES IN SCHEMA public TO service_role;`
 
   await prisma.$executeRaw`
-    GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;`
+    GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;`
 
   await prisma.$executeRaw`
-    GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO service_role;`
 
   await prisma.$executeRaw`
-    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON ROUTINES TO service_role;`
 
   await prisma.$executeRaw`
-    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;`
-
-  await prisma.$executeRaw`
-    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;`
+    ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO service_role;`
 }
 
 const createIncrementLinkClicksFunction = async () => {

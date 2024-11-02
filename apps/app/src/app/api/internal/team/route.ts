@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { supabaseServerAdmin } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const data = teamSchema.parse(body)
 
-    const supabase = await supabaseServerAdmin()
+    const supabase = await supabaseServer()
 
     const {
       data: { users },
