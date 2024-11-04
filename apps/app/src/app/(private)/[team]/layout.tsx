@@ -5,21 +5,18 @@ import { redirect } from 'next/navigation'
 
 export default async function Layout(props: {
   children: React.ReactNode
-  params: Promise<{ team: string; app: string }>
+  params: Promise<{ team: string }>
 }) {
   const user = await getSessionUser()
 
-  const params = await props.params
+  const { team: teamSlug } = await props.params
 
-  const app = await prisma.app.findFirst({
+  const team = await prisma.team.findFirst({
     where: {
-      slug: params.app,
-      team: {
-        slug: params.team,
-        members: {
-          some: {
-            userId: user?.id,
-          },
+      slug: teamSlug,
+      members: {
+        some: {
+          userId: user?.id,
         },
       },
     },
@@ -28,8 +25,8 @@ export default async function Layout(props: {
     },
   })
 
-  if (!app) {
-    redirect(routes.APPS.path(params.team))
+  if (!team) {
+    redirect(routes.TEAMS.path)
   }
 
   return props.children

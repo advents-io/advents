@@ -4,7 +4,6 @@ import { getSessionUser } from '@advents/supabase/server'
 import { PlusIcon, SmartphoneIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 
 import {
   EmptyScreen,
@@ -23,32 +22,20 @@ export const metadata: Metadata = {
 }
 
 export default async function Page(props: { params: Promise<{ team: string }> }) {
-  const params = await props.params
+  const { team } = await props.params
 
   const user = await getSessionUser()
 
-  const team = await prisma.team.findFirst({
-    where: {
-      members: {
-        some: {
-          userId: user?.id,
-        },
-      },
-      slug: params.team,
-    },
-    select: {
-      id: true,
-      slug: true,
-    },
-  })
-
-  if (!team) {
-    return redirect(routes.TEAMS.path)
-  }
-
   const apps = await prisma.app.findMany({
     where: {
-      teamId: team.id,
+      team: {
+        slug: team,
+        members: {
+          some: {
+            userId: user?.id,
+          },
+        },
+      },
     },
     select: {
       name: true,
@@ -70,7 +57,7 @@ export default async function Page(props: { params: Promise<{ team: string }> })
     <PageContainer
       title='Apps'
       actions={
-        <Link href={routes.APPS_NEW.path(team.slug)}>
+        <Link href={routes.APPS_NEW.path(team)}>
           <Button size='lg'>
             <PlusIcon className='mr-2 size-4' />
             Criar app
@@ -90,14 +77,14 @@ export default async function Page(props: { params: Promise<{ team: string }> })
             Crie seu primeiro app para começar a utilizar a Advents!
           </EmptyScreenDescription>
 
-          <Link href={routes.APPS_NEW.path(team.slug)}>
+          <Link href={routes.APPS_NEW.path(team)}>
             <EmptyScreenButton>Criar novo app</EmptyScreenButton>
           </Link>
         </EmptyScreen>
       ) : (
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           {apps.map((app, index) => (
-            <AppCard key={index} app={app} teamSlug={team.slug} />
+            <AppCard key={index} app={app} teamSlug={team} />
           ))}
         </div>
       )}

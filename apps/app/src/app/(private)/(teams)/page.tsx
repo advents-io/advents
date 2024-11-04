@@ -54,6 +54,11 @@ export default async function Page() {
     where: {
       team: {
         id: team.id,
+        members: {
+          some: {
+            userId: user?.id,
+          },
+        },
       },
     },
     select: { slug: true },

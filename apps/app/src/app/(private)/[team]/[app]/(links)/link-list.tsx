@@ -17,9 +17,10 @@ import { LinksPagination } from './links-pagination'
 interface Props {
   page: number
   appSlug: string
+  teamSlug: string
 }
 
-export const LinkList = async ({ page, appSlug }: Props) => {
+export const LinkList = async ({ page, appSlug, teamSlug }: Props) => {
   const pageSize = 30
 
   const [links, totalLinks] = await prisma.$transaction([
@@ -27,6 +28,9 @@ export const LinkList = async ({ page, appSlug }: Props) => {
       where: {
         app: {
           slug: appSlug,
+          team: {
+            slug: teamSlug,
+          },
         },
       },
       select: {
@@ -47,10 +51,14 @@ export const LinkList = async ({ page, appSlug }: Props) => {
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
+
     prisma.link.count({
       where: {
         app: {
           slug: appSlug,
+          team: {
+            slug: teamSlug,
+          },
         },
       },
     }),

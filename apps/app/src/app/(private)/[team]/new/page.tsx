@@ -1,8 +1,4 @@
-import { routes } from '@advents/common'
-import { prisma } from '@advents/db'
-import { getSessionUser } from '@advents/supabase/server'
 import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 
 import { CreateEditAppForm } from '@/components/create-edit-app-form'
 import { PageContainer } from '@/components/page-container'
@@ -12,30 +8,7 @@ export const metadata: Metadata = {
   title: 'Novo app | Advents',
 }
 
-export default async function Page(props: { params: Promise<{ team: string }> }) {
-  const { team: teamSlug } = await props.params
-
-  const user = await getSessionUser()
-
-  const team = await prisma.team.findFirst({
-    where: {
-      slug: teamSlug,
-      members: {
-        some: {
-          userId: user?.id,
-        },
-      },
-    },
-    select: {
-      id: true,
-      slug: true,
-    },
-  })
-
-  if (!team) {
-    return redirect(routes.TEAMS.path)
-  }
-
+export default async function Page() {
   return (
     <PageContainer title='Novo app'>
       <Card>

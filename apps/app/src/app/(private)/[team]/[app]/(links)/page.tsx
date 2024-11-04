@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function Page(props: {
   searchParams: Promise<{ page?: string }>
-  params: Promise<{ app: string }>
+  params: Promise<{ app: string; team: string }>
 }) {
   const params = await props.params
   const searchParams = await props.searchParams
@@ -22,7 +22,7 @@ export default async function Page(props: {
   return (
     <PageContainer title='Links' actions={<CreateLinkDialog />}>
       <Suspense fallback={<LinkListLoading />}>
-        <LinkList page={page} appSlug={params.app} />
+        <LinkList page={page} appSlug={params.app} teamSlug={params.team} />
       </Suspense>
     </PageContainer>
   )
