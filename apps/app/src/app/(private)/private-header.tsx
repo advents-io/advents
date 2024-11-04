@@ -2,15 +2,14 @@
 
 import { DOCS_URL, routes } from '@advents/common'
 import { App } from '@advents/db'
-import { signOutAction, useAction } from '@advents/mutations'
+import { supabaseClient } from '@advents/supabase/client'
 import { LogOutIcon, MoveUpRightIcon, SlashIcon, UserIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
-import { LoadingSpinner } from '@/components/loading-spinner'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,8 +36,14 @@ interface Props {
 }
 
 export const PrivateHeader = ({ email, apps }: Props) => {
-  const { execute: signOut, isExecuting } = useAction(signOutAction)
   const { app, team } = useParams<{ team: string; app: string }>()
+  const router = useRouter()
+
+  const signOut = () => {
+    const supabase = supabaseClient()
+    supabase.auth.signOut()
+    router.push(routes.SIGN_IN.path)
+  }
 
   const includeTabs = !!team && !!app
 
@@ -94,15 +99,9 @@ export const PrivateHeader = ({ email, apps }: Props) => {
 
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                disabled={isExecuting}
-                onClick={() => signOut()}
-                onSelect={e => e.preventDefault()}
-              >
-                <LoadingSpinner loading={isExecuting} className='justify-start'>
-                  <LogOutIcon className='mr-2 size-4' />
-                  Sair
-                </LoadingSpinner>
+              <DropdownMenuItem onClick={() => signOut()} onSelect={e => e.preventDefault()}>
+                <LogOutIcon className='mr-2 size-4' />
+                Sair
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

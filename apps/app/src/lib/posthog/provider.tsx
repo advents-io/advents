@@ -1,5 +1,6 @@
 'use client'
 
+import { supabaseClient } from '@advents/supabase/client'
 import posthog from 'posthog-js'
 import { PostHogProvider as PostHogProviderBase } from 'posthog-js/react'
 import { useEffect } from 'react'
@@ -20,6 +21,31 @@ export const PostHogProvider = ({ children }: { children: React.ReactNode }) => 
         enable_heatmaps: true,
       })
     }
+  }, [])
+
+  useEffect(() => {
+    const supabase = supabaseClient()
+
+    const subscribe = supabase.auth.onAuthStateChange((event, session) => {
+      switch (event) {
+        case 'SIGNED_IN':
+          if (session?.user) {
+            posthog.identify(session.user.id, { email: session.user.email })
+          }
+
+          break
+
+        case 'SIGNED_OUT':
+          posthog.reset()
+
+          break
+
+        default:
+          break
+      }
+    })
+
+    return () => subscribe.data.subscription.unsubscribe()
   }, [])
 
   return <PostHogProviderBase client={posthog}>{children}</PostHogProviderBase>
