@@ -3,18 +3,15 @@
 import { GetAppQrCodeUrlOutput, GetLinksAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
 import {
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from '@tanstack/react-table'
-import { HTMLAttributes, useState } from 'react'
+import { HTMLAttributes } from 'react'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import {
@@ -50,9 +47,6 @@ export const Table = (props: Props) => (
 )
 
 const TableComp = ({ appSlug, teamSlug, className }: Props) => {
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
   const { links, setLinks } = useAnalyticsTableLinks()
 
   const [{ startDate, endDate }] = useStartEndDate()
@@ -77,6 +71,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
 
       return links
     },
+    refetchOnWindowFocus: false,
   })
 
   const { data: qrCodeUrl } = useQuery({
@@ -95,14 +90,6 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const table = useReactTable({
     data: links,
     columns: tableColumns,
-    state: {
-      sorting,
-      columnVisibility,
-      columnFilters,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -134,7 +121,24 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isFetching ? (
+              <>
+                {Array.from({ length: 20 }).map((_, index) => (
+                  <TableRow key={index}>
+                    {Array.from({ length: tableColumns.length }).map((_, index) => (
+                      <TableCell key={index} className='p-0'>
+                        {flexRender(
+                          <TableRowCell border={index !== tableColumns.length - 1}>
+                            <Skeleton className='h-[24px] w-full' />
+                          </TableRowCell>,
+                          {},
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map(cell => (
@@ -163,23 +167,6 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                   </TableCell>
                 </TableRow>
               ))
-            ) : isFetching ? (
-              <>
-                {Array.from({ length: 20 }).map((_, index) => (
-                  <TableRow key={index}>
-                    {Array.from({ length: tableColumns.length }).map((_, index) => (
-                      <TableCell key={index} className='p-0'>
-                        {flexRender(
-                          <TableRowCell border={index !== tableColumns.length - 1}>
-                            <Skeleton className='h-[24px] w-full' />
-                          </TableRowCell>,
-                          {},
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </>
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className='h-24 text-center'>
