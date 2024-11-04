@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 

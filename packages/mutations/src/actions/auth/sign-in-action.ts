@@ -1,7 +1,7 @@
 'use server'
 
 import { LOCALHOST_APP_DOMAIN } from '@advents/common'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { headers } from 'next/headers'
 
 import { ActionError } from '../../action-errors'

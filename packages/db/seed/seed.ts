@@ -1,5 +1,5 @@
 import { dayjs, fetchUrlOgImage, nanoid } from '@advents/common'
-import { supabaseServerAdmin } from '@advents/supabase'
+import { supabaseServerAdmin } from '@advents/supabase/server'
 import { faker } from '@faker-js/faker'
 
 import { Link as LinkDb, prisma } from '..'

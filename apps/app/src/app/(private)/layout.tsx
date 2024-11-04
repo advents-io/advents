@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 
 import { PrivateHeader } from './private-header'
 

@@ -1,5 +1,5 @@
 import { routes } from '@advents/common'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {

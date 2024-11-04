@@ -1,5 +1,5 @@
 import { routes } from '@advents/common'
-import { supabaseMiddleware } from '@advents/supabase'
+import { supabaseMiddleware } from '@advents/supabase/server'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export const appAuthMiddleware = async (req: NextRequest) => {

@@ -1,4 +1,4 @@
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { Prisma } from '@prisma/client'
 import { createSafeActionClient } from 'next-safe-action'
 

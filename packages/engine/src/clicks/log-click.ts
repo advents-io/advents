@@ -1,5 +1,5 @@
 import { Click as DbClick } from '@advents/db'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { NextRequest, userAgent } from 'next/server'
 
 import { getGeolocation } from '../utils/geolocation'

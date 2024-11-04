@@ -7,7 +7,7 @@ import {
   WEBSITE_URL,
 } from '@advents/common'
 import { Link } from '@advents/db'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { logClick } from './log-click'

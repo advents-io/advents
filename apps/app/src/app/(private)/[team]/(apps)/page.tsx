@@ -1,6 +1,6 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { supabaseServer } from '@advents/supabase'
+import { supabaseServer } from '@advents/supabase/server'
 import { PlusIcon, SmartphoneIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
