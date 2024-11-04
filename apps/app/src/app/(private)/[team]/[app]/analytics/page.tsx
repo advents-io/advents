@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Analytics | Advents',
 }
 
-export default async function Analytics(props: { params: Promise<{ app: string; team: string }> }) {
+export default async function Page(props: { params: Promise<{ app: string; team: string }> }) {
   const params = await props.params
 
   return (

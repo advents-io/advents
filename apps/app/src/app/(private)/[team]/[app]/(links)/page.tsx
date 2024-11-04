@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Links | Advents',
 }
 
-export default async function Links(props: {
+export default async function Page(props: {
   searchParams: Promise<{ page?: string }>
   params: Promise<{ app: string }>
 }) {

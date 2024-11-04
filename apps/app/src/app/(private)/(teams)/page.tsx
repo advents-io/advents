@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: 'Equipe | Advents',
 }
 
-export default async function Teams() {
+export default async function Page() {
   const user = await getSessionUser()
 
   const team = await prisma.team.findFirst({

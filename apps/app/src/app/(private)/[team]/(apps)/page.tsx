@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: 'Apps | Advents',
 }
 
-export default async function Apps(props: { params: Promise<{ team: string }> }) {
+export default async function Page(props: { params: Promise<{ team: string }> }) {
   const params = await props.params
 
   const user = await getSessionUser()

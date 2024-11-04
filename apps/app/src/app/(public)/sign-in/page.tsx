@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Entrar | Advents',
 }
 
-export default async function SignIn() {
+export default async function Page() {
   return (
     <>
       <PublicHeader />

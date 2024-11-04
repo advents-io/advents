@@ -3,7 +3,7 @@ import { getSessionUser } from '@advents/supabase/server'
 
 import { PrivateHeader } from './private-header'
 
-export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   const user = await getSessionUser()
 
   const email = user?.email

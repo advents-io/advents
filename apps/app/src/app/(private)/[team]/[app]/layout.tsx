@@ -1,8 +1,9 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
+import { getSessionUser } from '@advents/supabase/server'
 import { redirect } from 'next/navigation'
 
-export default async function AppLayout(props: {
+export default async function Layout(props: {
   children: React.ReactNode
   params: Promise<{ team: string; app: string }>
 }) {
