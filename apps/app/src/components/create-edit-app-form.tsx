@@ -303,7 +303,11 @@ export const CreateEditAppForm = () => {
             </CardContent>
 
             <CardFooter>
-              <DeleteAppDialog appSlug={app} appName={form.formState.defaultValues?.name || ''}>
+              <DeleteAppDialog
+                appSlug={app}
+                appName={form.formState.defaultValues?.name || ''}
+                teamSlug={team}
+              >
                 <AlertDialogTrigger asChild>
                   <Button variant='destructive'>Excluir app</Button>
                 </AlertDialogTrigger>

@@ -21,6 +21,26 @@ export const createLinkAction = authActionClient
       appId,
     } = parsedInput
 
+    const app = await prisma.app.findUnique({
+      where: {
+        id: appId,
+        team: {
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!app) {
+      throw new ActionError('App não encontrado.')
+    }
+
     if (reqSlug) {
       const linkExists = await prisma.link.findUnique({
         select: { id: true },

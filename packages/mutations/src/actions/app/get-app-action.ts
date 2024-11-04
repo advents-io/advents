@@ -13,7 +13,7 @@ import {
 export const getAppAction = authActionClient
   .schema(getAppInputSchema)
   .outputSchema(getAppOutputSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug, teamSlug } = parsedInput
 
     const app = await prisma.app.findFirst({
@@ -21,6 +21,11 @@ export const getAppAction = authActionClient
         slug: appSlug,
         team: {
           slug: teamSlug,
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
         },
       },
       select: {
@@ -44,7 +49,7 @@ export const getAppAction = authActionClient
 
 export const getAppIdAction = authActionClient
   .schema(getAppInputSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug, teamSlug } = parsedInput
 
     const app = await prisma.app.findFirst({
@@ -52,6 +57,11 @@ export const getAppIdAction = authActionClient
         slug: appSlug,
         team: {
           slug: teamSlug,
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
         },
       },
       select: {
@@ -69,7 +79,7 @@ export const getAppIdAction = authActionClient
 export const getAppDefaultValuesAction = authActionClient
   .schema(getAppInputSchema)
   .outputSchema(getAppDefaultValuesOutputSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug, teamSlug } = parsedInput
 
     const app = await prisma.app.findFirst({
@@ -77,6 +87,11 @@ export const getAppDefaultValuesAction = authActionClient
         slug: appSlug,
         team: {
           slug: teamSlug,
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
         },
       },
       select: {

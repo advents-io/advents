@@ -12,7 +12,20 @@ export const editLinkAction = authActionClient
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { linkId, ...newLink } = parsedInput
 
-    const originalLink = await prisma.link.findUnique({ where: { id: linkId } })
+    const originalLink = await prisma.link.findUnique({
+      where: {
+        id: linkId,
+        app: {
+          team: {
+            members: {
+              some: {
+                userId: user.id,
+              },
+            },
+          },
+        },
+      },
+    })
 
     if (!originalLink) {
       throw new ActionError('Link não encontrado.')

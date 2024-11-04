@@ -20,11 +20,12 @@ import { Separator } from '@/ui/separator'
 
 interface Props {
   appSlug: string
+  teamSlug: string
   appName: string
   children: React.ReactNode
 }
 
-export const DeleteAppDialog = ({ children, appSlug, appName }: Props) => {
+export const DeleteAppDialog = ({ children, appSlug, appName, teamSlug }: Props) => {
   const [open, setOpen] = useState(false)
   const [confirmAppName, setConfirmAppName] = useState('')
 
@@ -77,7 +78,7 @@ export const DeleteAppDialog = ({ children, appSlug, appName }: Props) => {
           <Button
             variant='destructive'
             disabled={isExecuting || !confirmedAppName}
-            onClick={() => deleteApp({ appSlug })}
+            onClick={() => deleteApp({ appSlug, teamSlug })}
           >
             <LoadingContent loading={isExecuting}>Excluir app</LoadingContent>
           </Button>

@@ -13,21 +13,31 @@ export const editAppAction = authActionClient
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { id, ...newApp } = parsedInput
 
-    const originalApp = await prisma.app.findUnique({ where: { id } })
-
-    if (!originalApp) {
-      throw new ActionError('App não encontrado.')
-    }
-
-    const team = await prisma.team.findUnique({
+    const originalAppResult = await prisma.app.findUnique({
       where: {
-        id: originalApp.teamId,
+        id,
+        team: {
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
+        },
+      },
+      include: {
+        team: {
+          select: {
+            slug: true,
+          },
+        },
       },
     })
 
-    if (!team) {
-      throw new ActionError('Conta não encontrada.')
+    if (!originalAppResult) {
+      throw new ActionError('App não encontrado.')
     }
+
+    const { team, ...originalApp } = originalAppResult
 
     const slugChanged = newApp.slug !== originalApp.slug
 
@@ -36,7 +46,7 @@ export const editAppAction = authActionClient
         where: {
           slug_teamId: {
             slug: newApp.slug,
-            teamId: team.id,
+            teamId: originalApp.teamId,
           },
         },
       })

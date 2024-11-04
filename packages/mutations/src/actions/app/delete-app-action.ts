@@ -11,30 +11,39 @@ import { deleteAppInputSchema } from '../../schemas/input/app/delete-app-input'
 export const deleteAppAction = authActionClient
   .schema(deleteAppInputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug } = parsedInput
+    const { appSlug, teamSlug } = parsedInput
 
-    const team = await prisma.team.findFirst({
+    const app = await prisma.app.findFirst({
       where: {
-        members: {
-          some: {
-            userId: user.id,
+        slug: appSlug,
+        team: {
+          slug: teamSlug,
+          members: {
+            some: {
+              userId: user.id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        team: {
+          select: {
+            slug: true,
           },
         },
       },
     })
 
-    if (!team) {
-      throw new ActionError('Conta não encontrada.')
+    if (!app) {
+      throw new ActionError('App não encontrado.')
     }
 
     await prisma.app.delete({
       where: {
-        slug_teamId: {
-          slug: appSlug,
-          teamId: team.id,
-        },
+        id: app.id,
       },
     })
 
-    redirect(routes.APPS.path(team.slug))
+    redirect(routes.APPS.path(app.team.slug))
   })
