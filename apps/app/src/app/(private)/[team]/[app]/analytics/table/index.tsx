@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, useState } from 'react'
 
 import { LinkItemDropdown } from '@/components/link-item-dropdown'
 import {
@@ -47,6 +47,8 @@ export const Table = (props: Props) => (
 )
 
 const TableComp = ({ appSlug, teamSlug, className }: Props) => {
+  const [search, setSearch] = useState('')
+
   const { links, setLinks } = useAnalyticsTableLinks()
 
   const [{ startDate, endDate }] = useStartEndDate()
@@ -90,11 +92,22 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const table = useReactTable({
     data: links,
     columns: tableColumns,
+    state: {
+      globalFilter: search,
+    },
+    onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    globalFilterFn: row => {
+      const valuesToFilter: string[] = [row.original.title || '', row.original.slug]
+
+      return valuesToFilter.some(valueToFilter =>
+        valueToFilter.toLowerCase().startsWith(search.toLowerCase()),
+      )
+    },
   })
 
   return (

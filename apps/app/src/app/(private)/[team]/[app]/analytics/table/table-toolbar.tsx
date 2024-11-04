@@ -2,7 +2,6 @@
 
 import { Table } from '@tanstack/react-table'
 import { XIcon } from 'lucide-react'
-import { ChangeEvent } from 'react'
 
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
@@ -14,28 +13,26 @@ interface Props<TData> {
 }
 
 export const TableToolbar = <TData,>({ table }: Props<TData>) => {
-  const isFiltered = table.getState().columnFilters.length > 0
-  const filterValue = (table.getColumn('title')?.getFilterValue() as string) ?? ''
-
-  // TODO: implement filter in title and slug columns
-  const applyFilter = (event: ChangeEvent<HTMLInputElement>) => {
-    table.getColumn('title')?.setFilterValue(event.target.value)
+  const handleSetFilter = (value: string) => {
+    table.setGlobalFilter(value)
   }
+
+  const search = table.getState().globalFilter as string
 
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 items-center space-x-2'>
         <Input
           placeholder='Filtrar por título...'
-          value={filterValue}
-          onChange={applyFilter}
+          value={search}
+          onChange={event => handleSetFilter(event.target.value)}
           className='w-[150px] lg:w-[250px]'
         />
 
-        {isFiltered && (
-          <Button variant='ghost' onClick={() => table.resetColumnFilters()}>
+        {!!search && (
+          <Button variant='outline' className='border-dashed' onClick={() => handleSetFilter('')}>
+            <XIcon className='mr-2 size-4' />
             Limpar
-            <XIcon className='ml-2 size-4' />
           </Button>
         )}
       </div>
