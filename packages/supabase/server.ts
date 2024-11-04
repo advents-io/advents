@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, User } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -24,6 +24,16 @@ export const supabaseServer = async () => {
       },
     },
   )
+}
+
+export const getSessionUser = async (): Promise<User | null> => {
+  const supabase = await supabaseServer()
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  return session?.user || null
 }
 
 export const supabaseServerAdmin = async () => {
