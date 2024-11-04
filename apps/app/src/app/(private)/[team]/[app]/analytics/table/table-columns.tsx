@@ -88,6 +88,19 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           : ''}
       </TableRowCell>
     ),
+    sortingFn: (rowA, rowB) => {
+      const rowACpc =
+        !!rowA.original.campaignCost && rowA.original.campaignCost > 0 && rowA.original.clicks > 0
+          ? rowA.original.campaignCost! / rowA.original.clicks
+          : -1
+
+      const rowBCpc =
+        !!rowB.original.campaignCost && rowB.original.campaignCost > 0 && rowB.original.clicks > 0
+          ? rowB.original.campaignCost! / rowB.original.clicks
+          : -1
+
+      return rowACpc - rowBCpc
+    },
   },
   {
     accessorKey: 'installs',
@@ -119,6 +132,19 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           : ''}
       </TableRowCell>
     ),
+    sortingFn: (rowA, rowB) => {
+      const rowACpi =
+        !!rowA.original.campaignCost && rowA.original.campaignCost > 0 && rowA.original.installs > 0
+          ? rowA.original.campaignCost! / rowA.original.installs
+          : -1
+
+      const rowBCpi =
+        !!rowB.original.campaignCost && rowB.original.campaignCost > 0 && rowB.original.installs > 0
+          ? rowB.original.campaignCost! / rowB.original.installs
+          : -1
+
+      return rowACpi - rowBCpi
+    },
   },
   {
     accessorKey: 'campaignCost',
@@ -204,6 +230,22 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           )}
         </TableRowCell>
       )
+    },
+    sortingFn: (rowA, rowB) => {
+      const { campaignCost: rowACampaignCost, revenue: rowARevenue } = rowA.original
+      const { campaignCost: rowBCampaignCost, revenue: rowBRevenue } = rowB.original
+
+      const roasA =
+        !!rowACampaignCost && rowACampaignCost > 0
+          ? ((rowARevenue - rowACampaignCost) / rowACampaignCost) * 100
+          : 0
+
+      const roasB =
+        !!rowBCampaignCost && rowBCampaignCost > 0
+          ? ((rowBRevenue - rowBCampaignCost) / rowBCampaignCost) * 100
+          : 0
+
+      return roasA - roasB
     },
   },
   {
