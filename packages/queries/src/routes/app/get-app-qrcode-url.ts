@@ -24,11 +24,18 @@ export const getAppQrCodeUrl = (api: Hono) =>
     async c => {
       const { appSlug, teamSlug } = c.req.valid('query')
 
+      const userId = c.var.user.id
+
       const app = await prisma.app.findFirst({
         where: {
           slug: appSlug,
           team: {
             slug: teamSlug,
+            members: {
+              some: {
+                userId,
+              },
+            },
           },
         },
         select: {
@@ -36,6 +43,12 @@ export const getAppQrCodeUrl = (api: Hono) =>
         },
       })
 
-      return c.json(getAppQrCodeUrlOutputSchema.parse({ url: app?.qrcodeLogoUrl || null }))
+      if (!app) {
+        return c.json({ error: 'App não encontrado.' }, 404)
+      }
+
+      const response = getAppQrCodeUrlOutputSchema.parse({ url: app?.qrcodeLogoUrl || null })
+
+      return c.json(response)
     },
   )

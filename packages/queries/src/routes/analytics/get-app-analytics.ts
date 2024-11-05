@@ -36,6 +36,29 @@ export const getAppAnalytics = (api: Hono) =>
     async c => {
       const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
+      const userId = c.var.user.id
+
+      const app = await prisma.app.findFirst({
+        where: {
+          slug: appSlug,
+          team: {
+            slug: teamSlug,
+            members: {
+              some: {
+                userId,
+              },
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      })
+
+      if (!app) {
+        return c.json({ error: 'App não encontrado.' }, 404)
+      }
+
       const range = endDate.getTime() - startDate.getTime()
 
       const lastPeriodStartDate = new Date(startDate.getTime() - range)
