@@ -1,19 +1,14 @@
 'use client'
 
 import { SIGN_UP_URL } from '@advents/common'
-import {
-  formatErrors,
-  signInAction,
-  SignInInputProps,
-  signInInputSchema,
-  useAction,
-} from '@advents/mutations'
+import { supabaseClient } from '@advents/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
@@ -22,22 +17,44 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/ui/input'
 import { Separator } from '@/ui/separator'
 
+const signInInputSchema = z.object({
+  email: z.string({ message: 'E-mail inválido.' }).email('E-mail inválido.'),
+})
+
+type SignInInputProps = z.infer<typeof signInInputSchema>
+
 export const SignInForm = () => {
-  const [emailSent, setEmailSent] = useState(false)
-
   const searchParams = useSearchParams()
-  const errorDescription = searchParams.get('error_description')
 
-  const {
-    execute: signIn,
-    isExecuting,
-    result,
-    input,
-  } = useAction(signInAction, {
-    onSuccess: () => setEmailSent(true),
-  })
+  const [emailSent, setEmailSent] = useState(false)
+  const [error, setError] = useState<string | null>(searchParams.get('error_description'))
+  const [isExecuting, setIsExecuting] = useState(false)
 
-  const error = formatErrors(result) || errorDescription
+  const signIn = async ({ email }: SignInInputProps) => {
+    try {
+      setIsExecuting(true)
+      setError(null)
+
+      const supabase = supabaseClient()
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${window.location.origin}/api/auth/confirm`,
+        },
+      })
+
+      if (error) {
+        setError(error.code === 'otp_disabled' ? 'E-mail não cadastrado.' : error.message)
+        return
+      }
+
+      setEmailSent(true)
+    } finally {
+      setIsExecuting(false)
+    }
+  }
 
   const form = useForm<SignInInputProps>({
     resolver: zodResolver(signInInputSchema),
@@ -62,7 +79,7 @@ export const SignInForm = () => {
             >
               <div className='space-y-6'>
                 <p>
-                  Um link de acesso foi enviado para o e-mail <b>{input.email}</b>.
+                  Um link de acesso foi enviado para o e-mail <b>{form.getValues('email')}</b>.
                 </p>
 
                 <p>Verifique sua caixa de entrada e abra o link enviado.</p>

@@ -23,10 +23,10 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     return await clickMiddleware(req, event)
   }
 
-  return await appAuthMiddleware(req)
+  return await authMiddleware(req)
 }
 
-const appAuthMiddleware = async (req: NextRequest) => {
+const authMiddleware = async (req: NextRequest) => {
   const { supabase, response } = supabaseMiddleware(req)
 
   const user = await supabase.auth.getUser()
