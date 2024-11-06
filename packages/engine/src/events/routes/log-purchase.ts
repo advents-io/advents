@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { authMiddleware } from '../auth-middleware'
+import { ApiEnv } from '../api'
 
 const input = z.object({
   value: z
@@ -14,11 +14,10 @@ const input = z.object({
     .uuid({ message: 'Invalid session ID.' }),
 })
 
-export const logPurchase = (api: Hono) =>
+export const logPurchase = (api: Hono<ApiEnv>) =>
   api.post(
     '/purchases', //
     zValidator('json', input),
-    authMiddleware,
     async c => {
       const { sessionId, value } = c.req.valid('json')
       const appId = c.var.appId

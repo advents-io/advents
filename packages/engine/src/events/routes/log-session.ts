@@ -4,7 +4,7 @@ import { Hono } from 'hono'
 
 import { handleAttribution } from '../../attributions'
 import { getGeolocation } from '../../utils/geolocation'
-import { authMiddleware } from '../auth-middleware'
+import { ApiEnv } from '../api'
 
 type SessionInput = Pick<
   Session,
@@ -34,10 +34,9 @@ type SessionInput = Pick<
   | 'appVersion'
 >
 
-export const logSession = (api: Hono) =>
+export const logSession = (api: Hono<ApiEnv>) =>
   api.post(
     '/sessions', //
-    authMiddleware, //
     async c => {
       const sessionInput = (await c.req.json()) as SessionInput
 

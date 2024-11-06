@@ -1,13 +1,16 @@
 import { Hono } from 'hono'
 
-import { getApiStatus } from './routes/get-api-status'
+import { authMiddleware, AuthMiddlewareEnv } from './auth-middleware'
 import { logPurchase } from './routes/log-purchase'
 import { logSession } from './routes/log-session'
 
-export const api = new Hono({
+export type ApiEnv = AuthMiddlewareEnv
+
+export const api = new Hono<ApiEnv>({
   strict: false,
 }).basePath('/api/events')
 
-getApiStatus(api)
+api.use(authMiddleware)
+
 logSession(api)
 logPurchase(api)

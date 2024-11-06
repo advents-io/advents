@@ -1,13 +1,13 @@
 import { prisma } from '@advents/db'
 import { createMiddleware } from 'hono/factory'
 
-interface AuthMiddlewareContext {
+export type AuthMiddlewareEnv = {
   Variables: {
     appId: string
   }
 }
 
-export const authMiddleware = createMiddleware<AuthMiddlewareContext>(async (c, next) => {
+export const authMiddleware = createMiddleware<AuthMiddlewareEnv>(async (c, next) => {
   const authHeader = c.req.header('Authorization')
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
