@@ -7,13 +7,9 @@ import {
   createLinkFormInputSchema,
   editLinkAction,
   formatErrors,
-  getAppDefaultValuesAction,
-  GetAppDefaultValuesOutputProps,
-  getAppIdAction,
-  getLinkAction,
-  GetLinkOutputProps,
   useAction,
 } from '@advents/mutations'
+import { GetAppDefaultValuesOutput } from '@advents/queries'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -24,6 +20,9 @@ import { toast } from 'sonner'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
+import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
+import { getAppId } from '@/lib/queries/get-app-id'
+import { getLink } from '@/lib/queries/get-link'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
@@ -42,7 +41,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
   const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
 
-  const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutputProps>()
+  const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutput>()
   const [isDefaultAndroidUrl, setIsDefaultAndroidUrl] = useState(true)
   const [isDefaultIosUrl, setIsDefaultIosUrl] = useState(true)
   const [isDefaultFallbackUrl, setIsDefaultFallbackUrl] = useState(true)
@@ -91,14 +90,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
         linkId,
       })
     } else {
-      const result = await getAppIdAction({ appSlug, teamSlug })
-      const appId = result?.data
+      const { id: appId } = await getAppId({ appSlug, teamSlug })
 
-      if (!appId) {
-        return
-      }
-
-      createLink({ ...link, appId: appId.id })
+      createLink({ ...link, appId })
     }
   }
 
@@ -106,15 +100,12 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const editLinkError = formatErrors(editLinkResult)
   const error = createLinkError || editLinkError
 
-  const getLink = async (linkId: string) => {
-    const [response, appResponse] = await Promise.all([
-      getLinkAction({ linkId }),
-      getAppDefaultValuesAction({ appSlug, teamSlug }),
+  const handleGetLink = async (linkId: string) => {
+    const [link, app] = await Promise.all([
+      getLink({ linkId }),
+      getAppDefaultValues({ appSlug, teamSlug }),
     ])
 
-    const link = response?.data as GetLinkOutputProps
-
-    const app = appResponse?.data as GetAppDefaultValuesOutputProps
     setDefaultAppValues(app)
 
     setIsDefaultAndroidUrl(link.androidUrl === app.androidUrl)
@@ -125,8 +116,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   }
 
   const getDefaultLinkValues = async () => {
-    const response = await getAppDefaultValuesAction({ appSlug, teamSlug })
-    const app = response?.data as GetAppDefaultValuesOutputProps
+    const app = await getAppDefaultValues({ appSlug, teamSlug })
     setDefaultAppValues(app)
 
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
@@ -144,7 +134,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const form = useForm<CreateLinkFormInput>({
     resolver: zodResolver(createLinkFormInputSchema),
     defaultValues: linkId
-      ? async () => await getLink(linkId)
+      ? async () => await handleGetLink(linkId)
       : async () => await getDefaultLinkValues(),
   })
 

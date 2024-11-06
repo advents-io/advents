@@ -7,9 +7,6 @@ import {
   createAppInputSchema,
   editAppAction,
   formatErrors,
-  getAppAction,
-  getAppIdAction,
-  GetAppOutputProps,
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,6 +19,8 @@ import { toast } from 'sonner'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingPageContent } from '@/components/loading-page-content'
 import { LoadingSpinner } from '@/components/loading-spinner'
+import { getApp } from '@/lib/queries/get-app'
+import { getAppId } from '@/lib/queries/get-app-id'
 import { AlertDialogTrigger } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
@@ -85,25 +84,16 @@ export const CreateEditAppForm = () => {
     if (isCreate) {
       createApp(data)
     } else {
-      const result = await getAppIdAction({ teamSlug: team, appSlug: app })
+      const { id: appId } = await getAppId({ teamSlug: team, appSlug: app })
 
-      if (!result?.data) {
-        return
-      }
-
-      editApp({ ...data, id: result.data.id })
+      editApp({ ...data, id: appId })
     }
-  }
-
-  const getApp = async () => {
-    const result = await getAppAction({ appSlug: app || '', teamSlug: team })
-    return result?.data as GetAppOutputProps
   }
 
   const form = useForm<CreateAppInput>({
     resolver: zodResolver(createAppInputSchema),
     defaultValues: !isCreate
-      ? async () => await getApp()
+      ? async () => await getApp({ appSlug: app || '', teamSlug: team })
       : {
           defaultDomain: LINK_DOMAINS[0],
         },
