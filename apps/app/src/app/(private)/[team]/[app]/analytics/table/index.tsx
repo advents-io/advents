@@ -18,7 +18,7 @@ import {
   AnalyticsTableLinksProvider,
   useAnalyticsTableLinks,
 } from '@/contexts/analytics-table-links-context'
-import { api } from '@/lib/api'
+import { queries } from '@/lib/queries'
 import { cn } from '@/lib/tailwind'
 import { Skeleton } from '@/ui/skeleton'
 import {
@@ -56,7 +56,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const { isFetching } = useQuery({
     queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
     queryFn: async () => {
-      const links = await api
+      const links = await queries
         .get<GetLinksAnalyticsOutput>('analytics/links', {
           searchParams: {
             appSlug,
@@ -79,7 +79,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const { data: qrCodeUrl } = useQuery({
     queryKey: ['app-qr-code-url', appSlug, teamSlug],
     queryFn: () =>
-      api
+      queries
         .get<GetAppQrCodeUrlOutput>('app/qrcode', {
           searchParams: {
             appSlug,

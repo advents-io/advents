@@ -1,7 +1,7 @@
 import { supabaseClient } from '@advents/supabase/client'
 import ky from 'ky'
 
-export const api = ky.create({
+export const queries = ky.create({
   prefixUrl: '/api',
   timeout: 60 * 1000,
   hooks: {

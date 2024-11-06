@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { DollarSignIcon, DownloadIcon, MousePointerClickIcon, RedoDotIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
-import { api } from '@/lib/api'
+import { queries } from '@/lib/queries'
 import { cn } from '@/lib/tailwind'
 
 import { MetricCard } from './metric-card'
@@ -22,7 +22,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
   const { data, isPending } = useQuery({
     queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
     queryFn: () =>
-      api
+      queries
         .get<GetAppAnalyticsOutput>('analytics/app', {
           searchParams: {
             appSlug,
