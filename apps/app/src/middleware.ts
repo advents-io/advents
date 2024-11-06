@@ -1,8 +1,7 @@
+import { routes } from '@advents/common'
 import { clickMiddleware, isLinkDomain } from '@advents/engine'
-import { NextFetchEvent, NextRequest } from 'next/server'
-
-import { apiAuthMiddleware } from '@/middlewares/api-auth-middleware'
-import { appAuthMiddleware } from '@/middlewares/app-auth-middleware'
+import { supabaseMiddleware } from '@advents/supabase/server'
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 export const config = {
   matcher: [
@@ -13,11 +12,9 @@ export const config = {
      * - favicon.ico
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
      * - /ios/click
-     * - /api/auth/confirm
-     * - /api/events
-     * - /api/internal
+     * - /api
      */
-    '/((?!_next/static|_next/image|favicon.ico|ios/click|api/auth/confirm|api/events|api/internal|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|ios/click|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 
@@ -26,11 +23,29 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     return await clickMiddleware(req, event)
   }
 
-  const isApiRoute = req.nextUrl.pathname.startsWith('/api')
+  return await appAuthMiddleware(req)
+}
 
-  if (isApiRoute) {
-    return await apiAuthMiddleware(req)
+const appAuthMiddleware = async (req: NextRequest) => {
+  const { supabase, response } = supabaseMiddleware(req)
+
+  const user = await supabase.auth.getUser()
+
+  const isPrivateRoute = getIsPrivateRoute(req.nextUrl.pathname)
+
+  if (isPrivateRoute && user.error) {
+    return NextResponse.redirect(new URL(routes.SIGN_IN.path, req.url))
   }
 
-  return await appAuthMiddleware(req)
+  if (!isPrivateRoute && !user.error) {
+    return NextResponse.redirect(new URL(routes.TEAMS.path, req.url))
+  }
+
+  return response
+}
+
+const getIsPrivateRoute = (path: string) => {
+  const publicRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
+
+  return !publicRoutes.includes(path)
 }
