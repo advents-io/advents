@@ -1,20 +1,21 @@
-import { GetAppAnalyticsOutput } from '@advents/queries'
+import { dayjs } from '@advents/common'
+import { GetAppAnalyticsInput, GetAppAnalyticsOutput } from '@advents/queries'
 
 import { queries } from '.'
 
-export const getAppAnalytics = async (
-  appSlug: string,
-  teamSlug: string,
-  startDate: string,
-  endDate: string,
-): Promise<GetAppAnalyticsOutput> => {
+export const getAppAnalytics = async ({
+  appSlug,
+  teamSlug,
+  startDate,
+  endDate,
+}: GetAppAnalyticsInput): Promise<GetAppAnalyticsOutput> => {
   const response = await queries
     .get<GetAppAnalyticsOutput>('analytics/app', {
       searchParams: {
         appSlug,
         teamSlug,
-        startDate,
-        endDate,
+        startDate: dayjs(startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(endDate).format('YYYY-MM-DD'),
       },
     })
     .json()

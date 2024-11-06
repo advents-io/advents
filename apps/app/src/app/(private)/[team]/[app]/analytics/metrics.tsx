@@ -1,5 +1,6 @@
 'use client'
 
+import { dayjs } from '@advents/common'
 import { useQuery } from '@tanstack/react-query'
 import { DollarSignIcon, DownloadIcon, MousePointerClickIcon, RedoDotIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
@@ -20,7 +21,13 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
 
   const { data, isPending } = useQuery({
     queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
-    queryFn: () => getAppAnalytics(appSlug, teamSlug, startDate, endDate),
+    queryFn: () =>
+      getAppAnalytics({
+        appSlug,
+        teamSlug,
+        startDate: dayjs(startDate).toDate(),
+        endDate: dayjs(endDate).toDate(),
+      }),
   })
 
   const clicks = data ? data.clicks.toLocaleString('en-US').replace(',', '.') : undefined

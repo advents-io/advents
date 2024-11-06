@@ -10,6 +10,8 @@ const inputSchema = z.object({
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
 })
 
+export type GetAppQrCodeUrlInput = z.infer<typeof inputSchema>
+
 const outputSchema = z.object({
   url: z.string().nullable(),
 })

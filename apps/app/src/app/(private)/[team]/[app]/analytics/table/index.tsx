@@ -1,5 +1,6 @@
 'use client'
 
+import { dayjs } from '@advents/common'
 import { useQuery } from '@tanstack/react-query'
 import {
   flexRender,
@@ -56,7 +57,12 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const { isFetching } = useQuery({
     queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
     queryFn: async () => {
-      const links = await getLinksAnalytics(appSlug, teamSlug, startDate, endDate)
+      const links = await getLinksAnalytics({
+        appSlug,
+        teamSlug,
+        startDate: dayjs(startDate).toDate(),
+        endDate: dayjs(endDate).toDate(),
+      })
 
       if (setLinks) {
         setLinks(links)
@@ -69,7 +75,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
 
   const { data: qrCodeUrl } = useQuery({
     queryKey: ['app-qr-code-url', appSlug, teamSlug],
-    queryFn: () => getAppQrCodeUrl(appSlug, teamSlug),
+    queryFn: () => getAppQrCodeUrl({ appSlug, teamSlug }),
   })
 
   const table = useReactTable({

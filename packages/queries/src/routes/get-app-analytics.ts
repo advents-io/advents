@@ -15,6 +15,8 @@ const inputSchema = z.object({
   endDate: z.string({ message: 'Data de fim é obrigatória.' }).transform(date => new Date(date)),
 })
 
+export type GetAppAnalyticsInput = z.infer<typeof inputSchema>
+
 const outputSchema = z.object({
   clicks: z.number(),
   clicksIncrease: z.number(),
