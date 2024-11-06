@@ -1,11 +1,10 @@
 'use client'
 
-import { GetAppAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
 import { DollarSignIcon, DownloadIcon, MousePointerClickIcon, RedoDotIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
-import { queries } from '@/lib/queries'
+import { getAppAnalytics } from '@/lib/queries/get-app-analytics'
 import { cn } from '@/lib/tailwind'
 
 import { MetricCard } from './metric-card'
@@ -21,17 +20,7 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
 
   const { data, isPending } = useQuery({
     queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
-    queryFn: () =>
-      queries
-        .get<GetAppAnalyticsOutput>('analytics/app', {
-          searchParams: {
-            appSlug,
-            teamSlug,
-            startDate,
-            endDate,
-          },
-        })
-        .json(),
+    queryFn: () => getAppAnalytics(appSlug, teamSlug, startDate, endDate),
   })
 
   const clicks = data ? data.clicks.toLocaleString('en-US').replace(',', '.') : undefined

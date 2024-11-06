@@ -1,6 +1,5 @@
 'use client'
 
-import { GetAppQrCodeUrlOutput, GetLinksAnalyticsOutput } from '@advents/queries'
 import { useQuery } from '@tanstack/react-query'
 import {
   flexRender,
@@ -18,7 +17,8 @@ import {
   AnalyticsTableLinksProvider,
   useAnalyticsTableLinks,
 } from '@/contexts/analytics-table-links-context'
-import { queries } from '@/lib/queries'
+import { getAppQrCodeUrl } from '@/lib/queries/get-app-qrcode-url'
+import { getLinksAnalytics } from '@/lib/queries/get-links-analytics'
 import { cn } from '@/lib/tailwind'
 import { Skeleton } from '@/ui/skeleton'
 import {
@@ -56,16 +56,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
   const { isFetching } = useQuery({
     queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
     queryFn: async () => {
-      const links = await queries
-        .get<GetLinksAnalyticsOutput>('analytics/links', {
-          searchParams: {
-            appSlug,
-            teamSlug,
-            startDate,
-            endDate,
-          },
-        })
-        .json()
+      const links = await getLinksAnalytics(appSlug, teamSlug, startDate, endDate)
 
       if (setLinks) {
         setLinks(links)
@@ -78,15 +69,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
 
   const { data: qrCodeUrl } = useQuery({
     queryKey: ['app-qr-code-url', appSlug, teamSlug],
-    queryFn: () =>
-      queries
-        .get<GetAppQrCodeUrlOutput>('app/qrcode', {
-          searchParams: {
-            appSlug,
-            teamSlug,
-          },
-        })
-        .json(),
+    queryFn: () => getAppQrCodeUrl(appSlug, teamSlug),
   })
 
   const table = useReactTable({

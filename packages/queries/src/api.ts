@@ -1,9 +1,9 @@
 import { Hono } from 'hono'
 
 import { authMiddleware, AuthMiddlewareEnv } from './auth-middleware'
-import { getAppAnalytics } from './routes/analytics/get-app-analytics'
-import { getLinksAnalytics } from './routes/analytics/get-links-analytics'
-import { getAppQrCodeUrl } from './routes/app/get-app-qrcode-url'
+import { getAppAnalytics } from './routes/get-app-analytics'
+import { getAppQrCodeUrl } from './routes/get-app-qrcode-url'
+import { getLinksAnalytics } from './routes/get-links-analytics'
 
 export type ApiEnv = AuthMiddlewareEnv
 
