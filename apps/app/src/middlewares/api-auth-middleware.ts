@@ -7,7 +7,7 @@ export const apiAuthMiddleware = async (req: NextRequest) => {
   const user = await supabase.auth.getUser()
 
   if (user.error) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
   return response

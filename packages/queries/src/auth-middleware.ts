@@ -1,7 +1,7 @@
 import { supabaseServer } from '@advents/supabase/server'
 import { createMiddleware } from 'hono/factory'
 
-interface AuthMiddlewareContext {
+export type AuthMiddlewareEnv = {
   Variables: {
     user: {
       id: string
@@ -9,7 +9,7 @@ interface AuthMiddlewareContext {
   }
 }
 
-export const authMiddleware = createMiddleware<AuthMiddlewareContext>(async (c, next) => {
+export const authMiddleware = createMiddleware<AuthMiddlewareEnv>(async (c, next) => {
   const authHeader = c.req.header('Authorization')
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {

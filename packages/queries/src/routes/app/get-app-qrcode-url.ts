@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { authMiddleware } from '../../auth-middleware'
+import { ApiEnv } from '../../api'
 
 const getAppQrCodeUrlInputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
@@ -16,11 +16,10 @@ const getAppQrCodeUrlOutputSchema = z.object({
 
 export type GetAppQrCodeUrlOutput = z.infer<typeof getAppQrCodeUrlOutputSchema>
 
-export const getAppQrCodeUrl = (api: Hono) =>
+export const getAppQrCodeUrl = (api: Hono<ApiEnv>) =>
   api.get(
     '/app/qrcode', //
     zValidator('query', getAppQrCodeUrlInputSchema),
-    authMiddleware,
     async c => {
       const { appSlug, teamSlug } = c.req.valid('query')
 

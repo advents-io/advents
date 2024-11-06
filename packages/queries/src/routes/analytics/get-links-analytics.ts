@@ -4,7 +4,7 @@ import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { authMiddleware } from '../../auth-middleware'
+import { ApiEnv } from '../../api'
 
 const getLinksAnalyticsInputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
@@ -31,11 +31,10 @@ const getLinksAnalyticsOutputSchema = z.array(
 
 export type GetLinksAnalyticsOutput = z.infer<typeof getLinksAnalyticsOutputSchema>
 
-export const getLinksAnalytics = (api: Hono) =>
+export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
     '/analytics/links', //
     zValidator('query', getLinksAnalyticsInputSchema),
-    authMiddleware,
     async c => {
       const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
