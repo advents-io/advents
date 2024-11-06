@@ -1,13 +1,19 @@
 'use server'
 
 import { prisma } from '@advents/db'
+import { z } from 'zod'
 
 import { ActionError } from '../../action-errors'
 import { authActionClient } from '../../safe-action'
-import { deleteLinkInputSchema } from '../../schemas/input/link/delete-link-input'
+
+const inputSchema = z.object({
+  linkId: z
+    .string({ message: 'Id do link em formato inválido.' })
+    .uuid('Id do link em formato inválido.'),
+})
 
 export const deleteLinkAction = authActionClient
-  .schema(deleteLinkInputSchema)
+  .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { linkId } = parsedInput
 

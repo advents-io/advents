@@ -2,13 +2,13 @@
 
 import { prisma } from '@advents/db'
 
-import { ActionError } from '../../action-errors'
-import { authActionClient } from '../../safe-action'
-import { createLinkInputActionSchema } from '../../schemas/input/link/create-link-input'
-import { generateRandomSlug } from '../../utils/link-helper'
+import { ActionError } from '../../../action-errors'
+import { authActionClient } from '../../../safe-action'
+import { generateRandomSlug } from '../../../utils/link-helper'
+import { inputSchema } from './schema'
 
 export const createLinkAction = authActionClient
-  .schema(createLinkInputActionSchema)
+  .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const {
       title,

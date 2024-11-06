@@ -1,8 +1,6 @@
 'use server'
 
-import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { ActionError } from '../../action-errors'
@@ -10,11 +8,21 @@ import { authActionClient } from '../../safe-action'
 
 const inputSchema = z.object({
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
-  appSlug: z.string({ message: 'Slug do app em formato inválido.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
 })
 
-export const deleteAppAction = authActionClient
+const outputSchema = z.object({
+  defaultDomain: z.string(),
+  androidUrl: z.string().url(),
+  iosUrl: z.string().url(),
+  defaultFallbackUrl: z.string().url().nullable(),
+})
+
+export type GetAppDefaultValuesOutputProps = z.infer<typeof outputSchema>
+
+export const getAppDefaultValuesAction = authActionClient
   .schema(inputSchema)
+  .outputSchema(outputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug, teamSlug } = parsedInput
 
@@ -31,12 +39,10 @@ export const deleteAppAction = authActionClient
         },
       },
       select: {
-        id: true,
-        team: {
-          select: {
-            slug: true,
-          },
-        },
+        defaultDomain: true,
+        androidUrl: true,
+        iosUrl: true,
+        defaultFallbackUrl: true,
       },
     })
 
@@ -44,11 +50,5 @@ export const deleteAppAction = authActionClient
       throw new ActionError('App não encontrado.')
     }
 
-    await prisma.app.delete({
-      where: {
-        id: app.id,
-      },
-    })
-
-    redirect(routes.APPS.path(app.team.slug))
+    return app
   })

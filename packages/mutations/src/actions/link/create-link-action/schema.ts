@@ -17,7 +17,7 @@ export const createLinkInputFormSchema = z.object({
     .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
     .regex(
       regexes.CASE_INSENSITIVE_SLUG,
-      'A chave do link deve conter apenas letras, números, hifen ou underline.',
+      'A chave do link deve conter apenas letras, números, hífen ou underline.',
     )
     .optional()
     .transform(value => value || undefined),
@@ -31,7 +31,7 @@ export const createLinkInputFormSchema = z.object({
     .transform(value => value || null),
 })
 
-export const createLinkInputActionSchema = createLinkInputFormSchema.extend({
+export const inputSchema = createLinkInputFormSchema.extend({
   appId: z.string({ message: 'Id do app inválido.' }).uuid('Id do app inválido.'),
 })
 

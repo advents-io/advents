@@ -1,18 +1,32 @@
 'use server'
 
 import { prisma } from '@advents/db'
+import { z } from 'zod'
 
 import { ActionError } from '../../action-errors'
 import { authActionClient } from '../../safe-action'
-import { getAppInputSchema } from '../../schemas/input/app/get-app-input'
-import {
-  getAppDefaultValuesOutputSchema,
-  getAppOutputSchema,
-} from '../../schemas/output/app/get-app-output'
+
+const inputSchema = z.object({
+  teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
+})
+
+const outputSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  defaultDomain: z.string(),
+  androidUrl: z.string().url(),
+  iosUrl: z.string().url(),
+  defaultFallbackUrl: z.string().url().nullable(),
+  imageUrl: z.string().url(),
+  qrcodeLogoUrl: z.string().url().nullable(),
+})
+
+export type GetAppOutputProps = z.infer<typeof outputSchema>
 
 export const getAppAction = authActionClient
-  .schema(getAppInputSchema)
-  .outputSchema(getAppOutputSchema)
+  .schema(inputSchema)
+  .outputSchema(outputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug, teamSlug } = parsedInput
 
@@ -37,68 +51,6 @@ export const getAppAction = authActionClient
         iosUrl: true,
         defaultFallbackUrl: true,
         qrcodeLogoUrl: true,
-      },
-    })
-
-    if (!app) {
-      throw new ActionError('App não encontrado.')
-    }
-
-    return app
-  })
-
-export const getAppIdAction = authActionClient
-  .schema(getAppInputSchema)
-  .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug, teamSlug } = parsedInput
-
-    const app = await prisma.app.findFirst({
-      where: {
-        slug: appSlug,
-        team: {
-          slug: teamSlug,
-          members: {
-            some: {
-              userId: user.id,
-            },
-          },
-        },
-      },
-      select: {
-        id: true,
-      },
-    })
-
-    if (!app) {
-      throw new ActionError('App não encontrado.')
-    }
-
-    return { id: app.id }
-  })
-
-export const getAppDefaultValuesAction = authActionClient
-  .schema(getAppInputSchema)
-  .outputSchema(getAppDefaultValuesOutputSchema)
-  .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug, teamSlug } = parsedInput
-
-    const app = await prisma.app.findFirst({
-      where: {
-        slug: appSlug,
-        team: {
-          slug: teamSlug,
-          members: {
-            some: {
-              userId: user.id,
-            },
-          },
-        },
-      },
-      select: {
-        defaultDomain: true,
-        androidUrl: true,
-        iosUrl: true,
-        defaultFallbackUrl: true,
       },
     })
 

@@ -4,9 +4,9 @@ import { fetchUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { redirect } from 'next/navigation'
 
-import { ActionError } from '../../action-errors'
-import { authActionClient } from '../../safe-action'
-import { createAppInputSchema } from '../../schemas/input/app/create-app-input'
+import { ActionError } from '../../../action-errors'
+import { authActionClient } from '../../../safe-action'
+import { createAppInputSchema } from './schema'
 
 export const createAppAction = authActionClient
   .schema(createAppInputSchema)
