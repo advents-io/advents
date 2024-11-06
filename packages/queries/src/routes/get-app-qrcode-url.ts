@@ -5,21 +5,21 @@ import { z } from 'zod'
 
 import { ApiEnv } from '../api'
 
-const getAppQrCodeUrlInputSchema = z.object({
+const inputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
 })
 
-const getAppQrCodeUrlOutputSchema = z.object({
+const outputSchema = z.object({
   url: z.string().nullable(),
 })
 
-export type GetAppQrCodeUrlOutput = z.infer<typeof getAppQrCodeUrlOutputSchema>
+export type GetAppQrCodeUrlOutput = z.infer<typeof outputSchema>
 
 export const getAppQrCodeUrl = (api: Hono<ApiEnv>) =>
   api.get(
     '/app/qrcode', //
-    zValidator('query', getAppQrCodeUrlInputSchema),
+    zValidator('query', inputSchema),
     async c => {
       const { appSlug, teamSlug } = c.req.valid('query')
 
@@ -46,7 +46,7 @@ export const getAppQrCodeUrl = (api: Hono<ApiEnv>) =>
         return c.json({ error: 'App não encontrado.' }, 404)
       }
 
-      const response = getAppQrCodeUrlOutputSchema.parse({ url: app?.qrcodeLogoUrl || null })
+      const response = outputSchema.parse({ url: app?.qrcodeLogoUrl || null })
 
       return c.json(response)
     },

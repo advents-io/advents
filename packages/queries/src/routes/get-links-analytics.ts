@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import { ApiEnv } from '../api'
 
-const getLinksAnalyticsInputSchema = z.object({
+const inputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
   startDate: z
@@ -15,7 +15,7 @@ const getLinksAnalyticsInputSchema = z.object({
   endDate: z.string({ message: 'Data de fim é obrigatória.' }).transform(date => new Date(date)),
 })
 
-const getLinksAnalyticsOutputSchema = z.array(
+const outputSchema = z.array(
   z.object({
     id: z.string().uuid(),
     slug: z.string(),
@@ -29,12 +29,12 @@ const getLinksAnalyticsOutputSchema = z.array(
   }),
 )
 
-export type GetLinksAnalyticsOutput = z.infer<typeof getLinksAnalyticsOutputSchema>
+export type GetLinksAnalyticsOutput = z.infer<typeof outputSchema>
 
 export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
     '/analytics/links', //
-    zValidator('query', getLinksAnalyticsInputSchema),
+    zValidator('query', inputSchema),
     async c => {
       const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
@@ -153,7 +153,7 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
         ),
       )
 
-      const result = getLinksAnalyticsOutputSchema.parse(links)
+      const result = outputSchema.parse(links)
 
       return c.json(result)
     },

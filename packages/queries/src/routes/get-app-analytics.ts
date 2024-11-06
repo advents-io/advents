@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import { ApiEnv } from '../api'
 
-const getAppAnalyticsInputSchema = z.object({
+const inputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
   startDate: z
@@ -15,7 +15,7 @@ const getAppAnalyticsInputSchema = z.object({
   endDate: z.string({ message: 'Data de fim é obrigatória.' }).transform(date => new Date(date)),
 })
 
-const getAppAnalyticsOutputSchema = z.object({
+const outputSchema = z.object({
   clicks: z.number(),
   clicksIncrease: z.number(),
   installs: z.number(),
@@ -26,12 +26,12 @@ const getAppAnalyticsOutputSchema = z.object({
   revenueIncrease: z.number(),
 })
 
-export type GetAppAnalyticsOutput = z.infer<typeof getAppAnalyticsOutputSchema>
+export type GetAppAnalyticsOutput = z.infer<typeof outputSchema>
 
 export const getAppAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
     '/analytics/app', //
-    zValidator('query', getAppAnalyticsInputSchema),
+    zValidator('query', inputSchema),
     async c => {
       const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
 
@@ -181,7 +181,7 @@ export const getAppAnalytics = (api: Hono<ApiEnv>) =>
 
       const revenueIncrease = calculateIncrease(revenue, lastPeriodRevenue)
 
-      const response = getAppAnalyticsOutputSchema.parse({
+      const response = outputSchema.parse({
         clicks,
         clicksIncrease,
         installs,
