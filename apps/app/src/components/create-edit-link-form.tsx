@@ -3,8 +3,8 @@
 import { LINK_DOMAINS } from '@advents/common'
 import {
   createLinkAction,
-  CreateLinkInputFormProps,
-  createLinkInputFormSchema,
+  CreateLinkFormInput,
+  createLinkFormInputSchema,
   editLinkAction,
   formatErrors,
   getAppDefaultValuesAction,
@@ -84,7 +84,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     },
   })
 
-  const onSubmit = async (link: CreateLinkInputFormProps) => {
+  const onSubmit = async (link: CreateLinkFormInput) => {
     if (linkId) {
       editLink({
         ...link,
@@ -141,8 +141,8 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     }
   }
 
-  const form = useForm<CreateLinkInputFormProps>({
-    resolver: zodResolver(createLinkInputFormSchema),
+  const form = useForm<CreateLinkFormInput>({
+    resolver: zodResolver(createLinkFormInputSchema),
     defaultValues: linkId
       ? async () => await getLink(linkId)
       : async () => await getDefaultLinkValues(),

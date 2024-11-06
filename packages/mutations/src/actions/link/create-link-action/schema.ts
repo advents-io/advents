@@ -5,7 +5,7 @@ import { regexes } from '../../../utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
 
-export const createLinkInputFormSchema = z.object({
+export const createLinkFormInputSchema = z.object({
   title: z
     .string()
     .max(50, 'O título deve possuir no máximo 50 caracteres.')
@@ -31,8 +31,8 @@ export const createLinkInputFormSchema = z.object({
     .transform(value => value || null),
 })
 
-export const inputSchema = createLinkInputFormSchema.extend({
+export const inputSchema = createLinkFormInputSchema.extend({
   appId: z.string({ message: 'Id do app inválido.' }).uuid('Id do app inválido.'),
 })
 
-export type CreateLinkInputFormProps = z.infer<typeof createLinkInputFormSchema>
+export type CreateLinkFormInput = z.infer<typeof createLinkFormInputSchema>

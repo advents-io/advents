@@ -42,4 +42,4 @@ export const createAppInputSchema = z.object({
     .transform(value => value || null),
 })
 
-export type CreateAppInputProps = z.infer<typeof createAppInputSchema>
+export type CreateAppInput = z.infer<typeof createAppInputSchema>

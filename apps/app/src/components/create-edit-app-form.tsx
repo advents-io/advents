@@ -3,7 +3,7 @@
 import { LINK_DOMAINS } from '@advents/common'
 import {
   createAppAction,
-  CreateAppInputProps,
+  CreateAppInput,
   createAppInputSchema,
   editAppAction,
   formatErrors,
@@ -81,7 +81,7 @@ export const CreateEditAppForm = () => {
 
   const error = formatErrors(editAppResult) || formatErrors(createAppResult)
 
-  const onSubmit = async (data: CreateAppInputProps) => {
+  const onSubmit = async (data: CreateAppInput) => {
     if (isCreate) {
       createApp(data)
     } else {
@@ -100,7 +100,7 @@ export const CreateEditAppForm = () => {
     return result?.data as GetAppOutputProps
   }
 
-  const form = useForm<CreateAppInputProps>({
+  const form = useForm<CreateAppInput>({
     resolver: zodResolver(createAppInputSchema),
     defaultValues: !isCreate
       ? async () => await getApp()
