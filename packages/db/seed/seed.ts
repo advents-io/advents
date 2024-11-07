@@ -7,6 +7,10 @@ import { APP, LINKS } from './data'
 
 type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount'>
 
+const CONFIG = {
+  LINKS_TO_CREATE: 15,
+}
+
 async function seed() {
   console.log('1/5 - Creating member...')
   const { teamId, userId } = await createMember()
@@ -96,15 +100,13 @@ const createApp = async (teamId: string, userId: string) => {
 }
 
 const createLinks = async (appId: string, userId: string) => {
-  const LINKS_TO_CREATE = 5
-
-  if (LINKS_TO_CREATE > LINKS.length) {
+  if (CONFIG.LINKS_TO_CREATE > LINKS.length) {
     throw new Error('Links count to create is greater than the number of available links data.')
   }
 
-  const RANDOM_LINKS = faker.helpers.arrayElements(LINKS, LINKS_TO_CREATE)
+  const RANDOM_LINKS = faker.helpers.arrayElements(LINKS, CONFIG.LINKS_TO_CREATE)
 
-  const links: Link[] = Array.from({ length: LINKS_TO_CREATE }, (_, index) => {
+  const links: Link[] = Array.from({ length: CONFIG.LINKS_TO_CREATE }, (_, index) => {
     const createdAt = faker.date.between({
       from: dayjs().add(-180, 'days').toDate(),
       to: Date.now(),

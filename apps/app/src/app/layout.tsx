@@ -79,7 +79,7 @@ export default async function RootLayout({
   return (
     <html lang='pt-BR' className={interFont.className}>
       <PostHogProvider>
-        <body className='relative flex min-h-screen flex-col bg-gray-50'>
+        <body className='relative flex min-h-screen flex-col bg-gray-50' suppressHydrationWarning>
           <Suspense>
             <PostHogPageView />
           </Suspense>
