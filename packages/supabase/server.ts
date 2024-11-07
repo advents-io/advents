@@ -3,7 +3,11 @@ import { createClient, User } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { removeSupabaseConsoleWarn } from './src/utils'
+
 export const supabaseServer = async () => {
+  removeSupabaseConsoleWarn()
+
   const cookiesStore = await cookies()
 
   return createServerClient(
