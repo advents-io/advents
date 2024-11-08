@@ -1,4 +1,4 @@
-import { GetLinksAnalyticsOutput } from '@advents/queries'
+import { GetLinksAnalyticsOutput } from '@advents/queries/client'
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 type EditLinkProps = Pick<

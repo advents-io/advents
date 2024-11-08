@@ -1,8 +1,7 @@
-import { handle } from 'hono/vercel'
+export { api } from './src/client/api'
+export { handle } from 'hono/vercel'
 
-import { api } from './src/client/api'
-
-export { api, handle }
+//
 
 export type { GetAppInput, GetAppOutput } from './src/client/routes/get-app'
 export type {

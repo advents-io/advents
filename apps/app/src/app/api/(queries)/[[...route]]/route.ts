@@ -1,4 +1,4 @@
-import { api, handle } from '@advents/queries'
+import { api, handle } from '@advents/queries/client'
 
 export const GET = handle(api)
 export const POST = handle(api)

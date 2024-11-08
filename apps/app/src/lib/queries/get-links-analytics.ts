@@ -1,5 +1,5 @@
 import { dayjs } from '@advents/common'
-import { GetLinksAnalyticsInput, GetLinksAnalyticsOutput } from '@advents/queries'
+import { GetLinksAnalyticsInput, GetLinksAnalyticsOutput } from '@advents/queries/client'
 
 import { queries } from '.'
 

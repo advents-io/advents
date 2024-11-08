@@ -1,4 +1,4 @@
-import { GetLinkInput, GetLinkOutput } from '@advents/queries'
+import { GetLinkInput, GetLinkOutput } from '@advents/queries/client'
 
 import { queries } from '.'
 

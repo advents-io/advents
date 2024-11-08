@@ -1,5 +1,5 @@
 import { dayjs } from '@advents/common'
-import { GetAppAnalyticsInput, GetAppAnalyticsOutput } from '@advents/queries'
+import { GetAppAnalyticsInput, GetAppAnalyticsOutput } from '@advents/queries/client'
 
 import { queries } from '.'
 

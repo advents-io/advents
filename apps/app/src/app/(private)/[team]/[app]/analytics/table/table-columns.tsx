@@ -1,7 +1,7 @@
 'use client'
 
 import { dayjs } from '@advents/common'
-import { GetLinksAnalyticsOutput } from '@advents/queries'
+import { GetLinksAnalyticsOutput } from '@advents/queries/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowDownIcon, ArrowUpIcon, CopyIcon } from 'lucide-react'
 import Link from 'next/link'

@@ -1,4 +1,4 @@
-import { GetAppQrCodeUrlInput, GetAppQrCodeUrlOutput } from '@advents/queries'
+import { GetAppQrCodeUrlInput, GetAppQrCodeUrlOutput } from '@advents/queries/client'
 
 import { queries } from '.'
 

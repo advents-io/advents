@@ -9,7 +9,7 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { GetAppDefaultValuesOutput } from '@advents/queries'
+import { GetAppDefaultValuesOutput } from '@advents/queries/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'

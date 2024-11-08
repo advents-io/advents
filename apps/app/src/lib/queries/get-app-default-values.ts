@@ -1,4 +1,4 @@
-import { GetAppDefaultValuesInput, GetAppDefaultValuesOutput } from '@advents/queries'
+import { GetAppDefaultValuesInput, GetAppDefaultValuesOutput } from '@advents/queries/client'
 
 import { queries } from '.'
 
