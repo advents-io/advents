@@ -1,9 +1,9 @@
-import { LINK_DOMAINS } from '@advents/common'
+import { DEFAULT_LINK_DOMAIN } from '@advents/common'
 
 export const APP = {
   name: 'Favorito',
   slug: 'favorito',
-  defaultDomain: LINK_DOMAINS[0],
+  defaultDomain: DEFAULT_LINK_DOMAIN,
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',
   defaultFallbackUrl: 'https://favorito.digital',

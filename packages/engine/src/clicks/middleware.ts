@@ -1,5 +1,6 @@
 import {
   APP_DOMAIN,
+  DEFAULT_LINK_DOMAIN,
   LINK_DOMAINS,
   LOCALHOST_APP_DOMAIN,
   LOCALHOST_LINK_DOMAIN,
@@ -91,7 +92,7 @@ const getDomain = (req: NextRequest) => {
     req.nextUrl.pathname !== routes.IOS_CLICK.path
 
   if (isDevLinkDomain) {
-    domain = LINK_DOMAINS[0]
+    domain = DEFAULT_LINK_DOMAIN
   }
 
   return domain

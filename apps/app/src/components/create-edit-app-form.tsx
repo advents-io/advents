@@ -1,6 +1,6 @@
 'use client'
 
-import { LINK_DOMAINS } from '@advents/common'
+import { DEFAULT_LINK_DOMAIN, LINK_DOMAINS } from '@advents/common'
 import {
   createAppAction,
   CreateAppInput,
@@ -93,9 +93,9 @@ export const CreateEditAppForm = () => {
   const form = useForm<CreateAppInput>({
     resolver: zodResolver(createAppInputSchema),
     defaultValues: !isCreate
-      ? async () => await getApp({ appSlug: app || '', teamSlug: team })
+      ? async () => await getApp({ appSlug: app, teamSlug: team })
       : {
-          defaultDomain: LINK_DOMAINS[0],
+          defaultDomain: DEFAULT_LINK_DOMAIN,
         },
   })
 
