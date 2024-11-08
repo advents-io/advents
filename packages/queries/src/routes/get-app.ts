@@ -13,6 +13,7 @@ const inputSchema = z.object({
 export type GetAppInput = z.infer<typeof inputSchema>
 
 const outputSchema = z.object({
+  id: z.string().uuid(),
   name: z.string(),
   slug: z.string(),
   defaultDomain: z.string(),
@@ -45,6 +46,7 @@ export const getApp = (api: Hono<ApiEnv>) =>
           },
         },
         select: {
+          id: true,
           name: true,
           slug: true,
           defaultDomain: true,

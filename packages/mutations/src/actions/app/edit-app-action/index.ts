@@ -6,10 +6,10 @@ import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { inputSchema } from './schema'
+import { editAppInputSchema } from './schema'
 
 export const editAppAction = authActionClient
-  .schema(inputSchema)
+  .schema(editAppInputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { id, ...newApp } = parsedInput
 

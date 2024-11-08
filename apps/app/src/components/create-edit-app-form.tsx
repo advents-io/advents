@@ -6,6 +6,8 @@ import {
   CreateAppInput,
   createAppInputSchema,
   editAppAction,
+  EditAppInput,
+  editAppInputSchema,
   formatErrors,
   useAction,
 } from '@advents/mutations'
@@ -20,7 +22,6 @@ import { ErrorAlert } from '@/components/error-alert'
 import { LoadingPageContent } from '@/components/loading-page-content'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { getApp } from '@/lib/queries/get-app'
-import { getAppId } from '@/lib/queries/get-app-id'
 import { AlertDialogTrigger } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
@@ -80,18 +81,16 @@ export const CreateEditAppForm = () => {
 
   const error = formatErrors(editAppResult) || formatErrors(createAppResult)
 
-  const onSubmit = async (data: CreateAppInput) => {
+  const onSubmit = async (data: CreateAppInput | EditAppInput) => {
     if (isCreate) {
-      createApp(data)
+      createApp(data as CreateAppInput)
     } else {
-      const { id: appId } = await getAppId({ teamSlug: team, appSlug: app })
-
-      editApp({ ...data, id: appId })
+      editApp(data as EditAppInput)
     }
   }
 
-  const form = useForm<CreateAppInput>({
-    resolver: zodResolver(createAppInputSchema),
+  const form = useForm<CreateAppInput | EditAppInput>({
+    resolver: zodResolver(createAppInputSchema.or(editAppInputSchema)),
     defaultValues: !isCreate
       ? async () => await getApp({ appSlug: app, teamSlug: team })
       : {

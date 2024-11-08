@@ -5,7 +5,7 @@ import { regexes } from '../../../utils/regexes'
 
 const [first, ...rest] = LINK_DOMAINS
 
-export const inputSchema = z.object({
+export const editAppInputSchema = z.object({
   id: z.string({ message: 'Id do app é obrigatório.' }).uuid('Id do app é obrigatório.'),
   name: z
     .string({ message: 'Nome do app é obrigatório.' })
@@ -42,3 +42,5 @@ export const inputSchema = z.object({
     .or(z.literal(''))
     .transform(value => value || null),
 })
+
+export type EditAppInput = z.infer<typeof editAppInputSchema>
