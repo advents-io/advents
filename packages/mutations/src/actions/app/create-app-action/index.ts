@@ -1,6 +1,6 @@
 'use server'
 
-import { fetchUrlOgImage, nanoid, routes } from '@advents/common'
+import { getUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { getLinkDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
@@ -45,7 +45,7 @@ export const createAppAction = authActionClient
       throw new ActionError('Identificador único já utilizado por outro app na sua conta.')
     }
 
-    const imageUrl = await fetchUrlOgImage(app.androidUrl)
+    const imageUrl = await getUrlOgImage(app.androidUrl)
 
     if (!imageUrl) {
       throw new ActionError('Erro ao buscar a imagem do app.')

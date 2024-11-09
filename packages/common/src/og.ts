@@ -1,4 +1,4 @@
-export const fetchUrlOgImage = async (url: string) => {
+export const getUrlOgImage = async (url: string) => {
   let image: string | null = null
 
   try {

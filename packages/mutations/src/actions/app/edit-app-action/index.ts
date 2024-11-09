@@ -1,6 +1,6 @@
 'use server'
 
-import { fetchUrlOgImage, routes } from '@advents/common'
+import { getUrlOgImage, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { getLinkDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
@@ -68,7 +68,7 @@ export const editAppAction = authActionClient
       ...newApp,
     }
 
-    const imageUrl = await fetchUrlOgImage(newApp.androidUrl)
+    const imageUrl = await getUrlOgImage(newApp.androidUrl)
 
     if (imageUrl && imageUrl !== originalApp.imageUrl) {
       app.imageUrl = imageUrl

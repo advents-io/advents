@@ -1,4 +1,4 @@
-import { dayjs, fetchUrlOgImage, nanoid } from '@advents/common'
+import { dayjs, getUrlOgImage, nanoid } from '@advents/common'
 import { supabaseServerAdmin } from '@advents/supabase/server'
 import { faker } from '@faker-js/faker'
 
@@ -71,7 +71,7 @@ const createMember = async () => {
 }
 
 const createApp = async (teamId: string, userId: string) => {
-  const imageUrl = await fetchUrlOgImage(APP.androidUrl)
+  const imageUrl = await getUrlOgImage(APP.androidUrl)
 
   if (!imageUrl) {
     throw new Error('App image not found')
