@@ -3,7 +3,6 @@ export { handle } from 'hono/vercel'
 
 //
 
-export type { GetAppInput, GetAppOutput } from './src/client/routes/get-app'
 export type {
   GetAppAnalyticsInput,
   GetAppAnalyticsOutput,
@@ -12,7 +11,6 @@ export type {
   GetAppDefaultValuesInput,
   GetAppDefaultValuesOutput,
 } from './src/client/routes/get-app-default-values'
-export type { GetAppIdInput, GetAppIdOutput } from './src/client/routes/get-app-id'
 export type {
   GetAppQrCodeUrlInput,
   GetAppQrCodeUrlOutput,

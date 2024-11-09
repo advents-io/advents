@@ -230,6 +230,9 @@ importers:
       '@advents/db':
         specifier: workspace:*
         version: link:../db
+      '@advents/queries':
+        specifier: workspace:*
+        version: link:../queries
       '@advents/supabase':
         specifier: workspace:*
         version: link:../supabase
@@ -318,6 +321,9 @@ importers:
       '@advents/db':
         specifier: workspace:*
         version: link:../db
+      '@advents/queries':
+        specifier: workspace:*
+        version: link:../queries
       '@advents/supabase':
         specifier: workspace:*
         version: link:../supabase

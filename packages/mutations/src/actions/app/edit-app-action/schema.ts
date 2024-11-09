@@ -1,9 +1,6 @@
-import { LINK_DOMAINS } from '@advents/common'
 import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
-
-const [first, ...rest] = LINK_DOMAINS
 
 export const editAppInputSchema = z.object({
   id: z.string({ message: 'Id do app é obrigatório.' }).uuid('Id do app é obrigatório.'),
@@ -19,7 +16,7 @@ export const editAppInputSchema = z.object({
       regexes.LOWER_CASE_SLUG,
       'O Slug do app deve conter apenas letras minusculas, números, hífen ou underline.',
     ),
-  defaultDomain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
+  defaultDomain: z.string({ message: 'Domínio inválido.' }),
   androidUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')

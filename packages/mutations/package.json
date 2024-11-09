@@ -3,6 +3,7 @@
   "dependencies": {
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
+    "@advents/queries": "workspace:*",
     "@advents/supabase": "workspace:*",
     "@prisma/client": "^5.20.0",
     "next": "15.0.1-canary.1",

@@ -1,6 +1,5 @@
 'use client'
 
-import { DEFAULT_LINK_DOMAIN, LINK_DOMAINS } from '@advents/common'
 import {
   createAppAction,
   CreateAppInput,
@@ -11,9 +10,10 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
+import { LINK_DEFAULT_DOMAIN } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { App } from '@prisma/client'
 import { SaveIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -21,7 +21,6 @@ import { toast } from 'sonner'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingPageContent } from '@/components/loading-page-content'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { getApp } from '@/lib/queries/get-app'
 import { AlertDialogTrigger } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
@@ -40,9 +39,22 @@ import { Separator } from '@/ui/separator'
 
 import { DeleteAppDialog } from './delete-app-dialog'
 
-export const CreateEditAppForm = () => {
-  const { app, team } = useParams<{ app?: string; team: string }>()
+type Props = {
+  app?: Pick<
+    App,
+    | 'id'
+    | 'name'
+    | 'slug'
+    | 'defaultDomain'
+    | 'androidUrl'
+    | 'iosUrl'
+    | 'defaultFallbackUrl'
+    | 'qrcodeLogoUrl'
+  >
+  availableDomains: string[]
+}
 
+export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
   const isCreate = !app
 
   const onSuccess = () => {
@@ -92,9 +104,9 @@ export const CreateEditAppForm = () => {
   const form = useForm<CreateAppInput | EditAppInput>({
     resolver: zodResolver(createAppInputSchema.or(editAppInputSchema)),
     defaultValues: !isCreate
-      ? async () => await getApp({ appSlug: app, teamSlug: team })
+      ? app
       : {
-          defaultDomain: DEFAULT_LINK_DOMAIN,
+          defaultDomain: LINK_DEFAULT_DOMAIN,
         },
   })
 
@@ -149,7 +161,7 @@ export const CreateEditAppForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Domínio padrão</FormLabel>
-                <Select {...field}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue />
@@ -157,8 +169,8 @@ export const CreateEditAppForm = () => {
                   </FormControl>
 
                   <SelectContent>
-                    {LINK_DOMAINS.map(domain => (
-                      <SelectItem key={domain} value={domain}>
+                    {availableDomains.map((domain, index) => (
+                      <SelectItem key={index} value={domain}>
                         {domain}
                       </SelectItem>
                     ))}
@@ -168,7 +180,10 @@ export const CreateEditAppForm = () => {
                   Domínio que será pré preenchido ao criar um link. Para cada link será possível
                   alterar o domínio.
                   <br />
-                  Exemplo do link com domínio: https://{field.value}/7yB46jk
+                  Exemplo do link com domínio:{' '}
+                  <span className='font-mono font-bold text-primary'>
+                    https://{field.value}/7yB46jk
+                  </span>
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -292,11 +307,7 @@ export const CreateEditAppForm = () => {
             </CardContent>
 
             <CardFooter>
-              <DeleteAppDialog
-                appSlug={app}
-                appName={form.formState.defaultValues?.name || ''}
-                teamSlug={team}
-              >
+              <DeleteAppDialog appId={app.id} appSlug={app.slug} appName={app.name}>
                 <AlertDialogTrigger asChild>
                   <Button variant='destructive'>Excluir app</Button>
                 </AlertDialogTrigger>

@@ -2,6 +2,7 @@
 
 import { fetchUrlOgImage, routes } from '@advents/common'
 import { prisma } from '@advents/db'
+import { getLinkDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
@@ -35,6 +36,12 @@ export const editAppAction = authActionClient
 
     if (!originalAppResult) {
       throw new ActionError('App não encontrado.')
+    }
+
+    const availableDomains = await getLinkDomains(id)
+
+    if (!availableDomains.includes(newApp.defaultDomain)) {
+      throw new ActionError('Domínio inválido.')
     }
 
     const { team, ...originalApp } = originalAppResult

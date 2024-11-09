@@ -2,6 +2,7 @@
 
 import { fetchUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
+import { getLinkDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
@@ -23,6 +24,12 @@ export const createAppAction = authActionClient
 
     if (!team) {
       throw new ActionError('Equipe não encontrada.')
+    }
+
+    const availableDomains = await getLinkDomains()
+
+    if (!availableDomains.includes(app.defaultDomain)) {
+      throw new ActionError('Domínio inválido.')
     }
 
     const slugExists = await prisma.app.findUnique({

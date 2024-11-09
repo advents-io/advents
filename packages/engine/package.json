@@ -3,6 +3,7 @@
   "dependencies": {
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
+    "@advents/queries": "workspace:*",
     "@advents/supabase": "workspace:*",
     "@hono/zod-validator": "^0.4.1",
     "@vercel/functions": "^1.4.1",

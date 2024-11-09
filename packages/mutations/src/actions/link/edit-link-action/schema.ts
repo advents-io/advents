@@ -1,9 +1,6 @@
-import { LINK_DOMAINS } from '@advents/common'
 import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
-
-const [first, ...rest] = LINK_DOMAINS
 
 export const inputSchema = z.object({
   linkId: z
@@ -14,7 +11,7 @@ export const inputSchema = z.object({
     .max(50, 'O título deve possuir no máximo 50 caracteres.')
     .nullable()
     .transform(value => value || null),
-  domain: z.enum([first, ...rest], { message: 'Domínio inválido.' }),
+  domain: z.string({ message: 'Domínio inválido.' }),
   slug: z
     .string()
     .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')

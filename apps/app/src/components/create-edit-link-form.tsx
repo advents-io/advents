@@ -1,6 +1,5 @@
 'use client'
 
-import { LINK_DOMAINS } from '@advents/common'
 import {
   createLinkAction,
   CreateLinkFormInput,
@@ -10,6 +9,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { GetAppDefaultValuesOutput } from '@advents/queries/client'
+import { getLinkDomains } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -21,7 +21,6 @@ import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
 import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
-import { getAppId } from '@/lib/queries/get-app-id'
 import { getLink } from '@/lib/queries/get-link'
 import { Button } from '@/ui/button'
 import { DialogFooter } from '@/ui/dialog'
@@ -47,6 +46,8 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const [isDefaultFallbackUrl, setIsDefaultFallbackUrl] = useState(true)
 
   const hasDefaultFallbackUrl = !!defaultAppValues?.defaultFallbackUrl
+
+  const [availableDomains, setAvailableDomains] = useState<string[]>([])
 
   const onSuccess = () => {
     form.reset()
@@ -90,9 +91,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
         linkId,
       })
     } else {
-      const { id: appId } = await getAppId({ appSlug, teamSlug })
-
-      createLink({ ...link, appId })
+      createLink({
+        ...link,
+        appId: defaultAppValues!.id,
+      })
     }
   }
 
@@ -112,6 +114,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     setIsDefaultIosUrl(link.iosUrl === app.iosUrl)
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl && link.fallbackUrl === app.defaultFallbackUrl)
 
+    const availableDomains = await getLinkDomains(app.id)
+    setAvailableDomains(availableDomains)
+
     return link
   }
 
@@ -120,6 +125,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     setDefaultAppValues(app)
 
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
+
+    const availableDomains = await getLinkDomains(app.id)
+    setAvailableDomains(availableDomains)
 
     return {
       title: null,
@@ -282,7 +290,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                       </FormControl>
 
                       <SelectContent>
-                        {LINK_DOMAINS.map((domain, index) => (
+                        {availableDomains.map((domain, index) => (
                           <SelectItem key={index} value={domain}>
                             {domain}
                           </SelectItem>

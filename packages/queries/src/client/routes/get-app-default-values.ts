@@ -13,6 +13,7 @@ const inputSchema = z.object({
 export type GetAppDefaultValuesInput = z.infer<typeof inputSchema>
 
 const outputSchema = z.object({
+  id: z.string().uuid(),
   defaultDomain: z.string(),
   androidUrl: z.string().url(),
   iosUrl: z.string().url(),
@@ -41,6 +42,7 @@ export const getAppDefaultValues = (api: Hono<ApiEnv>) =>
           },
         },
         select: {
+          id: true,
           defaultDomain: true,
           androidUrl: true,
           iosUrl: true,
