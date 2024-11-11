@@ -29,7 +29,9 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   const copyToClipboard = () => {
     // A faster way to copy localhost links
     const content =
-      process.env.VERCEL === '1' ? httpShortLink : `http://${LINK_LOCALHOST_DOMAIN}/${link.slug}`
+      process.env.NEXT_PUBLIC_VERCEL === '1'
+        ? httpShortLink
+        : `http://${LINK_LOCALHOST_DOMAIN}/${link.slug}`
 
     navigator.clipboard.writeText(content)
 
