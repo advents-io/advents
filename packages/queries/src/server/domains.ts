@@ -4,7 +4,7 @@ type LinkCustomDomain = {
 }
 
 const LINK_DEFAULT_DOMAINS: string[] =
-  process.env.VERCEL === '1' && process.env.VERCEL_ENV === 'production'
+  process.env.NEXT_PUBLIC_VERCEL === '1' && process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
     ? ['adv.sh']
     : ['dev.adv.sh']
 
