@@ -2,6 +2,7 @@
 
 import { dayjs } from '@advents/common'
 import { Link as LinkDb } from '@advents/db'
+import { LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -26,7 +27,11 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   const httpShortLink = formatShortLink(link.domain, link.slug, true)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(httpShortLink)
+    // A faster way to copy localhost links
+    const content =
+      process.env.VERCEL === '1' ? httpShortLink : `http://${LINK_LOCALHOST_DOMAIN}/${link.slug}`
+
+    navigator.clipboard.writeText(content)
 
     toast('Link copiado')
   }

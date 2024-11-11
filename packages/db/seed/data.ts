@@ -1,7 +1,7 @@
 export const APP = {
   name: 'Favorito',
   slug: 'favorito',
-  defaultDomain: 'adv.sh',
+  defaultDomain: 'dev.adv.sh',
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',
   defaultFallbackUrl: 'https://favorito.digital',

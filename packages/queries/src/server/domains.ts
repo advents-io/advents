@@ -1,12 +1,14 @@
-export const APP_DOMAIN = 'https://app.advents.io'
-export const APP_LOCALHOST_DOMAIN = 'http://localhost:3000'
-
 type LinkCustomDomain = {
   appId: string
   domain: string
 }
 
-const LINK_DEFAULT_DOMAINS = ['adv.sh']
+const LINK_DEFAULT_DOMAINS: string[] =
+  process.env.VERCEL === '1' && process.env.VERCEL_ENV === 'production'
+    ? ['adv.sh']
+    : ['dev.adv.sh']
+
+export const LINK_DEFAULT_DOMAIN: string = LINK_DEFAULT_DOMAINS[0]
 
 // TODO: Workaround to work with cumbuca app, will be removed in the future
 const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
@@ -16,8 +18,7 @@ const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
   },
 ]
 
-export const LINK_DEFAULT_DOMAIN = LINK_DEFAULT_DOMAINS[0]
-export const LINK_LOCALHOST_DOMAIN = 'l.localhost:3000'
+export const LINK_LOCALHOST_DOMAIN: string = 'l.localhost:3000'
 
 export const getLinkDomains = async (appId?: string): Promise<string[]> => {
   const customDomains = appId
@@ -29,4 +30,21 @@ export const getLinkDomains = async (appId?: string): Promise<string[]> => {
   const domains = [...LINK_DEFAULT_DOMAINS, ...customDomains]
 
   return domains
+}
+
+export const getAppDomain = (withProtocol: boolean) => {
+  const isLocalhost = process.env.VERCEL !== '1'
+
+  let domain =
+    process.env.VERCEL === '1'
+      ? process.env.VERCEL_ENV === 'production'
+        ? 'app.advents.io'
+        : 'dev.advents.io'
+      : 'localhost:3000'
+
+  const protocol = withProtocol ? (isLocalhost ? 'http://' : 'https://') : ''
+
+  domain = protocol + domain
+
+  return domain
 }

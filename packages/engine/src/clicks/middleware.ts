@@ -1,13 +1,6 @@
-import {
-  APP_DOMAIN,
-  DEFAULT_LINK_DOMAIN,
-  LINK_DOMAINS,
-  LOCALHOST_APP_DOMAIN,
-  LOCALHOST_LINK_DOMAIN,
-  routes,
-  WEBSITE_URL,
-} from '@advents/common'
+import { routes, WEBSITE_URL } from '@advents/common'
 import { Link } from '@advents/db'
+import { getAppDomain, LINK_DEFAULT_DOMAIN, LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
@@ -15,7 +8,7 @@ import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
-  const isLinkDomain = LINK_DOMAINS.includes(domain)
+  const isLinkDomain = getAppDomain(false) !== domain
   return isLinkDomain
 }
 
@@ -55,10 +48,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   const isIos = ua.os?.name === 'iOS'
   if (isIos) {
-    const isLocalhost = req.headers.get('host')?.includes('localhost') ?? true
-    const baseUrl = isLocalhost ? LOCALHOST_APP_DOMAIN : APP_DOMAIN
-
-    destinationUrl = new URL(routes.IOS_CLICK.path, baseUrl)
+    destinationUrl = new URL(routes.IOS_CLICK.path, getAppDomain(true))
     destinationUrl.searchParams.append('click_id', clickId)
     destinationUrl.searchParams.append('app_id', link.appId)
     destinationUrl.searchParams.append('redirect', link.iosUrl)
@@ -78,21 +68,17 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
 const redirect = (url: string) => {
   return NextResponse.redirect(url, {
-    status: 302,
+    status: 307,
   })
 }
 
 const getDomain = (req: NextRequest) => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain =
-    domain === LOCALHOST_LINK_DOMAIN &&
-    // Workaround because the redirect to the iOS click route not change the host header
-    // and this methods would always return true when redirecting to the iOS click route
-    req.nextUrl.pathname !== routes.IOS_CLICK.path
+  const isDevLinkDomain = domain === LINK_LOCALHOST_DOMAIN
 
   if (isDevLinkDomain) {
-    domain = DEFAULT_LINK_DOMAIN
+    domain = LINK_DEFAULT_DOMAIN
   }
 
   return domain
