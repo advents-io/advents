@@ -102,7 +102,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
   }
 
   const form = useForm<CreateAppInput | EditAppInput>({
-    resolver: zodResolver(createAppInputSchema.or(editAppInputSchema)),
+    resolver: zodResolver(isCreate ? createAppInputSchema : editAppInputSchema),
     defaultValues: !isCreate
       ? app
       : {
