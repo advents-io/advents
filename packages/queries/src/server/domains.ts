@@ -16,6 +16,10 @@ const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
     appId: 'eb39be27-f842-4eca-97d2-1835bfc4e33a',
     domain: 'links.cumbuca.com',
   },
+  {
+    appId: '07275def-37c3-4f2b-a049-bfee570dccc6',
+    domain: 'li.favorito.digital',
+  },
 ]
 
 export const LINK_LOCALHOST_DOMAIN: string = 'l.localhost:3000'
