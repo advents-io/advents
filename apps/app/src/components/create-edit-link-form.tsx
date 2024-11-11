@@ -9,7 +9,7 @@ import {
   useAction,
 } from '@advents/mutations'
 import { GetAppDefaultValuesOutput } from '@advents/queries/client'
-import { getLinkDomains } from '@advents/queries/server'
+import { getAppDomains } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
@@ -114,7 +114,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
     setIsDefaultIosUrl(link.iosUrl === app.iosUrl)
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl && link.fallbackUrl === app.defaultFallbackUrl)
 
-    const availableDomains = await getLinkDomains(app.id)
+    const availableDomains = await getAppDomains(app.id)
     setAvailableDomains(availableDomains)
 
     return link
@@ -126,7 +126,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
 
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
 
-    const availableDomains = await getLinkDomains(app.id)
+    const availableDomains = await getAppDomains(app.id)
     setAvailableDomains(availableDomains)
 
     return {

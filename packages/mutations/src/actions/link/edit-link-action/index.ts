@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@advents/db'
-import { getLinkDomains } from '@advents/queries/server'
+import { getAppDomains } from '@advents/queries/server'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
@@ -32,7 +32,7 @@ export const editLinkAction = authActionClient
       throw new ActionError('Link não encontrado.')
     }
 
-    const availableDomains = await getLinkDomains(originalLink.appId)
+    const availableDomains = await getAppDomains(originalLink.appId)
 
     if (!availableDomains.includes(newLink.domain)) {
       throw new ActionError('Domínio inválido.')

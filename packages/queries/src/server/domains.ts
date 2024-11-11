@@ -24,7 +24,7 @@ const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
 
 export const LINK_LOCALHOST_DOMAIN: string = 'l.localhost:3000'
 
-export const getLinkDomains = async (appId?: string): Promise<string[]> => {
+export const getAppDomains = async (appId?: string): Promise<string[]> => {
   const customDomains = appId
     ? LINK_CUSTOM_DOMAINS.filter(customDomain => customDomain.appId === appId).map(
         customDomain => customDomain.domain,

@@ -2,7 +2,7 @@
 
 import { getUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { getLinkDomains } from '@advents/queries/server'
+import { getAppDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
@@ -26,7 +26,7 @@ export const createAppAction = authActionClient
       throw new ActionError('Equipe não encontrada.')
     }
 
-    const availableDomains = await getLinkDomains()
+    const availableDomains = await getAppDomains()
 
     if (!availableDomains.includes(app.defaultDomain)) {
       throw new ActionError('Domínio inválido.')

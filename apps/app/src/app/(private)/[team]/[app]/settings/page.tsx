@@ -1,6 +1,6 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { getLinkDomains } from '@advents/queries/server'
+import { getAppDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
@@ -32,7 +32,7 @@ export default async function Page(props: { params: Promise<{ team: string; app:
     redirect(routes.APPS.path(params.team))
   }
 
-  const availableDomains = await getLinkDomains(app.id)
+  const availableDomains = await getAppDomains(app.id)
 
   return <CreateEditAppForm app={app} availableDomains={availableDomains} />
 }
