@@ -9,6 +9,7 @@ export * from './src/actions/link/create-link-action'
 export * from './src/actions/link/create-link-action/schema'
 export * from './src/actions/link/delete-link-action'
 export * from './src/actions/link/edit-link-action'
+export * from './src/actions/send-discord-message'
 //
 export * from 'next-safe-action'
 export * from 'next-safe-action/hooks'

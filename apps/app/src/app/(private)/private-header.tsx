@@ -10,6 +10,7 @@ import { useParams, useRouter } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
+import { FeedbackButton } from '@/components/feedback-button'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -71,6 +72,8 @@ export const PrivateHeader = ({ email, apps }: Props) => {
         </div>
 
         <div className='flex items-center gap-1'>
+          <FeedbackButton />
+
           <ContactDropdown>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Ajuda
