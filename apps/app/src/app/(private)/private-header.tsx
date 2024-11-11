@@ -10,7 +10,6 @@ import { useParams, useRouter } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
 import { ContactDropdown } from '@/components/contact-dropdown'
-import { FeedbackButton } from '@/components/feedback-button'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -29,6 +28,7 @@ import {
 } from '@/ui/dropdown-menu'
 
 import { AppSelector } from './app-selector'
+import { FeedbackButton } from './feedback-button'
 import { HeaderItem } from './header-item'
 
 interface Props {

@@ -16,8 +16,8 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/ui/form'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 import { Textarea } from '@/ui/textarea'
 
-import { ErrorAlert } from './error-alert'
-import { LoadingSpinner } from './loading-spinner'
+import { ErrorAlert } from '../../components/error-alert'
+import { LoadingSpinner } from '../../components/loading-spinner'
 
 const feedbackSchema = z.object({
   text: z.string(),
