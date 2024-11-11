@@ -1,7 +1,6 @@
 'use client'
 
 import { routes } from '@advents/common'
-import { SelectGroup } from '@radix-ui/react-select'
 import { CodeIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -12,6 +11,7 @@ import { Card, CardHeader } from '@/ui/card'
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectLabel,
   SelectTrigger,
