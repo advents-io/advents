@@ -35,20 +35,3 @@ export const getLinkDomains = async (appId?: string): Promise<string[]> => {
 
   return domains
 }
-
-export const getAppDomain = (withProtocol: boolean) => {
-  const isLocalhost = process.env.VERCEL !== '1'
-
-  let domain =
-    process.env.VERCEL === '1'
-      ? process.env.VERCEL_ENV === 'production'
-        ? 'app.advents.io'
-        : 'dev.advents.io'
-      : 'localhost:3000'
-
-  const protocol = withProtocol ? (isLocalhost ? 'http://' : 'https://') : ''
-
-  domain = protocol + domain
-
-  return domain
-}

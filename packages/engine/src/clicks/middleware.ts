@@ -1,6 +1,6 @@
 import { routes, WEBSITE_URL } from '@advents/common'
 import { Link } from '@advents/db'
-import { getAppDomain, LINK_DEFAULT_DOMAIN, LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
+import { LINK_DEFAULT_DOMAIN, LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
@@ -80,6 +80,23 @@ const getDomain = (req: NextRequest) => {
   if (isDevLinkDomain) {
     domain = LINK_DEFAULT_DOMAIN
   }
+
+  return domain
+}
+
+const getAppDomain = (withProtocol: boolean) => {
+  const isLocalhost = process.env.VERCEL !== '1'
+
+  let domain =
+    process.env.VERCEL === '1'
+      ? process.env.VERCEL_ENV === 'production'
+        ? 'app.advents.io'
+        : 'dev.advents.io'
+      : 'localhost:3000'
+
+  const protocol = withProtocol ? (isLocalhost ? 'http://' : 'https://') : ''
+
+  domain = protocol + domain
 
   return domain
 }
