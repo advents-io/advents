@@ -81,7 +81,7 @@ export const FeedbackButton = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align='end'>
+      <PopoverContent align='end' className='w-80'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSendFeedback)} className='space-y-4'>
             <ErrorAlert error={error} />
