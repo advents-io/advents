@@ -115,7 +115,13 @@ export const PrivateHeader = ({ email, apps }: Props) => {
         <nav className='flex gap-4 pt-2'>
           <HeaderItem href={[routes.LINKS.path(team, app)]}>Links</HeaderItem>
           <HeaderItem href={[routes.ANALYTICS.path(team, app)]}>Analytics</HeaderItem>
-          <HeaderItem href={[routes.SETTINGS.path(team, app), routes.SETTINGS_SDK.path(team, app)]}>
+          <HeaderItem
+            href={[
+              routes.SETTINGS.path(team, app),
+              routes.SETTINGS_SDK.path(team, app),
+              routes.SETTINGS_DOMAINS.path(team, app),
+            ]}
+          >
             Ajustes
           </HeaderItem>
         </nav>

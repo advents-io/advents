@@ -20,6 +20,9 @@ export const routes = {
   SETTINGS_SDK: {
     path: (team: string, app: string) => `/${team}/${app}/settings/sdk`,
   },
+  SETTINGS_DOMAINS: {
+    path: (team: string, app: string) => `/${team}/${app}/settings/domains`,
+  },
 
   SIGN_IN: {
     path: '/sign-in',
