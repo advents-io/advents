@@ -277,11 +277,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                   Você pode adicionar um domínio customizado nas{' '}
                   <Link
                     href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
-                    className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
                     target='_blank'
                   >
-                    configurações do app.
-                    <SquareArrowOutUpRightIcon className='size-4' />
+                    configurações do app. <SquareArrowOutUpRightIcon className='size-4' />
                   </Link>
                 </span>
               }
@@ -348,11 +347,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                       Você pode alterar a url padrão nas{' '}
                       <Link
                         href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
                         target='_blank'
                       >
-                        configurações do app.
-                        <SquareArrowOutUpRightIcon className='size-4' />
+                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
                       </Link>
                       , ou utilizar uma url personalizada.
                     </span>
@@ -412,11 +410,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                       Você pode alterar a url padrão nas{' '}
                       <Link
                         href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
                         target='_blank'
                       >
-                        configurações do app.
-                        <SquareArrowOutUpRightIcon className='size-4' />
+                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
                       </Link>
                       , ou utilizar uma url personalizada.
                     </span>
@@ -473,11 +470,10 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                       Você pode alterar a url padrão nas{' '}
                       <Link
                         href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
                         target='_blank'
                       >
-                        configurações do app.
-                        <SquareArrowOutUpRightIcon className='size-4' />
+                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
                       </Link>
                       , ou utilizar uma url personalizada.
                     </span>

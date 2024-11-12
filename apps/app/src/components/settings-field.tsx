@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 type Props = {
   title?: React.ReactNode
   description?: React.ReactNode
-  children: React.ReactNode
+  children?: React.ReactNode
   footer?: React.ReactNode
 }
 
@@ -19,7 +19,11 @@ export const SettingsField = ({ title, description, children, footer }: Props) =
         </CardHeader>
       )}
 
-      {hasHeader ? <CardContent>{children}</CardContent> : <CardHeader>{children}</CardHeader>}
+      {hasHeader && !!children ? (
+        <CardContent>{children}</CardContent>
+      ) : children ? (
+        <CardHeader>{children}</CardHeader>
+      ) : null}
 
       {footer && (
         <CardFooter className='border-t bg-gray-50 py-5 text-sm text-muted-foreground'>

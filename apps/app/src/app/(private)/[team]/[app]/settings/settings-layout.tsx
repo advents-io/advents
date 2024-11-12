@@ -62,7 +62,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
               {SIDEBAR_ITEMS.map((item, index) => (
                 <SelectItem key={index} value={item.href}>
                   <div className='flex items-center'>
-                    <item.icon className='mr-2 size-4' />
+                    <item.icon className='mr-2 size-4 text-muted-foreground' />
                     {item.title}
                   </div>
                 </SelectItem>
@@ -73,7 +73,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
       </div>
 
       <aside className='hidden w-64 sm:block'>
-        <h2 className='mb-3 text-xs font-semibold text-muted-foreground'>Ajustes do app</h2>
+        <h2 className='mb-3 text-xs font-medium text-muted-foreground'>Ajustes do app</h2>
 
         <div className='flex flex-col gap-1'>
           {SIDEBAR_ITEMS.map((item, index) => (
@@ -86,7 +86,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
                 )}
                 size='sm'
               >
-                <item.icon className='mr-2 size-4' />
+                <item.icon className='mr-2 size-4 text-muted-foreground' />
                 {item.title}
               </Button>
             </Link>

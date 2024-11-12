@@ -187,12 +187,11 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
                 <span>Para liberar essa opção, adicione o endereço da logo do QR Code nos </span>
               )}
               <Link
-                className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
                 href={routes.SETTINGS.path(team, app)}
                 target='_blank'
               >
-                ajustes do app.
-                <SquareArrowOutUpRightIcon className='size-4' />
+                ajustes do app. <SquareArrowOutUpRightIcon className='size-4' />
               </Link>
             </span>
           </div>

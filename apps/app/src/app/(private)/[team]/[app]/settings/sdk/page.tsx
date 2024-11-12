@@ -35,15 +35,16 @@ export default async function Page(props: { params: Promise<{ app: string; team:
     <SettingsField
       title='Chave da API'
       footer={
-        <p className='flex items-center gap-1'>
-          Saiba mais na
-          <span className='text-blue-600 hover:underline'>
-            <Link href={docsUrl} target='_blank' className='flex items-center gap-1'>
-              documentação da API
-              <SquareArrowOutUpRightIcon className='size-4' />
-            </Link>
-          </span>
-        </p>
+        <span>
+          Saiba mais na{' '}
+          <Link
+            href={docsUrl}
+            target='_blank'
+            className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+          >
+            documentação da API. <SquareArrowOutUpRightIcon className='size-4' />
+          </Link>
+        </span>
       }
       description='Use a chave de API para autenticar as requisições da SDK instalada no seu app.'
     >
