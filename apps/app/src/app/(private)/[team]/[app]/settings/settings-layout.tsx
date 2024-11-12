@@ -7,7 +7,6 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
-import { Card, CardHeader } from '@/ui/card'
 import {
   Select,
   SelectContent,
@@ -90,11 +89,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
         </div>
       </aside>
 
-      <main className='w-full'>
-        <Card>
-          <CardHeader className='mx-auto max-w-xl gap-8 p-4 md:p-10'>{children}</CardHeader>
-        </Card>
-      </main>
+      <main className='w-full'>{children}</main>
     </div>
   )
 }

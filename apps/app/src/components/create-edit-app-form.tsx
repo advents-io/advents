@@ -128,10 +128,13 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nome</FormLabel>
+
                 <FormControl>
                   <Input {...field} placeholder='Nome do app' />
                 </FormControl>
+
                 <FormDescription>Usado para identificar o app na plataforma.</FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -143,13 +146,16 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Identificador único</FormLabel>
+
                 <FormControl>
                   <Input {...field} placeholder='nome-do-app' />
                 </FormControl>
+
                 <FormDescription>
                   Valor único usado para identificar o app na plataforma. Deve conter apenas letras
                   minúsculas, números, hífen ou underline.
                 </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -161,6 +167,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Domínio padrão</FormLabel>
+
                 <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                   <FormControl>
                     <SelectTrigger>
@@ -176,6 +183,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                     ))}
                   </SelectContent>
                 </Select>
+
                 <FormDescription>
                   Domínio que será pré preenchido ao criar um link. Para cada link será possível
                   alterar o domínio.
@@ -185,6 +193,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                     https://{field.value}/7yB46jk
                   </span>
                 </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
