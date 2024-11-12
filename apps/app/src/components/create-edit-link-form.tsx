@@ -181,56 +181,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
-    return (
-      <div className='space-y-5 pt-4'>
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
-        </div>
-
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-full' />
-        </div>
-
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <div className='flex flex-col gap-2 sm:flex-row'>
-            <Skeleton className='h-10 w-44' />
-            <Skeleton className='h-10 w-full' />
-          </div>
-        </div>
-
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <div className='flex flex-col gap-2 sm:flex-row'>
-            <Skeleton className='h-10 w-44' />
-            <Skeleton className='h-10 w-full' />
-          </div>
-        </div>
-
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <div className='flex flex-col gap-2 sm:flex-row'>
-            <Skeleton className='h-10 w-44' />
-            <Skeleton className='h-10 w-full' />
-          </div>
-        </div>
-
-        <div className='py-2'>
-          <div className='h-[1px] w-full' />
-        </div>
-
-        <div className='space-y-2'>
-          <Skeleton className='h-[22px] w-40' />
-          <Skeleton className='h-10 w-44' />
-        </div>
-
-        <div className='flex justify-end'>
-          <Skeleton className='h-10 w-full sm:w-[98px]' />
-        </div>
-      </div>
-    )
+    return <Loading />
   }
 
   return (
@@ -588,6 +539,59 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
           </DialogFooter>
         </form>
       </Form>
+    </div>
+  )
+}
+
+const Loading = () => {
+  return (
+    <div className='space-y-5 pt-4'>
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <Skeleton className='h-10 w-full' />
+      </div>
+
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <Skeleton className='h-10 w-full' />
+      </div>
+
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <div className='flex flex-col gap-2 sm:flex-row'>
+          <Skeleton className='h-10 w-44' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+      </div>
+
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <div className='flex flex-col gap-2 sm:flex-row'>
+          <Skeleton className='h-10 w-44' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+      </div>
+
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <div className='flex flex-col gap-2 sm:flex-row'>
+          <Skeleton className='h-10 w-44' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+      </div>
+
+      <div className='py-2'>
+        <div className='h-[1px] w-full' />
+      </div>
+
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <Skeleton className='h-10 w-44' />
+      </div>
+
+      <div className='flex justify-end'>
+        <Skeleton className='h-10 w-full sm:w-[98px]' />
+      </div>
     </div>
   )
 }
