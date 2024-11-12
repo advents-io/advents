@@ -152,8 +152,9 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                 </FormControl>
 
                 <FormDescription>
-                  Valor único usado para identificar o app na plataforma. Deve conter apenas letras
-                  minúsculas, números, hífen ou underline.
+                  Valor único usado para identificar o app na plataforma.
+                  <br />
+                  Deve conter apenas letras minúsculas, números, hífen ou underline.
                 </FormDescription>
 
                 <FormMessage />
@@ -213,8 +214,9 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   />
                 </FormControl>
                 <FormDescription>
-                  Url padrão que será utilizada ao criar um link. Pode ser alterada em cada link
-                  criado.
+                  Url padrão que será utilizada ao criar um link.
+                  <br />
+                  Pode ser alterada em cada link criado.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -235,8 +237,9 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   />
                 </FormControl>
                 <FormDescription>
-                  Url padrão que será utilizada ao criar um link. Pode ser alterada em cada link
-                  criado.
+                  Url padrão que será utilizada ao criar um link.
+                  <br />
+                  Pode ser alterada em cada link criado.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -260,7 +263,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                 <FormDescription>
                   Url alternativa padrão que será utilizada ao criar um link.
                   <br />É a url que o usuário será direcionado caso o dispositivo que abrir o link
-                  não seja nem Android e nem iOS, por exemplo, um computador Windows, Linux ou
+                  não seja nem Android e nem iOS, como por exemplo, um computador Windows, Linux ou
                   macOS.
                 </FormDescription>
                 <FormMessage />

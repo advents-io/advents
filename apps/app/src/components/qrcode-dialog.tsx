@@ -1,4 +1,13 @@
-import { CopyIcon, DownloadIcon, ImageIcon, Loader2Icon } from 'lucide-react'
+import { routes } from '@advents/common'
+import {
+  CopyIcon,
+  DownloadIcon,
+  ImageIcon,
+  Loader2Icon,
+  SquareArrowOutUpRightIcon,
+} from 'lucide-react'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -6,7 +15,8 @@ import { ErrorAlert } from '@/components/error-alert'
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Button } from '@/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
+import { Card } from '@/ui/card'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +36,8 @@ interface Props {
 }
 
 export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogoUrl }: Props) => {
+  const { app, team } = useParams<{ team: string; app: string }>()
+
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
   const [showLogo, setShowLogo] = useState(!!qrcodeLogoUrl)
@@ -136,78 +148,88 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
     <Dialog open={open} onOpenChange={handleSetOpen}>
       {children}
 
-      <DialogContent>
+      <DialogContent className='overflow-hidden'>
         <DialogHeader>
           <DialogTitle>QR Code</DialogTitle>
         </DialogHeader>
 
         <ErrorAlert error={error} />
 
-        <div className='w-full pt-10'>
-          <div className='mx-auto flex max-w-xs flex-col items-center gap-10'>
-            <div className='relative'>
-              <QrCodeSvg config={config} />
+        <div className='mx-auto w-full max-w-sm space-y-10'>
+          <Card className='relative mx-auto w-fit bg-gray-50 p-10'>
+            <QrCodeSvg config={config} />
 
-              {!isLogoLoaded && (
-                <div className='absolute inset-0 flex items-center justify-center'>
-                  <div className='flex size-[60px] items-center justify-center bg-white'>
-                    <Loader2Icon className='size-8 animate-spin' />
-                  </div>
+            {!isLogoLoaded && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <div className='flex size-[60px] items-center justify-center bg-gray-50'>
+                  <Loader2Icon className='size-8 animate-spin' />
                 </div>
-              )}
-            </div>
-
-            <div className='flex flex-col gap-2'>
-              <div className='relative flex gap-2'>
-                <Switch
-                  id='qrcode-logo'
-                  checked={showLogo}
-                  onCheckedChange={setShowLogo}
-                  disabled={!qrcodeLogoUrl}
-                />
-
-                <Label htmlFor='qrcode-logo'>Exibir logo padrão</Label>
               </div>
+            )}
+          </Card>
 
-              <span className='text-sm text-muted-foreground'>
-                {qrcodeLogoUrl
-                  ? 'Endereço da logo definido nos ajustes do app.'
-                  : 'Para liberar essa opção, adicione o endereço da logo do QR Code nos ajustes do app.'}
-              </span>
+          <div className='flex flex-col gap-2'>
+            <div className='relative flex gap-2'>
+              <Switch
+                id='qrcode-logo'
+                checked={showLogo}
+                onCheckedChange={setShowLogo}
+                disabled={!qrcodeLogoUrl}
+              />
+
+              <Label htmlFor='qrcode-logo'>Exibir logo</Label>
             </div>
 
-            <div className='flex w-full justify-between'>
-              <Button className='w-36' onClick={copyToClipboard}>
-                <CopyIcon className='mr-2 size-4' />
-                Copiar
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className='w-36'>
-                    <DownloadIcon className='mr-2 size-4' />
-                    Baixar
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={downloadSvg}>
-                    <ImageIcon className='mr-2 size-4' />
-                    Formato .svg
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem onClick={downloadPng}>
-                    <ImageIcon className='mr-2 size-4' />
-                    Formato .png
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            {/* This will be used to prompt downloads. */}
-            <a className='hidden' download={`${slug}-qrcode.svg`} ref={anchorRef} />
+            <span className='text-sm text-muted-foreground'>
+              {qrcodeLogoUrl ? (
+                <span>Endereço da logo definido nos </span>
+              ) : (
+                <span>Para liberar essa opção, adicione o endereço da logo do QR Code nos </span>
+              )}
+              <Link
+                className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                href={routes.SETTINGS.path(team, app)}
+                target='_blank'
+              >
+                ajustes do app.
+                <SquareArrowOutUpRightIcon className='size-4' />
+              </Link>
+            </span>
           </div>
         </div>
+
+        <DialogFooter className='-mx-6 -mb-6 mt-4 border-t bg-gray-50 p-6'>
+          <div className='space-x-2'>
+            <Button onClick={copyToClipboard}>
+              <CopyIcon className='mr-2 size-4' />
+              Copiar
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>
+                  <DownloadIcon className='mr-2 size-4' />
+                  Baixar
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={downloadSvg}>
+                  <ImageIcon className='mr-2 size-4' />
+                  Formato .svg
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={downloadPng}>
+                  <ImageIcon className='mr-2 size-4' />
+                  Formato .png
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          {/* This is used to prompt downloads. */}
+          <a className='hidden' download={`${slug}-qrcode.svg`} ref={anchorRef} />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
