@@ -1,9 +1,10 @@
-import { CONTACT_EMAIL, DOCS_URL, MEET_SCHEDULER_URL, SUPPORT_WHATSAPP } from '@advents/common'
+import { CONTACT_EMAIL, DOCS_URL, MEET_SCHEDULER_URL, SUPPORT_PHONE } from '@advents/common'
 import { BookOpenIcon, MailIcon, VideoIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import WhatsApp from '@/assets/icons/whatsapp.svg'
+import { whatsapp } from '@/lib/whatsapp'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +34,7 @@ export const ContactDropdown = ({ children, showDocs = true, modal = true, align
           </Link>
         )}
 
-        <Link href={SUPPORT_WHATSAPP} target='_blank'>
+        <Link href={whatsapp.buildMessageUrl(SUPPORT_PHONE)} target='_blank'>
           <DropdownMenuItem>
             <Image src={WhatsApp} alt='WhatsApp' className='mr-2 size-4' />
             WhatsApp

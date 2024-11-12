@@ -4,4 +4,4 @@ export const MEET_SCHEDULER_URL = 'https://cal.com/gabriel-moresco/advents'
 export const SIGN_UP_URL = 'https://l.advents.io/cadastro'
 
 export const CONTACT_EMAIL = 'contato@advents.io'
-export const SUPPORT_WHATSAPP = 'https://wa.me/5549999268806'
+export const SUPPORT_PHONE = '5549999268806'
