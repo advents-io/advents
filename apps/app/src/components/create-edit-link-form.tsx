@@ -1,5 +1,6 @@
 'use client'
 
+import { routes } from '@advents/common'
 import {
   createLinkAction,
   CreateLinkFormInput,
@@ -10,7 +11,8 @@ import {
 } from '@advents/mutations'
 import { GetAppDefaultValuesOutput } from '@advents/queries/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusIcon, SaveIcon } from 'lucide-react'
+import { PlusIcon, SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -264,12 +266,23 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             <FormLabel
               optional
               tooltip={
-                <span className='leading-loose text-muted-foreground'>
+                <span>
                   Link curto utilizado para compartilhamento.
                   <br />
                   <span className='font-semibold text-primary'>
                     https://{form.getValues('domain')}/{form.getValues('slug') || 'abcd123'}
                   </span>
+                  <br />
+                  <br />
+                  Você pode adicionar um domínio customizado nas{' '}
+                  <Link
+                    href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
+                    className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                    target='_blank'
+                  >
+                    configurações do app.
+                    <SquareArrowOutUpRightIcon className='size-4' />
+                  </Link>
                 </span>
               }
             >
@@ -326,7 +339,25 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='androidUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos Android.'>
+                <FormLabel
+                  tooltip={
+                    <span>
+                      Url utilizada para o direcionamento em dispositivos Android.
+                      <br />
+                      <br />
+                      Você pode alterar a url padrão nas{' '}
+                      <Link
+                        href={routes.SETTINGS.path(teamSlug, appSlug)}
+                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        target='_blank'
+                      >
+                        configurações do app.
+                        <SquareArrowOutUpRightIcon className='size-4' />
+                      </Link>
+                      , ou utilizar uma url personalizada.
+                    </span>
+                  }
+                >
                   Url do app Android
                 </FormLabel>
 
@@ -372,7 +403,25 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='iosUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos iOS.'>
+                <FormLabel
+                  tooltip={
+                    <span>
+                      Url utilizada para o direcionamento em dispositivos iOS.
+                      <br />
+                      <br />
+                      Você pode alterar a url padrão nas{' '}
+                      <Link
+                        href={routes.SETTINGS.path(teamSlug, appSlug)}
+                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        target='_blank'
+                      >
+                        configurações do app.
+                        <SquareArrowOutUpRightIcon className='size-4' />
+                      </Link>
+                      , ou utilizar uma url personalizada.
+                    </span>
+                  }
+                >
                   Url do app iOS
                 </FormLabel>
 
@@ -414,7 +463,26 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             name='fallbackUrl'
             render={({ field }) => (
               <FormItem>
-                <FormLabel tooltip='Url utilizada para o direcionamento em dispositivos que não sejam Android ou iOS.'>
+                <FormLabel
+                  tooltip={
+                    <span>
+                      Url utilizada para o direcionamento em dispositivos que não sejam Android ou
+                      iOS.
+                      <br />
+                      <br />
+                      Você pode alterar a url padrão nas{' '}
+                      <Link
+                        href={routes.SETTINGS.path(teamSlug, appSlug)}
+                        className='inline-flex items-center gap-1 text-blue-600 hover:underline'
+                        target='_blank'
+                      >
+                        configurações do app.
+                        <SquareArrowOutUpRightIcon className='size-4' />
+                      </Link>
+                      , ou utilizar uma url personalizada.
+                    </span>
+                  }
+                >
                   Url alternativa
                 </FormLabel>
 
