@@ -3,7 +3,7 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, JetBrains_Mono as JetBrainsMono } from 'next/font/google'
 import { Suspense } from 'react'
 
 import { PostHogPageView } from '@/lib/posthog/page-view'
@@ -16,6 +16,12 @@ import { Providers } from './providers'
 const interFont = Inter({
   subsets: ['latin'],
   display: 'swap',
+})
+
+const jetBrainsMonoFont = JetBrainsMono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 })
 
 const title = 'Advents | Links únicos e mensuráveis para seus apps'
@@ -77,7 +83,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='pt-BR' className={interFont.className}>
+    <html lang='pt-BR' className={`${interFont.className} ${jetBrainsMonoFont.variable}`}>
       <PostHogProvider>
         <body className='relative flex min-h-screen flex-col bg-gray-50' suppressHydrationWarning>
           <Suspense>

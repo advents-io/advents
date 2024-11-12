@@ -181,7 +181,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   alterar o domínio.
                   <br />
                   Exemplo do link com domínio:{' '}
-                  <span className='font-mono font-bold text-primary'>
+                  <span className='font-mono font-semibold tracking-tighter text-primary'>
                     https://{field.value}/7yB46jk
                   </span>
                 </FormDescription>
