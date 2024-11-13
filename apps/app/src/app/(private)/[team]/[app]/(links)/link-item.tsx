@@ -62,7 +62,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
                     variant='ghost'
                     size='icon'
                   >
-                    <CopyIcon className='size-4' />
+                    <CopyIcon />
                   </Button>
                 </TooltipTrigger>
 

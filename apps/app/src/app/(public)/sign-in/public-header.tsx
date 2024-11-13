@@ -17,7 +17,7 @@ export const PublicHeader = () => {
           <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Documentação
-              <MoveUpRightIcon className='ml-1 size-4' />
+              <MoveUpRightIcon />
             </Button>
           </Link>
 

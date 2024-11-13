@@ -86,7 +86,7 @@ export const SettingsLayout = ({ team, app, children }: Props) => {
                 )}
                 size='sm'
               >
-                <item.icon className='mr-2 size-4 text-muted-foreground' />
+                <item.icon className='text-muted-foreground' />
                 {item.title}
               </Button>
             </Link>

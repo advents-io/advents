@@ -28,7 +28,7 @@ export const ContactDropdown = ({ children, showDocs = true, modal = true, align
         {showDocs && (
           <Link href={DOCS_URL} target='_blank'>
             <DropdownMenuItem>
-              <BookOpenIcon className='mr-2 size-4' />
+              <BookOpenIcon />
               Documentação
             </DropdownMenuItem>
           </Link>
@@ -36,21 +36,21 @@ export const ContactDropdown = ({ children, showDocs = true, modal = true, align
 
         <Link href={whatsapp.buildMessageUrl(SUPPORT_PHONE)} target='_blank'>
           <DropdownMenuItem>
-            <Image src={WhatsApp} alt='WhatsApp' className='mr-2 size-4' />
+            <Image src={WhatsApp} alt='WhatsApp' className='size-4' />
             WhatsApp
           </DropdownMenuItem>
         </Link>
 
         <Link href={`mailto:${CONTACT_EMAIL}`} target='_blank'>
           <DropdownMenuItem>
-            <MailIcon className='mr-2 size-4' />
+            <MailIcon />
             E-mail
           </DropdownMenuItem>
         </Link>
 
         <Link href={MEET_SCHEDULER_URL} target='_blank'>
           <DropdownMenuItem>
-            <VideoIcon className='mr-2 size-4' />
+            <VideoIcon />
             Agendar Reunião
           </DropdownMenuItem>
         </Link>

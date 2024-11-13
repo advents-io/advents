@@ -295,7 +295,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
 
           <Button type='submit' className='w-full md:w-auto' disabled={busy}>
             <LoadingSpinner loading={busy}>
-              <SaveIcon className='size-4' />
+              <SaveIcon />
               Salvar
             </LoadingSpinner>
           </Button>

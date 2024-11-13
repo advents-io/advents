@@ -66,7 +66,7 @@ export const DatePicker = () => {
             )}
           </div>
 
-          <ChevronDownIcon className='ml-2 size-4' />
+          <ChevronDownIcon />
         </Button>
       </PopoverTrigger>
 

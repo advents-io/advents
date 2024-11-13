@@ -16,7 +16,7 @@ export const CreateLinkDialog = ({ children, className }: HTMLAttributes<HTMLDiv
         <div className={className}>
           {children || (
             <Button size='lg'>
-              <PlusIcon className='mr-2 size-4' />
+              <PlusIcon />
               Criar link
             </Button>
           )}

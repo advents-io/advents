@@ -35,7 +35,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' {...props}>
-          <EllipsisVerticalIcon className='size-4' />
+          <EllipsisVerticalIcon />
         </Button>
       </DropdownMenuTrigger>
 
@@ -43,7 +43,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         <EditLinkDialog linkId={id} closeDropdown={() => setOpen(false)}>
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <PencilIcon className='mr-2 size-4' />
+              <PencilIcon />
               Editar
             </DropdownMenuItem>
           </DialogTrigger>
@@ -57,7 +57,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         >
           <DialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <QrCodeIcon className='mr-2 size-4' />
+              <QrCodeIcon />
               <span>QR Code</span>
             </DropdownMenuItem>
           </DialogTrigger>
@@ -66,7 +66,7 @@ export const LinkItemDropdown = ({ id, domain, slug, qrcodeLogoUrl, ...props }: 
         <DeleteLinkDialog linkId={id} shortLink={shortLink} closeDropdown={() => setOpen(false)}>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onSelect={e => e.preventDefault()}>
-              <Trash2Icon className='mr-2 size-4 text-destructive' />
+              <Trash2Icon className='text-destructive' />
               <span className='text-destructive'>Excluir</span>
             </DropdownMenuItem>
           </AlertDialogTrigger>

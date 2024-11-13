@@ -4,6 +4,7 @@ import {
   DownloadIcon,
   ImageIcon,
   Loader2Icon,
+  PenToolIcon,
   SquareArrowOutUpRightIcon,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -200,26 +201,26 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
         <DialogFooter className='-mx-6 -mb-6 mt-4 border-t bg-gray-50 p-6'>
           <div className='space-x-2'>
             <Button onClick={copyToClipboard}>
-              <CopyIcon className='mr-2 size-4' />
+              <CopyIcon />
               Copiar
             </Button>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button>
-                  <DownloadIcon className='mr-2 size-4' />
+                  <DownloadIcon />
                   Baixar
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={downloadSvg}>
-                  <ImageIcon className='mr-2 size-4' />
+                  <PenToolIcon />
                   Formato .svg
                 </DropdownMenuItem>
 
                 <DropdownMenuItem onClick={downloadPng}>
-                  <ImageIcon className='mr-2 size-4' />
+                  <ImageIcon />
                   Formato .png
                 </DropdownMenuItem>
               </DropdownMenuContent>

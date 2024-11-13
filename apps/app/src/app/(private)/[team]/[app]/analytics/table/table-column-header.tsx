@@ -56,14 +56,14 @@ export const TableColumnHeader = <TData, TValue>({
               >
                 <span>{title}</span>
 
-                {tooltip && <CircleHelpIcon className='ml-2 size-3 text-muted-foreground' />}
+                {tooltip && <CircleHelpIcon className='text-muted-foreground' />}
 
                 {column.getIsSorted() === 'desc' ? (
-                  <ArrowDownIcon className='ml-2 size-4' />
+                  <ArrowDownIcon />
                 ) : column.getIsSorted() === 'asc' ? (
-                  <ArrowUpIcon className='ml-2 size-4' />
+                  <ArrowUpIcon />
                 ) : (
-                  <ChevronsUpDownIcon className='ml-2 size-3 text-muted-foreground' />
+                  <ChevronsUpDownIcon className='text-muted-foreground' />
                 )}
               </Button>
             </TooltipTrigger>
@@ -75,19 +75,19 @@ export const TableColumnHeader = <TData, TValue>({
 
       <DropdownMenuContent align='start'>
         <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-          <ArrowUpIcon className='mr-2 size-3.5' />
+          <ArrowUpIcon />
           Asc
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-          <ArrowDownIcon className='mr-2 size-3.5' />
+          <ArrowDownIcon />
           Desc
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-          <EyeOffIcon className='mr-2 size-3.5' />
+          <EyeOffIcon />
           Ocultar
         </DropdownMenuItem>
       </DropdownMenuContent>

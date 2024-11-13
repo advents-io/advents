@@ -525,12 +525,12 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
               <LoadingSpinner loading={isExecuting}>
                 {linkId ? (
                   <>
-                    <SaveIcon className='size-4' />
+                    <SaveIcon />
                     Salvar
                   </>
                 ) : (
                   <>
-                    <PlusIcon className='size-4' />
+                    <PlusIcon />
                     Criar link
                   </>
                 )}

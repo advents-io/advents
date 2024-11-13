@@ -83,14 +83,14 @@ export const PrivateHeader = ({ email, apps }: Props) => {
           <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Documentação
-              <MoveUpRightIcon className='ml-1 size-4' />
+              <MoveUpRightIcon />
             </Button>
           </Link>
 
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer' asChild>
               <Button variant='outline' size='icon' className='size-8 rounded-full'>
-                <UserIcon className='size-4' />
+                <UserIcon />
               </Button>
             </DropdownMenuTrigger>
 
@@ -103,7 +103,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem onClick={() => signOut()} onSelect={e => e.preventDefault()}>
-                <LogOutIcon className='mr-2 size-4' />
+                <LogOutIcon />
                 Sair
               </DropdownMenuItem>
             </DropdownMenuContent>

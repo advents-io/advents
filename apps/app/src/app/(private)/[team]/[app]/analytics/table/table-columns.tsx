@@ -34,7 +34,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                className='ml-2 size-8 rounded-full text-muted-foreground'
+                className='size-8 rounded-full text-muted-foreground'
                 onClick={() => {
                   navigator.clipboard.writeText(httpShortLink)
                   toast('Link copiado')
@@ -42,7 +42,7 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
                 variant='ghost'
                 size='icon'
               >
-                <CopyIcon className='size-4' />
+                <CopyIcon />
               </Button>
             </TooltipTrigger>
 

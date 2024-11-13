@@ -59,7 +59,7 @@ export default async function Page(props: { params: Promise<{ team: string }> })
       actions={
         <Link href={routes.APPS_NEW.path(team)}>
           <Button size='lg'>
-            <PlusIcon className='mr-2 size-4' />
+            <PlusIcon />
             Criar app
           </Button>
         </Link>

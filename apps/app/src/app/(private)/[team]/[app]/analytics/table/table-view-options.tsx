@@ -22,7 +22,7 @@ export const TableViewOptions = <TData,>({ table }: Props<TData>) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='outline' size='icon' className='ml-auto'>
-          <EyeOffIcon className='size-4' />
+          <EyeOffIcon />
         </Button>
       </DropdownMenuTrigger>
 

@@ -31,7 +31,7 @@ export const TableToolbar = <TData,>({ table }: Props<TData>) => {
 
         {!!search && (
           <Button variant='outline' className='border-dashed' onClick={() => handleSetFilter('')}>
-            <XIcon className='mr-2 size-4' />
+            <XIcon />
             Limpar
           </Button>
         )}

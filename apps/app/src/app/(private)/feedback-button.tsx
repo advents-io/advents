@@ -76,7 +76,7 @@ export const FeedbackButton = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='hidden bg-gray-50 font-normal sm:flex'>
-          <MessageSquareMoreIcon className='mr-2 size-4' />
+          <MessageSquareMoreIcon />
           Feedback
         </Button>
       </PopoverTrigger>
