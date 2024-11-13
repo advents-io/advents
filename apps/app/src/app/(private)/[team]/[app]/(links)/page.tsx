@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 
 import { PageContainer } from '@/components/page-container'
 
-import { CreateLinkDialog } from './create-link-dialog'
+import { CreateLinkButton } from './create-link-button'
 import { LinkList } from './link-list'
 import { LinkListLoading } from './link-list-loading'
 
@@ -20,7 +20,7 @@ export default async function Page(props: {
   const page = Number(searchParams.page) || 1
 
   return (
-    <PageContainer title='Links' actions={<CreateLinkDialog />}>
+    <PageContainer title='Links' actions={<CreateLinkButton />}>
       <Suspense fallback={<LinkListLoading />}>
         <LinkList page={page} appSlug={params.app} teamSlug={params.team} />
       </Suspense>

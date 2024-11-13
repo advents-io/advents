@@ -7,7 +7,7 @@ import { CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
-import { LinkItemDropdown } from '@/components/link-item-dropdown'
+import { LinkItemMoreOptionsButton } from '@/components/link-item-more-options-button'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
@@ -88,7 +88,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
 
             <LinkItemAnalytics clicks={link.clickCount} installs={link.installCount} />
 
-            <LinkItemDropdown
+            <LinkItemMoreOptionsButton
               id={link.id}
               domain={link.domain}
               slug={link.slug}

@@ -21,7 +21,6 @@ import { toast } from 'sonner'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingPageContent } from '@/components/loading-page-content'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { AlertDialogTrigger } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card'
 import {
@@ -37,7 +36,7 @@ import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
 
-import { DeleteAppDialog } from './delete-app-dialog'
+import { DeleteAppButton } from './delete-app-button'
 
 type Props = {
   app?: Pick<
@@ -319,11 +318,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             </CardContent>
 
             <CardFooter>
-              <DeleteAppDialog appId={app.id} appSlug={app.slug} appName={app.name}>
-                <AlertDialogTrigger asChild>
-                  <Button variant='destructive'>Excluir app</Button>
-                </AlertDialogTrigger>
-              </DeleteAppDialog>
+              <DeleteAppButton appId={app.id} appSlug={app.slug} appName={app.name} />
             </CardFooter>
           </Card>
         </>

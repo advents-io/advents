@@ -13,7 +13,7 @@ import {
 } from '@tanstack/react-table'
 import { HTMLAttributes, useState } from 'react'
 
-import { LinkItemDropdown } from '@/components/link-item-dropdown'
+import { LinkItemMoreOptionsButton } from '@/components/link-item-more-options-button'
 import {
   AnalyticsTableLinksProvider,
   useAnalyticsTableLinks,
@@ -156,7 +156,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                   <TableCell className='p-0'>
                     {flexRender(
                       <TableRowCell className='justify-end'>
-                        <LinkItemDropdown
+                        <LinkItemMoreOptionsButton
                           id={row.original.id}
                           domain={row.original.domain}
                           slug={row.original.slug}

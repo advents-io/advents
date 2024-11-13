@@ -10,7 +10,7 @@ import {
 } from '@/components/empty-screen'
 import { Button } from '@/ui/button'
 
-import { CreateLinkDialog } from './create-link-dialog'
+import { CreateLinkButton } from './create-link-button'
 import { LinkItem } from './link-item'
 import { LinksPagination } from './links-pagination'
 
@@ -82,9 +82,9 @@ export const LinkList = async ({ page, appSlug, teamSlug }: Props) => {
           </EmptyScreenDescription>
 
           <EmptyScreenButton>
-            <CreateLinkDialog>
+            <CreateLinkButton>
               <Button size='sm'>Criar novo link</Button>
-            </CreateLinkDialog>
+            </CreateLinkButton>
           </EmptyScreenButton>
         </EmptyScreen>
       )}

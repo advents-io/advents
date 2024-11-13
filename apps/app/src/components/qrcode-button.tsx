@@ -5,6 +5,7 @@ import {
   ImageIcon,
   Loader2Icon,
   PenToolIcon,
+  QrCodeIcon,
   SquareArrowOutUpRightIcon,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -17,7 +18,14 @@ import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 import { Button } from '@/ui/button'
 import { Card } from '@/ui/card'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,14 +37,13 @@ import { Switch } from '@/ui/switch'
 import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props {
-  children: React.ReactNode
   domain: string
   slug: string
   closeDropdown: () => void
   qrcodeLogoUrl?: string
 }
 
-export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogoUrl }: Props) => {
+export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Props) => {
   const { app, team } = useParams<{ team: string; app: string }>()
 
   const [error, setError] = useState<string>()
@@ -147,7 +154,12 @@ export const QrCodeDialog = ({ domain, slug, children, closeDropdown, qrcodeLogo
 
   return (
     <Dialog open={open} onOpenChange={handleSetOpen}>
-      {children}
+      <DialogTrigger asChild>
+        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+          <QrCodeIcon />
+          QR Code
+        </DropdownMenuItem>
+      </DialogTrigger>
 
       <DialogContent className='overflow-hidden'>
         <DialogHeader>

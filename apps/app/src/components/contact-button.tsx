@@ -19,7 +19,7 @@ interface Props {
   align?: 'center' | 'end' | 'start'
 }
 
-export const ContactDropdown = ({ children, showDocs = true, modal = true, align }: Props) => {
+export const ContactButton = ({ children, showDocs = true, modal = true, align }: Props) => {
   return (
     <DropdownMenu modal={modal}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>

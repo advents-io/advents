@@ -1,4 +1,5 @@
 import { deleteLinkAction, formatErrors, useAction } from '@advents/mutations'
+import { Trash2Icon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -14,17 +15,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
+import { DropdownMenuItem } from '@/ui/dropdown-menu'
 
 interface Props {
   linkId: string
   shortLink: string
-  children: React.ReactNode
   closeDropdown: () => void
 }
 
-export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }: Props) => {
+export const DeleteLinkButton = ({ linkId, shortLink, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
   const { refresh } = useRouter()
   const { removeLink: removeAnalyticsTableLink } = useAnalyticsTableLinks()
@@ -59,7 +61,12 @@ export const DeleteLinkDialog = ({ children, linkId, shortLink, closeDropdown }:
 
   return (
     <AlertDialog open={open} onOpenChange={handleSetOpen}>
-      {children}
+      <AlertDialogTrigger asChild>
+        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+          <Trash2Icon className='text-destructive' />
+          <span className='text-destructive'>Excluir</span>
+        </DropdownMenuItem>
+      </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>

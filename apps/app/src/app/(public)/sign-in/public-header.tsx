@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import AdventsBrand from '@/assets/advents/brand.svg'
-import { ContactDropdown } from '@/components/contact-dropdown'
+import { ContactButton } from '@/components/contact-button'
 import { Button } from '@/ui/button'
 
 export const PublicHeader = () => {
@@ -21,11 +21,11 @@ export const PublicHeader = () => {
             </Button>
           </Link>
 
-          <ContactDropdown align='end' showDocs={false}>
+          <ContactButton align='end' showDocs={false}>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Contato
             </Button>
-          </ContactDropdown>
+          </ContactButton>
         </div>
       </nav>
     </header>

@@ -3,13 +3,13 @@
 import { DOCS_URL, routes } from '@advents/common'
 import { App } from '@advents/db'
 import { supabaseClient } from '@advents/supabase/client'
-import { LogOutIcon, MoveUpRightIcon, SlashIcon, UserIcon } from 'lucide-react'
+import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 
 import AdventsLogo from '@/assets/advents/logo.svg'
-import { ContactDropdown } from '@/components/contact-dropdown'
+import { ContactButton } from '@/components/contact-button'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,18 +18,11 @@ import {
   BreadcrumbSeparator,
 } from '@/ui/breadcrumb'
 import { Button } from '@/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/ui/dropdown-menu'
 
 import { AppSelector } from './app-selector'
 import { FeedbackButton } from './feedback-button'
 import { HeaderItem } from './header-item'
+import { UserButton } from './user-button'
 
 interface Props {
   email?: string
@@ -74,11 +67,11 @@ export const PrivateHeader = ({ email, apps }: Props) => {
         <div className='flex items-center gap-1'>
           <FeedbackButton />
 
-          <ContactDropdown>
+          <ContactButton>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Ajuda
             </Button>
-          </ContactDropdown>
+          </ContactButton>
 
           <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
@@ -87,27 +80,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
             </Button>
           </Link>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className='cursor-pointer' asChild>
-              <Button variant='outline' size='icon' className='size-8 rounded-full'>
-                <UserIcon />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align='end'>
-              <DropdownMenuLabel className='flex items-center gap-2 font-normal text-muted-foreground'>
-                <UserIcon className='size-4' />
-                {email}
-              </DropdownMenuLabel>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem onClick={() => signOut()} onSelect={e => e.preventDefault()}>
-                <LogOutIcon />
-                Sair
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserButton email={email} signOut={signOut} />
         </div>
       </div>
 

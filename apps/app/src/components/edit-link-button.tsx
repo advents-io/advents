@@ -1,17 +1,18 @@
 'use client'
 
+import { PencilIcon } from 'lucide-react'
 import { useState } from 'react'
 
 import { CreateEditLinkForm } from '@/components/create-edit-link-form'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
+import { DropdownMenuItem } from '@/ui/dropdown-menu'
 
 interface Props {
-  children: React.ReactNode
   linkId: string
   closeDropdown: () => void
 }
 
-export const EditLinkDialog = ({ children, linkId, closeDropdown }: Props) => {
+export const EditLinkButton = ({ linkId, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
 
   const handleSetOpen = (open: boolean) => {
@@ -24,7 +25,12 @@ export const EditLinkDialog = ({ children, linkId, closeDropdown }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={handleSetOpen}>
-      {children}
+      <DialogTrigger asChild>
+        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+          <PencilIcon />
+          Editar
+        </DropdownMenuItem>
+      </DialogTrigger>
 
       <DialogContent className='max-w-3xl'>
         <DialogHeader>

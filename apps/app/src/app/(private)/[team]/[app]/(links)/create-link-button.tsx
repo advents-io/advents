@@ -7,7 +7,7 @@ import { CreateEditLinkForm } from '@/components/create-edit-link-form'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
 
-export const CreateLinkDialog = ({ children, className }: HTMLAttributes<HTMLDivElement>) => {
+export const CreateLinkButton = ({ children, className }: HTMLAttributes<HTMLDivElement>) => {
   const [open, setOpen] = useState(false)
 
   return (

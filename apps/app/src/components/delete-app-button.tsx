@@ -12,6 +12,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
@@ -22,10 +23,9 @@ interface Props {
   appId: string
   appSlug: string
   appName: string
-  children: React.ReactNode
 }
 
-export const DeleteAppDialog = ({ children, appId, appSlug, appName }: Props) => {
+export const DeleteAppButton = ({ appId, appSlug, appName }: Props) => {
   const [open, setOpen] = useState(false)
   const [confirmAppName, setConfirmAppName] = useState('')
 
@@ -46,7 +46,9 @@ export const DeleteAppDialog = ({ children, appId, appSlug, appName }: Props) =>
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {children}
+      <AlertDialogTrigger asChild>
+        <Button variant='destructive'>Excluir app</Button>
+      </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
