@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -24,6 +24,7 @@ import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context
 import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
 import { getAppDomains } from '@/lib/queries/get-app-domains'
 import { getLink } from '@/lib/queries/get-link'
+import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
@@ -32,12 +33,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   closeDialog: () => void
   linkId?: string
 }
 
-export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
+export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) => {
   const { refresh } = useRouter()
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
   const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
@@ -181,11 +182,11 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
-    return <Loading />
+    return <Loading className={className} />
   }
 
   return (
-    <div className='space-y-4 pt-4'>
+    <div className={cn('space-y-4', className)}>
       <ErrorAlert error={error} />
 
       <Form {...form}>
@@ -543,9 +544,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
   )
 }
 
-const Loading = () => {
+const Loading = ({ className }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className='space-y-5 pt-4'>
+    <div className={cn('space-y-5', className)}>
       <div className='space-y-2'>
         <Skeleton className='h-[22px] w-40' />
         <Skeleton className='h-10 w-full' />

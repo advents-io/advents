@@ -39,11 +39,17 @@ export const EditLinkButton = ({ linkId, closeDropdown }: Props) => {
       </ResponsiveDialogTrigger>
 
       <ResponsiveDialogContent className='max-w-3xl'>
-        <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Editar link</ResponsiveDialogTitle>
-        </ResponsiveDialogHeader>
+        <div className='overflow-y-auto md:overflow-y-visible'>
+          <ResponsiveDialogHeader>
+            <ResponsiveDialogTitle>Editar link</ResponsiveDialogTitle>
+          </ResponsiveDialogHeader>
 
-        <CreateEditLinkForm closeDialog={() => handleSetOpen(false)} linkId={linkId} />
+          <CreateEditLinkForm
+            className='p-4 md:p-0 md:pt-4'
+            closeDialog={() => handleSetOpen(false)}
+            linkId={linkId}
+          />
+        </div>
       </ResponsiveDialogContent>
     </ResponsiveDialog>
   )

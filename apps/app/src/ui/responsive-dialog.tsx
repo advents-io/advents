@@ -1,4 +1,5 @@
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { cn } from '@/lib/tailwind'
 import {
   Dialog,
   DialogContent,
@@ -68,7 +69,7 @@ export const ResponsiveDialogContent = ({ children, className }: ResponsiveDialo
   return isDesktop ? (
     <DialogContent className={className}>{children}</DialogContent>
   ) : (
-    <DrawerContent className={className}>{children}</DrawerContent>
+    <DrawerContent className={cn('h-[90%]', className)}>{children}</DrawerContent>
   )
 }
 
@@ -110,6 +111,6 @@ export const ResponsiveDialogFooter = ({ children, className }: ResponsiveDialog
   return isDesktop ? (
     <DialogFooter className={className}>{children}</DialogFooter>
   ) : (
-    <DrawerFooter className={className}>{children}</DrawerFooter>
+    <DrawerFooter className={cn('px-0', className)}>{children}</DrawerFooter>
   )
 }

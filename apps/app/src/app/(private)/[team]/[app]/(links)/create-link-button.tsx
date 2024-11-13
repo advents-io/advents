@@ -30,11 +30,13 @@ export const CreateLinkButton = ({ children, className }: HTMLAttributes<HTMLDiv
       </ResponsiveDialogTrigger>
 
       <ResponsiveDialogContent className='max-w-3xl'>
-        <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Criar novo link</ResponsiveDialogTitle>
-        </ResponsiveDialogHeader>
+        <div className='overflow-y-auto md:overflow-y-visible'>
+          <ResponsiveDialogHeader>
+            <ResponsiveDialogTitle>Criar novo link</ResponsiveDialogTitle>
+          </ResponsiveDialogHeader>
 
-        <CreateEditLinkForm closeDialog={() => setOpen(false)} />
+          <CreateEditLinkForm className='p-4 md:p-0 md:pt-4' closeDialog={() => setOpen(false)} />
+        </div>
       </ResponsiveDialogContent>
     </ResponsiveDialog>
   )

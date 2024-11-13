@@ -45,7 +45,8 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
-      <div className='mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted' />
+      {/* shadcn change: changed the width of the top notch.  */}
+      <div className='mx-auto mt-4 h-2 w-[50px] rounded-full bg-muted' />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
