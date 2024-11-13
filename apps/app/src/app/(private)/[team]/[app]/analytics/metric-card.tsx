@@ -1,6 +1,5 @@
 import { dayjs } from '@advents/common'
 import { ArrowDownIcon, ArrowUpIcon, HelpCircleIcon } from 'lucide-react'
-import { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/tailwind'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
@@ -49,21 +48,21 @@ export const MetricCard = ({
         {icon}
       </CardHeader>
 
-      <CardContent>
+      <CardContent className='space-y-1'>
         {!loading ? (
           <>
             <p className='truncate text-2xl font-bold'>{formatedValue}</p>
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <div>
+                <div className='w-fit'>
                   <IncreaseValue increase={increase} />
                 </div>
               </TooltipTrigger>
 
               <TooltipContent className='max-w-xs'>
-                <IncreaseValue increase={increase} className='text-sm' /> em relação ao período
-                anterior de <b>{dayjs(lastPeriodStartDate).format('DD/MM/YYYY')}</b> à{' '}
+                <IncreaseValue increase={increase} /> em relação ao período anterior de{' '}
+                <b>{dayjs(lastPeriodStartDate).format('DD/MM/YYYY')}</b> à{' '}
                 <b>{dayjs(lastPeriodEndDate).format('DD/MM/YYYY')}</b>.
               </TooltipContent>
             </Tooltip>
@@ -71,7 +70,7 @@ export const MetricCard = ({
         ) : (
           <>
             <Skeleton className='h-[32px] w-full' />
-            <Skeleton className='mt-2 h-[16px] w-1/2' />
+            <Skeleton className='mt-1 h-[24px] w-1/2' />
           </>
         )}
       </CardContent>
@@ -79,11 +78,11 @@ export const MetricCard = ({
   )
 }
 
-interface IncreaseValueProps extends HTMLAttributes<HTMLDivElement> {
+interface IncreaseValueProps {
   increase?: number
 }
 
-const IncreaseValue = ({ increase, className }: IncreaseValueProps) => {
+const IncreaseValue = ({ increase }: IncreaseValueProps) => {
   const formatedIncrease = increase
     ? Number.isInteger(increase)
       ? increase.toString()
@@ -96,10 +95,9 @@ const IncreaseValue = ({ increase, className }: IncreaseValueProps) => {
   return (
     <p
       className={cn(
-        'inline-flex items-center gap-1 whitespace-pre text-xs font-bold',
+        'inline-flex items-center gap-1 whitespace-pre text-sm font-bold',
         increaseIsPositive && 'text-green-600',
         increaseIsNegative && 'text-red-500',
-        className,
       )}
     >
       {increaseIsPositive && <ArrowUpIcon className='size-3' strokeWidth={2.5} />}
