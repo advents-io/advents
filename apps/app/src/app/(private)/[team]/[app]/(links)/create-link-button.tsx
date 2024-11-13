@@ -5,14 +5,20 @@ import { HTMLAttributes, useState } from 'react'
 
 import { CreateEditLinkForm } from '@/components/create-edit-link-form'
 import { Button } from '@/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from '@/ui/responsive-dialog'
 
 export const CreateLinkButton = ({ children, className }: HTMLAttributes<HTMLDivElement>) => {
   const [open, setOpen] = useState(false)
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <ResponsiveDialog open={open} onOpenChange={setOpen}>
+      <ResponsiveDialogTrigger asChild>
         <div className={className}>
           {children || (
             <Button size='lg'>
@@ -21,15 +27,15 @@ export const CreateLinkButton = ({ children, className }: HTMLAttributes<HTMLDiv
             </Button>
           )}
         </div>
-      </DialogTrigger>
+      </ResponsiveDialogTrigger>
 
-      <DialogContent className='max-w-3xl'>
-        <DialogHeader>
-          <DialogTitle>Criar novo link</DialogTitle>
-        </DialogHeader>
+      <ResponsiveDialogContent className='max-w-3xl'>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle>Criar novo link</ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
 
         <CreateEditLinkForm closeDialog={() => setOpen(false)} />
-      </DialogContent>
-    </Dialog>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   )
 }

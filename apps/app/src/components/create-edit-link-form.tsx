@@ -25,9 +25,9 @@ import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
 import { getAppDomains } from '@/lib/queries/get-app-domains'
 import { getLink } from '@/lib/queries/get-link'
 import { Button } from '@/ui/button'
-import { DialogFooter } from '@/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Input } from '@/ui/input'
+import { ResponsiveDialogFooter } from '@/ui/responsive-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
@@ -520,7 +520,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
             )}
           />
 
-          <DialogFooter>
+          <ResponsiveDialogFooter>
             <Button type='submit' disabled={isExecuting}>
               <LoadingSpinner loading={isExecuting}>
                 {linkId ? (
@@ -536,7 +536,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId }: Props) => {
                 )}
               </LoadingSpinner>
             </Button>
-          </DialogFooter>
+          </ResponsiveDialogFooter>
         </form>
       </Form>
     </div>
