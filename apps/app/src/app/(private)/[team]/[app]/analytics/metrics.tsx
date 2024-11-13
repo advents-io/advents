@@ -33,7 +33,12 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
   const clicks = data ? data.clicks.toLocaleString('en-US').replace(',', '.') : undefined
   const installs = data ? data.installs.toLocaleString('en-US').replace(',', '.') : undefined
   const cti = data ? `${roundNumber(data.cti)}%` : undefined
-  const revenue = data ? `R$ ${data.revenue.toFixed(2).replace('.', ',')}` : undefined
+  const revenue = data
+    ? new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(data.revenue)
+    : undefined
 
   return (
     <div className={cn('grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4', className)}>
