@@ -23,10 +23,12 @@ export default function Page() {
         </span>
       }
       footer={
-        <div className='flex w-full items-center justify-between gap-2'>
+        <div className='flex w-full flex-col items-center justify-between gap-2 md:flex-row'>
           Entre em contato com a equipe da Advents para adicionar ou remover domínios customizados.
-          <Link href={whatsAppUrl} target='_blank'>
-            <Button size='sm'>Adicionar domínio</Button>
+          <Link href={whatsAppUrl} target='_blank' className='w-full md:w-fit'>
+            <Button size='sm' className='w-full'>
+              Adicionar domínio
+            </Button>
           </Link>
         </div>
       }

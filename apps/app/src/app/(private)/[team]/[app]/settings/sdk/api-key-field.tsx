@@ -12,7 +12,7 @@ export const ApiKeyField = ({ apiKey }: { apiKey: string }) => {
   }
 
   return (
-    <div className='flex gap-2'>
+    <div className='flex flex-col gap-2 md:flex-row'>
       <Input id='api-key' type='text' value={apiKey} readOnly className='font-mono' />
       <Button onClick={copyToClipboard}>Copiar</Button>
     </div>
