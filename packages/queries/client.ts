@@ -14,11 +14,12 @@ export type {
 } from './src/client/routes/get-app-default-values'
 export type { GetAppDomainsInput, GetAppDomainsOutput } from './src/client/routes/get-app-domains'
 export type {
-  GetAppQrCodeUrlInput,
-  GetAppQrCodeUrlOutput,
-} from './src/client/routes/get-app-qrcode-url'
+  GetAppQrCodeLogoUrlInput,
+  GetAppQrCodeLogoUrlOutput,
+} from './src/client/routes/get-app-qrcode-logo-url'
 export type { GetLinkInput, GetLinkOutput } from './src/client/routes/get-link'
 export type {
-  GetLinksAnalyticsInput,
   GetLinksAnalyticsOutput,
+  GetLinksAnalyticsParamsInput,
+  GetLinksAnalyticsQueryInput,
 } from './src/client/routes/get-links-analytics'

@@ -7,8 +7,8 @@ import { z } from 'zod'
 import { ApiEnv } from '../api'
 
 const inputParamsSchema = z.object({
-  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
 })
 
 const inputQuerySchema = z.object({
@@ -38,12 +38,12 @@ export type GetAppAnalyticsOutput = z.infer<typeof outputSchema>
 
 export const getAppAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
-    ':teamSlug/:appSlug/analytics', //
+    'team/:teamSlug/app/:appSlug/analytics', //
     zValidator('param', inputParamsSchema),
     zValidator('query', inputQuerySchema),
     async c => {
       const { startDate, endDate } = c.req.valid('query')
-      const { appSlug, teamSlug } = c.req.valid('param')
+      const { teamSlug, appSlug } = c.req.valid('param')
 
       const userId = c.var.user.id
 

@@ -8,13 +8,13 @@ import {
 import { queries } from '.'
 
 export const getAppAnalytics = async ({
-  appSlug,
   teamSlug,
+  appSlug,
   startDate,
   endDate,
 }: GetAppAnalyticsParamsInput & GetAppAnalyticsQueryInput): Promise<GetAppAnalyticsOutput> => {
   const response = await queries
-    .get<GetAppAnalyticsOutput>(`${teamSlug}/${appSlug}/analytics`, {
+    .get<GetAppAnalyticsOutput>(`team/${teamSlug}/app/${appSlug}/analytics`, {
       searchParams: {
         startDate: dayjs(startDate).format('YYYY-MM-DD'),
         endDate: dayjs(endDate).format('YYYY-MM-DD'),

@@ -6,16 +6,20 @@ import { z } from 'zod'
 
 import { ApiEnv } from '../api'
 
-const inputSchema = z.object({
-  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
+const inputParamSchema = z.object({
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
+})
+
+const inputQuerySchema = z.object({
   startDate: z
     .string({ message: 'Data de início é obrigatória.' })
     .transform(date => new Date(date)),
   endDate: z.string({ message: 'Data de fim é obrigatória.' }).transform(date => new Date(date)),
 })
 
-export type GetLinksAnalyticsInput = z.infer<typeof inputSchema>
+export type GetLinksAnalyticsParamsInput = z.infer<typeof inputParamSchema>
+export type GetLinksAnalyticsQueryInput = z.infer<typeof inputQuerySchema>
 
 const outputSchema = z.array(
   z.object({
@@ -35,10 +39,12 @@ export type GetLinksAnalyticsOutput = z.infer<typeof outputSchema>
 
 export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
-    '/analytics/links', //
-    zValidator('query', inputSchema),
+    '/team/:teamSlug/app/:appSlug/links/analytics', //
+    zValidator('param', inputParamSchema),
+    zValidator('query', inputQuerySchema),
     async c => {
-      const { appSlug, teamSlug, startDate, endDate } = c.req.valid('query')
+      const { startDate, endDate } = c.req.valid('query')
+      const { teamSlug, appSlug } = c.req.valid('param')
 
       const userId = c.var.user.id
 

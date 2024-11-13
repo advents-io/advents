@@ -24,10 +24,10 @@ export type GetAppDefaultValuesOutput = z.infer<typeof outputSchema>
 
 export const getAppDefaultValues = (api: Hono<ApiEnv>) =>
   api.get(
-    '/app/default-values', //
-    zValidator('query', inputSchema),
+    'team/:teamSlug/app/:appSlug/default-values', //
+    zValidator('param', inputSchema),
     async c => {
-      const { appSlug, teamSlug } = c.req.valid('query')
+      const { teamSlug, appSlug } = c.req.valid('param')
 
       const app = await prisma.app.findFirst({
         where: {

@@ -6,24 +6,24 @@ import { z } from 'zod'
 import { ApiEnv } from '../api'
 
 const inputSchema = z.object({
-  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
 })
 
-export type GetAppQrCodeUrlInput = z.infer<typeof inputSchema>
+export type GetAppQrCodeLogoUrlInput = z.infer<typeof inputSchema>
 
 const outputSchema = z.object({
   url: z.string().nullable(),
 })
 
-export type GetAppQrCodeUrlOutput = z.infer<typeof outputSchema>
+export type GetAppQrCodeLogoUrlOutput = z.infer<typeof outputSchema>
 
-export const getAppQrCodeUrl = (api: Hono<ApiEnv>) =>
+export const getAppQrCodeLogoUrl = (api: Hono<ApiEnv>) =>
   api.get(
-    '/app/qrcode', //
-    zValidator('query', inputSchema),
+    '/team/:teamSlug/app/:appSlug/qrcode-logo', //
+    zValidator('param', inputSchema),
     async c => {
-      const { appSlug, teamSlug } = c.req.valid('query')
+      const { teamSlug, appSlug } = c.req.valid('param')
 
       const userId = c.var.user.id
 

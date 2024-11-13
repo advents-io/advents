@@ -28,10 +28,10 @@ export type GetLinkOutput = z.infer<typeof outputSchema>
 
 export const getLink = (api: Hono<ApiEnv>) =>
   api.get(
-    '/link', //
-    zValidator('query', inputSchema),
+    '/link/:linkId', //
+    zValidator('param', inputSchema),
     async c => {
-      const { linkId } = c.req.valid('query')
+      const { linkId } = c.req.valid('param')
 
       const link = await prisma.link.findUnique({
         where: {

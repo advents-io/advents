@@ -18,7 +18,7 @@ import {
   AnalyticsTableLinksProvider,
   useAnalyticsTableLinks,
 } from '@/contexts/analytics-table-links-context'
-import { getAppQrCodeUrl } from '@/lib/queries/get-app-qrcode-url'
+import { getAppQrCodeLogoUrl } from '@/lib/queries/get-app-qrcode-logo-url'
 import { getLinksAnalytics } from '@/lib/queries/get-links-analytics'
 import { cn } from '@/lib/tailwind'
 import { Skeleton } from '@/ui/skeleton'
@@ -73,9 +73,9 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: qrCodeUrl } = useQuery({
-    queryKey: ['app-qr-code-url', appSlug, teamSlug],
-    queryFn: () => getAppQrCodeUrl({ appSlug, teamSlug }),
+  const { data: qrCodeLogoUrl } = useQuery({
+    queryKey: ['app-qr-code-logo-url', appSlug, teamSlug],
+    queryFn: () => getAppQrCodeLogoUrl({ appSlug, teamSlug }),
   })
 
   const table = useReactTable({
@@ -160,7 +160,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                           id={row.original.id}
                           domain={row.original.domain}
                           slug={row.original.slug}
-                          qrcodeLogoUrl={qrCodeUrl?.url || undefined}
+                          qrcodeLogoUrl={qrCodeLogoUrl?.url || undefined}
                           className='size-8'
                         />
                       </TableRowCell>,
