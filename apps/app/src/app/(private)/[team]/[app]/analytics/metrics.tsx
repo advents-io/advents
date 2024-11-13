@@ -48,6 +48,8 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         increase={data?.clicksIncrease}
         icon={<MousePointerClickIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
+        lastPeriodStartDate={data?.lastPeriodStartDate}
+        lastPeriodEndDate={data?.lastPeriodEndDate}
       />
 
       <MetricCard
@@ -56,6 +58,8 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         increase={data?.installsIncrease}
         icon={<DownloadIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
+        lastPeriodStartDate={data?.lastPeriodStartDate}
+        lastPeriodEndDate={data?.lastPeriodEndDate}
       />
 
       <MetricCard
@@ -65,6 +69,8 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         icon={<RedoDotIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
         tooltip='Taxa de conversão de cliques para instalações.'
+        lastPeriodStartDate={data?.lastPeriodStartDate}
+        lastPeriodEndDate={data?.lastPeriodEndDate}
       />
 
       <MetricCard
@@ -73,6 +79,8 @@ export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
         increase={data?.revenueIncrease}
         icon={<DollarSignIcon className='size-4 text-muted-foreground' />}
         loading={isPending}
+        lastPeriodStartDate={data?.lastPeriodStartDate}
+        lastPeriodEndDate={data?.lastPeriodEndDate}
       />
     </div>
   )

@@ -4,8 +4,9 @@ export { handle } from 'hono/vercel'
 //
 
 export type {
-  GetAppAnalyticsInput,
   GetAppAnalyticsOutput,
+  GetAppAnalyticsParamsInput,
+  GetAppAnalyticsQueryInput,
 } from './src/client/routes/get-app-analytics'
 export type {
   GetAppDefaultValuesInput,
