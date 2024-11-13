@@ -2,10 +2,11 @@ import { dayjs, getUrlOgImage, nanoid } from '@advents/common'
 import { supabaseServerAdmin } from '@advents/supabase/server'
 import { faker } from '@faker-js/faker'
 
-import { Link as LinkDb, prisma } from '..'
+import { Link as LinkDb, prisma, Purchase as PurchaseDb } from '..'
 import { APP, LINKS } from './data'
 
 type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount'>
+type Purchase = Omit<PurchaseDb, 'id'>
 
 const CONFIG = {
   LINKS_TO_CREATE: 15,
@@ -173,6 +174,22 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       installCount,
     )
 
+    const purchasesCount = faker.datatype.boolean(0.7)
+      ? Math.round(clickCount * faker.number.float({ min: 0.01, max: 0.5, fractionDigits: 2 }))
+      : 0
+
+    const purchases: Purchase[] = Array.from({ length: purchasesCount }, () => ({
+      value: faker.datatype.boolean(0.5)
+        ? faker.number.int({ min: 2, max: 20 })
+        : faker.number.int({ min: 20, max: 50 }),
+      linkId: link.id,
+      sessionId: faker.helpers.arrayElement(clicksAndSessions).session.id,
+      appId,
+      createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
+    }))
+
+    const revenueCount = purchases.reduce((acc, purchase) => acc + purchase.value, 0)
+
     await prisma.$transaction([
       prisma.click.createMany({ data: clicks }),
 
@@ -191,11 +208,14 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         })),
       }),
 
+      prisma.purchase.createMany({ data: purchases }),
+
       prisma.link.update({
         where: { id: link.id },
         data: {
           clickCount,
           installCount,
+          revenueCount,
         },
       }),
     ])
