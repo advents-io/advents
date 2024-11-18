@@ -69,6 +69,9 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
         return c.json({ error: 'App não encontrado.' }, 404)
       }
 
+      const gte = dayjs(startDate).utc().startOf('day').toDate()
+      const lte = dayjs(endDate).utc().endOf('day').toDate()
+
       const clicks = await prisma.click.findMany({
         select: {
           link: {
@@ -85,8 +88,8 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
                 },
                 where: {
                   createdAt: {
-                    gte: dayjs(startDate).utc().startOf('day').toDate(),
-                    lte: dayjs(endDate).utc().endOf('day').toDate(),
+                    gte,
+                    lte,
                   },
                 },
               },
@@ -99,15 +102,10 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
           },
         },
         where: {
-          app: {
-            slug: appSlug,
-            team: {
-              slug: teamSlug,
-            },
-          },
+          appId: app.id,
           createdAt: {
-            gte: dayjs(startDate).utc().startOf('day').toDate(),
-            lte: dayjs(endDate).utc().endOf('day').toDate(),
+            gte,
+            lte,
           },
         },
       })

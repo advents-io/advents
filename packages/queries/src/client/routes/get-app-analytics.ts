@@ -70,8 +70,13 @@ export const getAppAnalytics = (api: Hono<ApiEnv>) =>
 
       const range = endDate.getTime() - startDate.getTime()
 
+      const gte = dayjs(startDate).utc().startOf('day').toDate()
+      const lte = dayjs(endDate).utc().endOf('day').toDate()
+
       const lastPeriodStartDate = new Date(startDate.getTime() - range)
       const lastPeriodEndDate = new Date(endDate.getTime() - range)
+      const lastPeriodGte = dayjs(lastPeriodStartDate).utc().startOf('day').toDate()
+      const lastPeriodLte = dayjs(lastPeriodEndDate).utc().endOf('day').toDate()
 
       const [
         clicks,
@@ -83,60 +88,40 @@ export const getAppAnalytics = (api: Hono<ApiEnv>) =>
       ] = await prisma.$transaction([
         prisma.click.count({
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(startDate).utc().startOf('day').toDate(),
-              lte: dayjs(endDate).utc().endOf('day').toDate(),
+              gte,
+              lte,
             },
           },
         }),
 
         prisma.click.count({
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
-              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
+              gte: lastPeriodGte,
+              lte: lastPeriodLte,
             },
           },
         }),
 
         prisma.attribution.count({
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(startDate).utc().startOf('day').toDate(),
-              lte: dayjs(endDate).utc().endOf('day').toDate(),
+              gte,
+              lte,
             },
           },
         }),
 
         prisma.attribution.count({
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
-              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
+              gte: lastPeriodGte,
+              lte: lastPeriodLte,
             },
           },
         }),
@@ -146,15 +131,10 @@ export const getAppAnalytics = (api: Hono<ApiEnv>) =>
             value: true,
           },
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(startDate).utc().startOf('day').toDate(),
-              lte: dayjs(endDate).utc().endOf('day').toDate(),
+              gte,
+              lte,
             },
           },
         }),
@@ -164,15 +144,10 @@ export const getAppAnalytics = (api: Hono<ApiEnv>) =>
             value: true,
           },
           where: {
-            app: {
-              slug: appSlug,
-              team: {
-                slug: teamSlug,
-              },
-            },
+            appId: app.id,
             createdAt: {
-              gte: dayjs(lastPeriodStartDate).utc().startOf('day').toDate(),
-              lte: dayjs(lastPeriodEndDate).utc().endOf('day').toDate(),
+              gte: lastPeriodGte,
+              lte: lastPeriodLte,
             },
           },
         }),
