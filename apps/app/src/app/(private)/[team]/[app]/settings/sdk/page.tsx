@@ -1,4 +1,4 @@
-import { DOCS_URL } from '@advents/common'
+import { DOCS_URLS } from '@advents/common'
 import { prisma } from '@advents/db'
 import { SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -29,8 +29,6 @@ export default async function Page(props: { params: Promise<{ app: string; team:
     return <ErrorAlert error='Não foi possível encontrar a chave de API.' />
   }
 
-  const docsUrl = new URL('/chave-da-api', DOCS_URL).toString()
-
   return (
     <SettingsField
       title='Chave da API'
@@ -38,7 +36,7 @@ export default async function Page(props: { params: Promise<{ app: string; team:
         <span>
           Saiba mais na{' '}
           <Link
-            href={docsUrl}
+            href={DOCS_URLS.API_KEY}
             target='_blank'
             className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
           >

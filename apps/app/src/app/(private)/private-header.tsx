@@ -1,6 +1,6 @@
 'use client'
 
-import { DOCS_URL, routes } from '@advents/common'
+import { DOCS_URLS, routes } from '@advents/common'
 import { App } from '@advents/db'
 import { supabaseClient } from '@advents/supabase/client'
 import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
@@ -73,7 +73,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
             </Button>
           </ContactButton>
 
-          <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
+          <Link href={DOCS_URLS.HOME} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Documentação
               <MoveUpRightIcon />

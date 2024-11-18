@@ -1,4 +1,4 @@
-import { DOCS_URL } from '@advents/common'
+import { DOCS_URLS } from '@advents/common'
 import { MoveUpRightIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,7 +14,7 @@ export const PublicHeader = () => {
         <Image src={AdventsBrand} alt='Logo da Advents' className='w-24' />
 
         <div className='flex items-center gap-1'>
-          <Link href={DOCS_URL} target='_blank' className='hidden md:flex'>
+          <Link href={DOCS_URLS.HOME} target='_blank' className='hidden md:flex'>
             <Button variant='ghost' size='sm' className='font-normal text-muted-foreground'>
               Documentação
               <MoveUpRightIcon />

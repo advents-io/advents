@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, DOCS_URL, MEET_SCHEDULER_URL, SUPPORT_PHONE } from '@advents/common'
+import { CONTACT_EMAIL, DOCS_URLS, MEET_SCHEDULER_URL, SUPPORT_PHONE } from '@advents/common'
 import { BookOpenIcon, MailIcon, VideoIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -26,7 +26,7 @@ export const ContactButton = ({ children, showDocs = true, modal = true, align }
 
       <DropdownMenuContent loop={false} align={align}>
         {showDocs && (
-          <Link href={DOCS_URL} target='_blank'>
+          <Link href={DOCS_URLS.HOME} target='_blank'>
             <DropdownMenuItem>
               <BookOpenIcon />
               Documentação
