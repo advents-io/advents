@@ -192,6 +192,8 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   <span className='font-mono font-semibold tracking-tighter text-primary'>
                     https://{field.value}/7yB46jk
                   </span>
+                  <br />
+                  Alterações não afetam links já criados.
                 </FormDescription>
 
                 <FormMessage />
@@ -216,6 +218,8 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   Url padrão que será utilizada ao criar um link.
                   <br />
                   Pode ser alterada em cada link criado.
+                  <br />
+                  Alterações não afetam links já criados.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -239,6 +243,8 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   Url padrão que será utilizada ao criar um link.
                   <br />
                   Pode ser alterada em cada link criado.
+                  <br />
+                  Alterações não afetam links já criados.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -261,9 +267,14 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                 </FormControl>
                 <FormDescription>
                   Url alternativa padrão que será utilizada ao criar um link.
-                  <br />É a url que o usuário será direcionado caso o dispositivo que abrir o link
-                  não seja nem Android e nem iOS, como por exemplo, um computador Windows, Linux ou
+                  <br />
+                  É a url que o usuário será direcionado caso o dispositivo que abrir o link não
+                  seja nem Android e nem iOS, como por exemplo, um computador Windows, Linux ou
                   macOS.
+                  <br />
+                  Pode ser alterada em cada link criado.
+                  <br />
+                  Alterações não afetam links já criados.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
