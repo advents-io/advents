@@ -72,20 +72,36 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
       const gte = dayjs(startDate).utc().startOf('day').toDate()
       const lte = dayjs(endDate).utc().endOf('day').toDate()
 
-      const clicks = await prisma.click.findMany({
+      const links = await prisma.link.findMany({
+        where: {
+          appId: app.id,
+          clicks: {
+            some: {
+              createdAt: {
+                gte,
+                lte,
+              },
+            },
+          },
+        },
         select: {
-          link: {
+          id: true,
+          slug: true,
+          domain: true,
+          title: true,
+          campaignCost: true,
+          createdAt: true,
+          _count: {
             select: {
-              id: true,
-              slug: true,
-              domain: true,
-              title: true,
-              campaignCost: true,
-              createdAt: true,
-              purchases: {
-                select: {
-                  value: true,
+              clicks: {
+                where: {
+                  createdAt: {
+                    gte,
+                    lte,
+                  },
                 },
+              },
+              attributions: {
                 where: {
                   createdAt: {
                     gte,
@@ -95,72 +111,34 @@ export const getLinksAnalytics = (api: Hono<ApiEnv>) =>
               },
             },
           },
-          attribution: {
+          purchases: {
             select: {
-              id: true,
+              value: true,
             },
-          },
-        },
-        where: {
-          appId: app.id,
-          createdAt: {
-            gte,
-            lte,
+            where: {
+              createdAt: {
+                gte,
+                lte,
+              },
+            },
           },
         },
       })
 
-      const links = Object.values(
-        clicks.reduce(
-          (acc, click) => {
-            const { id } = click.link
+      const result = links.map(link => ({
+        id: link.id,
+        slug: link.slug,
+        domain: link.domain,
+        title: link.title,
+        clicks: link._count.clicks,
+        installs: link._count.attributions,
+        campaignCost: link.campaignCost,
+        revenue: link.purchases.reduce((acc, purchase) => acc + purchase.value, 0),
+        createdAt: link.createdAt,
+      }))
 
-            if (!acc[id]) {
-              const revenue = click.link.purchases.reduce(
-                (acc, purchase) => acc + purchase.value,
-                0,
-              )
+      const output = outputSchema.parse(result)
 
-              acc[id] = {
-                id,
-                slug: click.link.slug,
-                domain: click.link.domain,
-                title: click.link.title,
-                clicks: 0,
-                installs: 0,
-                campaignCost: click.link.campaignCost,
-                revenue,
-                createdAt: click.link.createdAt,
-              }
-            }
-
-            acc[id].clicks++
-
-            if (click.attribution) {
-              acc[id].installs++
-            }
-
-            return acc
-          },
-          {} as Record<
-            string,
-            {
-              id: string
-              slug: string
-              domain: string
-              title: string | null
-              clicks: number
-              installs: number
-              campaignCost: number | null
-              revenue: number
-              createdAt: Date
-            }
-          >,
-        ),
-      )
-
-      const result = outputSchema.parse(links)
-
-      return c.json(result)
+      return c.json(output)
     },
   )
