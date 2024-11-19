@@ -9,6 +9,7 @@
     "@advents/common": "workspace:*",
     "@advents/db": "workspace:*",
     "@advents/engine": "workspace:*",
+    "@advents/internal": "workspace:*",
     "@advents/mutations": "workspace:*",
     "@advents/queries": "workspace:*",
     "@advents/supabase": "workspace:*",

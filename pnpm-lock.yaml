@@ -26,6 +26,9 @@ importers:
       '@advents/engine':
         specifier: workspace:*
         version: link:../../packages/engine
+      '@advents/internal':
+        specifier: workspace:*
+        version: link:../../packages/internal
       '@advents/mutations':
         specifier: workspace:*
         version: link:../../packages/mutations
@@ -312,6 +315,37 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.8
         version: 0.6.8(prettier@3.3.3)
+      typescript:
+        specifier: ~5.4.5
+        version: 5.4.5
+
+  packages/internal:
+    dependencies:
+      '@advents/db':
+        specifier: workspace:*
+        version: link:../db
+      '@advents/supabase':
+        specifier: workspace:*
+        version: link:../supabase
+      '@hono/zod-validator':
+        specifier: ^0.4.1
+        version: 0.4.1(hono@4.6.7)(zod@3.23.8)
+      hono:
+        specifier: ^4.6.7
+        version: 4.6.7
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@advents/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@advents/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^20
+        version: 20.16.9
       typescript:
         specifier: ~5.4.5
         version: 5.4.5

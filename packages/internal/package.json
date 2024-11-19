@@ -1,0 +1,22 @@
+{
+  "name": "@advents/internal",
+  "dependencies": {
+    "@advents/db": "workspace:*",
+    "@advents/supabase": "workspace:*",
+    "@hono/zod-validator": "^0.4.1",
+    "hono": "^4.6.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@advents/eslint-config": "workspace:*",
+    "@advents/typescript-config": "workspace:*",
+    "@types/node": "^20",
+    "typescript": "~5.4.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@advents/eslint-config/next.js"
+    ]
+  },
+  "prettier": "@advents/eslint-config/prettier.config.js"
+}
