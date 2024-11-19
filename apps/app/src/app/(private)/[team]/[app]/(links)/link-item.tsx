@@ -41,11 +41,15 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
   return (
     <Card>
       <CardContent className='px-6 py-4'>
-        <div className='flex min-h-16 gap-4'>
+        <div className='flex min-h-18 gap-4'>
           <div className='flex flex-col justify-center gap-2 truncate'>
-            {link.title && <span className='max-w-md truncate font-medium'>{link.title}</span>}
+            {link.title && (
+              <div className='flex min-h-8 items-center'>
+                <span className='text max-w-md truncate font-medium'>{link.title}</span>
+              </div>
+            )}
 
-            <div className='flex items-center gap-2'>
+            <div className='flex min-h-8 items-center gap-2'>
               <Link
                 href={httpShortLink}
                 className='truncate font-mono text-sm text-muted-foreground'

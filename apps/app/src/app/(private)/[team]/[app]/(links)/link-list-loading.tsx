@@ -7,10 +7,10 @@ export const LinkListLoading = () => {
       {Array.from({ length: 10 }).map((_, index) => (
         <Card key={index}>
           <CardContent className='flex px-6 py-4'>
-            <div className='flex h-16 w-full items-center gap-2'>
+            <div className='flex min-h-18 w-full items-center gap-2'>
               <div className='max-w-sm space-y-2'>
-                <Skeleton className='h-6 w-72' />
-                <Skeleton className='h-6 w-44' />
+                <Skeleton className='min-h-8 w-72' />
+                <Skeleton className='min-h-8 w-44' />
               </div>
 
               <div className='flex flex-1 items-center justify-end gap-2'>
