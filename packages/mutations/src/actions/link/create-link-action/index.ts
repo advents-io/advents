@@ -11,16 +11,7 @@ import { inputSchema } from './schema'
 export const createLinkAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const {
-      title,
-      domain,
-      slug: reqSlug,
-      iosUrl,
-      androidUrl,
-      fallbackUrl,
-      campaignCost,
-      appId,
-    } = parsedInput
+    const { appId, ...link } = parsedInput
 
     const app = await prisma.app.findUnique({
       where: {
@@ -44,37 +35,32 @@ export const createLinkAction = authActionClient
 
     const availableDomains = await getAppDomains(app.id)
 
-    if (!availableDomains.includes(domain)) {
+    if (!availableDomains.includes(link.domain)) {
       throw new ActionError('Domínio inválido.')
     }
 
-    if (reqSlug) {
+    if (link.slug) {
       const linkExists = await prisma.link.findUnique({
         select: { id: true },
         where: {
           domain_slug: {
-            domain,
-            slug: reqSlug,
+            domain: link.domain,
+            slug: link.slug,
           },
         },
       })
 
       if (linkExists) {
-        throw new ActionError(`Link duplicado.\n\nO link curto "${reqSlug}" já existe.`)
+        throw new ActionError(`Link duplicado.\n\nO link curto "${link.slug}" já existe.`)
       }
     }
 
-    const slug = reqSlug || (await generateRandomSlug(domain))
+    const slug = link.slug || (await generateRandomSlug(link.domain))
 
     await prisma.link.create({
       data: {
-        title,
-        domain,
+        ...link,
         slug,
-        iosUrl,
-        androidUrl,
-        fallbackUrl,
-        campaignCost,
         appId,
         createdBy: user.id,
         updatedBy: user.id,

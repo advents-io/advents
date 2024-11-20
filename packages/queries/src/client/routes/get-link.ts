@@ -20,6 +20,7 @@ const outputSchema = z.object({
   slug: z.string(),
   androidUrl: z.string().url(),
   iosUrl: z.string().url(),
+  disableIosPreviewPage: z.boolean(),
   fallbackUrl: z.string().url(),
   campaignCost: z.number().nullable(),
 })
@@ -45,6 +46,17 @@ export const getLink = (api: Hono<ApiEnv>) =>
               },
             },
           },
+        },
+        select: {
+          id: true,
+          title: true,
+          domain: true,
+          slug: true,
+          androidUrl: true,
+          iosUrl: true,
+          disableIosPreviewPage: true,
+          fallbackUrl: true,
+          campaignCost: true,
         },
       })
 

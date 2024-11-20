@@ -20,6 +20,7 @@ export const createLinkFormInputSchema = z.object({
     .transform(value => value || undefined),
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
+  disableIosPreviewPage: z.boolean().default(false),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   campaignCost: z
     .number({ message: 'Custo da campanha inválido.' })

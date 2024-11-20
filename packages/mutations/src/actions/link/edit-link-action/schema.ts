@@ -2,10 +2,7 @@ import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
 
-export const inputSchema = z.object({
-  linkId: z
-    .string({ message: 'Id do link em formato inválido.' })
-    .uuid('Id do link em formato inválido.'),
+export const editLinkFormInputSchema = z.object({
   title: z
     .string()
     .max(50, 'O título deve possuir no máximo 50 caracteres.')
@@ -23,6 +20,7 @@ export const inputSchema = z.object({
     .transform(value => value || undefined),
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
+  disableIosPreviewPage: z.boolean().default(false),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   campaignCost: z
     .number({ message: 'Custo da campanha inválido.' })
@@ -30,3 +28,11 @@ export const inputSchema = z.object({
     .nullable()
     .transform(value => value || null),
 })
+
+export const inputSchema = editLinkFormInputSchema.extend({
+  linkId: z
+    .string({ message: 'Id do link em formato inválido.' })
+    .uuid('Id do link em formato inválido.'),
+})
+
+export type EditLinkFormInput = z.infer<typeof editLinkFormInputSchema>

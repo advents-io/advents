@@ -12,7 +12,10 @@ export const isLinkDomain = (req: NextRequest) => {
   return isLinkDomain
 }
 
-type LinkProps = Pick<Link, 'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId'>
+type LinkProps = Pick<
+  Link,
+  'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId' | 'disableIosPreviewPage'
+>
 
 export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)
@@ -29,7 +32,16 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
   const link = (
     await supabase
       .from('links')
-      .select('id, androidUrl:android_url, iosUrl:ios_url, fallbackUrl:fallback_url, appId:app_id')
+      .select(
+        `
+        id,
+        androidUrl:android_url,
+        iosUrl:ios_url,
+        disableIosPreviewPage:disable_ios_preview_page,
+        fallbackUrl:fallback_url,
+        appId:app_id
+        `,
+      )
       .eq('slug', slug)
       .eq('domain', domain)
       .limit(1)
@@ -48,10 +60,15 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   const isIos = ua.os?.name === 'iOS'
   if (isIos) {
-    destinationUrl = new URL(routes.IOS_CLICK.path, getWebAppDomain(true))
-    destinationUrl.searchParams.append('click_id', clickId)
-    destinationUrl.searchParams.append('app_id', link.appId)
-    destinationUrl.searchParams.append('redirect', link.iosUrl)
+    destinationUrl = !link.disableIosPreviewPage
+      ? new URL(routes.IOS_CLICK.path, getWebAppDomain(true))
+      : new URL(link.iosUrl)
+
+    if (!link.disableIosPreviewPage) {
+      destinationUrl.searchParams.append('click_id', clickId)
+      destinationUrl.searchParams.append('app_id', link.appId)
+      destinationUrl.searchParams.append('redirect', link.iosUrl)
+    }
   }
 
   const isAndroid = ua.os?.name === 'Android'

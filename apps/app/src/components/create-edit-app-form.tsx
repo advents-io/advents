@@ -1,5 +1,6 @@
 'use client'
 
+import { DOCS_URLS } from '@advents/common'
 import {
   createAppAction,
   CreateAppInput,
@@ -13,7 +14,8 @@ import {
 import { LINK_DEFAULT_DOMAIN } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { App } from '@prisma/client'
-import { SaveIcon } from 'lucide-react'
+import { SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -35,6 +37,7 @@ import {
 import { Input } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
+import { Switch } from '@/ui/switch'
 
 import { DeleteAppButton } from './delete-app-button'
 
@@ -47,6 +50,7 @@ type Props = {
     | 'defaultDomain'
     | 'androidUrl'
     | 'iosUrl'
+    | 'defaultDisableIosPreviewPage'
     | 'defaultFallbackUrl'
     | 'qrcodeLogoUrl'
   >
@@ -247,6 +251,54 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                   Alterações não afetam links já criados.
                 </FormDescription>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='defaultDisableIosPreviewPage'
+            render={({ field }) => (
+              <FormItem>
+                <Card>
+                  <CardHeader className='flex flex-row items-center justify-between gap-2'>
+                    <div>
+                      <FormLabel
+                        tooltip={
+                          <span>
+                            Desativa a página de pré-visualização em dispositivos iOS, direcionando
+                            os usuários diretamente para a App Store.
+                            <br />
+                            <br />
+                            A página de pré-visualização melhora a precisão da atribuição em
+                            dispositivos iOS. Ao abrir um link, o usuário é direcionado para a
+                            página contendo um botão de ação que copia o identificador do link no
+                            clipboard do dispositivo. Ao abrir o app pela primeira vez, o
+                            identificador é lido, fazendo com que a atribuição seja garantida.
+                            <br />
+                            <br />
+                            Saiba mais no{' '}
+                            <Link
+                              href={DOCS_URLS.IOS_PREVIEW_PAGE}
+                              className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                              target='_blank'
+                            >
+                              artigo sobre a página de pré-visualização.{' '}
+                              <SquareArrowOutUpRightIcon className='size-4' />
+                            </Link>
+                          </span>
+                        }
+                      >
+                        Desabilitar página de pré-visualização no iOS
+                      </FormLabel>
+                      <FormDescription>Alterações não afetam links já criados.</FormDescription>
+                    </div>
+
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </CardHeader>
+                </Card>
               </FormItem>
             )}
           />

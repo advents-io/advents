@@ -1,11 +1,13 @@
 'use client'
 
-import { routes } from '@advents/common'
+import { DOCS_URLS, routes } from '@advents/common'
 import {
   createLinkAction,
   CreateLinkFormInput,
   createLinkFormInputSchema,
   editLinkAction,
+  EditLinkFormInput,
+  editLinkFormInputSchema,
   formatErrors,
   useAction,
 } from '@advents/mutations'
@@ -32,6 +34,7 @@ import { ResponsiveDialogFooter } from '@/ui/responsive-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
+import { Switch } from '@/ui/switch'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   closeDialog: () => void
@@ -87,7 +90,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     },
   })
 
-  const onSubmit = async (link: CreateLinkFormInput) => {
+  const onSubmit = async (link: CreateLinkFormInput | EditLinkFormInput) => {
     if (linkId) {
       editLink({
         ...link,
@@ -137,13 +140,14 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
       domain: app.defaultDomain,
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
+      disableIosPreviewPage: app.defaultDisableIosPreviewPage,
       fallbackUrl: app.defaultFallbackUrl || '',
       campaignCost: null,
     }
   }
 
-  const form = useForm<CreateLinkFormInput>({
-    resolver: zodResolver(createLinkFormInputSchema),
+  const form = useForm<CreateLinkFormInput | EditLinkFormInput>({
+    resolver: zodResolver(linkId ? editLinkFormInputSchema : createLinkFormInputSchema),
     defaultValues: linkId
       ? async () => await handleGetLink(linkId)
       : async () => await getDefaultLinkValues(),
@@ -409,6 +413,49 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
 
           <FormField
             control={form.control}
+            name='disableIosPreviewPage'
+            render={({ field }) => (
+              <FormItem>
+                <div className='mb-4 flex items-center gap-2'>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+
+                  <FormLabel
+                    tooltip={
+                      <span>
+                        Desativa a página de pré-visualização em dispositivos iOS, direcionando os
+                        usuários diretamente para a App Store.
+                        <br />
+                        <br />
+                        A página de pré-visualização melhora a precisão da atribuição em
+                        dispositivos iOS. Ao abrir um link, o usuário é direcionado para a página
+                        contendo um botão de ação que copia o identificador do link no clipboard do
+                        dispositivo. Ao abrir o app pela primeira vez, o identificador é lido,
+                        fazendo com que a atribuição seja garantida.
+                        <br />
+                        <br />
+                        Saiba mais{' '}
+                        <Link
+                          href={DOCS_URLS.IOS_PREVIEW_PAGE}
+                          className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                          target='_blank'
+                        >
+                          sobre a página de pré-visualização.{' '}
+                          <SquareArrowOutUpRightIcon className='size-4' />
+                        </Link>
+                      </span>
+                    }
+                  >
+                    Desabilitar página de pré-visualização no iOS
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name='fallbackUrl'
             render={({ field }) => (
               <FormItem>
@@ -572,6 +619,8 @@ const Loading = ({ className }: HTMLAttributes<HTMLDivElement>) => {
           <Skeleton className='h-10 w-full' />
         </div>
       </div>
+
+      <Skeleton className='mb-4 h-[24px] w-1/2' />
 
       <div className='space-y-2'>
         <Skeleton className='h-[22px] w-40' />

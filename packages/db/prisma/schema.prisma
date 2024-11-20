@@ -15,13 +15,14 @@ model Link {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  title        String?
-  domain       String
-  slug         String
-  androidUrl   String  @map("android_url")
-  iosUrl       String  @map("ios_url")
-  fallbackUrl  String  @map("fallback_url")
-  campaignCost Float?  @map("campaign_cost")
+  title                 String?
+  domain                String
+  slug                  String
+  androidUrl            String  @map("android_url")
+  iosUrl                String  @map("ios_url")
+  disableIosPreviewPage Boolean @default(false) @map("disable_ios_preview_page")
+  fallbackUrl           String  @map("fallback_url")
+  campaignCost          Float?  @map("campaign_cost")
 
   clickCount   Int   @default(0) @map("click_count")
   installCount Int   @default(0) @map("install_count")
@@ -45,14 +46,15 @@ model App {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  name               String
-  slug               String
-  defaultDomain      String  @map("default_domain")
-  imageUrl           String  @map("image_url")
-  androidUrl         String  @map("android_url")
-  iosUrl             String  @map("ios_url")
-  defaultFallbackUrl String? @map("default_fallback_url")
-  qrcodeLogoUrl      String? @map("qrcode_logo_url")
+  name                         String
+  slug                         String
+  defaultDomain                String  @map("default_domain")
+  imageUrl                     String  @map("image_url")
+  androidUrl                   String  @map("android_url")
+  iosUrl                       String  @map("ios_url")
+  defaultDisableIosPreviewPage Boolean @default(false) @map("default_disable_ios_preview_page")
+  defaultFallbackUrl           String? @map("default_fallback_url")
+  qrcodeLogoUrl                String? @map("qrcode_logo_url")
 
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
