@@ -2,9 +2,6 @@
 
 import { DOCS_URLS } from '@advents/common'
 import {
-  createAppAction,
-  CreateAppInput,
-  createAppInputSchema,
   editAppAction,
   EditAppFormInput,
   editAppFormInputSchema,
@@ -41,7 +38,7 @@ import { Switch } from '@/ui/switch'
 import { DeleteAppButton } from './delete-app-button'
 
 type Props = {
-  app?: Pick<
+  app: Pick<
     App,
     | 'id'
     | 'name'
@@ -53,75 +50,46 @@ type Props = {
     | 'defaultFallbackUrl'
     | 'qrcodeLogoUrl'
   >
-  availableDomains?: string[]
+  availableDomains: string[]
 }
 
-export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
-  const isCreate = !app
-
-  const onSuccess = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-
-    toast.success(isCreate ? 'App criado com sucesso.' : 'App alterado com sucesso.')
-  }
-
-  const onError = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-  }
-
+export const EditAppForm = ({ app, availableDomains }: Props) => {
   const {
     execute: editApp,
     isExecuting: isEditing,
     result: editAppResult,
   } = useAction(editAppAction, {
-    onSuccess,
-    onError,
-  })
-
-  const {
-    execute: createApp,
-    isExecuting: isCreating,
-    result: createAppResult,
-  } = useAction(createAppAction, {
-    onSuccess,
-    onError,
-  })
-
-  const error = formatErrors(editAppResult) || formatErrors(createAppResult)
-
-  const onSubmit = async (data: CreateAppInput | EditAppFormInput) => {
-    if (isCreate) {
-      createApp(data as CreateAppInput)
-    } else {
-      editApp({
-        ...(data as EditAppFormInput),
-        id: app.id,
+    onSuccess: () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
       })
-    }
+
+      toast.success('App alterado com sucesso.')
+    },
+    onError: () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    },
+  })
+
+  const error = formatErrors(editAppResult)
+
+  const onSubmit = async (data: EditAppFormInput) => {
+    editApp({
+      ...data,
+      id: app.id,
+    })
   }
 
-  const form = useForm<CreateAppInput | EditAppFormInput>({
-    resolver: zodResolver(isCreate ? createAppInputSchema : editAppFormInputSchema),
-    defaultValues: !isCreate
-      ? app
-      : {
-          name: '',
-          slug: '',
-          androidUrl: '',
-          iosUrl: '',
-          defaultDisableIosPreviewPage: false,
-          defaultFallbackUrl: '',
-          qrcodeLogoUrl: '',
-        },
+  const form = useForm<EditAppFormInput>({
+    resolver: zodResolver(editAppFormInputSchema),
+    defaultValues: app,
   })
 
-  const busy = isCreating || isEditing || form.formState.isSubmitting
+  const busy = isEditing || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
     return <LoadingPageContent className='my-10' />
@@ -173,47 +141,45 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             )}
           />
 
-          {!isCreate && availableDomains && availableDomains.length > 0 && (
-            <FormField
-              control={form.control}
-              name='defaultDomain'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Domínio padrão</FormLabel>
+          <FormField
+            control={form.control}
+            name='defaultDomain'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Domínio padrão</FormLabel>
 
-                  <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
 
-                    <SelectContent>
-                      {availableDomains.map((domain, index) => (
-                        <SelectItem key={index} value={domain}>
-                          {domain}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SelectContent>
+                    {availableDomains.map((domain, index) => (
+                      <SelectItem key={index} value={domain}>
+                        {domain}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-                  <FormDescription>
-                    Domínio que será pré preenchido ao criar um link. Para cada link será possível
-                    alterar o domínio.
-                    <br />
-                    Exemplo do link com domínio:{' '}
-                    <span className='font-mono font-semibold tracking-tighter text-primary'>
-                      https://{field.value}/7yB46jk
-                    </span>
-                    <br />
-                    Alterações não afetam links já criados.
-                  </FormDescription>
+                <FormDescription>
+                  Domínio que será pré preenchido ao criar um link. Para cada link será possível
+                  alterar o domínio.
+                  <br />
+                  Exemplo do link com domínio:{' '}
+                  <span className='font-mono font-semibold tracking-tighter text-primary'>
+                    https://{field.value}/7yB46jk
+                  </span>
+                  <br />
+                  Alterações não afetam links já criados.
+                </FormDescription>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
@@ -374,28 +340,24 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
         </form>
       </Form>
 
-      {!isCreate && (
-        <>
-          <Separator />
+      <Separator />
 
-          <Card className='border-destructive'>
-            <CardHeader>
-              <CardTitle className='text-lg'>Excluir app</CardTitle>
-            </CardHeader>
+      <Card className='border-destructive'>
+        <CardHeader>
+          <CardTitle className='text-lg'>Excluir app</CardTitle>
+        </CardHeader>
 
-            <CardContent>
-              <CardDescription>
-                Exclua permanentemente seu app, todos os links associados e estatísticas. Esta ação
-                não pode ser desfeita.
-              </CardDescription>
-            </CardContent>
+        <CardContent>
+          <CardDescription>
+            Exclua permanentemente seu app, todos os links associados e estatísticas. Esta ação não
+            pode ser desfeita.
+          </CardDescription>
+        </CardContent>
 
-            <CardFooter>
-              <DeleteAppButton appId={app.id} appSlug={app.slug} appName={app.name} />
-            </CardFooter>
-          </Card>
-        </>
-      )}
+        <CardFooter>
+          <DeleteAppButton appId={app.id} appSlug={app.slug} appName={app.name} />
+        </CardFooter>
+      </Card>
     </>
   )
 }

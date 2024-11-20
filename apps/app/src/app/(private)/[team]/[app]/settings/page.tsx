@@ -4,8 +4,9 @@ import { getAppDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
-import { CreateEditAppForm } from '@/components/create-edit-app-form'
 import { Card, CardHeader } from '@/ui/card'
+
+import { EditAppForm } from './edit-app-form'
 
 export default async function Page(props: { params: Promise<{ team: string; app: string }> }) {
   const params = await props.params
@@ -39,7 +40,7 @@ export default async function Page(props: { params: Promise<{ team: string; app:
   return (
     <Card>
       <CardHeader className='mx-auto max-w-xl gap-8 p-4 md:p-10'>
-        <CreateEditAppForm app={app} availableDomains={availableDomains} />
+        <EditAppForm app={app} availableDomains={availableDomains} />
       </CardHeader>
     </Card>
   )
