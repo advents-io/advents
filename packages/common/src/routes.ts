@@ -27,7 +27,7 @@ export const routes = {
   SIGN_IN: {
     path: '/sign-in',
   },
-  IOS_CLICK: {
-    path: '/ios/click',
+  IOS_PREVIEW: {
+    path: '/ios/preview',
   },
 }

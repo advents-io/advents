@@ -11,10 +11,10 @@ export const config = {
      * - _next/image
      * - favicon.ico
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
-     * - /ios/click
+     * - /ios/preview
      * - /api
      */
-    '/((?!_next/static|_next/image|favicon.ico|ios/click|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|ios/preview|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 
@@ -45,7 +45,7 @@ const authMiddleware = async (req: NextRequest) => {
 }
 
 const getIsPrivateRoute = (path: string) => {
-  const publicRoutes = [routes.SIGN_IN.path, routes.IOS_CLICK.path]
+  const publicRoutes = [routes.SIGN_IN.path, routes.IOS_PREVIEW.path]
 
   return !publicRoutes.includes(path)
 }
