@@ -138,6 +138,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     return {
       title: null,
       domain: app.defaultDomain,
+      slug: '',
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
       disableIosPreviewPage: app.defaultDisableIosPreviewPage,
@@ -277,7 +278,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                 render={({ field }) => (
                   <FormItem className='w-full'>
                     <FormControl>
-                      <Input autoFocus placeholder='abcd123' {...field} />
+                      <Input autoFocus placeholder='abcd123' {...field} value={field.value || ''} />
                     </FormControl>
                   </FormItem>
                 )}

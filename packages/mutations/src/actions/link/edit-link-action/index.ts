@@ -57,11 +57,12 @@ export const editLinkAction = authActionClient
       }
     }
 
-    newLink.slug = newLink.slug || (await generateRandomSlug(newLink.domain))
+    const slug = newLink.slug || (await generateRandomSlug(newLink.domain))
 
     const link = {
       ...originalLink,
       ...newLink,
+      slug,
     }
 
     return await prisma.link.update({

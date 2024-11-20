@@ -16,8 +16,8 @@ export const createLinkFormInputSchema = z.object({
       regexes.CASE_INSENSITIVE_SLUG,
       'A chave do link deve conter apenas letras, números, hífen ou underline.',
     )
-    .optional()
-    .transform(value => value || undefined),
+    .nullable()
+    .transform(value => value || null),
   androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
   disableIosPreviewPage: z.boolean().default(false),
