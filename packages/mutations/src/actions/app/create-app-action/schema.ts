@@ -24,14 +24,7 @@ export const createAppInputSchema = z.object({
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
     message: 'A url do app iOS deve ser da App Store.',
   }),
-  defaultDisableIosPreviewPage: z.boolean().default(false),
   defaultFallbackUrl: z
-    .string({ message: 'Url inválida.' })
-    .url('Url inválida.')
-    .nullish()
-    .or(z.literal(''))
-    .transform(value => value || null),
-  qrcodeLogoUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')
     .nullish()
