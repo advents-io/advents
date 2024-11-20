@@ -37,7 +37,7 @@ export const SettingsField = ({ title, description, children, footer }: Props) =
 
 export const SettingsFieldLoading = () => {
   return (
-    <Card>
+    <Card className='overflow-hidden'>
       <CardHeader>
         <Skeleton className='h-8 w-1/4' />
       </CardHeader>
