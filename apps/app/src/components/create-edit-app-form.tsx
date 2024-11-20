@@ -53,7 +53,7 @@ type Props = {
     | 'defaultFallbackUrl'
     | 'qrcodeLogoUrl'
   >
-  availableDomains: string[]
+  availableDomains?: string[]
 }
 
 export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
@@ -173,7 +173,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             )}
           />
 
-          {!isCreate && (
+          {!isCreate && availableDomains && availableDomains.length > 0 && (
             <FormField
               control={form.control}
               name='defaultDomain'
