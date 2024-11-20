@@ -15,7 +15,6 @@ export const createAppInputSchema = z.object({
       regexes.LOWER_CASE_SLUG,
       'O Slug do app deve conter apenas letras minusculas, números, hífen ou underline.',
     ),
-  defaultDomain: z.string({ message: 'Domínio inválido.' }),
   androidUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')

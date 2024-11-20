@@ -2,7 +2,7 @@
 
 import { getUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { getAppDomains } from '@advents/queries/server'
+import { LINK_DEFAULT_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
@@ -24,12 +24,6 @@ export const createAppAction = authActionClient
 
     if (!team) {
       throw new ActionError('Equipe não encontrada.')
-    }
-
-    const availableDomains = await getAppDomains()
-
-    if (!availableDomains.includes(app.defaultDomain)) {
-      throw new ActionError('Domínio inválido.')
     }
 
     const slugExists = await prisma.app.findUnique({
@@ -56,6 +50,7 @@ export const createAppAction = authActionClient
     await prisma.app.create({
       data: {
         ...app,
+        defaultDomain: LINK_DEFAULT_DOMAIN,
         imageUrl,
         apiKeys: {
           create: {

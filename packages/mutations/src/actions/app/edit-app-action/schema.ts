@@ -2,8 +2,7 @@ import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
 
-export const editAppInputSchema = z.object({
-  id: z.string({ message: 'Id do app é obrigatório.' }).uuid('Id do app é obrigatório.'),
+export const editAppFormInputSchema = z.object({
   name: z
     .string({ message: 'Nome do app é obrigatório.' })
     .min(1, 'Nome do app é obrigatório.')
@@ -41,4 +40,8 @@ export const editAppInputSchema = z.object({
     .transform(value => value || null),
 })
 
-export type EditAppInput = z.infer<typeof editAppInputSchema>
+export const inputSchema = editAppFormInputSchema.extend({
+  id: z.string({ message: 'Id do app é obrigatório.' }).uuid('Id do app é obrigatório.'),
+})
+
+export type EditAppFormInput = z.infer<typeof editAppFormInputSchema>

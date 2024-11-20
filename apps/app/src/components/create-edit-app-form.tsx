@@ -6,12 +6,11 @@ import {
   CreateAppInput,
   createAppInputSchema,
   editAppAction,
-  EditAppInput,
-  editAppInputSchema,
+  EditAppFormInput,
+  editAppFormInputSchema,
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { LINK_DEFAULT_DOMAIN } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { App } from '@prisma/client'
 import { SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
@@ -96,20 +95,29 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
 
   const error = formatErrors(editAppResult) || formatErrors(createAppResult)
 
-  const onSubmit = async (data: CreateAppInput | EditAppInput) => {
+  const onSubmit = async (data: CreateAppInput | EditAppFormInput) => {
     if (isCreate) {
       createApp(data as CreateAppInput)
     } else {
-      editApp(data as EditAppInput)
+      editApp({
+        ...(data as EditAppFormInput),
+        id: app.id,
+      })
     }
   }
 
-  const form = useForm<CreateAppInput | EditAppInput>({
-    resolver: zodResolver(isCreate ? createAppInputSchema : editAppInputSchema),
+  const form = useForm<CreateAppInput | EditAppFormInput>({
+    resolver: zodResolver(isCreate ? createAppInputSchema : editAppFormInputSchema),
     defaultValues: !isCreate
       ? app
       : {
-          defaultDomain: LINK_DEFAULT_DOMAIN,
+          name: '',
+          slug: '',
+          androidUrl: '',
+          iosUrl: '',
+          defaultDisableIosPreviewPage: false,
+          defaultFallbackUrl: '',
+          qrcodeLogoUrl: '',
         },
   })
 
@@ -165,45 +173,47 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='defaultDomain'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Domínio padrão</FormLabel>
+          {!isCreate && (
+            <FormField
+              control={form.control}
+              name='defaultDomain'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Domínio padrão</FormLabel>
 
-                <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
 
-                  <SelectContent>
-                    {availableDomains.map((domain, index) => (
-                      <SelectItem key={index} value={domain}>
-                        {domain}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    <SelectContent>
+                      {availableDomains.map((domain, index) => (
+                        <SelectItem key={index} value={domain}>
+                          {domain}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <FormDescription>
-                  Domínio que será pré preenchido ao criar um link. Para cada link será possível
-                  alterar o domínio.
-                  <br />
-                  Exemplo do link com domínio:{' '}
-                  <span className='font-mono font-semibold tracking-tighter text-primary'>
-                    https://{field.value}/7yB46jk
-                  </span>
-                  <br />
-                  Alterações não afetam links já criados.
-                </FormDescription>
+                  <FormDescription>
+                    Domínio que será pré preenchido ao criar um link. Para cada link será possível
+                    alterar o domínio.
+                    <br />
+                    Exemplo do link com domínio:{' '}
+                    <span className='font-mono font-semibold tracking-tighter text-primary'>
+                      https://{field.value}/7yB46jk
+                    </span>
+                    <br />
+                    Alterações não afetam links já criados.
+                  </FormDescription>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
@@ -314,7 +324,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                     {...field}
                     type='url'
                     placeholder='https://www.meusite.com'
-                    value={field.value || undefined}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormDescription>
@@ -344,7 +354,7 @@ export const CreateEditAppForm = ({ app, availableDomains }: Props) => {
                     {...field}
                     type='url'
                     placeholder='https://www.meusite.com/logo.png'
-                    value={field.value || undefined}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormDescription>
