@@ -29,7 +29,7 @@ import { Switch } from '@/ui/switch'
 import { DeleteAppButton } from './delete-app-button'
 import Loading from './loading'
 
-type Props = {
+interface Props {
   app: Pick<
     App,
     | 'id'

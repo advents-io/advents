@@ -9,7 +9,7 @@ import { Skeleton } from '@/ui/skeleton'
 
 import { LoadingSpinner } from './loading-spinner'
 
-type Props = {
+interface Props extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   fieldState: ControllerFieldState | undefined
   busy?: boolean
   title: React.ReactNode
@@ -19,7 +19,7 @@ type Props = {
   footerButtonLabel?: string
   footerButtonOnClick?: () => void
   isDestructive?: boolean
-} & React.HTMLAttributes<HTMLDivElement>
+}
 
 export const SettingsField = ({
   fieldState,
