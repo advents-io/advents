@@ -16,8 +16,9 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const DomainItemMoreOptionsButton = ({ domain, className }: Props) => {
   const [open, setOpen] = useState(false)
 
-  /* BUG: We have to add preventDefault to avoid the dropdown to close when clicking on an item.
+  /* We have to add preventDefault to avoid the dropdown to close when clicking on an item.
    * That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
+   * We may fix this in the future.
    */
 
   return (
