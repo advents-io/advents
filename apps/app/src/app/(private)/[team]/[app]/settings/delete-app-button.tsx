@@ -23,9 +23,10 @@ interface Props {
   appId: string
   appSlug: string
   appName: string
+  children: React.ReactNode
 }
 
-export const DeleteAppButton = ({ appId, appSlug, appName }: Props) => {
+export const DeleteAppButton = ({ appId, appSlug, appName, children }: Props) => {
   const [open, setOpen] = useState(false)
   const [confirmAppName, setConfirmAppName] = useState('')
 
@@ -46,9 +47,7 @@ export const DeleteAppButton = ({ appId, appSlug, appName }: Props) => {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant='destructive'>Excluir app</Button>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>

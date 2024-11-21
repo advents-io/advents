@@ -11,27 +11,27 @@ export default function Page() {
 
   return (
     <SettingsField
+      fieldState={undefined}
       title='Domínios Customizados'
-      description={
-        <span className='leading-loose'>
-          Adicione um domínio customizado da sua empresa para utilizar nos links.
-          <br />
-          Exemplo:{' '}
-          <span className='font-mono font-semibold tracking-tighter text-primary'>
-            https://links.meuapp.com/abcd123
-          </span>
-        </span>
-      }
       footer={
-        <div className='flex w-full flex-col items-center justify-between gap-2 md:flex-row'>
+        <>
           Entre em contato com a equipe da Advents para adicionar ou remover domínios customizados.
-          <Link href={whatsAppUrl} target='_blank' className='w-full md:w-fit'>
+          <Link href={whatsAppUrl} target='_blank' className='ml-auto w-full sm:w-fit'>
             <Button size='sm' className='w-full'>
               Adicionar domínio
             </Button>
           </Link>
-        </div>
+        </>
       }
-    />
+    >
+      <span className='leading-loose'>
+        Adicione um domínio customizado da sua empresa para utilizar nos links.
+        <br />
+        Exemplo:{' '}
+        <span className='font-mono font-semibold tracking-tighter text-primary'>
+          https://links.meuapp.com/abcd123
+        </span>
+      </span>
+    </SettingsField>
   )
 }

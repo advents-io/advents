@@ -1,5 +1,17 @@
-import { LoadingPageContent } from '@/components/loading-page-content'
+import { SettingsFieldLoading } from '@/components/settings-field'
 
 export default function Loading() {
-  return <LoadingPageContent className='my-10' />
+  return (
+    <div className='space-y-10'>
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+      <SettingsFieldLoading />
+    </div>
+  )
 }

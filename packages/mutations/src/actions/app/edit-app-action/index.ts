@@ -1,9 +1,8 @@
 'use server'
 
-import { getUrlOgImage, routes } from '@advents/common'
+import { getUrlOgImage } from '@advents/common'
 import { prisma } from '@advents/db'
 import { getAppDomains } from '@advents/queries/server'
-import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
@@ -14,7 +13,7 @@ export const editAppAction = authActionClient
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { id, ...newApp } = parsedInput
 
-    const originalAppResult = await prisma.app.findUnique({
+    const originalApp = await prisma.app.findUnique({
       where: {
         id,
         team: {
@@ -25,16 +24,9 @@ export const editAppAction = authActionClient
           },
         },
       },
-      include: {
-        team: {
-          select: {
-            slug: true,
-          },
-        },
-      },
     })
 
-    if (!originalAppResult) {
+    if (!originalApp) {
       throw new ActionError('App não encontrado.')
     }
 
@@ -43,8 +35,6 @@ export const editAppAction = authActionClient
     if (!availableDomains.includes(newApp.defaultDomain)) {
       throw new ActionError('Domínio inválido.')
     }
-
-    const { team, ...originalApp } = originalAppResult
 
     const slugChanged = newApp.slug !== originalApp.slug
 
@@ -83,6 +73,4 @@ export const editAppAction = authActionClient
         updatedBy: user.id,
       },
     })
-
-    redirect(routes.SETTINGS.path(team.slug, app.slug))
   })

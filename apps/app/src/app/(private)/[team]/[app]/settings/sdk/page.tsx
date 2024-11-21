@@ -31,8 +31,9 @@ export default async function Page(props: { params: Promise<{ app: string; team:
 
   return (
     <SettingsField
+      fieldState={undefined}
       title='Chave da API'
-      footer={
+      footerLabel={
         <span>
           Saiba mais na{' '}
           <Link
@@ -44,8 +45,9 @@ export default async function Page(props: { params: Promise<{ app: string; team:
           </Link>
         </span>
       }
-      description='Use a chave de API para autenticar as requisições da SDK instalada no seu app.'
     >
+      <p>Use a chave de API para autenticar as requisições da SDK instalada no seu app.</p>
+
       <ApiKeyField apiKey={apiKey?.key || ''} />
     </SettingsField>
   )
