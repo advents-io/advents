@@ -1,8 +1,7 @@
-import { SUPPORT_PHONE } from '@advents/common'
+import { SUPPORT_PHONE, whatsapp } from '@advents/common'
 import Link from 'next/link'
 
 import { SettingsField } from '@/components/settings-field'
-import { whatsapp } from '@/lib/whatsapp'
 import { Button } from '@/ui/button'
 
 export default function Page() {

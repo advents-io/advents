@@ -1,10 +1,15 @@
-import { CONTACT_EMAIL, DOCS_URLS, MEET_SCHEDULER_URL, SUPPORT_PHONE } from '@advents/common'
+import {
+  CONTACT_EMAIL,
+  DOCS_URLS,
+  MEET_SCHEDULER_URL,
+  SUPPORT_PHONE,
+  whatsapp,
+} from '@advents/common'
 import { BookOpenIcon, MailIcon, VideoIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import WhatsApp from '@/assets/icons/whatsapp.svg'
-import { whatsapp } from '@/lib/whatsapp'
 import {
   DropdownMenu,
   DropdownMenuContent,
