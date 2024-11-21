@@ -3,6 +3,7 @@
 import { EllipsisVerticalIcon } from 'lucide-react'
 import { useState } from 'react'
 
+import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/ui/dropdown-menu'
 
@@ -22,7 +23,7 @@ export const DomainItemMoreOptionsButton = ({ domain, className }: Props) => {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant='outline' size='icon' className={className}>
+        <Button variant='outline' size='icon' className={cn('min-h-10 min-w-10', className)}>
           <EllipsisVerticalIcon />
         </Button>
       </DropdownMenuTrigger>

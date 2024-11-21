@@ -50,7 +50,7 @@ export const DomainList = async ({ appSlug, teamSlug, className }: Props) => {
         <Card key={index}>
           <CardHeader>
             <div className='flex min-h-10 items-center gap-4'>
-              <span className='font-mono font-semibold'>{domain.domain}</span>
+              <span className='truncate font-mono font-semibold'>{domain.domain}</span>
 
               <Badge
                 variant={domain.type === 'custom' ? 'default' : 'outline'}
