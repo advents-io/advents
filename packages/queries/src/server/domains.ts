@@ -1,17 +1,31 @@
-type LinkCustomDomain = {
+type CustomDomain = {
   appId: string
   domain: string
 }
 
-const LINK_DEFAULT_DOMAINS: string[] =
+type Domain = {
+  domain: string
+  type: 'default' | 'custom'
+}
+
+const DEFAULT_DOMAINS: Domain[] =
   process.env.NEXT_PUBLIC_VERCEL === '1' && process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-    ? ['adv.sh']
-    : ['dev.adv.sh']
+    ? [
+        {
+          domain: 'adv.sh',
+          type: 'default',
+        },
+      ]
+    : [
+        {
+          domain: 'dev.adv.sh',
+          type: 'default',
+        },
+      ]
 
-export const LINK_DEFAULT_DOMAIN: string = LINK_DEFAULT_DOMAINS[0]
+export const DEFAULT_DOMAIN: string = DEFAULT_DOMAINS[0].domain
 
-// TODO: Workaround to work with cumbuca app, will be removed in the future
-const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
+const CUSTOM_DOMAINS: CustomDomain[] = [
   {
     appId: 'eb39be27-f842-4eca-97d2-1835bfc4e33a',
     domain: 'links.cumbuca.com',
@@ -22,16 +36,17 @@ const LINK_CUSTOM_DOMAINS: LinkCustomDomain[] = [
   },
 ]
 
-export const LINK_LOCALHOST_DOMAIN: string = 'l.localhost:3000'
+export const LOCALHOST_DOMAIN: string = 'l.localhost:3000'
 
-export const getAppDomains = async (appId?: string): Promise<string[]> => {
-  const customDomains = appId
-    ? LINK_CUSTOM_DOMAINS.filter(customDomain => customDomain.appId === appId).map(
-        customDomain => customDomain.domain,
-      )
+export const getAppDomains = async (appId?: string): Promise<Domain[]> => {
+  const customDomains: Domain[] = appId
+    ? CUSTOM_DOMAINS.filter(customDomain => customDomain.appId === appId).map(customDomain => ({
+        domain: customDomain.domain,
+        type: 'custom',
+      }))
     : []
 
-  const domains = [...LINK_DEFAULT_DOMAINS, ...customDomains]
+  const domains = [...DEFAULT_DOMAINS, ...customDomains]
 
   return domains
 }

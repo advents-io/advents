@@ -27,7 +27,7 @@ export const getAppDomains = (api: Hono<ApiEnv>) =>
       const domains = await handleGetAppDomains(appId)
 
       const response = outputSchema.parse({
-        domains,
+        domains: domains.map(domain => domain.domain),
       })
 
       return c.json(response)

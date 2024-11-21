@@ -35,7 +35,7 @@ export const createLinkAction = authActionClient
 
     const availableDomains = await getAppDomains(app.id)
 
-    if (!availableDomains.includes(link.domain)) {
+    if (!availableDomains.some(domain => domain.domain === link.domain)) {
       throw new ActionError('Domínio inválido.')
     }
 

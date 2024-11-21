@@ -2,7 +2,7 @@
 
 import { getUrlOgImage, nanoid, routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { LINK_DEFAULT_DOMAIN } from '@advents/queries/server'
+import { DEFAULT_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 
 import { ActionError } from '../../../action-errors'
@@ -50,7 +50,7 @@ export const createAppAction = authActionClient
     await prisma.app.create({
       data: {
         ...app,
-        defaultDomain: LINK_DEFAULT_DOMAIN,
+        defaultDomain: DEFAULT_DOMAIN,
         imageUrl,
         apiKeys: {
           create: {

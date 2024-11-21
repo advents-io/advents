@@ -35,5 +35,5 @@ export default async function Page(props: { params: Promise<{ team: string; app:
 
   const availableDomains = await getAppDomains(app.id)
 
-  return <EditAppForm app={app} availableDomains={availableDomains} />
+  return <EditAppForm app={app} availableDomains={availableDomains.map(domain => domain.domain)} />
 }

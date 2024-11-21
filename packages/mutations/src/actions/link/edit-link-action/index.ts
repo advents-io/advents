@@ -34,7 +34,7 @@ export const editLinkAction = authActionClient
 
     const availableDomains = await getAppDomains(originalLink.appId)
 
-    if (!availableDomains.includes(newLink.domain)) {
+    if (!availableDomains.some(domain => domain.domain === newLink.domain)) {
       throw new ActionError('Domínio inválido.')
     }
 

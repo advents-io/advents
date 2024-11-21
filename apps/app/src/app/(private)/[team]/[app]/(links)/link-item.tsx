@@ -2,7 +2,7 @@
 
 import { dayjs } from '@advents/common'
 import { Link as LinkDb } from '@advents/db'
-import { LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
+import { LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -31,7 +31,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
     const content =
       process.env.NEXT_PUBLIC_VERCEL === '1'
         ? httpShortLink
-        : `http://${LINK_LOCALHOST_DOMAIN}/${link.slug}`
+        : `http://${LOCALHOST_DOMAIN}/${link.slug}`
 
     navigator.clipboard.writeText(content)
 

@@ -1,6 +1,6 @@
 import { routes, WEBSITE_URL } from '@advents/common'
 import { Link } from '@advents/db'
-import { LINK_DEFAULT_DOMAIN, LINK_LOCALHOST_DOMAIN } from '@advents/queries/server'
+import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
@@ -92,10 +92,10 @@ const redirect = (url: string) => {
 const getDomain = (req: NextRequest) => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain = domain === LINK_LOCALHOST_DOMAIN
+  const isDevLinkDomain = domain === LOCALHOST_DOMAIN
 
   if (isDevLinkDomain) {
-    domain = LINK_DEFAULT_DOMAIN
+    domain = DEFAULT_DOMAIN
   }
 
   return domain

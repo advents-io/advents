@@ -32,7 +32,7 @@ export const editAppAction = authActionClient
 
     const availableDomains = await getAppDomains(id)
 
-    if (!availableDomains.includes(newApp.defaultDomain)) {
+    if (!availableDomains.some(domain => domain.domain === newApp.defaultDomain)) {
       throw new ActionError('Domínio inválido.')
     }
 
