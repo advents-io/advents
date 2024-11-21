@@ -1,8 +1,9 @@
 const buildMessageUrl = (phone: string, message?: string) => {
-  let url = `https://wa.me/${phone}`
+  let url = `https://api.whatsapp.com/send?phone=${phone}`
 
   if (message) {
-    url += `?text=${message}`
+    const encodedMessage = encodeURIComponent(message)
+    url += `&text=${encodedMessage}`
   }
 
   return url

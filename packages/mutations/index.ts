@@ -11,6 +11,12 @@ export {
   type EditAppFormInput,
   editAppFormInputSchema,
 } from './src/actions/app/edit-app-action/schema'
+export { addCustomDomainAction } from './src/actions/domains/add-custom-domain-action'
+export {
+  type AddCustomDomainFormInput,
+  addCustomDomainFormSchema,
+} from './src/actions/domains/add-custom-domain-action/schema'
+export { deleteCustomDomainAction } from './src/actions/domains/delete-custom-domain-action'
 export { createLinkAction } from './src/actions/link/create-link-action'
 export {
   type CreateLinkFormInput,
