@@ -23,6 +23,9 @@ export const routes = {
   SETTINGS_DOMAINS: {
     path: (team: string, app: string) => `/${team}/${app}/settings/domains`,
   },
+  SETTINGS_QRCODE: {
+    path: (team: string, app: string) => `/${team}/${app}/settings/qrcode`,
+  },
 
   SIGN_IN: {
     path: '/sign-in',
@@ -31,3 +34,10 @@ export const routes = {
     path: '/ios/preview',
   },
 }
+
+export const settingsRoutes = (team: string, app: string) => [
+  routes.SETTINGS.path(team, app),
+  routes.SETTINGS_SDK.path(team, app),
+  routes.SETTINGS_DOMAINS.path(team, app),
+  routes.SETTINGS_QRCODE.path(team, app),
+]

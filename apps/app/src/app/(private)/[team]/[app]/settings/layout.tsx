@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 import { PageContainer } from '@/components/page-container'
 
-import { SettingsLayout } from './settings-layout'
+import { Layout as LayoutClient } from './layout-client'
 
 export const metadata: Metadata = {
   title: 'Ajustes | Advents',
@@ -18,9 +18,9 @@ export default async function Layout(props: {
 
   return (
     <PageContainer title='Ajustes'>
-      <SettingsLayout team={params.team} app={params.app}>
+      <LayoutClient team={params.team} app={params.app}>
         {children}
-      </SettingsLayout>
+      </LayoutClient>
     </PageContainer>
   )
 }

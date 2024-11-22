@@ -1,6 +1,6 @@
 'use client'
 
-import { DOCS_URLS, routes } from '@advents/common'
+import { DOCS_URLS, routes, settingsRoutes } from '@advents/common'
 import { App } from '@advents/db'
 import { supabaseClient } from '@advents/supabase/client'
 import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
@@ -88,15 +88,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
         <nav className='flex gap-4 pt-2'>
           <HeaderItem href={[routes.LINKS.path(team, app)]}>Links</HeaderItem>
           <HeaderItem href={[routes.ANALYTICS.path(team, app)]}>Analytics</HeaderItem>
-          <HeaderItem
-            href={[
-              routes.SETTINGS.path(team, app),
-              routes.SETTINGS_SDK.path(team, app),
-              routes.SETTINGS_DOMAINS.path(team, app),
-            ]}
-          >
-            Ajustes
-          </HeaderItem>
+          <HeaderItem href={settingsRoutes(team, app)}>Ajustes</HeaderItem>
         </nav>
       )}
     </header>

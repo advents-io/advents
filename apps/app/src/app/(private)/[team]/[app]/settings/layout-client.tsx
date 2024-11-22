@@ -23,7 +23,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export const SettingsLayout = ({ team, app, children }: Props) => {
+export const Layout = ({ team, app, children }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
 
