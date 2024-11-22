@@ -15,9 +15,9 @@ model Link {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  title                 String?
+  title                 String? @db.VarChar(64)
   domain                String
-  slug                  String
+  slug                  String  @db.VarChar(20)
   androidUrl            String  @map("android_url")
   iosUrl                String  @map("ios_url")
   disableIosPreviewPage Boolean @default(false) @map("disable_ios_preview_page")
@@ -46,8 +46,8 @@ model App {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  name                         String
-  slug                         String
+  name                         String  @db.VarChar(64)
+  slug                         String  @db.VarChar(48)
   defaultDomain                String  @map("default_domain")
   imageUrl                     String  @map("image_url")
   androidUrl                   String  @map("android_url")
@@ -77,8 +77,8 @@ model Team {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  name String
-  slug String @unique
+  name String @db.VarChar(64)
+  slug String @unique @db.VarChar(48)
 
   members Member[]
   apps    App[]

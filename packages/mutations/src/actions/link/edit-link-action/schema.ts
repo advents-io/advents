@@ -5,7 +5,7 @@ import { regexes } from '../../../utils/regexes'
 export const editLinkFormInputSchema = z.object({
   title: z
     .string()
-    .max(50, 'O título deve possuir no máximo 50 caracteres.')
+    .max(64, 'O título deve possuir no máximo 64 caracteres.')
     .nullable()
     .transform(value => value || null),
   domain: z.string({ message: 'Domínio inválido.' }),

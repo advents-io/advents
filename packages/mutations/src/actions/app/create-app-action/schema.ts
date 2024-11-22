@@ -6,11 +6,11 @@ export const createAppInputSchema = z.object({
   name: z
     .string({ message: 'Nome do app é obrigatório.' })
     .min(1, 'Nome do app é obrigatório.')
-    .max(200, 'O nome do app deve possuir no máximo 200 caracteres.'),
+    .max(64, 'O nome do app deve possuir no máximo 64 caracteres.'),
   slug: z
     .string({ message: 'Slug do app é obrigatório.' })
     .min(1, 'Slug do app é obrigatório.')
-    .max(100, 'O Slug do app deve possuir no máximo 100 caracteres.')
+    .max(48, 'O Slug do app deve possuir no máximo 48 caracteres.')
     .regex(
       regexes.LOWER_CASE_SLUG,
       'O Slug do app deve conter apenas letras minusculas, números, hífen ou underline.',
