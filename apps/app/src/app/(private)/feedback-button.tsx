@@ -10,14 +10,13 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { ErrorAlert } from '@/components/error-alert'
+import { LoadingContent } from '@/components/loading-content'
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/ui/form'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 import { Textarea } from '@/ui/textarea'
-
-import { ErrorAlert } from '../../components/error-alert'
-import { LoadingSpinner } from '../../components/loading-spinner'
 
 const feedbackSchema = z.object({
   text: z.string(),
@@ -135,7 +134,7 @@ export const FeedbackButton = () => {
                 size='sm'
                 disabled={form.getValues('text').length === 0 || busy}
               >
-                <LoadingSpinner loading={busy}>Enviar</LoadingSpinner>
+                <LoadingContent loading={busy}>Enviar</LoadingContent>
               </Button>
             </div>
           </form>

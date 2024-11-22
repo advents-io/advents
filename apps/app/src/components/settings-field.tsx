@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/ui/card'
 import { FormControl, FormItem, FormMessage } from '@/ui/form'
 import { Skeleton } from '@/ui/skeleton'
 
-import { LoadingSpinner } from './loading-spinner'
+import { LoadingContent } from './loading-content'
 
 interface Props extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   fieldState: ControllerFieldState | undefined
@@ -84,9 +84,9 @@ export const SettingsField = ({
                       className='ml-auto w-full sm:w-fit'
                       onClick={footerButtonOnClick}
                     >
-                      <LoadingSpinner loading={!!busy}>
+                      <LoadingContent loading={!!busy}>
                         {footerButtonLabel || 'Salvar'}
-                      </LoadingSpinner>
+                      </LoadingContent>
                     </Button>
                   )}
                 </>
