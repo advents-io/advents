@@ -51,8 +51,8 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
 
   const {
     executeAsync: editApp,
-    isExecuting: isEditing,
-    result: editAppResult,
+    isExecuting,
+    result,
   } = useAction(editAppAction, {
     onError: () => {
       window.scrollTo({
@@ -62,14 +62,14 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
     },
   })
 
-  const error = formatErrors(editAppResult)
+  const error = formatErrors(result)
 
   const form = useForm<EditAppFormInput>({
     resolver: zodResolver(editAppFormInputSchema),
     defaultValues: app,
   })
 
-  const busy = isEditing || form.formState.isSubmitting
+  const busy = isExecuting || form.formState.isSubmitting
 
   if (form.formState.isLoading) {
     return <Loading />
@@ -89,28 +89,30 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               busy={busy}
               title='Nome'
               footerLabel='Máximo de 64 caracteres.'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        name: field.value,
-                        id: app.id,
-                      })
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editApp({
+                      ...(form.formState.defaultValues as EditAppFormInput),
+                      name: field.value,
+                      id: app.id,
+                    })
 
-                      form.resetField('name', {
-                        defaultValue: field.value,
-                      })
-                    },
-                    {
-                      loading: 'Alterando o nome do app...',
-                      success: 'Nome do app alterado.',
-                      error: 'Erro ao alterar o nome do app.',
-                    },
-                  ),
-                )()
-              }
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
+
+                    form.resetField('name', {
+                      defaultValue: field.value,
+                    })
+                  },
+                  {
+                    loading: 'Alterando o nome do app...',
+                    success: 'Nome do app alterado.',
+                    error: 'Erro ao alterar o nome do app.',
+                  },
+                ),
+              )}
             >
               <p>Usado para identificar o app na plataforma.</p>
 
@@ -128,32 +130,34 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               busy={busy}
               title='Identificador único'
               footerLabel='Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48 caracteres.'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        slug: field.value,
-                        id: app.id,
-                      })
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editApp({
+                      ...(form.formState.defaultValues as EditAppFormInput),
+                      slug: field.value,
+                      id: app.id,
+                    })
 
-                      form.resetField('slug', {
-                        defaultValue: field.value,
-                      })
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
 
-                      router.replace(routes.SETTINGS.path(teamSlug, field.value), {
-                        scroll: false,
-                      })
-                    },
-                    {
-                      loading: 'Alterando o identificador único...',
-                      success: 'Identificador único alterado.',
-                      error: 'Erro ao alterar o identificador único.',
-                    },
-                  ),
-                )()
-              }
+                    form.resetField('slug', {
+                      defaultValue: field.value,
+                    })
+
+                    router.replace(routes.SETTINGS.path(teamSlug, field.value), {
+                      scroll: false,
+                    })
+                  },
+                  {
+                    loading: 'Alterando o identificador único...',
+                    success: 'Identificador único alterado.',
+                    error: 'Erro ao alterar o identificador único.',
+                  },
+                ),
+              )}
             >
               <p>Valor único usado para identificar o app na plataforma.</p>
 
@@ -195,11 +199,15 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                   form.handleSubmit(() =>
                     toast.promise(
                       async () => {
-                        await editApp({
+                        const result = await editApp({
                           ...(form.formState.defaultValues as EditAppFormInput),
                           defaultDomain: value,
                           id: app.id,
                         })
+
+                        if (result?.serverError) {
+                          throw new Error()
+                        }
 
                         form.resetField('defaultDomain', {
                           defaultValue: value,
@@ -255,28 +263,30 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               busy={busy}
               title='Url do app Android'
               footerLabel='Alterações não afetam links já criados.'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        androidUrl: field.value,
-                        id: app.id,
-                      })
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editApp({
+                      ...(form.formState.defaultValues as EditAppFormInput),
+                      androidUrl: field.value,
+                      id: app.id,
+                    })
 
-                      form.resetField('androidUrl', {
-                        defaultValue: field.value,
-                      })
-                    },
-                    {
-                      loading: 'Alterando a url do Android...',
-                      success: 'Url do Android alterada.',
-                      error: 'Erro ao alterar a url do Android.',
-                    },
-                  ),
-                )()
-              }
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
+
+                    form.resetField('androidUrl', {
+                      defaultValue: field.value,
+                    })
+                  },
+                  {
+                    loading: 'Alterando a url do Android...',
+                    success: 'Url do Android alterada.',
+                    error: 'Erro ao alterar a url do Android.',
+                  },
+                ),
+              )}
             >
               <p>Url padrão que será utilizada ao criar um link.</p>
 
@@ -300,28 +310,30 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               busy={busy}
               title='Url do app iOS'
               footerLabel='Alterações não afetam links já criados.'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        iosUrl: field.value,
-                        id: app.id,
-                      })
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editApp({
+                      ...(form.formState.defaultValues as EditAppFormInput),
+                      iosUrl: field.value,
+                      id: app.id,
+                    })
 
-                      form.resetField('iosUrl', {
-                        defaultValue: field.value,
-                      })
-                    },
-                    {
-                      loading: 'Alterando a url do iOS...',
-                      success: 'Url do iOS alterada.',
-                      error: 'Erro ao alterar a url do iOS.',
-                    },
-                  ),
-                )()
-              }
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
+
+                    form.resetField('iosUrl', {
+                      defaultValue: field.value,
+                    })
+                  },
+                  {
+                    loading: 'Alterando a url do iOS...',
+                    success: 'Url do iOS alterada.',
+                    error: 'Erro ao alterar a url do iOS.',
+                  },
+                ),
+              )}
             >
               <p>Url padrão que será utilizada ao criar um link.</p>
 
@@ -370,11 +382,15 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                     form.handleSubmit(() =>
                       toast.promise(
                         async () => {
-                          await editApp({
+                          const result = await editApp({
                             ...(form.formState.defaultValues as EditAppFormInput),
                             defaultDisableIosPreviewPage: checked,
                             id: app.id,
                           })
+
+                          if (result?.serverError) {
+                            throw new Error()
+                          }
 
                           form.resetField('defaultDisableIosPreviewPage', {
                             defaultValue: checked,
@@ -411,28 +427,30 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               busy={busy}
               title='Url alternativa padrão'
               footerLabel='Alterações não afetam links já criados.'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        defaultFallbackUrl: field.value,
-                        id: app.id,
-                      })
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editApp({
+                      ...(form.formState.defaultValues as EditAppFormInput),
+                      defaultFallbackUrl: field.value,
+                      id: app.id,
+                    })
 
-                      form.resetField('defaultFallbackUrl', {
-                        defaultValue: field.value,
-                      })
-                    },
-                    {
-                      loading: 'Alterando a url alternativa...',
-                      success: 'Url alternativa alterada.',
-                      error: 'Erro ao alterar a url alternativa.',
-                    },
-                  ),
-                )()
-              }
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
+
+                    form.resetField('defaultFallbackUrl', {
+                      defaultValue: field.value,
+                    })
+                  },
+                  {
+                    loading: 'Alterando a url alternativa...',
+                    success: 'Url alternativa alterada.',
+                    error: 'Erro ao alterar a url alternativa.',
+                  },
+                ),
+              )}
             >
               <span>
                 Url alternativa padrão que será utilizada ao criar um link.

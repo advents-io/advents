@@ -30,8 +30,8 @@ export const FeedbackButton = () => {
 
   const {
     execute: sendDiscordMessage,
-    isExecuting: isSending,
-    result: sendDiscordMessageResult,
+    isExecuting,
+    result,
   } = useAction(sendDiscordMessageAction, {
     onSuccess: () => {
       setOpen(false)
@@ -67,9 +67,9 @@ export const FeedbackButton = () => {
     },
   })
 
-  const error = formatErrors(sendDiscordMessageResult)
+  const error = formatErrors(result)
 
-  const busy = isSending || form.formState.isSubmitting
+  const busy = isExecuting || form.formState.isSubmitting
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

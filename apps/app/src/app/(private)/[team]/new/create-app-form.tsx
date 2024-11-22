@@ -30,8 +30,8 @@ import { Input } from '@/ui/input'
 export const CreateAppForm = () => {
   const {
     execute: createApp,
-    isExecuting: isCreating,
-    result: createAppResult,
+    isExecuting,
+    result,
   } = useAction(createAppAction, {
     onSuccess: () => {
       window.scrollTo({
@@ -50,7 +50,7 @@ export const CreateAppForm = () => {
     },
   })
 
-  const error = formatErrors(createAppResult)
+  const error = formatErrors(result)
 
   const onSubmit = async (data: CreateAppInput) => {
     createApp(data)
@@ -67,7 +67,7 @@ export const CreateAppForm = () => {
     },
   })
 
-  const busy = isCreating || form.formState.isSubmitting
+  const busy = isExecuting || form.formState.isSubmitting
 
   return (
     <Form {...form}>
