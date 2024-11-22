@@ -40,7 +40,6 @@ interface Props {
     | 'iosUrl'
     | 'defaultDisableIosPreviewPage'
     | 'defaultFallbackUrl'
-    | 'qrcodeLogoUrl'
   >
   availableDomains: string[]
 }
@@ -467,49 +466,6 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               />
 
               <p className='text-muted-foreground'>Pode ser alterada em cada link criado.</p>
-            </SettingsField>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='qrcodeLogoUrl'
-          render={({ field, fieldState }) => (
-            <SettingsField
-              fieldState={fieldState}
-              busy={busy}
-              title='Url do logo do QR Code'
-              footerButtonOnClick={() =>
-                form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      await editApp({
-                        ...(form.formState.defaultValues as EditAppFormInput),
-                        qrcodeLogoUrl: field.value,
-                        id: app.id,
-                      })
-
-                      form.resetField('qrcodeLogoUrl', {
-                        defaultValue: field.value,
-                      })
-                    },
-                    {
-                      loading: 'Alterando a url da logo do QR Code...',
-                      success: 'Url da logo do QR Code alterada.',
-                      error: 'Erro ao alterar a url da logo do QR Code.',
-                    },
-                  ),
-                )()
-              }
-            >
-              <p>Url da imagem que será utilizada para inserir no centro do QR Code de um link.</p>
-
-              <Input
-                {...field}
-                type='url'
-                placeholder='https://www.meusite.com/logo.png'
-                value={field.value || ''}
-              />
             </SettingsField>
           )}
         />

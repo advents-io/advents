@@ -17,14 +17,14 @@ export const routes = {
   SETTINGS: {
     path: (team: string, app: string) => `/${team}/${app}/settings`,
   },
-  SETTINGS_SDK: {
-    path: (team: string, app: string) => `/${team}/${app}/settings/sdk`,
-  },
   SETTINGS_DOMAINS: {
     path: (team: string, app: string) => `/${team}/${app}/settings/domains`,
   },
   SETTINGS_QRCODE: {
     path: (team: string, app: string) => `/${team}/${app}/settings/qrcode`,
+  },
+  SETTINGS_SDK: {
+    path: (team: string, app: string) => `/${team}/${app}/settings/sdk`,
   },
 
   SIGN_IN: {
@@ -37,7 +37,7 @@ export const routes = {
 
 export const settingsRoutes = (team: string, app: string) => [
   routes.SETTINGS.path(team, app),
-  routes.SETTINGS_SDK.path(team, app),
   routes.SETTINGS_DOMAINS.path(team, app),
   routes.SETTINGS_QRCODE.path(team, app),
+  routes.SETTINGS_SDK.path(team, app),
 ]

@@ -32,12 +32,6 @@ export const editAppFormInputSchema = z.object({
     .nullish()
     .or(z.literal(''))
     .transform(value => value || null),
-  qrcodeLogoUrl: z
-    .string({ message: 'Url inválida.' })
-    .url('Url inválida.')
-    .nullish()
-    .or(z.literal(''))
-    .transform(value => value || null),
 })
 
 export const inputSchema = editAppFormInputSchema.extend({

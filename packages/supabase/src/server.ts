@@ -40,6 +40,12 @@ export const getSessionUser = async (): Promise<User | null> => {
   return session?.user || null
 }
 
+type StorageBuckets = 'qrcode-logos'
+
+export const getStorageFileUrl = (bucket: StorageBuckets, fileName: string) => {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`
+}
+
 export const supabaseServerAdmin = async () => {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

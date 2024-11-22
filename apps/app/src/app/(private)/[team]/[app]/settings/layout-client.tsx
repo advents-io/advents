@@ -1,7 +1,7 @@
 'use client'
 
 import { routes } from '@advents/common'
-import { CodeIcon, GlobeIcon, SettingsIcon } from 'lucide-react'
+import { CodeIcon, GlobeIcon, QrCodeIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -37,6 +37,11 @@ export const Layout = ({ team, app, children }: Props) => {
       icon: GlobeIcon,
       title: 'Domínios',
       href: routes.SETTINGS_DOMAINS.path(team, app),
+    },
+    {
+      icon: QrCodeIcon,
+      title: 'QR Code',
+      href: routes.SETTINGS_QRCODE.path(team, app),
     },
     {
       icon: CodeIcon,

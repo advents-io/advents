@@ -77,7 +77,7 @@ export const SettingsField = ({
 
                   {(footerButtonLabel || footerButtonOnClick) && (
                     <Button
-                      disabled={!fieldState?.isDirty || busy}
+                      disabled={(fieldState && !fieldState?.isDirty) || busy}
                       type='button'
                       size='sm'
                       variant={isDestructive ? 'destructive' : 'default'}

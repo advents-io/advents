@@ -195,13 +195,13 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
 
             <span className='text-sm text-muted-foreground'>
               {qrcodeLogoUrl ? (
-                <span>Endereço da logo definido nos </span>
+                <span>Logo definida nos </span>
               ) : (
-                <span>Para liberar essa opção, adicione o endereço da logo do QR Code nos </span>
+                <span>Para liberar essa opção, adicione uma imagem nos </span>
               )}
               <Link
                 className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                href={routes.SETTINGS.path(team, app)}
+                href={routes.SETTINGS_QRCODE.path(team, app)}
                 target='_blank'
               >
                 ajustes do app. <SquareArrowOutUpRightIcon className='size-4' />

@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 import { Link as LinkDb, prisma, Purchase as PurchaseDb } from '..'
 import { APP, LINKS } from './data'
 
-type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount'>
+type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount' | 'disableIosPreviewPage'>
 type Purchase = Omit<PurchaseDb, 'id'>
 
 const CONFIG = {

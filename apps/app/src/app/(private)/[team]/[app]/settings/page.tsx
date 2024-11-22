@@ -25,7 +25,6 @@ export default async function Page(props: { params: Promise<{ team: string; app:
       iosUrl: true,
       defaultDisableIosPreviewPage: true,
       defaultFallbackUrl: true,
-      qrcodeLogoUrl: true,
     },
   })
 

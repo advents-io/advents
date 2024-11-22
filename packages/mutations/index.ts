@@ -11,6 +11,11 @@ export {
   type EditAppFormInput,
   editAppFormInputSchema,
 } from './src/actions/app/edit-app-action/schema'
+export { editAppQrcodeLogoAction } from './src/actions/app/edit-app-qrcode-logo-action'
+export {
+  type EditAppQrcodeLogoFormInput,
+  editAppQrcodeLogoFormInputSchema,
+} from './src/actions/app/edit-app-qrcode-logo-action/schema'
 export { addCustomDomainAction } from './src/actions/domains/add-custom-domain-action'
 export {
   type AddCustomDomainFormInput,
