@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  deleteAppQrcodeLogoAction,
   editAppQrcodeLogoAction,
   EditAppQrcodeLogoFormInput,
   editAppQrcodeLogoFormInputSchema,
@@ -8,7 +9,8 @@ import {
   useAction,
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CloudUploadIcon } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { CloudUploadIcon, XIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -17,28 +19,82 @@ import { toast } from 'sonner'
 import { ErrorAlert } from '@/components/error-alert'
 import { SettingsField } from '@/components/settings-field'
 import { image } from '@/lib/image'
+import { getAppQrCodeLogoUrl } from '@/lib/queries/get-app-qrcode-logo-url'
+import { Button } from '@/ui/button'
 import { Form, FormField } from '@/ui/form'
 
-interface Props {
-  qrcodeLogoUrl: string | null
-}
+export const EditAppQrcodeLogoForm = () => {
+  const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
 
-export const EditAppQrcodeLogoForm = ({ qrcodeLogoUrl }: Props) => {
-  const { app: appSlug } = useParams<{ app: string }>()
+  const { data, refetch: refetchAppQrCodeLogoUrl } = useQuery({
+    queryKey: ['app-qr-code-logo-url', appSlug, teamSlug],
+    queryFn: () => getAppQrCodeLogoUrl({ appSlug, teamSlug }),
+  })
+
+  const qrcodeLogoUrl = data?.url ?? null
 
   const {
     executeAsync: editAppQrcodeLogo,
-    isExecuting,
-    result,
+    isExecuting: isEditing,
+    result: editResult,
   } = useAction(editAppQrcodeLogoAction)
+
+  const {
+    executeAsync: deleteAppQrcodeLogo,
+    isExecuting: isDeleting,
+    result: deleteResult,
+  } = useAction(deleteAppQrcodeLogoAction)
+
+  const handleEditAppQrcodeLogo = () =>
+    form.handleSubmit(() =>
+      toast.promise(
+        async () => {
+          const result = await editAppQrcodeLogo({
+            appSlug,
+            qrcodeLogoFile: form.getValues('qrcodeLogoFile'),
+          })
+
+          if (result?.serverError) {
+            throw new Error()
+          }
+
+          await refetchAppQrCodeLogoUrl()
+          form.reset()
+        },
+        {
+          loading: 'Alterando a logo do QR Code...',
+          success: 'Logo do QR Code alterada.',
+          error: 'Erro ao alterar a logo do QR Code.',
+        },
+      ),
+    )()
+
+  const handleDeleteAppQrcodeLogo = () =>
+    toast.promise(
+      async () => {
+        const result = await deleteAppQrcodeLogo({ appSlug })
+
+        if (result?.serverError) {
+          throw new Error()
+        }
+
+        await refetchAppQrCodeLogoUrl()
+        form.reset()
+      },
+      {
+        loading: 'Removendo a logo do QR Code...',
+        success: 'Logo do QR Code removida.',
+        error: 'Erro ao remover a logo do QR Code.',
+      },
+    )
 
   const form = useForm<EditAppQrcodeLogoFormInput>({
     resolver: zodResolver(editAppQrcodeLogoFormInputSchema),
   })
 
-  const busy = isExecuting || form.formState.isSubmitting
+  const busy = isEditing || isDeleting || form.formState.isSubmitting
 
-  const error = formatErrors(result)
+  const error = formatErrors(editResult) || formatErrors(deleteResult)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -86,35 +142,13 @@ export const EditAppQrcodeLogoForm = ({ qrcodeLogoUrl }: Props) => {
                 busy={busy}
                 title='Logo do QR Code'
                 footerLabel='Recomendado imagem quadrada. Tipo de imagem aceito: .png, .jpg, .jpeg. Tamanho máximo do arquivo: 2MB.'
-                footerButtonOnClick={form.handleSubmit(() =>
-                  toast.promise(
-                    async () => {
-                      const result = await editAppQrcodeLogo({
-                        appSlug,
-                        qrcodeLogoFile,
-                      })
-
-                      if (result?.serverError) {
-                        throw new Error()
-                      }
-
-                      form.resetField('qrcodeLogoFile', {
-                        defaultValue: qrcodeLogoFile,
-                      })
-                    },
-                    {
-                      loading: 'Alterando a logo do QR Code...',
-                      success: 'Logo do QR Code alterada.',
-                      error: 'Erro ao alterar a logo do QR Code.',
-                    },
-                  ),
-                )}
+                footerButtonOnClick={handleEditAppQrcodeLogo}
               >
                 <p>Imagem que será utilizada para inserir no centro do QR Code de um link.</p>
 
                 <label
                   htmlFor='qrcode-logo'
-                  className='flex size-20 items-center justify-center overflow-hidden rounded-md bg-gray-100 outline-1 outline-gray-300 hover:cursor-pointer hover:bg-white hover:outline [&>img]:block [&>img]:hover:hidden'
+                  className='relative flex size-20 items-center justify-center rounded-md bg-gray-100 outline-1 outline-gray-300 hover:cursor-pointer hover:bg-white hover:outline [&>button]:hidden [&>button]:hover:flex [&>img]:block [&>img]:hover:hidden'
                 >
                   {(qrcodeLogoUrl || qrcodeLogoFile) && (
                     <Image
@@ -123,6 +157,7 @@ export const EditAppQrcodeLogoForm = ({ qrcodeLogoUrl }: Props) => {
                       width={80}
                       height={80}
                       priority
+                      className='rounded-md'
                     />
                   )}
                   <CloudUploadIcon className='size-5 text-muted-foreground' />
@@ -134,6 +169,17 @@ export const EditAppQrcodeLogoForm = ({ qrcodeLogoUrl }: Props) => {
                     accept='.png,.jpg,.jpeg'
                     onChange={handleFileChange}
                   />
+
+                  {qrcodeLogoUrl && (
+                    <Button
+                      variant='ghost'
+                      size='icon'
+                      className='absolute -right-2 -top-2 size-6 rounded-full border border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-200'
+                      onClick={handleDeleteAppQrcodeLogo}
+                    >
+                      <XIcon />
+                    </Button>
+                  )}
                 </label>
               </SettingsField>
             )}

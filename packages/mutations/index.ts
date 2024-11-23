@@ -6,6 +6,7 @@ export {
   createAppInputSchema,
 } from './src/actions/app/create-app-action/schema'
 export { deleteAppAction } from './src/actions/app/delete-app-action'
+export { deleteAppQrcodeLogoAction } from './src/actions/app/delete-app-qrcode-logo-action'
 export { editAppAction } from './src/actions/app/edit-app-action'
 export {
   type EditAppFormInput,
