@@ -14,8 +14,6 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
-import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
-import { QrProps } from '@/lib/qrcode/types'
 import { Button } from '@/ui/button'
 import { Card } from '@/ui/card'
 import {
@@ -35,6 +33,8 @@ import {
 import { Label } from '@/ui/label'
 import { Switch } from '@/ui/switch'
 import { formatShortLink } from '@/utils/link-formatter'
+
+import { getQrCodeCanvas, getQrCodeImage, getQrCodeSvg, QrCode } from './qrcode'
 
 interface Props {
   domain: string
@@ -79,24 +79,6 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
 
   const shortLink = formatShortLink(domain, slug, true)
 
-  const config: QrProps = {
-    value: shortLink,
-    bgColor: '#ffffff',
-    fgColor: '#000000',
-    size: (1024 * 1.5) / 8,
-    level: 'Q', // QR Code error correction level: https://blog.qrstuff.com/general/qr-code-error-correction
-    includeMargin: false,
-    imageSettings:
-      showLogo && qrcodeLogoUrl
-        ? {
-            src: qrcodeLogoUrl,
-            height: (256 * 1.6) / 8,
-            width: (256 * 1.6) / 8,
-            excavate: true,
-          }
-        : undefined,
-  }
-
   const anchorRef = useRef<HTMLAnchorElement>(null)
 
   const download = async (url: string, extension: string) => {
@@ -120,12 +102,12 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
   }
 
   const downloadPng = async () => {
-    const content = (await getQrAsCanvas(config, 'image/png')) as string
+    const content = await getQrCodeImage(shortLink, 'png', showLogo ? qrcodeLogoUrl : undefined)
     await download(content, 'png')
   }
 
   const downloadSvg = async () => {
-    const content = await getQrAsSvgDataUri(config)
+    const content = await getQrCodeSvg(shortLink, showLogo ? qrcodeLogoUrl : undefined)
     await download(content, 'svg')
   }
 
@@ -133,9 +115,9 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
     try {
       setError(undefined)
 
-      const canvas = await getQrAsCanvas(config, 'image/png', true)
+      const canvas = await getQrCodeCanvas(shortLink, 'png', showLogo ? qrcodeLogoUrl : undefined)
 
-      ;(canvas as HTMLCanvasElement).toBlob(async blob => {
+      canvas.toBlob(async blob => {
         const item = new ClipboardItem({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -170,7 +152,7 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
 
         <div className='mx-auto w-full max-w-sm space-y-10'>
           <Card className='relative mx-auto w-fit bg-gray-50 p-10'>
-            <QrCodeSvg config={config} />
+            <QrCode url={shortLink} logoSrc={showLogo ? qrcodeLogoUrl : undefined} />
 
             {!isLogoLoaded && (
               <div className='absolute inset-0 flex items-center justify-center'>
