@@ -4,11 +4,10 @@ import { DOCS_URLS, routes, settingsRoutes } from '@advents/common'
 import { App } from '@advents/db'
 import { supabaseClient } from '@advents/supabase/client'
 import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 
-import AdventsLogo from '@/assets/advents/logo.svg'
+import { AdventsLogo } from '@/assets/advents-logo'
 import { ContactButton } from '@/components/contact-button'
 import {
   Breadcrumb,
@@ -49,7 +48,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
             <BreadcrumbList>
               <BreadcrumbItem className='hidden md:flex'>
                 <BreadcrumbLink href={routes.TEAMS.path}>
-                  <Image src={AdventsLogo} alt='Logo da Advents' className='w-6' />
+                  <AdventsLogo className='size-6' />
                 </BreadcrumbLink>
               </BreadcrumbItem>
 

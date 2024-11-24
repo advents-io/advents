@@ -1,9 +1,8 @@
 import { DOCS_URLS } from '@advents/common'
 import { MoveUpRightIcon } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 
-import AdventsBrand from '@/assets/advents/brand.svg'
+import { AdventsBrand } from '@/assets/advents-brand'
 import { ContactButton } from '@/components/contact-button'
 import { Button } from '@/ui/button'
 
@@ -11,7 +10,7 @@ export const PublicHeader = () => {
   return (
     <header className='absolute flex h-14 w-full px-4 md:px-14'>
       <nav className='flex flex-1 items-center justify-between gap-5'>
-        <Image src={AdventsBrand} alt='Logo da Advents' className='w-24' />
+        <AdventsBrand className='w-24' />
 
         <div className='flex items-center gap-1'>
           <Link href={DOCS_URLS.HOME} target='_blank' className='hidden md:flex'>

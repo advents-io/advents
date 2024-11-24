@@ -6,10 +6,9 @@ import {
   whatsapp,
 } from '@advents/common'
 import { BookOpenIcon, MailIcon, VideoIcon } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
+import { FaWhatsapp as WhatsAppIcon } from 'react-icons/fa'
 
-import WhatsApp from '@/assets/icons/whatsapp.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,7 +40,7 @@ export const ContactButton = ({ children, showDocs = true, modal = true, align }
 
         <Link href={whatsapp.buildMessageUrl(SUPPORT_PHONE)} target='_blank'>
           <DropdownMenuItem>
-            <Image src={WhatsApp} alt='WhatsApp' className='size-4' />
+            <WhatsAppIcon />
             WhatsApp
           </DropdownMenuItem>
         </Link>
