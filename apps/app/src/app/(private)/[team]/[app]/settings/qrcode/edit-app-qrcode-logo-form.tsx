@@ -148,7 +148,7 @@ export const EditAppQrCodeLogoForm = () => {
 
                 <label
                   htmlFor='qrcode-logo'
-                  className='relative flex size-20 items-center justify-center rounded-md bg-gray-100 outline-1 outline-gray-300 hover:cursor-pointer hover:bg-white hover:outline [&>button]:hidden [&>button]:hover:flex [&>img]:block [&>img]:hover:hidden'
+                  className='relative flex size-20 items-center justify-center rounded-md bg-gray-100 outline-1 outline-gray-300 hover:cursor-pointer hover:outline'
                 >
                   {(qrCodeLogoUrl || qrCodeLogoFile) && (
                     <Image

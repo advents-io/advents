@@ -27,7 +27,7 @@ const SlugInput = React.forwardRef<HTMLInputElement, SlugInputProps>(
   ({ className, type, prefix, ...props }, ref) => {
     return (
       <div className='flex h-10 rounded-md border border-input bg-background text-sm'>
-        <div className='flex items-center overflow-hidden rounded-s-md border-r bg-gray-50 px-3'>
+        <div className='hidden items-center overflow-hidden rounded-s-md border-r bg-gray-50 px-3 sm:flex'>
           <span className='text-muted-foreground'>{prefix}</span>
         </div>
 
