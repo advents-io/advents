@@ -6,16 +6,16 @@ export {
   createAppInputSchema,
 } from './src/actions/app/create-app-action/schema'
 export { deleteAppAction } from './src/actions/app/delete-app-action'
-export { deleteAppQrcodeLogoAction } from './src/actions/app/delete-app-qrcode-logo-action'
+export { deleteAppQrCodeLogoAction } from './src/actions/app/delete-app-qrcode-logo-action'
 export { editAppAction } from './src/actions/app/edit-app-action'
 export {
   type EditAppFormInput,
   editAppFormInputSchema,
 } from './src/actions/app/edit-app-action/schema'
-export { editAppQrcodeLogoAction } from './src/actions/app/edit-app-qrcode-logo-action'
+export { editAppQrCodeLogoAction } from './src/actions/app/edit-app-qrcode-logo-action'
 export {
-  type EditAppQrcodeLogoFormInput,
-  editAppQrcodeLogoFormInputSchema,
+  type EditAppQrCodeLogoFormInput,
+  editAppQrCodeLogoFormInputSchema,
 } from './src/actions/app/edit-app-qrcode-logo-action/schema'
 export { addCustomDomainAction } from './src/actions/domains/add-custom-domain-action'
 export {

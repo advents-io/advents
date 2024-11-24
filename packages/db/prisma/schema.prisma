@@ -54,7 +54,7 @@ model App {
   iosUrl                       String  @map("ios_url")
   defaultDisableIosPreviewPage Boolean @default(false) @map("default_disable_ios_preview_page")
   defaultFallbackUrl           String? @map("default_fallback_url")
-  qrcodeLogoUrl                String? @map("qrcode_logo_url")
+  qrCodeLogoUrl                String? @map("qrcode_logo_url")
 
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])

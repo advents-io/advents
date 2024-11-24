@@ -10,7 +10,7 @@ const inputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app inválido.' }),
 })
 
-export const deleteAppQrcodeLogoAction = authActionClient
+export const deleteAppQrCodeLogoAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug } = parsedInput
@@ -40,7 +40,7 @@ export const deleteAppQrcodeLogoAction = authActionClient
         id: app.id,
       },
       data: {
-        qrcodeLogoUrl: null,
+        qrCodeLogoUrl: null,
       },
     })
   })

@@ -20,10 +20,10 @@ interface Props {
     LinkDb,
     'id' | 'title' | 'domain' | 'slug' | 'clickCount' | 'installCount' | 'createdAt'
   >
-  qrcodeLogoUrl?: string
+  qrCodeLogoUrl?: string
 }
 
-export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
+export const LinkItem = ({ link, qrCodeLogoUrl }: Props) => {
   const httpShortLink = formatShortLink(link.domain, link.slug, true)
 
   const copyToClipboard = () => {
@@ -96,7 +96,7 @@ export const LinkItem = ({ link, qrcodeLogoUrl }: Props) => {
               id={link.id}
               domain={link.domain}
               slug={link.slug}
-              qrcodeLogoUrl={qrcodeLogoUrl}
+              qrCodeLogoUrl={qrCodeLogoUrl}
             />
           </div>
         </div>

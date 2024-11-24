@@ -8,10 +8,10 @@ import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
 import { inputSchema } from './schema'
 
-export const editAppQrcodeLogoAction = authActionClient
+export const editAppQrCodeLogoAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug, qrcodeLogoFile: file } = parsedInput
+    const { appSlug, qrCodeLogoFile: file } = parsedInput
 
     const app = await prisma.app.findFirst({
       where: {
@@ -48,14 +48,14 @@ export const editAppQrcodeLogoAction = authActionClient
       throw new ActionError('Erro ao enviar a logo do QR Code.')
     }
 
-    const qrcodeLogoUrl = getStorageFileUrl('qrcode-logos', data.path)
+    const qrCodeLogoUrl = getStorageFileUrl('qrcode-logos', data.path)
 
     await prisma.app.update({
       where: {
         id: app.id,
       },
       data: {
-        qrcodeLogoUrl,
+        qrCodeLogoUrl,
       },
     })
   })

@@ -12,10 +12,10 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
   id: string
   domain: string
   slug: string
-  qrcodeLogoUrl?: string
+  qrCodeLogoUrl?: string
 }
 
-export const LinkItemMoreOptionsButton = ({ id, domain, slug, qrcodeLogoUrl, ...props }: Props) => {
+export const LinkItemMoreOptionsButton = ({ id, domain, slug, qrCodeLogoUrl, ...props }: Props) => {
   const [open, setOpen] = useState(false)
 
   const shortLink = formatShortLink(domain, slug)
@@ -40,7 +40,7 @@ export const LinkItemMoreOptionsButton = ({ id, domain, slug, qrcodeLogoUrl, ...
           domain={domain}
           slug={slug}
           closeDropdown={() => setOpen(false)}
-          qrcodeLogoUrl={qrcodeLogoUrl}
+          qrCodeLogoUrl={qrCodeLogoUrl}
         />
 
         <DeleteLinkButton linkId={id} shortLink={shortLink} closeDropdown={() => setOpen(false)} />

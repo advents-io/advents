@@ -40,19 +40,19 @@ interface Props {
   domain: string
   slug: string
   closeDropdown: () => void
-  qrcodeLogoUrl?: string
+  qrCodeLogoUrl?: string
 }
 
-export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Props) => {
+export const QrCodeButton = ({ domain, slug, closeDropdown, qrCodeLogoUrl }: Props) => {
   const { app, team } = useParams<{ team: string; app: string }>()
 
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
-  const [showLogo, setShowLogo] = useState(!!qrcodeLogoUrl)
+  const [showLogo, setShowLogo] = useState(!!qrCodeLogoUrl)
   const [isLogoLoaded, setIsLogoLoaded] = useState(false)
 
   useEffect(() => {
-    if (!qrcodeLogoUrl) {
+    if (!qrCodeLogoUrl) {
       setIsLogoLoaded(true)
       return
     }
@@ -63,11 +63,11 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
       image.onload = () => setIsLogoLoaded(true)
       image.onerror = () => setIsLogoLoaded(true)
 
-      image.src = qrcodeLogoUrl
+      image.src = qrCodeLogoUrl
     } catch {
       setIsLogoLoaded(true)
     }
-  }, [qrcodeLogoUrl])
+  }, [qrCodeLogoUrl])
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -102,12 +102,12 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
   }
 
   const downloadPng = async () => {
-    const content = await getQrCodeImage(shortLink, 'png', showLogo ? qrcodeLogoUrl : undefined)
+    const content = await getQrCodeImage(shortLink, 'png', showLogo ? qrCodeLogoUrl : undefined)
     await download(content, 'png')
   }
 
   const downloadSvg = async () => {
-    const content = await getQrCodeSvg(shortLink, showLogo ? qrcodeLogoUrl : undefined)
+    const content = await getQrCodeSvg(shortLink, showLogo ? qrCodeLogoUrl : undefined)
     await download(content, 'svg')
   }
 
@@ -115,7 +115,7 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
     try {
       setError(undefined)
 
-      const canvas = await getQrCodeCanvas(shortLink, 'png', showLogo ? qrcodeLogoUrl : undefined)
+      const canvas = await getQrCodeCanvas(shortLink, 'png', showLogo ? qrCodeLogoUrl : undefined)
 
       canvas.toBlob(async blob => {
         const item = new ClipboardItem({
@@ -152,7 +152,7 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
 
         <div className='mx-auto w-full max-w-sm space-y-10'>
           <Card className='relative mx-auto w-fit bg-gray-50 p-10'>
-            <QrCode url={shortLink} logoSrc={showLogo ? qrcodeLogoUrl : undefined} />
+            <QrCode url={shortLink} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
 
             {!isLogoLoaded && (
               <div className='absolute inset-0 flex items-center justify-center'>
@@ -169,14 +169,14 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrcodeLogoUrl }: Pro
                 id='qrcode-logo'
                 checked={showLogo}
                 onCheckedChange={setShowLogo}
-                disabled={!qrcodeLogoUrl}
+                disabled={!qrCodeLogoUrl}
               />
 
               <Label htmlFor='qrcode-logo'>Exibir logo</Label>
             </div>
 
             <span className='text-sm text-muted-foreground'>
-              {qrcodeLogoUrl ? (
+              {qrCodeLogoUrl ? (
                 <span>Logo definida nos </span>
               ) : (
                 <span>Para liberar essa opção, adicione uma imagem nos </span>

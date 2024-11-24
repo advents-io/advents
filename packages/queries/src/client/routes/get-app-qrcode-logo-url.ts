@@ -40,7 +40,7 @@ export const getAppQrCodeLogoUrl = (api: Hono<ApiEnv>) =>
           },
         },
         select: {
-          qrcodeLogoUrl: true,
+          qrCodeLogoUrl: true,
         },
       })
 
@@ -48,7 +48,7 @@ export const getAppQrCodeLogoUrl = (api: Hono<ApiEnv>) =>
         return c.json({ error: 'App não encontrado.' }, 404)
       }
 
-      const response = outputSchema.parse({ url: app?.qrcodeLogoUrl || null })
+      const response = outputSchema.parse({ url: app?.qrCodeLogoUrl || null })
 
       return c.json(response)
     },

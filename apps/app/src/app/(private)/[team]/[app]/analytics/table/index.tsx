@@ -160,7 +160,7 @@ const TableComp = ({ appSlug, teamSlug, className }: Props) => {
                           id={row.original.id}
                           domain={row.original.domain}
                           slug={row.original.slug}
-                          qrcodeLogoUrl={qrCodeLogoUrl?.url || undefined}
+                          qrCodeLogoUrl={qrCodeLogoUrl?.url || undefined}
                           className='size-8'
                         />
                       </TableRowCell>,

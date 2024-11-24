@@ -5,7 +5,7 @@ export const APP = {
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',
   defaultFallbackUrl: 'https://favorito.digital',
-  qrcodeLogoUrl: null,
+  qrCodeLogoUrl: null,
 }
 
 export const LINKS = [

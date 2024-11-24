@@ -43,7 +43,7 @@ export const LinkList = async ({ page, appSlug, teamSlug }: Props) => {
         createdAt: true,
         app: {
           select: {
-            qrcodeLogoUrl: true,
+            qrCodeLogoUrl: true,
           },
         },
       },
@@ -91,7 +91,7 @@ export const LinkList = async ({ page, appSlug, teamSlug }: Props) => {
 
       <div className='space-y-4'>
         {links.map((link, index) => (
-          <LinkItem key={index} link={link} qrcodeLogoUrl={link.app.qrcodeLogoUrl ?? undefined} />
+          <LinkItem key={index} link={link} qrCodeLogoUrl={link.app.qrCodeLogoUrl ?? undefined} />
         ))}
       </div>
 

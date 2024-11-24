@@ -3,8 +3,8 @@ import { z } from 'zod'
 const MAX_FILE_SIZE = 2 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpg', 'image/jpeg']
 
-export const editAppQrcodeLogoFormInputSchema = z.object({
-  qrcodeLogoFile: z
+export const editAppQrCodeLogoFormInputSchema = z.object({
+  qrCodeLogoFile: z
     .instanceof(File, { message: 'Imagem inválida.' })
     .refine(file => file.size <= MAX_FILE_SIZE, {
       message: `O tamanho do arquivo deve ser menor que 2MB.`,
@@ -14,8 +14,8 @@ export const editAppQrcodeLogoFormInputSchema = z.object({
     }),
 })
 
-export type EditAppQrcodeLogoFormInput = z.infer<typeof editAppQrcodeLogoFormInputSchema>
+export type EditAppQrCodeLogoFormInput = z.infer<typeof editAppQrCodeLogoFormInputSchema>
 
-export const inputSchema = editAppQrcodeLogoFormInputSchema.extend({
+export const inputSchema = editAppQrCodeLogoFormInputSchema.extend({
   appSlug: z.string({ message: 'Slug do app inválido.' }),
 })
