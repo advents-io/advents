@@ -22,7 +22,7 @@ import { LoadingContent } from '@/components/loading-content'
 import { SettingsField } from '@/components/settings-field'
 import { Button } from '@/ui/button'
 import { Form, FormField } from '@/ui/form'
-import { Input } from '@/ui/input'
+import { Input, SlugInput } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Switch } from '@/ui/switch'
 
@@ -160,7 +160,11 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
             >
               <p>Valor único usado para identificar o app na plataforma.</p>
 
-              <Input {...field} placeholder='nome-do-app' />
+              <SlugInput
+                {...field}
+                placeholder='nome-do-app'
+                prefix={`app.advents.io/${teamSlug}/`}
+              />
             </SettingsField>
           )}
         />
@@ -260,7 +264,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
             <SettingsField
               fieldState={fieldState}
               busy={busy}
-              title='Url do app Android'
+              title={<span>Url do app Android</span>}
               footerLabel='Alterações não afetam links já criados.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(
