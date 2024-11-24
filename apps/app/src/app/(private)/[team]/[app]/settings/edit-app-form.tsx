@@ -15,6 +15,8 @@ import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { FaAppStoreIos as IosIcon } from 'react-icons/fa'
+import { IoLogoAndroid as AndroidIcon } from 'react-icons/io'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
@@ -264,7 +266,12 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
             <SettingsField
               fieldState={fieldState}
               busy={busy}
-              title={<span>Url do app Android</span>}
+              title={
+                <span className='inline-flex items-center gap-2'>
+                  <AndroidIcon className='size-6' />
+                  Url do app Android
+                </span>
+              }
               footerLabel='Alterações não afetam links já criados.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(
@@ -311,7 +318,12 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
             <SettingsField
               fieldState={fieldState}
               busy={busy}
-              title='Url do app iOS'
+              title={
+                <span className='inline-flex items-center gap-2'>
+                  <IosIcon className='size-6' />
+                  Url do app iOS
+                </span>
+              }
               footerLabel='Alterações não afetam links já criados.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(

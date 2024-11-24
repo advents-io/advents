@@ -9,6 +9,7 @@ import {
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SaveIcon } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -25,9 +26,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/ui/form'
-import { Input } from '@/ui/input'
+import { Input, SlugInput } from '@/ui/input'
 
 export const CreateAppForm = () => {
+  const { team } = useParams<{ team: string }>()
+
   const {
     execute: createApp,
     isExecuting,
@@ -52,10 +55,6 @@ export const CreateAppForm = () => {
 
   const error = formatErrors(result)
 
-  const onSubmit = async (data: CreateAppInput) => {
-    createApp(data)
-  }
-
   const form = useForm<CreateAppInput>({
     resolver: zodResolver(createAppInputSchema),
     defaultValues: {
@@ -71,7 +70,7 @@ export const CreateAppForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
+      <form onSubmit={form.handleSubmit(createApp)} className='space-y-10'>
         <ErrorAlert error={error} />
 
         <FormField
@@ -100,7 +99,11 @@ export const CreateAppForm = () => {
               <FormLabel>Identificador único</FormLabel>
 
               <FormControl>
-                <Input {...field} placeholder='nome-do-app' />
+                <SlugInput
+                  prefix={`app.advents.io/${team}/`}
+                  {...field}
+                  placeholder='nome-do-app'
+                />
               </FormControl>
 
               <FormDescription>
@@ -127,13 +130,7 @@ export const CreateAppForm = () => {
                   placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
                 />
               </FormControl>
-              <FormDescription>
-                Url padrão que será utilizada ao criar um link.
-                <br />
-                Pode ser alterada em cada link criado.
-                <br />
-                Alterações não afetam links já criados.
-              </FormDescription>
+              <FormDescription>Url padrão que será utilizada ao criar um link.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -152,13 +149,7 @@ export const CreateAppForm = () => {
                   placeholder='https://apps.apple.com/app/exemplo/id1234567890'
                 />
               </FormControl>
-              <FormDescription>
-                Url padrão que será utilizada ao criar um link.
-                <br />
-                Pode ser alterada em cada link criado.
-                <br />
-                Alterações não afetam links já criados.
-              </FormDescription>
+              <FormDescription>Url padrão que será utilizada ao criar um link.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -178,16 +169,13 @@ export const CreateAppForm = () => {
                   value={field.value || ''}
                 />
               </FormControl>
-              <FormDescription>
-                Url alternativa padrão que será utilizada ao criar um link.
-                <br />
-                É a url que o usuário será direcionado caso o dispositivo que abrir o link não seja
-                nem Android e nem iOS, como por exemplo, um computador Windows, Linux ou macOS.
-                <br />
-                Pode ser alterada em cada link criado.
-                <br />
-                Alterações não afetam links já criados.
-              </FormDescription>
+              <div className='space-y-2 text-sm text-muted-foreground'>
+                <p>Url alternativa padrão que será utilizada ao criar um link.</p>
+                <p>
+                  É a url que o usuário será direcionado caso o dispositivo que abrir o link não
+                  seja nem Android e nem iOS.
+                </p>
+              </div>
               <FormMessage />
             </FormItem>
           )}
