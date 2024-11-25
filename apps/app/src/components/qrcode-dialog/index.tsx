@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { ColorPicker } from '@/components/color-picker'
 import { ErrorAlert } from '@/components/error-alert'
 import { Card } from '@/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
@@ -11,7 +12,6 @@ import { Label } from '@/ui/label'
 import { Switch } from '@/ui/switch'
 import { formatShortLink } from '@/utils/link-formatter'
 
-import { ColorPicker } from './color-picker'
 import { QrCode } from './qrcode'
 import { QrCodeDialogFooter } from './qrcode-dialog-footer'
 
