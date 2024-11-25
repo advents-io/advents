@@ -88,7 +88,7 @@ export const QrCodeDialogFooter = ({
   }
 
   return (
-    <DialogFooter className={cn('-mx-6 -mb-6 border-t bg-gray-50 p-6', className)}>
+    <DialogFooter className={cn('-mx-6 -mb-6 border-t bg-white p-6', className)}>
       <div className='space-x-2'>
         <Button onClick={copyToClipboard}>
           <CopyIcon />

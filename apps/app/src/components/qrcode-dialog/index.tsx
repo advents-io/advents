@@ -46,7 +46,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
     <Dialog open={open} onOpenChange={handleSetOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className='overflow-hidden'>
+      <DialogContent className='bg-gray-50'>
         <DialogHeader>
           <DialogTitle>QR Code</DialogTitle>
         </DialogHeader>
@@ -54,7 +54,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
         <ErrorAlert error={error} />
 
         <div className='mx-auto w-full space-y-10'>
-          <Card className='mx-auto w-fit overflow-hidden bg-gray-50'>
+          <Card className='mx-auto w-fit overflow-hidden bg-gray-50 shadow-md'>
             <QrCode
               url={shortLink}
               size={300}
