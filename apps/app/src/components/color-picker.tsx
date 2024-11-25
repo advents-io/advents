@@ -97,22 +97,27 @@ export const ColorPicker = ({
           const isTransparent = color.hex === 'transparent'
 
           return (
-            <button
-              key={index}
-              type='button'
-              onClick={() => handleSetSelectedColor(color.hex)}
-              className={cn(
-                'flex size-7 items-center justify-center rounded-full ring-1 ring-gray-300 transition-all hover:ring-gray-200',
-                isSelected ? 'ring-black ring-offset-[3px]' : 'hover:ring-4',
-              )}
-              style={{ backgroundColor: color.hex }}
-            >
-              {isSelected && !isTransparent && (
-                <CheckIcon className='size-4' style={{ color: color.invertColor }} />
-              )}
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <button
+                  type='button'
+                  onClick={() => handleSetSelectedColor(color.hex)}
+                  className={cn(
+                    'flex size-7 items-center justify-center rounded-full ring-1 ring-gray-300 transition-all hover:ring-gray-200',
+                    isSelected ? 'ring-black ring-offset-[3px]' : 'hover:ring-4',
+                  )}
+                  style={{ backgroundColor: color.hex }}
+                >
+                  {isSelected && !isTransparent && (
+                    <CheckIcon className='size-4' style={{ color: color.invertColor }} />
+                  )}
 
-              {isTransparent && <XIcon className='size-4 text-gray-400' />}
-            </button>
+                  {isTransparent && <XIcon className='size-4 text-gray-400' />}
+                </button>
+              </TooltipTrigger>
+
+              {isTransparent && <TooltipContent>Transparente</TooltipContent>}
+            </Tooltip>
           )
         })}
       </div>
