@@ -1,30 +1,62 @@
-import { CheckIcon } from 'lucide-react'
+import { CheckIcon, XIcon } from 'lucide-react'
 import { HexColorInput, HexColorPicker } from 'react-colorful'
 
 import { cn } from '@/lib/tailwind'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
-const DEFAULT_COLORS = [
-  '#000000',
-  '#FFFFFF',
-  '#C73E33',
-  '#DF6547',
-  '#F4B3D7',
-  '#F6CF54',
-  '#49A065',
-  '#2146B7',
+const getDefaultColors = (includeTransparent = false) => [
+  {
+    hex: '#000000',
+    invertColor: '#FFFFFF',
+  },
+  {
+    hex: '#FFFFFF',
+    invertColor: '#000000',
+  },
+  {
+    hex: '#C73E33',
+    invertColor: '#FFFFFF',
+  },
+  {
+    hex: '#F4B3D7',
+    invertColor: '#000000',
+  },
+  {
+    hex: '#2146B7',
+    invertColor: '#FFFFFF',
+  },
+  {
+    hex: '#F6CF54',
+    invertColor: '#000000',
+  },
+  {
+    hex: '#49A065',
+    invertColor: '#FFFFFF',
+  },
+  ...(includeTransparent
+    ? [
+        {
+          hex: 'transparent',
+          invertColor: '#000000',
+        },
+      ]
+    : []),
 ]
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   selectedColor?: string
   setSelectedColor: (color: string) => void
+  includeTransparent?: boolean
 }
 
 export const ColorPicker = ({
   selectedColor: inputSelectedColor = '#000000',
   setSelectedColor,
+  includeTransparent = false,
   className,
 }: Props) => {
+  const DEFAULT_COLORS = getDefaultColors(includeTransparent)
+
   const selectedColor = inputSelectedColor.toUpperCase()
 
   const handleSetSelectedColor = (color: string) => setSelectedColor(color.toUpperCase())
@@ -60,28 +92,26 @@ export const ColorPicker = ({
       </div>
 
       <div className='flex flex-wrap items-center gap-3'>
-        {DEFAULT_COLORS.map(color => {
-          const isSelected = selectedColor.toUpperCase() === color.toUpperCase()
+        {DEFAULT_COLORS.map((color, index) => {
+          const isSelected = selectedColor.toUpperCase() === color.hex.toUpperCase()
+          const isTransparent = color.hex === 'transparent'
 
           return (
             <button
-              key={color}
+              key={index}
               type='button'
-              onClick={() => handleSetSelectedColor(color)}
+              onClick={() => handleSetSelectedColor(color.hex)}
               className={cn(
                 'flex size-7 items-center justify-center rounded-full ring-1 ring-gray-300 transition-all hover:ring-gray-200',
                 isSelected ? 'ring-black ring-offset-[3px]' : 'hover:ring-4',
               )}
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: color.hex }}
             >
-              {isSelected && (
-                <CheckIcon
-                  className={cn(
-                    'size-4',
-                    color.toUpperCase() === '#FFFFFF' ? 'text-black' : 'text-white',
-                  )}
-                />
+              {isSelected && !isTransparent && (
+                <CheckIcon className='size-4' style={{ color: color.invertColor }} />
               )}
+
+              {isTransparent && <XIcon className='size-4 text-gray-400' />}
             </button>
           )
         })}

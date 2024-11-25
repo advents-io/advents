@@ -99,7 +99,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
 
           <div>
             <Label>Cor do fundo</Label>
-            <ColorPicker selectedColor={bgColor} setSelectedColor={setBgColor} />
+            <ColorPicker selectedColor={bgColor} setSelectedColor={setBgColor} includeTransparent />
           </div>
         </div>
 
