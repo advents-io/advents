@@ -44,7 +44,7 @@ const config = (url: string, logoSrc?: string): QrProps => ({
   fgColor: '#000000',
   size: (1024 * 1.5) / 8,
   level: 'Q', // QR Code error correction level: https://blog.qrstuff.com/general/qr-code-error-correction
-  includeMargin: false,
+  includeMargin: true,
   imageSettings: logoSrc
     ? {
         src: logoSrc,

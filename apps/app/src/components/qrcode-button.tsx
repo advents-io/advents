@@ -151,7 +151,7 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrCodeLogoUrl }: Pro
         <ErrorAlert error={error} />
 
         <div className='mx-auto w-full max-w-sm space-y-10'>
-          <Card className='relative mx-auto w-fit bg-gray-50 p-10'>
+          <Card className='relative mx-auto w-fit overflow-hidden bg-gray-50'>
             <QrCode url={shortLink} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
 
             {!isLogoLoaded && (
@@ -208,14 +208,14 @@ export const QrCodeButton = ({ domain, slug, closeDropdown, qrCodeLogoUrl }: Pro
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={downloadSvg}>
-                  <PenToolIcon />
-                  Formato .svg
+                <DropdownMenuItem onClick={downloadPng} className='hover:cursor-pointer'>
+                  <ImageIcon />
+                  Formato <span className='rounded-sm bg-gray-200 px-1 font-mono'>.png</span>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem onClick={downloadPng}>
-                  <ImageIcon />
-                  Formato .png
+                <DropdownMenuItem onClick={downloadSvg} className='hover:cursor-pointer'>
+                  <PenToolIcon />
+                  Formato <span className='rounded-sm bg-gray-200 px-1 font-mono'>.svg</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
