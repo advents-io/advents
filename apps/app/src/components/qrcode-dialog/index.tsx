@@ -11,6 +11,7 @@ import { Label } from '@/ui/label'
 import { Switch } from '@/ui/switch'
 import { formatShortLink } from '@/utils/link-formatter'
 
+import { ColorPicker } from './color-picker'
 import { QrCode } from './qrcode'
 import { QrCodeDialogFooter } from './qrcode-dialog-footer'
 
@@ -28,6 +29,8 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
   const [showLogo, setShowLogo] = useState(!!qrCodeLogoUrl)
+  const [fgColor, setFgColor] = useState('#000000')
+  const [bgColor, setBgColor] = useState('#FFFFFF')
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -52,7 +55,13 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
 
         <div className='mx-auto w-full space-y-10'>
           <Card className='mx-auto w-fit overflow-hidden bg-gray-50'>
-            <QrCode url={shortLink} size={300} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
+            <QrCode
+              url={shortLink}
+              size={300}
+              logoSrc={showLogo ? qrCodeLogoUrl : undefined}
+              fgColor={fgColor}
+              bgColor={bgColor}
+            />
           </Card>
 
           <div className='flex flex-col gap-2'>
@@ -82,6 +91,16 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
               </Link>
             </span>
           </div>
+
+          <div>
+            <Label>Cor do QR Code</Label>
+            <ColorPicker selectedColor={fgColor} setSelectedColor={setFgColor} />
+          </div>
+
+          <div>
+            <Label>Cor do fundo</Label>
+            <ColorPicker selectedColor={bgColor} setSelectedColor={setBgColor} />
+          </div>
         </div>
 
         <QrCodeDialogFooter
@@ -89,6 +108,8 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
           shortLink={shortLink}
           slug={slug}
           qrCodeLogoUrl={showLogo ? qrCodeLogoUrl : undefined}
+          fgColor={fgColor}
+          bgColor={bgColor}
           setError={setError}
         />
       </DialogContent>

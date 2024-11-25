@@ -4,10 +4,16 @@ import { useEffect, useState } from 'react'
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 
-const getConfig = (url: string, size: number, logoSrc?: string): QrProps => ({
+const getConfig = (
+  url: string,
+  size: number,
+  logoSrc?: string,
+  fgColor = '#000000',
+  bgColor = '#FFFFFF',
+): QrProps => ({
   value: url,
-  bgColor: '#ffffff',
-  fgColor: '#000000',
+  bgColor,
+  fgColor,
   size,
   level: 'Q', // QR Code error correction level: https://blog.qrstuff.com/general/qr-code-error-correction
   includeMargin: true,
@@ -23,9 +29,11 @@ interface Props {
   url: string
   size: number
   logoSrc?: string
+  fgColor?: string
+  bgColor?: string
 }
 
-export const QrCode = ({ url, size, logoSrc }: Props) => {
+export const QrCode = ({ url, size, logoSrc, fgColor, bgColor }: Props) => {
   const [isLogoLoaded, setIsLogoLoaded] = useState(false)
 
   useEffect(() => {
@@ -46,7 +54,7 @@ export const QrCode = ({ url, size, logoSrc }: Props) => {
     }
   }, [logoSrc])
 
-  const config = getConfig(url, size, logoSrc)
+  const config = getConfig(url, size, logoSrc, fgColor, bgColor)
 
   return (
     <div className='relative'>
@@ -70,8 +78,10 @@ export const getQrCodeImage = async (
   url: string,
   type: 'png',
   logoSrc?: string,
+  fgColor?: string,
+  bgColor?: string,
 ): Promise<string> => {
-  const config = getConfig(url, 1024, logoSrc)
+  const config = getConfig(url, 1024, logoSrc, fgColor, bgColor)
   const image = await getQrAsCanvas(config, `image/${type}`)
   return image as string
 }
@@ -80,14 +90,21 @@ export const getQrCodeCanvas = async (
   url: string,
   type: 'png',
   logoSrc?: string,
+  fgColor?: string,
+  bgColor?: string,
 ): Promise<HTMLCanvasElement> => {
-  const config = getConfig(url, 1024, logoSrc)
+  const config = getConfig(url, 1024, logoSrc, fgColor, bgColor)
   const canvas = await getQrAsCanvas(config, `image/${type}`, true)
   return canvas as HTMLCanvasElement
 }
 
-export const getQrCodeSvg = async (url: string, logoSrc?: string): Promise<string> => {
-  const config = getConfig(url, 1024, logoSrc)
+export const getQrCodeSvg = async (
+  url: string,
+  logoSrc?: string,
+  fgColor?: string,
+  bgColor?: string,
+): Promise<string> => {
+  const config = getConfig(url, 1024, logoSrc, fgColor, bgColor)
   const svg = await getQrAsSvgDataUri(config)
   return svg
 }

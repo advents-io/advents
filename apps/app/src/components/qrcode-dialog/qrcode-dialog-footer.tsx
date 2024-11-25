@@ -18,6 +18,8 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   shortLink: string
   slug: string
   qrCodeLogoUrl?: string
+  fgColor?: string
+  bgColor?: string
   setError: (error: string | undefined) => void
 }
 
@@ -25,6 +27,8 @@ export const QrCodeDialogFooter = ({
   shortLink,
   slug,
   qrCodeLogoUrl,
+  fgColor,
+  bgColor,
   setError,
   className,
 }: Props) => {
@@ -51,12 +55,12 @@ export const QrCodeDialogFooter = ({
   }
 
   const downloadPng = async () => {
-    const content = await getQrCodeImage(shortLink, 'png', qrCodeLogoUrl)
+    const content = await getQrCodeImage(shortLink, 'png', qrCodeLogoUrl, fgColor, bgColor)
     await download(content, 'png')
   }
 
   const downloadSvg = async () => {
-    const content = await getQrCodeSvg(shortLink, qrCodeLogoUrl)
+    const content = await getQrCodeSvg(shortLink, qrCodeLogoUrl, fgColor, bgColor)
     await download(content, 'svg')
   }
 
@@ -64,7 +68,7 @@ export const QrCodeDialogFooter = ({
     try {
       setError(undefined)
 
-      const canvas = await getQrCodeCanvas(shortLink, 'png', qrCodeLogoUrl)
+      const canvas = await getQrCodeCanvas(shortLink, 'png', qrCodeLogoUrl, fgColor, bgColor)
 
       canvas.toBlob(async blob => {
         const item = new ClipboardItem({
