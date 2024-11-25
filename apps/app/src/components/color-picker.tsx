@@ -1,5 +1,6 @@
 import { CheckIcon, XIcon } from 'lucide-react'
 import { HexColorInput, HexColorPicker } from 'react-colorful'
+import { useDebouncedCallback } from 'use-debounce'
 
 import { cn } from '@/lib/tailwind'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
@@ -59,6 +60,11 @@ export const ColorPicker = ({
 
   const selectedColor = inputSelectedColor.toUpperCase()
 
+  const onColorPickerChange = useDebouncedCallback(
+    (color: string) => handleSetSelectedColor(color),
+    500,
+  )
+
   const handleSetSelectedColor = (color: string) => setSelectedColor(color.toUpperCase())
 
   return (
@@ -77,7 +83,7 @@ export const ColorPicker = ({
 
           <TooltipContent>
             <div className='flex max-w-xs flex-col items-center space-y-3 p-5 text-center'>
-              <HexColorPicker color={selectedColor} onChange={handleSetSelectedColor} />
+              <HexColorPicker color={selectedColor} onChange={onColorPickerChange} />
             </div>
           </TooltipContent>
         </Tooltip>
