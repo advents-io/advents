@@ -7,8 +7,8 @@ export type Excavation = { x: number; y: number; w: number; h: number }
 
 export type ImageSettings = {
   src: string
-  height: number
-  width: number
+  height?: number
+  width?: number
   excavate: boolean
   x?: number
   y?: number

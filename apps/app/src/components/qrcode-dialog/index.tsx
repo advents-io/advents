@@ -69,9 +69,9 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
 
         <ErrorAlert error={error} />
 
-        <div className='mx-auto w-full max-w-sm space-y-10'>
+        <div className='mx-auto w-full space-y-10'>
           <Card className='relative mx-auto w-fit overflow-hidden bg-gray-50'>
-            <QrCode url={shortLink} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
+            <QrCode url={shortLink} size={300} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
 
             {!isLogoLoaded && (
               <div className='absolute inset-0 flex items-center justify-center'>

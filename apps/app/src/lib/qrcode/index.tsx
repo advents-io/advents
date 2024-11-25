@@ -141,14 +141,15 @@ const getImageSettings = (
 
   const margin = includeMargin ? MARGIN_SIZE : 0
   const numCells = cells.length + margin * 2
-  const defaultSize = Math.floor(size * DEFAULT_IMG_SCALE)
   const scale = numCells / size
+  const defaultSize = Math.floor(size * DEFAULT_IMG_SCALE)
   const w = (imageSettings.width || defaultSize) * scale
   const h = (imageSettings.height || defaultSize) * scale
   const x = imageSettings.x == null ? cells.length / 2 - w / 2 : imageSettings.x * scale
   const y = imageSettings.y == null ? cells.length / 2 - h / 2 : imageSettings.y * scale
 
   let excavation: Excavation | null = null
+
   if (imageSettings.excavate) {
     const floorX = Math.floor(x)
     const floorY = Math.floor(y)
@@ -157,7 +158,13 @@ const getImageSettings = (
     excavation = { x: floorX, y: floorY, w: ceilW, h: ceilH }
   }
 
-  return { x, y, h, w, excavation }
+  return {
+    x,
+    y,
+    h,
+    w,
+    excavation,
+  }
 }
 
 export const getQrAsCanvas = async (

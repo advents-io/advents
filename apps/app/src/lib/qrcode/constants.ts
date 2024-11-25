@@ -13,10 +13,10 @@ export const DEFAULT_BGCOLOR = '#FFFFFF'
 export const DEFAULT_FGCOLOR = '#000000'
 export const DEFAULT_INCLUDEMARGIN = false
 
-export const MARGIN_SIZE = 4
+export const MARGIN_SIZE = 3
 
 // This is *very* rough estimate of max amount of QRCode allowed to be covered.
 // It is "wrong" in a lot of ways (area is a terrible way to estimate, it
 // really should be number of modules covered), but if for some reason we don't
 // get an explicit height or width, I'd rather default to something than throw.
-export const DEFAULT_IMG_SCALE = 0.1
+export const DEFAULT_IMG_SCALE = 0.2
