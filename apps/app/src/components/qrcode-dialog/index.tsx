@@ -1,8 +1,8 @@
 import { routes } from '@advents/common'
-import { Loader2Icon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import { SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { Card } from '@/ui/card'
@@ -28,25 +28,6 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)
   const [showLogo, setShowLogo] = useState(!!qrCodeLogoUrl)
-  const [isLogoLoaded, setIsLogoLoaded] = useState(false)
-
-  useEffect(() => {
-    if (!qrCodeLogoUrl) {
-      setIsLogoLoaded(true)
-      return
-    }
-
-    try {
-      const image = new Image()
-
-      image.onload = () => setIsLogoLoaded(true)
-      image.onerror = () => setIsLogoLoaded(true)
-
-      image.src = qrCodeLogoUrl
-    } catch {
-      setIsLogoLoaded(true)
-    }
-  }, [qrCodeLogoUrl])
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -70,16 +51,8 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
         <ErrorAlert error={error} />
 
         <div className='mx-auto w-full space-y-10'>
-          <Card className='relative mx-auto w-fit overflow-hidden bg-gray-50'>
+          <Card className='mx-auto w-fit overflow-hidden bg-gray-50'>
             <QrCode url={shortLink} size={300} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
-
-            {!isLogoLoaded && (
-              <div className='absolute inset-0 flex items-center justify-center'>
-                <div className='flex size-[60px] items-center justify-center bg-gray-50'>
-                  <Loader2Icon className='size-8 animate-spin' />
-                </div>
-              </div>
-            )}
           </Card>
 
           <div className='flex flex-col gap-2'>

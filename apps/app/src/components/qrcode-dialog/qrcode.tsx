@@ -1,3 +1,6 @@
+import { Loader2Icon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 
@@ -23,7 +26,44 @@ interface Props {
 }
 
 export const QrCode = ({ url, size, logoSrc }: Props) => {
-  return <QrCodeSvg config={getConfig(url, size, logoSrc)} />
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!logoSrc) {
+      setIsLogoLoaded(true)
+      return
+    }
+
+    try {
+      const image = new Image()
+
+      image.onload = () => setIsLogoLoaded(true)
+      image.onerror = () => setIsLogoLoaded(true)
+
+      image.src = logoSrc
+    } catch {
+      setIsLogoLoaded(true)
+    }
+  }, [logoSrc])
+
+  const config = getConfig(url, size, logoSrc)
+
+  return (
+    <div className='relative'>
+      <QrCodeSvg config={config} />
+
+      {!isLogoLoaded && (
+        <div className='absolute inset-0 flex items-center justify-center'>
+          <div
+            className='flex size-[69px] items-center justify-center'
+            style={{ backgroundColor: config.bgColor }}
+          >
+            <Loader2Icon className='size-8 animate-spin' />
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export const getQrCodeImage = async (
