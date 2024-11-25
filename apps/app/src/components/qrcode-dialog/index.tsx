@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import { ColorPicker } from '@/components/color-picker'
 import { ErrorAlert } from '@/components/error-alert'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { Card } from '@/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
 import { Label } from '@/ui/label'
@@ -32,6 +33,12 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
   const [fgColor, setFgColor] = useState('#000000')
   const [bgColor, setBgColor] = useState('#FFFFFF')
 
+  const isTablet = useMediaQuery('(min-width: 640px)')
+  const isNotebook = useMediaQuery('(min-width: 768px)')
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
+
+  const size = isDesktop ? 300 : isNotebook ? 250 : isTablet ? 200 : 100
+
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
 
@@ -57,7 +64,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
           <Card className='mx-auto w-fit overflow-hidden bg-gray-50 shadow-md'>
             <QrCode
               url={shortLink}
-              size={300}
+              size={size}
               logoSrc={showLogo ? qrCodeLogoUrl : undefined}
               fgColor={fgColor}
               bgColor={bgColor}
@@ -104,7 +111,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
         </div>
 
         <QrCodeDialogFooter
-          className='mt-4'
+          className='mt-4 rounded-b-lg'
           shortLink={shortLink}
           slug={slug}
           qrCodeLogoUrl={showLogo ? qrCodeLogoUrl : undefined}
