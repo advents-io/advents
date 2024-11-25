@@ -63,7 +63,7 @@ export const QrCode = ({ url, size, logoSrc, fgColor, bgColor }: Props) => {
       {!isLogoLoaded && (
         <div className='absolute inset-0 flex items-center justify-center'>
           <div
-            className='flex size-[69px] items-center justify-center'
+            className='flex size-[60px] items-center justify-center'
             style={{ backgroundColor: config.bgColor }}
           >
             <Loader2Icon className='size-8 animate-spin' />

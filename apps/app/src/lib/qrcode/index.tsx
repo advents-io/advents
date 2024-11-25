@@ -41,10 +41,10 @@ export const QrCodeSvg = (props: QrPropsSVG) => {
     image = (
       <image
         href={imageSettings.src}
-        height={calculatedImageSettings.h}
-        width={calculatedImageSettings.w}
-        x={calculatedImageSettings.x + margin}
-        y={calculatedImageSettings.y + margin}
+        height={calculatedImageSettings.image.h}
+        width={calculatedImageSettings.image.w}
+        x={calculatedImageSettings.image.x + margin}
+        y={calculatedImageSettings.image.y + margin}
         preserveAspectRatio='none'
       />
     )
@@ -121,20 +121,22 @@ const generatePath = (modules: Modules, margin = 0): string => {
   return ops.join('')
 }
 
+interface CalculatedImageSize {
+  image: {
+    x: number
+    y: number
+    h: number
+    w: number
+  }
+  excavation: Excavation | null
+}
+
 const getImageSettings = (
   cells: Modules,
   size: number,
   includeMargin: boolean,
   imageSettings?: ImageSettings,
-):
-  | {
-      x: number
-      y: number
-      h: number
-      w: number
-      excavation: Excavation | null
-    }
-  | undefined => {
+): CalculatedImageSize | undefined => {
   if (!imageSettings) {
     return
   }
@@ -143,27 +145,48 @@ const getImageSettings = (
   const numCells = cells.length + margin * 2
   const scale = numCells / size
   const defaultSize = Math.floor(size * DEFAULT_IMG_SCALE)
-  const w = (imageSettings.width || defaultSize) * scale
-  const h = (imageSettings.height || defaultSize) * scale
-  const x = imageSettings.x == null ? cells.length / 2 - w / 2 : imageSettings.x * scale
-  const y = imageSettings.y == null ? cells.length / 2 - h / 2 : imageSettings.y * scale
 
-  let excavation: Excavation | null = null
+  const baseH = imageSettings.height || defaultSize
+  const baseW = imageSettings.width || defaultSize
+
+  const imageH = baseH * scale * 0.9
+  const imageW = baseW * scale * 0.9
+  const imageX = imageSettings.x == null ? cells.length / 2 - imageW / 2 : imageSettings.x * scale
+  const imageY = imageSettings.y == null ? cells.length / 2 - imageH / 2 : imageSettings.y * scale
+
+  const calculatedImageSettings = {
+    x: imageX,
+    y: imageY,
+    h: imageH,
+    w: imageW,
+  }
+
+  let excavationSettings: Excavation | null = null
 
   if (imageSettings.excavate) {
-    const floorX = Math.floor(x)
-    const floorY = Math.floor(y)
-    const ceilW = Math.ceil(w + x - floorX)
-    const ceilH = Math.ceil(h + y - floorY)
-    excavation = { x: floorX, y: floorY, w: ceilW, h: ceilH }
+    const excavationW = baseW * scale
+    const excavationH = baseH * scale
+    const excavationX =
+      imageSettings.x == null ? cells.length / 2 - excavationW / 2 : imageSettings.x * scale
+    const excavationY =
+      imageSettings.y == null ? cells.length / 2 - excavationH / 2 : imageSettings.y * scale
+
+    const floorX = Math.floor(excavationX)
+    const floorY = Math.floor(excavationY)
+    const ceilW = Math.ceil(excavationW + excavationX - floorX)
+    const ceilH = Math.ceil(excavationH + excavationY - floorY)
+
+    excavationSettings = {
+      x: floorX,
+      y: floorY,
+      w: ceilW,
+      h: ceilH,
+    }
   }
 
   return {
-    x,
-    y,
-    h,
-    w,
-    excavation,
+    image: calculatedImageSettings,
+    excavation: excavationSettings,
   }
 }
 
@@ -235,10 +258,10 @@ export const getQrAsCanvas = async (
   if (haveImageToRender) {
     ctx.drawImage(
       image,
-      calculatedImageSettings.x + margin,
-      calculatedImageSettings.y + margin,
-      calculatedImageSettings.w,
-      calculatedImageSettings.h,
+      calculatedImageSettings.image.x + margin,
+      calculatedImageSettings.image.y + margin,
+      calculatedImageSettings.image.w,
+      calculatedImageSettings.image.h,
     )
   }
 
@@ -290,10 +313,10 @@ export const getQrAsSvgDataUri = async (props: QrProps) => {
 
     image = [
       `<image href="${base64Image}"`,
-      `height="${calculatedImageSettings.h}"`,
-      `width="${calculatedImageSettings.w}"`,
-      `x="${calculatedImageSettings.x + margin}"`,
-      `y="${calculatedImageSettings.y + margin}"`,
+      `height="${calculatedImageSettings.image.h}"`,
+      `width="${calculatedImageSettings.image.w}"`,
+      `x="${calculatedImageSettings.image.x + margin}"`,
+      `y="${calculatedImageSettings.image.y + margin}"`,
       'preserveAspectRatio="none"></image>',
     ].join(' ')
   }
