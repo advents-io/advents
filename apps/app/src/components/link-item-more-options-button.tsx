@@ -3,7 +3,7 @@ import { HTMLAttributes, useState } from 'react'
 
 import { DeleteLinkButton } from '@/components/delete-link-button'
 import { EditLinkButton } from '@/components/edit-link-button'
-import { QrCodeButton } from '@/components/qrcode-button'
+import { QrCodeButton } from '@/components/qrcode-dialog/qrcode-button'
 import { Button } from '@/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/ui/dropdown-menu'
 import { formatShortLink } from '@/utils/link-formatter'

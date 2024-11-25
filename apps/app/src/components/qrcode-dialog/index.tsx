@@ -1,0 +1,124 @@
+import { routes } from '@advents/common'
+import { Loader2Icon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+import { ErrorAlert } from '@/components/error-alert'
+import { Card } from '@/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
+import { Label } from '@/ui/label'
+import { Switch } from '@/ui/switch'
+import { formatShortLink } from '@/utils/link-formatter'
+
+import { QrCode } from './qrcode'
+import { QrCodeDialogFooter } from './qrcode-dialog-footer'
+
+interface Props {
+  domain: string
+  slug: string
+  closeDropdown: () => void
+  qrCodeLogoUrl?: string
+  children: React.ReactNode
+}
+
+export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, children }: Props) => {
+  const { app, team } = useParams<{ team: string; app: string }>()
+
+  const [error, setError] = useState<string>()
+  const [open, setOpen] = useState(false)
+  const [showLogo, setShowLogo] = useState(!!qrCodeLogoUrl)
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false)
+
+  useEffect(() => {
+    if (!qrCodeLogoUrl) {
+      setIsLogoLoaded(true)
+      return
+    }
+
+    try {
+      const image = new Image()
+
+      image.onload = () => setIsLogoLoaded(true)
+      image.onerror = () => setIsLogoLoaded(true)
+
+      image.src = qrCodeLogoUrl
+    } catch {
+      setIsLogoLoaded(true)
+    }
+  }, [qrCodeLogoUrl])
+
+  const handleSetOpen = (open: boolean) => {
+    setOpen(open)
+
+    if (!open) {
+      closeDropdown()
+    }
+  }
+
+  const shortLink = formatShortLink(domain, slug, true)
+
+  return (
+    <Dialog open={open} onOpenChange={handleSetOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
+      <DialogContent className='overflow-hidden'>
+        <DialogHeader>
+          <DialogTitle>QR Code</DialogTitle>
+        </DialogHeader>
+
+        <ErrorAlert error={error} />
+
+        <div className='mx-auto w-full max-w-sm space-y-10'>
+          <Card className='relative mx-auto w-fit overflow-hidden bg-gray-50'>
+            <QrCode url={shortLink} logoSrc={showLogo ? qrCodeLogoUrl : undefined} />
+
+            {!isLogoLoaded && (
+              <div className='absolute inset-0 flex items-center justify-center'>
+                <div className='flex size-[60px] items-center justify-center bg-gray-50'>
+                  <Loader2Icon className='size-8 animate-spin' />
+                </div>
+              </div>
+            )}
+          </Card>
+
+          <div className='flex flex-col gap-2'>
+            <div className='relative flex gap-2'>
+              <Switch
+                id='qrcode-logo'
+                checked={showLogo}
+                onCheckedChange={setShowLogo}
+                disabled={!qrCodeLogoUrl}
+              />
+
+              <Label htmlFor='qrcode-logo'>Exibir logo</Label>
+            </div>
+
+            <span className='text-sm text-muted-foreground'>
+              {qrCodeLogoUrl ? (
+                <span>Logo definida nos </span>
+              ) : (
+                <span>Para liberar essa opção, adicione uma imagem nos </span>
+              )}
+              <Link
+                className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                href={routes.SETTINGS_QRCODE.path(team, app)}
+                target='_blank'
+              >
+                ajustes do app. <SquareArrowOutUpRightIcon className='size-4' />
+              </Link>
+            </span>
+          </div>
+        </div>
+
+        <QrCodeDialogFooter
+          className='mt-4'
+          shortLink={shortLink}
+          slug={slug}
+          qrCodeLogoUrl={showLogo ? qrCodeLogoUrl : undefined}
+          setError={setError}
+        />
+      </DialogContent>
+    </Dialog>
+  )
+}
