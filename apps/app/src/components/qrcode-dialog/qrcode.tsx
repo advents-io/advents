@@ -1,44 +1,7 @@
 import { getQrAsCanvas, getQrAsSvgDataUri, QrCodeSvg } from '@/lib/qrcode'
 import { QrProps } from '@/lib/qrcode/types'
 
-interface Props {
-  url: string
-  logoSrc?: string
-}
-
-export const QrCode = ({ url, logoSrc }: Props) => {
-  return <QrCodeSvg config={config(url, logoSrc)} />
-}
-
-export const getQrCodeImage = async (
-  url: string,
-  type: 'png',
-  logoSrc?: string,
-): Promise<string> => {
-  const image = (await getQrAsCanvas(config(url, logoSrc), `image/${type}`)) as string
-  return image
-}
-
-export const getQrCodeCanvas = async (
-  url: string,
-  type: 'png',
-  logoSrc?: string,
-): Promise<HTMLCanvasElement> => {
-  const canvas = (await getQrAsCanvas(
-    config(url, logoSrc),
-    `image/${type}`,
-    true,
-  )) as HTMLCanvasElement
-
-  return canvas
-}
-
-export const getQrCodeSvg = async (url: string, logoSrc?: string): Promise<string> => {
-  const svg = await getQrAsSvgDataUri(config(url, logoSrc))
-  return svg
-}
-
-const config = (url: string, logoSrc?: string): QrProps => ({
+const getConfig = (url: string, logoSrc?: string): QrProps => ({
   value: url,
   bgColor: '#ffffff',
   fgColor: '#000000',
@@ -54,3 +17,38 @@ const config = (url: string, logoSrc?: string): QrProps => ({
       }
     : undefined,
 })
+
+interface Props {
+  url: string
+  logoSrc?: string
+}
+
+export const QrCode = ({ url, logoSrc }: Props) => {
+  return <QrCodeSvg config={getConfig(url, logoSrc)} />
+}
+
+export const getQrCodeImage = async (
+  url: string,
+  type: 'png',
+  logoSrc?: string,
+): Promise<string> => {
+  const config = getConfig(url, logoSrc)
+  const image = await getQrAsCanvas(config, `image/${type}`)
+  return image as string
+}
+
+export const getQrCodeCanvas = async (
+  url: string,
+  type: 'png',
+  logoSrc?: string,
+): Promise<HTMLCanvasElement> => {
+  const config = getConfig(url, logoSrc)
+  const canvas = await getQrAsCanvas(config, `image/${type}`, true)
+  return canvas as HTMLCanvasElement
+}
+
+export const getQrCodeSvg = async (url: string, logoSrc?: string): Promise<string> => {
+  const config = getConfig(url, logoSrc)
+  const svg = await getQrAsSvgDataUri(config)
+  return svg
+}

@@ -13,7 +13,7 @@ import { Excavation, ImageSettings, Modules, QrProps, QrPropsSVG } from './types
 import { SUPPORTS_PATH2D } from './utils'
 
 export const QrCodeSvg = (props: QrPropsSVG) => {
-  const { config, ...otherProps } = props
+  const { config, ...svgProps } = props
 
   const {
     value,
@@ -32,6 +32,7 @@ export const QrCodeSvg = (props: QrPropsSVG) => {
   const calculatedImageSettings = getImageSettings(cells, size, includeMargin, imageSettings)
 
   let image: null | JSX.Element = null
+
   if (!!imageSettings && !!calculatedImageSettings) {
     if (calculatedImageSettings.excavation != null) {
       cells = excavateModules(cells, calculatedImageSettings.excavation)
@@ -58,7 +59,7 @@ export const QrCodeSvg = (props: QrPropsSVG) => {
   const fgPath = generatePath(cells, margin)
 
   return (
-    <svg height={size} width={size} viewBox={`0 0 ${numCells} ${numCells}`} {...otherProps}>
+    <svg height={size} width={size} viewBox={`0 0 ${numCells} ${numCells}`} {...svgProps}>
       <path fill={bgColor} d={`M0,0 h${numCells}v${numCells}H0z`} shapeRendering='crispEdges' />
       <path fill={fgColor} d={fgPath} shapeRendering='crispEdges' />
       {image}
