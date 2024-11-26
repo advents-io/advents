@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
+import { usePostHog } from 'posthog-js/react'
 import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -35,6 +36,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
 import { Switch } from '@/ui/switch'
+import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   closeDialog: () => void
@@ -45,6 +47,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   const { refresh } = useRouter()
   const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
   const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
+  const posthog = usePostHog()
 
   const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutput>()
   const [isDefaultAndroidUrl, setIsDefaultAndroidUrl] = useState(true)
@@ -67,7 +70,16 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     isExecuting: isCreating,
     result: createLinkResult,
   } = useAction(createLinkAction, {
-    onSuccess,
+    onSuccess: ({ data }) => {
+      posthog.capture('create_link', {
+        title: data?.title,
+        url: formatShortLink(data?.domain || '', data?.slug || ''),
+        link_id: data?.id,
+        app: appSlug,
+      })
+
+      onSuccess()
+    },
   })
 
   const {

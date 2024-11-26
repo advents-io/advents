@@ -57,7 +57,7 @@ export const createLinkAction = authActionClient
 
     const slug = link.slug || (await generateRandomSlug(link.domain))
 
-    await prisma.link.create({
+    return await prisma.link.create({
       data: {
         ...link,
         slug,

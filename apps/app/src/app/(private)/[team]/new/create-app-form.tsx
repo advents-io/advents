@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SaveIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import { usePostHog } from 'posthog-js/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -30,13 +31,20 @@ import { Input, SlugInput } from '@/ui/input'
 
 export const CreateAppForm = () => {
   const { team } = useParams<{ team: string }>()
+  const posthog = usePostHog()
 
   const {
     execute: createApp,
     isExecuting,
     result,
   } = useAction(createAppAction, {
-    onSuccess: () => {
+    onSuccess: ({ input }) => {
+      posthog.capture('create_app', {
+        team,
+        name: input.name,
+        slug: input.slug,
+      })
+
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
