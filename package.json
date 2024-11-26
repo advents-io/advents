@@ -1,8 +1,8 @@
 {
   "name": "advents",
   "scripts": {
-    "dev": "pnpm --dir apps/app run dev",
-    "app": "pnpm --dir apps/app",
+    "dev": "pnpm --dir apps/web run dev",
+    "web": "pnpm --dir apps/web",
     "common": "pnpm --dir packages/common",
     "db": "pnpm --dir packages/db",
     "engine": "pnpm --dir packages/engine",

@@ -22,7 +22,7 @@ module.exports = {
   },
   settings: {
     next: {
-      rootDir: ['apps/app/'],
+      rootDir: ['apps/web/'],
     },
   },
   plugins: ['react', '@typescript-eslint', 'simple-import-sort'],

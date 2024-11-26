@@ -8,7 +8,7 @@ import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {
   const domain = getDomain(req)
-  const isLinkDomain = getWebAppDomain(false) !== domain
+  const isLinkDomain = getWebDomain(false) !== domain
   return isLinkDomain
 }
 
@@ -61,7 +61,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
   const isIos = ua.os?.name === 'iOS'
   if (isIos) {
     destinationUrl = !link.disableIosPreviewPage
-      ? new URL(routes.IOS_PREVIEW.path, getWebAppDomain(true))
+      ? new URL(routes.IOS_PREVIEW.path, getWebDomain(true))
       : new URL(link.iosUrl)
 
     if (!link.disableIosPreviewPage) {
@@ -101,7 +101,7 @@ const getDomain = (req: NextRequest) => {
   return domain
 }
 
-const getWebAppDomain = (withProtocol: boolean) => {
+const getWebDomain = (withProtocol: boolean) => {
   const isLocalhost = process.env.VERCEL !== '1'
 
   let domain =
