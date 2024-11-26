@@ -1,4 +1,4 @@
-import { routes, WEBSITE_URL } from '@advents/common'
+import { routes, WWW_URL } from '@advents/common'
 import { Link } from '@advents/db'
 import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { supabaseServer } from '@advents/supabase/server'
@@ -23,7 +23,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
   const slug = req.nextUrl.pathname.split('/')[1]
 
   if (!slug) {
-    return redirect(WEBSITE_URL)
+    return redirect(WWW_URL)
   }
 
   const supabase = await supabaseServer()
@@ -49,7 +49,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
   ).data as LinkProps
 
   if (!link) {
-    return redirect(WEBSITE_URL)
+    return redirect(WWW_URL)
   }
 
   const clickId = crypto.randomUUID()

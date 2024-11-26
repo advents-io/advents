@@ -1,4 +1,4 @@
-export const WEBSITE_URL = 'https://advents.io'
+export const WWW_URL = 'https://advents.io'
 export const MEET_SCHEDULER_URL = 'https://cal.com/gabriel-moresco/advents'
 export const SIGN_UP_URL = 'https://l.advents.io/cadastro'
 
