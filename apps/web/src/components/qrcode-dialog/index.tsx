@@ -11,7 +11,6 @@ import { Card } from '@/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
 import { Label } from '@/ui/label'
 import { Switch } from '@/ui/switch'
-import { formatShortLink } from '@/utils/link-formatter'
 
 import { QrCode } from './qrcode'
 import { QrCodeDialogFooter } from './qrcode-dialog-footer'
@@ -47,7 +46,7 @@ export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, child
     }
   }
 
-  const shortLink = formatShortLink(domain, slug, true)
+  const shortLink = `https://${domain}/${slug}`
 
   return (
     <Dialog open={open} onOpenChange={handleSetOpen}>

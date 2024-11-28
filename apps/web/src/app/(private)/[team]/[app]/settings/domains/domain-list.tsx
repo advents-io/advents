@@ -73,14 +73,16 @@ export const DomainList = async ({ teamSlug, appSlug, className }: Props) => {
 export const DomainListSkeleton = () => {
   return (
     <div className='space-y-2'>
-      <Card>
-        <CardHeader>
-          <div className='flex min-h-10 flex-row items-center gap-4'>
-            <Skeleton className='h-6 w-32' />
-            <Skeleton className='h-6 w-20' />
-          </div>
-        </CardHeader>
-      </Card>
+      {Array.from({ length: 10 }).map((_, index) => (
+        <Card key={index}>
+          <CardHeader>
+            <div className='flex min-h-10 flex-row items-center gap-4'>
+              <Skeleton className='h-6 w-32' />
+              <Skeleton className='h-6 w-20' />
+            </div>
+          </CardHeader>
+        </Card>
+      ))}
     </div>
   )
 }

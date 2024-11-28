@@ -11,7 +11,6 @@ import { LinkItemMoreOptionsButton } from '@/components/link-item-more-options-b
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { formatShortLink } from '@/utils/link-formatter'
 
 import { LinkItemAnalytics } from './link-item-analytics'
 
@@ -24,18 +23,16 @@ interface Props {
 }
 
 export const LinkItem = ({ link, qrCodeLogoUrl }: Props) => {
-  const httpShortLink = formatShortLink(link.domain, link.slug, true)
+  const shortLink = `https://${link.domain}/${link.slug}`
 
   const copyToClipboard = () => {
     // A faster way to copy localhost links
     const content =
-      process.env.NEXT_PUBLIC_VERCEL === '1'
-        ? httpShortLink
-        : `http://${LOCALHOST_DOMAIN}/${link.slug}`
+      process.env.NEXT_PUBLIC_VERCEL === '1' ? shortLink : `http://${LOCALHOST_DOMAIN}/${link.slug}`
 
     navigator.clipboard.writeText(content)
 
-    toast('Link copiado')
+    toast('Link copiado.')
   }
 
   return (
@@ -51,7 +48,7 @@ export const LinkItem = ({ link, qrCodeLogoUrl }: Props) => {
 
             <div className='flex min-h-8 items-center gap-2'>
               <Link
-                href={httpShortLink}
+                href={shortLink}
                 className='truncate font-mono text-sm text-muted-foreground'
                 target='_blank'
               >

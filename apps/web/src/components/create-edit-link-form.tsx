@@ -37,7 +37,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
 import { Switch } from '@/ui/switch'
-import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   closeDialog: () => void
@@ -74,7 +73,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     onSuccess: ({ data }) => {
       posthog.capture('create_link', {
         title: data?.title,
-        url: formatShortLink(data?.domain || '', data?.slug || ''),
+        url: `${data?.domain}/${data?.slug}`,
         link_id: data?.id,
         app: appSlug,
       })

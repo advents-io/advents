@@ -6,7 +6,6 @@ import { EditLinkButton } from '@/components/edit-link-button'
 import { QrCodeButton } from '@/components/qrcode-dialog/qrcode-button'
 import { Button } from '@/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/ui/dropdown-menu'
-import { formatShortLink } from '@/utils/link-formatter'
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   id: string
@@ -18,7 +17,7 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
 export const LinkItemMoreOptionsButton = ({ id, domain, slug, qrCodeLogoUrl, ...props }: Props) => {
   const [open, setOpen] = useState(false)
 
-  const shortLink = formatShortLink(domain, slug)
+  const shortLink = `${domain}/${slug}`
 
   /* We have to add preventDefault to avoid the dropdown to close when clicking on an item.
    * That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.

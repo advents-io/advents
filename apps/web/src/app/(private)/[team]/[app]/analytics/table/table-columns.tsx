@@ -10,7 +10,6 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
-import { formatShortLink } from '@/utils/link-formatter'
 
 import { TableColumnHeader } from './table-column-header'
 import { TableRowCell } from './table-row-cell'
@@ -23,21 +22,21 @@ export const tableColumns: ColumnDef<GetLinksAnalyticsOutput[number]>[] = [
     },
     header: ({ column }) => <TableColumnHeader column={column} border />,
     cell: ({ row }) => {
-      const httpShortLink = formatShortLink(row.original.domain, row.original.slug, true)
+      const { domain, slug } = row.original
+      const shortLink = `https://${domain}/${slug}`
 
       return (
         <TableRowCell border>
-          <Link href={httpShortLink} className='truncate text-muted-foreground' target='_blank'>
-            {row.original.domain}/
-            <span className='font-semibold text-foreground'>{row.original.slug}</span>
+          <Link href={shortLink} className='truncate text-muted-foreground' target='_blank'>
+            {domain}/<span className='font-semibold text-foreground'>{slug}</span>
           </Link>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 className='size-8 rounded-full text-muted-foreground'
                 onClick={() => {
-                  navigator.clipboard.writeText(httpShortLink)
-                  toast('Link copiado')
+                  navigator.clipboard.writeText(shortLink)
+                  toast('Link copiado.')
                 }}
                 variant='ghost'
                 size='icon'
