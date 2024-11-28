@@ -26,8 +26,9 @@ export const handleAttribution = async (session: Session) => {
           method: attributionData.method,
           sessionId: session.id,
           clickId: attributionData.clickId,
-          appId: session.appId,
           linkId: attributionData.linkId,
+          deviceId: session.deviceId,
+          appId: session.appId,
         },
       }),
 

@@ -65,6 +65,7 @@ model App {
   clicks       Click[]
   attributions Attribution[]
   purchases    Purchase[]
+  devices      Device[]
 
   @@unique([slug, teamId])
   @@map("apps")
@@ -125,7 +126,6 @@ model Click {
   referer    String
   refererUrl String @map("referer_url")
 
-  // Request device data
   userAgent       String? @map("user_agent")
   deviceBrand     String? @map("device_brand")
   deviceModel     String? @map("device_model")
@@ -138,7 +138,6 @@ model Click {
   cpuArchitecture String? @map("cpu_architecture")
   isBot           Boolean @map("is_bot")
 
-  // Request geo data
   ip        String?
   continent String?
   country   String?
@@ -158,30 +157,60 @@ model Click {
   @@map("clicks")
 }
 
+enum DeviceOs {
+  android
+  ios
+
+  @@map("device_os")
+}
+
+model Device {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  os DeviceOs
+
+  androidAaid String? @map("android_aaid") // Android Advertising ID
+  androidId   String? @map("android_id") // Android ID
+
+  iosIdfv String? @map("ios_idfv") // Identifier for Vendor
+  iosIdfa String? @map("ios_idfa") // Identifier for Advertiser
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  sessions     Session[]
+  attributions Attribution[]
+  purchases    Purchase[]
+
+  @@unique([appId, androidAaid])
+  @@unique([appId, androidId])
+  @@unique([appId, iosIdfv])
+  @@unique([appId, iosIdfa])
+  @@map("devices")
+}
+
 model Session {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  sdkName    String?   @map("sdk_name")
-  sdkVersion String?   @map("sdk_version")
-  framework  String?
-  deviceTime DateTime? @map("device_time")
-  os         String?
-  package    String?
+  sdkName        String   @map("sdk_name")
+  sdkVersion     String   @map("sdk_version")
+  framework      String
+  deviceTime     DateTime @map("device_time")
+  os             DeviceOs
+  package        String
+  isFirstSession Boolean  @map("is_first_session") // Will be the first session after install or after clearing app local data
+  isReinstall    Boolean  @map("is_reinstall") // If user cleared app local data or reinstalled the app, we need to send the persisted device id to update device storage
 
-  androidAaid            String? @map("android_aaid")
-  androidId              String? @map("android_id")
   androidInstallReferrer String? @map("android_install_referrer")
 
-  iosIdfv                String? @map("ios_idfv")
-  iosIdfa                String? @map("ios_idfa")
   iosAttPermissionStatus String? @map("ios_att_permission_status")
-  iosClipboardClickId    String? @map("ios_clipboard_click_id")
+  iosClipboardClickId    String? @map("ios_clipboard_click_id") // Clipboard will be read only in the first session and if user granted permission
   iosDeviceModelId       String? @map("ios_device_model_id")
 
   installTime DateTime? @map("install_time")
 
-  // Device data
   userAgent   String? @map("user_agent")
   deviceName  String? @map("device_name")
   deviceBrand String? @map("device_brand")
@@ -191,7 +220,6 @@ model Session {
   osBuildId   String? @map("os_build_id")
   appVersion  String? @map("app_version")
 
-  // Request geo data
   ip        String?
   continent String?
   country   String?
@@ -199,6 +227,9 @@ model Session {
   region    String?
   latitude  String?
   longitude String?
+
+  deviceId String @map("device_id")
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
@@ -214,6 +245,8 @@ enum AttributionMethod {
   android_probabilistic
   ios_deterministic_click
   ios_probabilistic
+
+  @@map("attribution_method")
 }
 
 model Attribution {
@@ -230,6 +263,9 @@ model Attribution {
 
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  deviceId String @map("device_id")
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
@@ -248,6 +284,9 @@ model Purchase {
 
   linkId String? @map("link_id")
   link   Link?   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  deviceId String @map("device_id")
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
   appId String @map("app_id")
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)

@@ -1,5 +1,6 @@
 import { prisma } from '@advents/db'
 import { zValidator } from '@hono/zod-validator'
+import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
@@ -22,49 +23,45 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
       const { sessionId, value } = c.req.valid('json')
       const appId = c.var.appId
 
-      // TODO: this is only attributing when the purchase is made in the first session.
-      const session = await prisma.session.findUnique({
+      const attribution = await prisma.attribution.findFirst({
         where: {
-          id: sessionId,
+          deviceId: c.var.deviceId,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
         select: {
-          attribution: {
-            select: {
-              linkId: true,
-            },
-          },
+          linkId: true,
         },
       })
 
-      const createPurchaseQuery = prisma.purchase.create({
+      await prisma.purchase.create({
         data: {
           value,
           sessionId,
-          linkId: session?.attribution?.linkId,
+          linkId: attribution?.linkId,
+          deviceId: c.var.deviceId,
           appId,
         },
       })
 
-      // Smell alert: sorry, I not found a better way to do this.
-      if (session?.attribution?.linkId) {
-        await prisma.$transaction([
-          createPurchaseQuery,
-
-          prisma.link.update({
-            where: {
-              id: session?.attribution?.linkId,
-            },
-            data: {
-              revenueCount: {
-                increment: value,
-              },
-            },
-          }),
-        ])
-      } else {
-        await createPurchaseQuery
+      if (attribution) {
+        waitUntil(incrementRevenue(attribution.linkId, value))
       }
 
       return new Response()
     },
   )
+
+const incrementRevenue = async (linkId: string, value: number) => {
+  await prisma.link.update({
+    where: {
+      id: linkId,
+    },
+    data: {
+      revenueCount: {
+        increment: value,
+      },
+    },
+  })
+}

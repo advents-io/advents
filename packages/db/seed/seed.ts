@@ -156,10 +156,25 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
     }))
 
-    const clicksAndSessions = clicks.map(click => ({
+    const devices = clicks.map(() => ({
+      id: crypto.randomUUID(),
+      os: faker.helpers.arrayElement(['android', 'ios']),
+      appId,
+    }))
+
+    const clicksAndSessions = clicks.map((click, index) => ({
       click,
       session: {
         id: crypto.randomUUID(),
+        sdkName: 'react-native',
+        sdkVersion: '0.0.1',
+        framework: 'react-native@0.74.3',
+        deviceTime: click.createdAt,
+        os: devices[index].os,
+        package: 'io.advents',
+        isFirstSession: true,
+        isReinstall: false,
+        deviceId: devices[index].id,
         appId,
         createdAt: click.createdAt,
       },
@@ -178,20 +193,29 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       ? Math.round(clickCount * faker.number.float({ min: 0.01, max: 0.5, fractionDigits: 2 }))
       : 0
 
-    const purchases: Purchase[] = Array.from({ length: purchasesCount }, () => ({
-      value: faker.datatype.boolean(0.5)
-        ? faker.number.int({ min: 2, max: 20 })
-        : faker.number.int({ min: 20, max: 50 }),
-      linkId: link.id,
-      sessionId: faker.helpers.arrayElement(clicksAndSessions).session.id,
-      appId,
-      createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
-    }))
+    const purchases: Purchase[] = Array.from({ length: purchasesCount }, () => {
+      const session = faker.helpers.arrayElement(clicksAndSessions).session
+
+      return {
+        value: faker.datatype.boolean(0.5)
+          ? faker.number.int({ min: 2, max: 20 })
+          : faker.number.int({ min: 20, max: 50 }),
+        linkId: link.id,
+        sessionId: session.id,
+        deviceId: session.deviceId,
+        appId,
+        createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
+      }
+    })
 
     const revenueCount = purchases.reduce((acc, purchase) => acc + purchase.value, 0)
 
     await prisma.$transaction([
       prisma.click.createMany({ data: clicks }),
+
+      prisma.device.createMany({
+        data: devices,
+      }),
 
       prisma.session.createMany({
         data: clicksAndSessions.map(item => item.session),
@@ -203,6 +227,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
           sessionId: session.id,
           clickId: click.id,
           linkId: link.id,
+          deviceId: session.deviceId,
           appId,
           createdAt: session.createdAt,
         })),
