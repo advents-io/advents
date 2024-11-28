@@ -37,13 +37,13 @@ export default async function Page() {
           <UsersIcon />
         </EmptyScreenIcon>
 
-        <EmptyScreenTitle>Time não encontrado</EmptyScreenTitle>
+        <EmptyScreenTitle>Equipe não encontrado</EmptyScreenTitle>
 
         <EmptyScreenDescription>
-          Não conseguimos encontrar um time associado ao seu usuário.
+          Não conseguimos encontrar uma equipe associada ao seu usuário.
           <br />
           <br />
-          Isso pode ser porque você ainda não foi convidado para um time, ou houve um erro de
+          Isso pode ser porque você ainda não foi convidado para uma equipe, ou houve um erro de
           processamento.
         </EmptyScreenDescription>
       </EmptyScreen>
