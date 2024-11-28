@@ -24,11 +24,11 @@ import { Button } from '@/ui/button'
 import { Form, FormField } from '@/ui/form'
 
 export const EditAppQrCodeLogoForm = () => {
-  const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
+  const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
 
   const { data, refetch: refetchAppQrCodeLogoUrl } = useQuery({
-    queryKey: ['app-qr-code-logo-url', appSlug, teamSlug],
-    queryFn: () => getAppQrCodeLogoUrl({ appSlug, teamSlug }),
+    queryKey: ['app-qr-code-logo-url', teamSlug, appSlug],
+    queryFn: () => getAppQrCodeLogoUrl({ teamSlug, appSlug }),
   })
 
   const qrCodeLogoUrl = data?.url ?? null

@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { AddCustomDomainForm } from './add-custom-domain-form'
 import { DomainList, DomainListSkeleton } from './domain-list'
 
-export default async function Page({ params }: { params: Promise<{ app: string; team: string }> }) {
-  const { app, team } = await params
+export default async function Page({ params }: { params: Promise<{ team: string; app: string }> }) {
+  const { team, app } = await params
 
   return (
     <div>
@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: Promise<{ app: string; 
 
       <div className='mt-10'>
         <Suspense fallback={<DomainListSkeleton />}>
-          <DomainList appSlug={app} teamSlug={team} />
+          <DomainList teamSlug={team} appSlug={app} />
         </Suspense>
       </div>
     </div>

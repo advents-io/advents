@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const QrCodeDialog = ({ domain, slug, closeDropdown, qrCodeLogoUrl, children }: Props) => {
-  const { app, team } = useParams<{ team: string; app: string }>()
+  const { team, app } = useParams<{ team: string; app: string }>()
 
   const [error, setError] = useState<string>()
   const [open, setOpen] = useState(false)

@@ -16,11 +16,11 @@ import { LinksPagination } from './links-pagination'
 
 interface Props {
   page: number
-  appSlug: string
   teamSlug: string
+  appSlug: string
 }
 
-export const LinkList = async ({ page, appSlug, teamSlug }: Props) => {
+export const LinkList = async ({ page, teamSlug, appSlug }: Props) => {
   const pageSize = 30
 
   const [links, totalLinks] = await prisma.$transaction([

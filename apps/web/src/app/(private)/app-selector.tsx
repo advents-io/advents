@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const AppSelector = ({ apps }: Props) => {
-  const { app, team } = useParams<{ team: string; app?: string }>()
+  const { team, app } = useParams<{ team: string; app?: string }>()
   const [open, setOpen] = useState(false)
   const [selectedApp, setSelectedApp] = useState<string>(app || '')
 

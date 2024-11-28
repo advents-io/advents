@@ -29,7 +29,7 @@ interface Props {
 }
 
 export const PrivateHeader = ({ email, apps }: Props) => {
-  const { app, team } = useParams<{ team: string; app: string }>()
+  const { team, app } = useParams<{ team: string; app: string }>()
   const router = useRouter()
 
   const signOut = () => {

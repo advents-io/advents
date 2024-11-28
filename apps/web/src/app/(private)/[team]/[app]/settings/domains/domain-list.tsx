@@ -10,11 +10,11 @@ import { Skeleton } from '@/ui/skeleton'
 import { DomainItemMoreOptionsButton } from './domain-item-more-options-button'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  appSlug: string
   teamSlug: string
+  appSlug: string
 }
 
-export const DomainList = async ({ appSlug, teamSlug, className }: Props) => {
+export const DomainList = async ({ teamSlug, appSlug, className }: Props) => {
   const user = await getSessionUser()
 
   if (!user) {

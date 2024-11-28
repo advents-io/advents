@@ -12,19 +12,19 @@ import { MetricCard } from './metric-card'
 import { useStartEndDate } from './use-start-end-date'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  appSlug: string
   teamSlug: string
+  appSlug: string
 }
 
-export const Metrics = ({ appSlug, teamSlug, className }: Props) => {
+export const Metrics = ({ teamSlug, appSlug, className }: Props) => {
   const [{ startDate, endDate }] = useStartEndDate()
 
   const { data, isPending } = useQuery({
-    queryKey: ['app-analytics', appSlug, teamSlug, startDate, endDate],
+    queryKey: ['app-analytics', teamSlug, appSlug, startDate, endDate],
     queryFn: () =>
       getAppAnalytics({
-        appSlug,
         teamSlug,
+        appSlug,
         startDate: dayjs(startDate).toDate(),
         endDate: dayjs(endDate).toDate(),
       }),

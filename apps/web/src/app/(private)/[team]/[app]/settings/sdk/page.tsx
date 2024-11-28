@@ -8,7 +8,7 @@ import { SettingsField } from '@/components/settings-field'
 
 import { ApiKeyField } from './api-key-field'
 
-export default async function Page(props: { params: Promise<{ app: string; team: string }> }) {
+export default async function Page(props: { params: Promise<{ team: string; app: string }> }) {
   const params = await props.params
 
   const apiKey = await prisma.apiKey.findFirst({

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function Page(props: {
   searchParams: Promise<{ page?: string }>
-  params: Promise<{ app: string; team: string }>
+  params: Promise<{ team: string; app: string }>
 }) {
   const params = await props.params
   const searchParams = await props.searchParams
