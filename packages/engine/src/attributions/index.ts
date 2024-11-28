@@ -16,30 +16,32 @@ export const handleAttribution = async (session: Session) => {
       attributionData = await handleIosAttribution(session)
     }
 
-    if (attributionData) {
-      await prisma.$transaction([
-        prisma.attribution.create({
-          data: {
-            method: attributionData.method,
-            sessionId: session.id,
-            clickId: attributionData.clickId,
-            appId: session.appId,
-            linkId: attributionData.linkId,
-          },
-        }),
-
-        prisma.link.update({
-          where: {
-            id: attributionData.linkId,
-          },
-          data: {
-            installCount: {
-              increment: 1,
-            },
-          },
-        }),
-      ])
+    if (!attributionData) {
+      return
     }
+
+    await prisma.$transaction([
+      prisma.attribution.create({
+        data: {
+          method: attributionData.method,
+          sessionId: session.id,
+          clickId: attributionData.clickId,
+          appId: session.appId,
+          linkId: attributionData.linkId,
+        },
+      }),
+
+      prisma.link.update({
+        where: {
+          id: attributionData.linkId,
+        },
+        data: {
+          installCount: {
+            increment: 1,
+          },
+        },
+      }),
+    ])
   } catch {}
 }
 

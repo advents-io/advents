@@ -22,8 +22,11 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
       const { sessionId, value } = c.req.valid('json')
       const appId = c.var.appId
 
+      // TODO: this is only attributing when the purchase is made in the first session.
       const session = await prisma.session.findUnique({
-        where: { id: sessionId },
+        where: {
+          id: sessionId,
+        },
         select: {
           attribution: {
             select: {
@@ -52,8 +55,8 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
               id: session?.attribution?.linkId,
             },
             data: {
-              installCount: {
-                increment: 1,
+              revenueCount: {
+                increment: value,
               },
             },
           }),
