@@ -14,10 +14,6 @@ import {
 import { HTMLAttributes, useState } from 'react'
 
 import { LinkItemMoreOptionsButton } from '@/components/link-item-more-options-button'
-import {
-  AnalyticsTableLinksProvider,
-  useAnalyticsTableLinks,
-} from '@/contexts/analytics-table-links-context'
 import { getAppQrCodeLogoUrl } from '@/lib/queries/get-app-qrcode-logo-url'
 import { getLinksAnalytics } from '@/lib/queries/get-links-analytics'
 import { cn } from '@/lib/tailwind'
@@ -37,49 +33,38 @@ import { TableRowCell } from './table-row-cell'
 import { TableToolbar } from './table-toolbar'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  appSlug: string
   teamSlug: string
+  appSlug: string
 }
 
-export const Table = (props: Props) => (
-  <AnalyticsTableLinksProvider>
-    <TableComp {...props} />
-  </AnalyticsTableLinksProvider>
-)
-
-const TableComp = ({ appSlug, teamSlug, className }: Props) => {
+export const Table = ({ teamSlug, appSlug, className }: Props) => {
   const [search, setSearch] = useState('')
-
-  const { links, setLinks } = useAnalyticsTableLinks()
 
   const [{ startDate, endDate }] = useStartEndDate()
 
-  const { isFetching } = useQuery({
-    queryKey: ['links-analytics', appSlug, teamSlug, startDate, endDate, setLinks],
-    queryFn: async () => {
-      const links = await getLinksAnalytics({
-        appSlug,
+  const { data: links, isFetching } = useQuery({
+    queryKey: ['links-analytics', teamSlug, appSlug, startDate, endDate],
+    queryFn: () =>
+      getLinksAnalytics({
         teamSlug,
+        appSlug,
         startDate: dayjs(startDate).toDate(),
         endDate: dayjs(endDate).toDate(),
-      })
-
-      if (setLinks) {
-        setLinks(links)
-      }
-
-      return links
-    },
+      }),
     refetchOnWindowFocus: false,
   })
 
   const { data: qrCodeLogoUrl } = useQuery({
-    queryKey: ['app-qr-code-logo-url', appSlug, teamSlug],
-    queryFn: () => getAppQrCodeLogoUrl({ appSlug, teamSlug }),
+    queryKey: ['app-qr-code-logo-url', teamSlug, appSlug],
+    queryFn: () =>
+      getAppQrCodeLogoUrl({
+        teamSlug,
+        appSlug,
+      }),
   })
 
   const table = useReactTable({
-    data: links,
+    data: links || [],
     columns: tableColumns,
     state: {
       globalFilter: search,

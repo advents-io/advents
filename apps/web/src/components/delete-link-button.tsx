@@ -1,12 +1,14 @@
 import { deleteLinkAction, formatErrors, useAction } from '@advents/mutations'
+import { GetLinksAnalyticsOutput } from '@advents/queries/client'
 import { Trash2Icon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useStartEndDate } from '@/app/(private)/[team]/[app]/analytics/use-start-end-date'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
-import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
+import { getQueryClient } from '@/lib/react-query'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -29,7 +31,9 @@ interface Props {
 export const DeleteLinkButton = ({ linkId, shortLink, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
   const { refresh } = useRouter()
-  const { removeLink: removeAnalyticsTableLink } = useAnalyticsTableLinks()
+
+  const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
+  const [{ startDate, endDate }] = useStartEndDate()
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -49,9 +53,10 @@ export const DeleteLinkButton = ({ linkId, shortLink, closeDropdown }: Props) =>
 
       toast('Link excluído.')
 
-      if (removeAnalyticsTableLink) {
-        removeAnalyticsTableLink(linkId)
-      }
+      getQueryClient().setQueryData<GetLinksAnalyticsOutput>(
+        ['links-analytics', teamSlug, appSlug, startDate, endDate],
+        prevLinks => prevLinks?.filter(prevLink => prevLink.id !== linkId),
+      )
 
       refresh()
     },

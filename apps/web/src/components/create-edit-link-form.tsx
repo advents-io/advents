@@ -11,7 +11,7 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { GetAppDefaultValuesOutput } from '@advents/queries/client'
+import { GetAppDefaultValuesOutput, GetLinksAnalyticsOutput } from '@advents/queries/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon, SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -21,12 +21,13 @@ import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { useStartEndDate } from '@/app/(private)/[team]/[app]/analytics/use-start-end-date'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
-import { useAnalyticsTableLinks } from '@/contexts/analytics-table-links-context'
 import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
 import { getAppDomains } from '@/lib/queries/get-app-domains'
 import { getLink } from '@/lib/queries/get-link'
+import { getQueryClient } from '@/lib/react-query'
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
@@ -45,8 +46,8 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) => {
   const { refresh } = useRouter()
-  const { app: appSlug, team: teamSlug } = useParams<{ app: string; team: string }>()
-  const { editLink: editAnalyticsTableLink } = useAnalyticsTableLinks()
+  const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
+  const [{ startDate, endDate }] = useStartEndDate()
   const posthog = usePostHog()
 
   const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutput>()
@@ -88,14 +89,19 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     result: editLinkResult,
   } = useAction(editLinkAction, {
     onSuccess: ({ data }) => {
-      if (editAnalyticsTableLink && data) {
-        editAnalyticsTableLink({
-          id: data.id,
-          title: data.title,
-          domain: data.domain,
-          slug: data.slug,
-          campaignCost: data.campaignCost,
-        })
+      if (data) {
+        getQueryClient().setQueryData<GetLinksAnalyticsOutput>(
+          ['links-analytics', teamSlug, appSlug, startDate, endDate],
+          prevLinks =>
+            prevLinks?.map(prevLink =>
+              prevLink.id === data.id
+                ? {
+                    ...prevLink,
+                    ...data,
+                  }
+                : prevLink,
+            ),
+        )
       }
 
       onSuccess()
@@ -123,7 +129,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   const handleGetLink = async (linkId: string) => {
     const [link, app] = await Promise.all([
       getLink({ linkId }),
-      getAppDefaultValues({ appSlug, teamSlug }),
+      getAppDefaultValues({ teamSlug, appSlug }),
     ])
 
     setDefaultAppValues(app)
@@ -139,7 +145,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   }
 
   const getDefaultLinkValues = async () => {
-    const app = await getAppDefaultValues({ appSlug, teamSlug })
+    const app = await getAppDefaultValues({ teamSlug, appSlug })
     setDefaultAppValues(app)
 
     setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
