@@ -50,7 +50,7 @@ export const CreateAppForm = () => {
         behavior: 'smooth',
       })
 
-      toast.success('App criado com sucesso.')
+      toast.success('App criado.')
     },
 
     onError: () => {

@@ -61,7 +61,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   const onSuccess = () => {
     form.reset()
     closeDialog()
-    toast.success(linkId ? 'Link alterado com sucesso.' : 'Link criado com sucesso.')
+    toast.success(linkId ? 'Link alterado.' : 'Link criado.')
     refresh()
   }
 

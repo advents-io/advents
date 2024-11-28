@@ -37,7 +37,7 @@ export const DeleteAppButton = ({ appId, appSlug, appName, children }: Props) =>
   } = useAction(deleteAppAction, {
     onSuccess: () => {
       setOpen(false)
-      toast('App excluído com sucesso.')
+      toast('App excluído.')
     },
   })
 

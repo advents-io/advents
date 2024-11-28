@@ -47,7 +47,7 @@ export const DeleteLinkButton = ({ linkId, shortLink, closeDropdown }: Props) =>
     onSuccess: () => {
       handleSetOpen(false)
 
-      toast('Link excluído com sucesso.')
+      toast('Link excluído.')
 
       if (removeAnalyticsTableLink) {
         removeAnalyticsTableLink(linkId)
