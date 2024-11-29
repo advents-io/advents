@@ -1,0 +1,107 @@
+model Link {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  title                 String? @db.VarChar(64)
+  domain                String
+  slug                  String  @db.VarChar(20)
+  androidUrl            String  @map("android_url")
+  iosUrl                String  @map("ios_url")
+  disableIosPreviewPage Boolean @default(false) @map("disable_ios_preview_page")
+  fallbackUrl           String  @map("fallback_url")
+  campaignCost          Float?  @map("campaign_cost")
+
+  clickCount   Int   @default(0) @map("click_count")
+  installCount Int   @default(0) @map("install_count")
+  revenueCount Float @default(0) @map("revenue_count")
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  clicks       Click[]
+  attributions Attribution[]
+  purchases    Purchase[]
+
+  @@unique([domain, slug])
+  @@map("links")
+}
+
+model App {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  name                         String  @db.VarChar(64)
+  slug                         String  @db.VarChar(48)
+  defaultDomain                String  @map("default_domain")
+  imageUrl                     String  @map("image_url")
+  androidUrl                   String  @map("android_url")
+  iosUrl                       String  @map("ios_url")
+  defaultDisableIosPreviewPage Boolean @default(false) @map("default_disable_ios_preview_page")
+  defaultFallbackUrl           String? @map("default_fallback_url")
+  qrCodeLogoUrl                String? @map("qrcode_logo_url")
+
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  links        Link[]
+  sessions     Session[]
+  apiKeys      ApiKey[]
+  clicks       Click[]
+  attributions Attribution[]
+  purchases    Purchase[]
+  devices      Device[]
+
+  @@unique([slug, teamId])
+  @@map("apps")
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  name String @db.VarChar(64)
+  slug String @unique @db.VarChar(48)
+
+  members Member[]
+  apps    App[]
+
+  @@map("teams")
+}
+
+model Member {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  userId String @unique @map("user_id")
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  @@map("members")
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  key String @unique
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@map("api_keys")
+}
