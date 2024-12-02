@@ -1,58 +1,60 @@
-import { Device, DeviceOs, Install, prisma, Session } from '@advents/db'
+import { DeviceOs, prisma } from '@advents/db'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
+import { z } from 'zod'
 
 import { handleAttribution } from '../../attributions'
 import { getGeolocation } from '../../utils/geolocation'
 import { ApiEnv } from '../api'
 
-type DeviceInput = Pick<Device, 'androidAaid' | 'androidId' | 'iosIdfv' | 'iosIdfa'>
+const deviceInputSchema = z.object({
+  androidAaid: z.string().nullish(),
+  androidId: z.string().nullish(),
+  iosIdfv: z.string().nullish(),
+  iosIdfa: z.string().nullish(),
+})
 
-type InstallInput = Pick<Install, 'installTime'>
+type DeviceInput = z.infer<typeof deviceInputSchema>
 
-type SessionInput = Pick<
-  Session,
-  | 'id'
-  | 'sdkName'
-  | 'sdkVersion'
-  | 'framework'
-  | 'deviceTime'
-  | 'os'
-  | 'package'
-  | 'isFirstSession'
-  | 'androidInstallReferrer'
-  | 'iosAttPermissionStatus'
-  | 'iosClipboardClickId'
-  | 'iosDeviceModelId'
-  | 'userAgent'
-  | 'deviceName'
-  | 'deviceBrand'
-  | 'deviceModel'
-  | 'deviceType'
-  | 'osVersion'
-  | 'osBuildId'
-  | 'appVersion'
->
+const installInputSchema = z.object({
+  installTime: z.string().transform(date => new Date(date)),
+})
 
-type Input = DeviceInput & InstallInput & SessionInput
+type InstallInput = z.infer<typeof installInputSchema>
+
+const sessionInputSchema = z.object({
+  id: z.string().nullish(),
+  sdkName: z.string(),
+  sdkVersion: z.string(),
+  framework: z.string(),
+  deviceTime: z.string().transform(date => new Date(date)),
+  os: z.enum(['android', 'ios']),
+  package: z.string(),
+  isFirstSession: z.boolean(),
+
+  androidInstallReferrer: z.string().nullish(),
+  iosAttPermissionStatus: z.string().nullish(),
+  iosClipboardClickId: z.string().nullish(),
+  iosDeviceModelId: z.string().nullish(),
+  userAgent: z.string().nullish(),
+  deviceName: z.string().nullish(),
+  deviceBrand: z.string().nullish(),
+  deviceModel: z.string().nullish(),
+  deviceType: z.string().nullish(),
+  osVersion: z.string().nullish(),
+  osBuildId: z.string().nullish(),
+  appVersion: z.string().nullish(),
+})
 
 export const logSession = (api: Hono<ApiEnv>) =>
   api.post(
     '/sessions', //
     async c => {
-      const { androidAaid, androidId, iosIdfv, iosIdfa, installTime, ...sessionInput } =
-        (await c.req.json()) as Input
+      const input = await c.req.json()
 
-      const deviceInput: DeviceInput = {
-        androidAaid,
-        androidId,
-        iosIdfv,
-        iosIdfa,
-      }
-
-      const installInput: InstallInput = {
-        installTime,
-      }
+      const sessionInput = sessionInputSchema.parse(input)
+      const deviceInput = deviceInputSchema.parse(input)
+      const installInput = installInputSchema.parse(input)
 
       const appId = c.var.appId
 
@@ -80,6 +82,7 @@ export const logSession = (api: Hono<ApiEnv>) =>
       const session = await prisma.session.create({
         data: {
           ...sessionInput,
+          id: sessionInput.id ?? undefined,
           hadToUpdateDeviceId,
           isReinstall,
           clearedAppLocalData: hadToUpdateDeviceId && !isReinstall,
@@ -134,10 +137,10 @@ const handleDeviceData = async (
 
   const needToUpdateDeviceData =
     !!device &&
-    ((androidAaid && androidAaid !== device.androidAaid) ||
-      (androidId && androidId !== device.androidId) ||
-      (iosIdfa && iosIdfa !== device.iosIdfa) ||
-      (iosIdfv && iosIdfv !== device.iosIdfv))
+    ((!!androidAaid && androidAaid !== device.androidAaid) ||
+      (!!androidId && androidId !== device.androidId) ||
+      (!!iosIdfa && iosIdfa !== device.iosIdfa) ||
+      (!!iosIdfv && iosIdfv !== device.iosIdfv))
 
   console.log({ device, hadToUpdateDeviceId, needToUpdateDeviceData })
 
