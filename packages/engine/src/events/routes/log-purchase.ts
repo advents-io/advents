@@ -23,6 +23,19 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
       const { sessionId, value } = c.req.valid('json')
       const appId = c.var.appId
 
+      const session = await prisma.session.findUnique({
+        where: {
+          id: sessionId,
+        },
+        select: {
+          installId: true,
+        },
+      })
+
+      if (!session) {
+        return c.json({ error: 'Session not found.' }, 404)
+      }
+
       const attribution = await prisma.attribution.findFirst({
         where: {
           deviceId: c.var.deviceId,
@@ -41,6 +54,7 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
           sessionId,
           linkId: attribution?.linkId,
           deviceId: c.var.deviceId,
+          installId: session.installId,
           appId,
         },
       })

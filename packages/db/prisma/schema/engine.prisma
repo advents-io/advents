@@ -64,6 +64,7 @@ model Device {
   sessions     Session[]
   attributions Attribution[]
   purchases    Purchase[]
+  installs     Install[]
 
   @@unique([appId, androidAaid])
   @@unique([appId, androidId])
@@ -72,26 +73,45 @@ model Device {
   @@map("devices")
 }
 
+model Install {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  installTime DateTime @map("install_time")
+
+  deviceId String @map("device_id")
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  attribution Attribution?
+  sessions    Session[]
+  purchases   Purchase[]
+
+  @@map("installs")
+}
+
 model Session {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  sdkName        String   @map("sdk_name")
-  sdkVersion     String   @map("sdk_version")
-  framework      String
-  deviceTime     DateTime @map("device_time")
-  os             DeviceOs
-  package        String
-  isFirstSession Boolean  @map("is_first_session") // Will be the first session after install or after clearing app local data
-  isReinstall    Boolean  @map("is_reinstall") // If user cleared app local data or reinstalled the app, we need to send the persisted device id to update device storage
+  sdkName             String   @map("sdk_name")
+  sdkVersion          String   @map("sdk_version")
+  framework           String
+  deviceTime          DateTime @map("device_time")
+  os                  DeviceOs
+  package             String
+  isFirstSession      Boolean  @map("is_first_session") // Will be true after a install, reinstall or clearing app local data.
+  hadToUpdateDeviceId Boolean  @map("had_to_update_device_id") // If user cleared app local data or reinstalled the app, we need to send the original deviceId to update in AsyncStorage
+  isReinstall         Boolean  @map("is_reinstall") // Will be true if the installTime is newer than the previous install.
+  clearedAppLocalData Boolean  @map("cleared_app_local_data") // Will be true if hadToUpdateDeviceId is true and isReinstall is false.
 
   androidInstallReferrer String? @map("android_install_referrer")
 
   iosAttPermissionStatus String? @map("ios_att_permission_status")
   iosClipboardClickId    String? @map("ios_clipboard_click_id") // Clipboard will be read only in the first session and if user granted permission
   iosDeviceModelId       String? @map("ios_device_model_id")
-
-  installTime DateTime? @map("install_time")
 
   userAgent   String? @map("user_agent")
   deviceName  String? @map("device_name")
@@ -109,6 +129,9 @@ model Session {
   region    String?
   latitude  String?
   longitude String?
+
+  installId String  @map("install_id")
+  install   Install @relation(fields: [installId], references: [id], onDelete: Cascade)
 
   deviceId String @map("device_id")
   device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
@@ -146,6 +169,9 @@ model Attribution {
   linkId String @map("link_id")
   link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 
+  installId String  @unique @map("install_id")
+  install   Install @relation(fields: [installId], references: [id], onDelete: Cascade)
+
   deviceId String @map("device_id")
   device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
@@ -166,6 +192,9 @@ model Purchase {
 
   linkId String? @map("link_id")
   link   Link?   @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  installId String  @map("install_id")
+  install   Install @relation(fields: [installId], references: [id], onDelete: Cascade)
 
   deviceId String @map("device_id")
   device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)

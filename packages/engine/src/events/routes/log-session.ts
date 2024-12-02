@@ -1,4 +1,4 @@
-import { Device, DeviceOs, prisma, Session } from '@advents/db'
+import { Device, DeviceOs, Install, prisma, Session } from '@advents/db'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 
@@ -7,6 +7,8 @@ import { getGeolocation } from '../../utils/geolocation'
 import { ApiEnv } from '../api'
 
 type DeviceInput = Pick<Device, 'androidAaid' | 'androidId' | 'iosIdfv' | 'iosIdfa'>
+
+type InstallInput = Pick<Install, 'installTime'>
 
 type SessionInput = Pick<
   Session,
@@ -22,7 +24,6 @@ type SessionInput = Pick<
   | 'iosAttPermissionStatus'
   | 'iosClipboardClickId'
   | 'iosDeviceModelId'
-  | 'installTime'
   | 'userAgent'
   | 'deviceName'
   | 'deviceBrand'
@@ -33,26 +34,25 @@ type SessionInput = Pick<
   | 'appVersion'
 >
 
-type LogSessionInput = DeviceInput & SessionInput
-
 export const logSession = (api: Hono<ApiEnv>) =>
   api.post(
     '/sessions', //
     async c => {
-      const { androidAaid, androidId, iosIdfa, iosIdfv, ...input } =
-        (await c.req.json()) as LogSessionInput
+      const input = await c.req.json()
+      const sessionInput = input as SessionInput
 
       const appId = c.var.appId
 
-      const { deviceId, isReinstall } = await handleDeviceData(
-        {
-          androidAaid,
-          androidId,
-          iosIdfa,
-          iosIdfv,
-        },
+      const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
+        input as DeviceInput,
         c.var.deviceId,
-        input.os,
+        sessionInput.os,
+        appId,
+      )
+
+      const { installId, isReinstall } = await handleInstallData(
+        input as InstallInput,
+        deviceId,
         appId,
       )
 
@@ -60,10 +60,13 @@ export const logSession = (api: Hono<ApiEnv>) =>
 
       const session = await prisma.session.create({
         data: {
-          ...input,
+          ...sessionInput,
+          hadToUpdateDeviceId,
           isReinstall,
+          clearedAppLocalData: hadToUpdateDeviceId && !isReinstall,
           ...geolocation,
           deviceId,
+          installId,
           appId,
         },
       })
@@ -71,7 +74,7 @@ export const logSession = (api: Hono<ApiEnv>) =>
       waitUntil(handleAttribution(session))
 
       const response = {
-        device: isReinstall
+        device: hadToUpdateDeviceId
           ? {
               updatedDeviceId: deviceId,
             }
@@ -84,7 +87,7 @@ export const logSession = (api: Hono<ApiEnv>) =>
 
 type HandleDeviceDataResult = {
   deviceId: string
-  isReinstall: boolean
+  hadToUpdateDeviceId: boolean
 }
 
 const handleDeviceData = async (
@@ -108,7 +111,7 @@ const handleDeviceData = async (
     },
   })
 
-  const isReinstall = !!device && device.id !== internalDeviceId
+  const hadToUpdateDeviceId = !!device && device.id !== internalDeviceId
 
   const needToUpdateDeviceData =
     !!device &&
@@ -147,6 +150,53 @@ const handleDeviceData = async (
 
   return {
     deviceId: device.id,
+    hadToUpdateDeviceId,
+  }
+}
+
+type HandleInstallDataResult = {
+  installId: string
+  isReinstall: boolean
+}
+
+const handleInstallData = async (
+  installInput: InstallInput,
+  deviceId: string,
+  appId: string,
+): Promise<HandleInstallDataResult> => {
+  const { installTime: sessionInstallTime } = installInput
+
+  let install = await prisma.install.findFirst({
+    where: {
+      deviceId,
+    },
+    orderBy: {
+      installTime: 'desc',
+    },
+    select: {
+      id: true,
+      installTime: true,
+    },
+  })
+
+  const isReinstall = !!install && sessionInstallTime > install.installTime
+
+  if (!install) {
+    install = await prisma.install.create({
+      data: {
+        installTime: sessionInstallTime,
+        deviceId,
+        appId,
+      },
+      select: {
+        id: true,
+        installTime: true,
+      },
+    })
+  }
+
+  return {
+    installId: install.id,
     isReinstall,
   }
 }

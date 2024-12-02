@@ -162,6 +162,16 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       appId,
     }))
 
+    const installs = devices.map((_, index) => ({
+      id: crypto.randomUUID(),
+      installTime: faker.date.between({
+        from: dayjs().add(-180, 'days').toDate(),
+        to: Date.now(),
+      }),
+      deviceId: devices[index].id,
+      appId,
+    }))
+
     const clicksAndSessions = clicks.map((click, index) => ({
       click,
       session: {
@@ -173,20 +183,23 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         os: devices[index].os,
         package: 'io.advents',
         isFirstSession: true,
+        hadToUpdateDeviceId: false,
         isReinstall: false,
+        clearedAppLocalData: false,
+        installId: installs[index].id,
         deviceId: devices[index].id,
         appId,
         createdAt: click.createdAt,
       },
     }))
 
-    const installCount = Math.round(
+    const attributionCount = Math.round(
       faker.number.int({ min: clickCount * 0.001, max: clickCount * 0.2 }),
     )
 
-    const clicksAndSessionsConvertedToInstalls = faker.helpers.arrayElements(
+    const clicksAndSessionsConvertedToAttributions = faker.helpers.arrayElements(
       clicksAndSessions,
-      installCount,
+      attributionCount,
     )
 
     const purchasesCount = faker.datatype.boolean(0.7)
@@ -200,8 +213,9 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         value: faker.datatype.boolean(0.5)
           ? faker.number.int({ min: 2, max: 20 })
           : faker.number.int({ min: 20, max: 50 }),
-        linkId: link.id,
         sessionId: session.id,
+        linkId: link.id,
+        installId: session.installId,
         deviceId: session.deviceId,
         appId,
         createdAt: faker.date.between({ from: link.createdAt, to: Date.now() }),
@@ -217,16 +231,21 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         data: devices,
       }),
 
+      prisma.install.createMany({
+        data: installs,
+      }),
+
       prisma.session.createMany({
         data: clicksAndSessions.map(item => item.session),
       }),
 
       prisma.attribution.createMany({
-        data: clicksAndSessionsConvertedToInstalls.map(({ click, session }) => ({
+        data: clicksAndSessionsConvertedToAttributions.map(({ click, session }) => ({
           method: 'ios_deterministic_click',
           sessionId: session.id,
           clickId: click.id,
           linkId: link.id,
+          installId: session.installId,
           deviceId: session.deviceId,
           appId,
           createdAt: session.createdAt,
@@ -239,7 +258,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
         where: { id: link.id },
         data: {
           clickCount,
-          installCount,
+          installCount: attributionCount,
           revenueCount,
         },
       }),
