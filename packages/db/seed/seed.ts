@@ -13,21 +13,21 @@ const CONFIG = {
 }
 
 async function seed() {
-  console.log('1/5 - Creating member...')
-  const { teamId, userId } = await createMember()
-
-  console.log('2/5 - Creating app...')
-  const { appId } = await createApp(teamId, userId)
-
-  console.log('3/5 - Creating links...')
-  const links = await createLinks(appId, userId)
-
-  console.log('4/5 - Creating analytics data...')
-  await createAnalyticsData(links, appId)
-
-  console.log('5/5 - Running scripts...')
+  console.log('1/5 - Running scripts...')
   await grantAccessAndPrivileges()
   await createIncrementLinkClicksFunction()
+
+  console.log('2/5 - Creating member...')
+  const { teamId, userId } = await createMember()
+
+  console.log('3/5 - Creating app...')
+  const { appId } = await createApp(teamId, userId)
+
+  console.log('4/5 - Creating links...')
+  const links = await createLinks(appId, userId)
+
+  console.log('5/5 - Creating analytics data...')
+  await createAnalyticsData(links, appId)
 }
 
 const createMember = async () => {
