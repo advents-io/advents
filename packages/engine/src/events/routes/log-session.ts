@@ -190,7 +190,7 @@ const handleInstallData = async (
 
   const isReinstall = !!install && sessionInstallTime > install.installTime
 
-  if (!install) {
+  if (!install || isReinstall) {
     install = await prisma.install.create({
       data: {
         installTime: sessionInstallTime,
