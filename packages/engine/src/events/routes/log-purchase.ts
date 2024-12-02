@@ -23,20 +23,7 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
       const { sessionId, value } = c.req.valid('json')
       const appId = c.var.appId
 
-      const session = await prisma.session.findUnique({
-        where: {
-          id: sessionId,
-        },
-        select: {
-          installId: true,
-        },
-      })
-
-      if (!session) {
-        return c.json({ error: 'Session not found.' }, 404)
-      }
-
-      const attribution = await prisma.attribution.findFirst({
+      const install = await prisma.install.findFirst({
         where: {
           deviceId: c.var.deviceId,
         },
@@ -44,23 +31,32 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
           createdAt: 'desc',
         },
         select: {
-          linkId: true,
+          id: true,
+          attribution: {
+            select: {
+              linkId: true,
+            },
+          },
         },
       })
+
+      if (!install) {
+        return c.json({ error: 'Install not found.' }, 404)
+      }
 
       await prisma.purchase.create({
         data: {
           value,
           sessionId,
-          linkId: attribution?.linkId,
+          linkId: install?.attribution?.linkId,
           deviceId: c.var.deviceId,
-          installId: session.installId,
+          installId: install.id,
           appId,
         },
       })
 
-      if (attribution) {
-        waitUntil(incrementRevenue(attribution.linkId, value))
+      if (install.attribution) {
+        waitUntil(incrementRevenue(install.attribution.linkId, value))
       }
 
       return new Response()
