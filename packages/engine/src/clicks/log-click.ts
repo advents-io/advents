@@ -46,7 +46,13 @@ export const logClick = async (
     cpuArchitecture: ua.cpu?.architecture || null,
     isBot: ua.isBot,
 
-    ...geolocation,
+    ip: geolocation?.ip || null,
+    continent: geolocation?.continent || null,
+    country: geolocation?.country || null,
+    city: geolocation?.city || null,
+    region: geolocation?.region || null,
+    latitude: geolocation?.latitude || null,
+    longitude: geolocation?.longitude || null,
 
     linkId,
     appId,
