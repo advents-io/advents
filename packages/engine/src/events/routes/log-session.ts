@@ -34,27 +34,36 @@ type SessionInput = Pick<
   | 'appVersion'
 >
 
+type Input = DeviceInput & InstallInput & SessionInput
+
 export const logSession = (api: Hono<ApiEnv>) =>
   api.post(
     '/sessions', //
     async c => {
-      const input = await c.req.json()
-      const sessionInput = input as SessionInput
+      const { androidAaid, androidId, iosIdfv, iosIdfa, installTime, ...sessionInput } =
+        (await c.req.json()) as Input
+
+      const deviceInput: DeviceInput = {
+        androidAaid,
+        androidId,
+        iosIdfv,
+        iosIdfa,
+      }
+
+      const installInput: InstallInput = {
+        installTime,
+      }
 
       const appId = c.var.appId
 
       const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
-        input as DeviceInput,
+        deviceInput,
         c.var.deviceId,
         sessionInput.os,
         appId,
       )
 
-      const { installId, isReinstall } = await handleInstallData(
-        input as InstallInput,
-        deviceId,
-        appId,
-      )
+      const { installId, isReinstall } = await handleInstallData(installInput, deviceId, appId)
 
       const geolocation = getGeolocation(c.req.raw)
 
