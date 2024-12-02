@@ -56,6 +56,8 @@ export const logSession = (api: Hono<ApiEnv>) =>
 
       const appId = c.var.appId
 
+      console.log({ sessionInput, deviceInput, installInput, appId })
+
       const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
         deviceInput,
         c.var.deviceId,
@@ -64,6 +66,8 @@ export const logSession = (api: Hono<ApiEnv>) =>
       )
 
       const { installId, isReinstall } = await handleInstallData(installInput, deviceId, appId)
+
+      console.log({ deviceId, hadToUpdateDeviceId, installId, isReinstall })
 
       const geolocation = getGeolocation(c.req.raw)
 
