@@ -13,7 +13,7 @@ export const authMiddleware = createMiddleware<AuthMiddlewareEnv>(async (c, next
   const authHeader = c.req.header('Authorization')
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return c.json({ message: 'Unauthorized.' }, 401)
+    return c.json({ error: 'Unauthorized.' }, 401)
   }
 
   const jwt = authHeader.slice(7)
@@ -25,7 +25,7 @@ export const authMiddleware = createMiddleware<AuthMiddlewareEnv>(async (c, next
   } = await supabase.auth.getUser(jwt)
 
   if (!user) {
-    return c.json({ message: 'Unauthorized.' }, 401)
+    return c.json({ error: 'Unauthorized.' }, 401)
   }
 
   await next()

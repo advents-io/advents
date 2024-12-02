@@ -10,7 +10,7 @@ export const deviceMiddleware = createMiddleware<DeviceMiddlewareEnv>(async (c, 
   const deviceId = c.req.header('Advents-Device-Id')
 
   if (!deviceId) {
-    return c.json({ message: 'Advents-Device-Id header is required.' }, 400)
+    return c.json({ error: 'Advents-Device-Id header is required.' }, 400)
   }
 
   c.set('deviceId', deviceId)
