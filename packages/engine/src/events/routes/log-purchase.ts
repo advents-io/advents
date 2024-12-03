@@ -5,6 +5,7 @@ import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
+import { attributionSettings } from '../../attributions/settings'
 import { ApiEnv } from '../api'
 
 const input = z.object({
@@ -34,6 +35,7 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
           },
           select: {
             id: true,
+            installTime: true,
             attribution: {
               select: {
                 linkId: true,
@@ -52,11 +54,15 @@ export const logPurchase = (api: Hono<ApiEnv>) =>
           return c.json({ error: 'Install not found.' }, 404)
         }
 
+        const attributeEvent =
+          !!install.attribution &&
+          install.installTime > attributionSettings.getInAppEventsAttributionWindowStart()
+
         await prisma.purchase.create({
           data: {
             value,
             sessionId,
-            linkId: install?.attribution?.linkId,
+            linkId: attributeEvent ? install.attribution!.linkId : null,
             deviceId: c.var.deviceId,
             installId: install.id,
             appId,
