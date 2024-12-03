@@ -29,11 +29,6 @@ export const handleProbabilisticAttribution = async (
   session: Session,
   method: AttributionMethod,
 ): Promise<AttributionData | null> => {
-  // TODO: remove in the future, after improve the method
-  if (session.os === 'android') {
-    return null
-  }
-
   const attributionWindowInterval = 24 * 60 * 60 * 1000 // 24h
   const now = new Date()
   const attributionWindowStart = new Date(now.getTime() - attributionWindowInterval)

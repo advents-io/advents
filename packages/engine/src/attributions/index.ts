@@ -57,16 +57,16 @@ const handleAndroidAttribution = async (session: Session): Promise<AttributionDa
   const { androidInstallReferrer: referrer } = session
 
   if (
-    !!referrer &&
-    referrer.includes('advents_click_id=') &&
-    !!referrer.split('advents_click_id=')[1]
+    !referrer ||
+    !referrer.includes('advents_click_id=') ||
+    !referrer.split('advents_click_id=')[1]
   ) {
-    const clickId = referrer.split('advents_click_id=')[1]
-
-    return await handleClickIdAttribution(clickId, 'android_deterministic_referrer')
+    return null
   }
 
-  return await handleProbabilisticAttribution(session, 'android_probabilistic')
+  const clickId = referrer.split('advents_click_id=')[1]
+
+  return await handleClickIdAttribution(clickId, 'android_deterministic_referrer')
 }
 
 const handleIosAttribution = async (session: Session): Promise<AttributionData | null> => {
