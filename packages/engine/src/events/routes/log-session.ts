@@ -60,14 +60,6 @@ export const logSession = (api: Hono<ApiEnv>) =>
 
         const appId = c.var.appId
 
-        console.log({
-          sessionInput,
-          deviceInput,
-          installInput,
-          deviceId: c.var.deviceId,
-          appId,
-        })
-
         const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
           deviceInput,
           c.var.deviceId,
@@ -76,8 +68,6 @@ export const logSession = (api: Hono<ApiEnv>) =>
         )
 
         const { installId, isReinstall } = await handleInstallData(installInput, deviceId, appId)
-
-        console.log({ deviceId, hadToUpdateDeviceId, installId, isReinstall })
 
         const geolocation = getGeolocation(c.req.raw)
 
@@ -176,8 +166,6 @@ const handleDeviceData = async (
       (!!iosIdfa && iosIdfa !== device.iosIdfa) ||
       (!!iosIdfv && iosIdfv !== device.iosIdfv))
 
-  console.log({ device, hadToUpdateDeviceId, needToUpdateDeviceData })
-
   if (needToUpdateDeviceData) {
     device = await prisma.device.update({
       where: {
@@ -238,8 +226,6 @@ const handleInstallData = async (
   })
 
   const isReinstall = !!install && sessionInstallTime > install.installTime
-
-  console.log({ install, isReinstall })
 
   if (!install || isReinstall) {
     install = await prisma.install.create({
