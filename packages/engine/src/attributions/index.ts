@@ -57,6 +57,18 @@ export const handleAttribution = async (session: Session) => {
         },
       }),
     ])
+
+    await discord.sendMessage({
+      channel: 'EVENTS',
+      message: [
+        '📈 **Nova Atribuição**',
+        '',
+        `> App: **${attributionData.metadata.appName}**`,
+        `> Link: \`${attributionData.metadata.shortLink}\``,
+        `> Método: \`${attributionData.method}\``,
+        `> Confiança: ${attributionData.confidence}`,
+      ].join('\n'),
+    })
   } catch (error) {
     await discord.sendErrorLog({
       description: 'Erro no `handleAttribution`',
