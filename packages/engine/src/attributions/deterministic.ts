@@ -1,6 +1,6 @@
 import { AttributionMethod, prisma } from '@advents/db'
 
-import { AttributionData } from './attribution-data'
+import { AttributionData } from '.'
 
 export const handleClickIdAttribution = async (
   clickId: string,
@@ -16,7 +16,18 @@ export const handleClickIdAttribution = async (
           id: true,
         },
       },
-      linkId: true,
+      link: {
+        select: {
+          id: true,
+          domain: true,
+          slug: true,
+        },
+      },
+      app: {
+        select: {
+          name: true,
+        },
+      },
     },
   })
 
@@ -31,9 +42,14 @@ export const handleClickIdAttribution = async (
   }
 
   return {
-    method,
-    linkId: click.linkId,
     clickId,
-    probabilisticConfidence: null,
+    linkId: click.link.id,
+    method,
+    confidence: 1,
+
+    metadata: {
+      shortLink: `${click.link.domain}/${click.link.slug}`,
+      appName: click.app.name,
+    },
   }
 }

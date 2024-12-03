@@ -17,13 +17,7 @@
 
 import { AttributionMethod, Click, prisma, Session } from '@advents/db'
 
-import { AttributionData } from './attribution-data'
-
-interface ClickProbabilisticMatch {
-  clickId: string
-  linkId: string
-  confidence: number
-}
+import { AttributionData } from '.'
 
 export const handleProbabilisticAttribution = async (
   session: Session,
@@ -53,31 +47,64 @@ export const handleProbabilisticAttribution = async (
     return null
   }
 
-  const matchedClick = matchClickAndSession(recentClicks, session)
+  const attributedClick = getAttributedClick(recentClicks, session)
 
-  return matchedClick
-    ? {
-        clickId: matchedClick.clickId,
-        linkId: matchedClick.linkId,
-        method,
-        probabilisticConfidence: matchedClick.confidence,
-      }
-    : null
+  if (!attributedClick) {
+    return null
+  }
+
+  const click = await prisma.click.findUnique({
+    where: {
+      id: attributedClick.id,
+    },
+    select: {
+      id: true,
+      link: {
+        select: {
+          id: true,
+          domain: true,
+          slug: true,
+        },
+      },
+      app: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  })
+
+  if (!click) {
+    return null
+  }
+
+  return {
+    clickId: click.id,
+    linkId: click.link.id,
+    method,
+    confidence: attributedClick.confidence,
+
+    metadata: {
+      shortLink: `${click.link.domain}/${click.link.slug}`,
+      appName: click.app.name,
+    },
+  }
 }
 
-const matchClickAndSession = (
-  clicks: Click[],
-  session: Session,
-): ClickProbabilisticMatch | null => {
-  let bestMatch: ClickProbabilisticMatch | null = null
+type AttributedClick = {
+  id: string
+  confidence: number
+}
+
+const getAttributedClick = (clicks: Click[], session: Session): AttributedClick | null => {
+  let bestMatch: AttributedClick | null = null
 
   for (const click of clicks) {
-    const confidence = calculateConfidence(click, session)
+    const confidence = getAttributionConfidence(click, session)
 
     if (confidence > 0.7 && (!bestMatch || confidence > bestMatch.confidence)) {
       bestMatch = {
-        clickId: click.id,
-        linkId: click.linkId,
+        id: click.id,
         confidence,
       }
     }
@@ -86,7 +113,7 @@ const matchClickAndSession = (
   return bestMatch
 }
 
-const calculateConfidence = (click: Click, session: Session): number => {
+const getAttributionConfidence = (click: Click, session: Session): number => {
   let matchScore = 0
   let totalScore = 0
 

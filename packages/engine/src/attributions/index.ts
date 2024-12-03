@@ -1,9 +1,20 @@
 import { discord } from '@advents/common'
-import { prisma, Session } from '@advents/db'
+import { AttributionMethod, prisma, Session } from '@advents/db'
 
-import { AttributionData } from './attribution-data'
 import { handleClickIdAttribution } from './deterministic'
 import { handleProbabilisticAttribution } from './probabilistic'
+
+export type AttributionData = {
+  clickId: string
+  linkId: string
+  method: AttributionMethod
+  confidence: number
+
+  metadata: {
+    shortLink: string
+    appName: string
+  }
+}
 
 export const handleAttribution = async (session: Session) => {
   try {
@@ -24,10 +35,11 @@ export const handleAttribution = async (session: Session) => {
     await prisma.$transaction([
       prisma.attribution.create({
         data: {
-          method: attributionData.method,
-          sessionId: session.id,
           clickId: attributionData.clickId,
           linkId: attributionData.linkId,
+          method: attributionData.method,
+          confidence: attributionData.confidence,
+          sessionId: session.id,
           deviceId: session.deviceId,
           installId: session.installId,
           appId: session.appId,

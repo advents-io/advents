@@ -155,7 +155,8 @@ model Attribution {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  method AttributionMethod
+  method     AttributionMethod
+  confidence Float
 
   sessionId String  @unique @map("session_id")
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
