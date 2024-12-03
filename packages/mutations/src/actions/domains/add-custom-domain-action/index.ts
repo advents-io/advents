@@ -1,11 +1,10 @@
 'use server'
 
-import { DISCORD_WEBHOOKS, SUPPORT_PHONE, whatsapp } from '@advents/common'
+import { discord, SUPPORT_PHONE, whatsapp } from '@advents/common'
 import { prisma } from '@advents/db'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { sendDiscordMessageAction } from '../../send-discord-message'
 import { inputSchema } from './schema'
 
 export const addCustomDomainAction = authActionClient
@@ -50,9 +49,9 @@ export const addCustomDomainAction = authActionClient
       `> Usuário: \`${user.email}\``,
     ].join('\n')
 
-    await sendDiscordMessageAction({
+    await discord.sendMessage({
+      webhookUrl: discord.WEBHOOKS.DOMAINS,
       message: discordMessage,
-      webhookUrl: DISCORD_WEBHOOKS.ADD_DOMAIN_REQUEST,
     })
 
     return {

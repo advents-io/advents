@@ -186,6 +186,9 @@ importers:
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -379,9 +382,6 @@ importers:
       '@prisma/client':
         specifier: ^5.20.0
         version: 5.20.0(prisma@5.20.0)
-      ky:
-        specifier: ^1.7.2
-        version: 1.7.2
       next:
         specifier: 15.0.1-canary.1
         version: 15.0.1-canary.1(react-dom@19.0.0-rc-69d4b800-20241021(react@19.0.0-rc-69d4b800-20241021))(react@19.0.0-rc-69d4b800-20241021)

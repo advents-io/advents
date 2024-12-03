@@ -1,12 +1,11 @@
 'use server'
 
-import { DISCORD_WEBHOOKS, SUPPORT_PHONE, whatsapp } from '@advents/common'
+import { discord, SUPPORT_PHONE, whatsapp } from '@advents/common'
 import { prisma } from '@advents/db'
 import { z } from 'zod'
 
 import { ActionError } from '../../action-errors'
 import { authActionClient } from '../../safe-action'
-import { sendDiscordMessageAction } from '../send-discord-message'
 
 const inputSchema = z.object({
   appSlug: z.string({ message: 'Slug do app inválido.' }),
@@ -57,9 +56,9 @@ export const deleteCustomDomainAction = authActionClient
       `> Usuário: \`${user.email}\``,
     ].join('\n')
 
-    await sendDiscordMessageAction({
+    await discord.sendMessage({
+      webhookUrl: discord.WEBHOOKS.DOMAINS,
       message: discordMessage,
-      webhookUrl: DISCORD_WEBHOOKS.ADD_DOMAIN_REQUEST,
     })
 
     return {

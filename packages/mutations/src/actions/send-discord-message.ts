@@ -1,6 +1,6 @@
 'use server'
 
-import ky from 'ky'
+import { discord } from '@advents/common'
 import { z } from 'zod'
 
 import { authActionClient } from '../safe-action'
@@ -15,18 +15,5 @@ const inputSchema = z.object({
 export const sendDiscordMessageAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput }) => {
-    const { webhookUrl, message } = parsedInput
-
-    if (!webhookUrl) {
-      return
-    }
-
-    try {
-      await ky.post(webhookUrl, {
-        json: {
-          content: message,
-          flags: 1 << 2, // Disable embeds
-        },
-      })
-    } catch {}
+    await discord.sendMessage(parsedInput)
   })
