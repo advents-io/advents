@@ -1,12 +1,12 @@
 'use server'
 
-import { discord } from '@advents/common'
+import { discord, discordChannelSchema } from '@advents/common'
 import { z } from 'zod'
 
 import { authActionClient } from '../safe-action'
 
 const inputSchema = z.object({
-  webhookUrl: z.string(),
+  channel: discordChannelSchema,
   message: z
     .string({ message: 'Mensagem é obrigatória.' })
     .min(1, { message: 'Mensagem é obrigatória.' }),

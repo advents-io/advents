@@ -3,7 +3,8 @@
   "dependencies": {
     "dayjs": "^1.11.12",
     "ky": "^1.7.2",
-    "nanoid": "^5.0.7"
+    "nanoid": "^5.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@advents/eslint-config": "workspace:*",

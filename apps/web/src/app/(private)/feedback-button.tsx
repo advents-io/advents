@@ -1,6 +1,5 @@
 'use client'
 
-import { discord } from '@advents/common'
 import { formatErrors, sendDiscordMessageAction, useAction } from '@advents/mutations'
 import { getSessionUser } from '@advents/supabase/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -57,7 +56,10 @@ export const FeedbackButton = () => {
       '```',
     ].join('\n')
 
-    sendDiscordMessage({ message, webhookUrl: discord.WEBHOOKS.FEEDBACKS })
+    sendDiscordMessage({
+      channel: 'FEEDBACKS',
+      message,
+    })
   }
 
   const form = useForm<Feedback>({

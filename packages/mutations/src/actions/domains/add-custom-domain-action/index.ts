@@ -50,7 +50,7 @@ export const addCustomDomainAction = authActionClient
     ].join('\n')
 
     await discord.sendMessage({
-      webhookUrl: discord.WEBHOOKS.DOMAINS,
+      channel: 'DOMAINS',
       message: discordMessage,
     })
 

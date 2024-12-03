@@ -1,4 +1,5 @@
 import ky from 'ky'
+import { z } from 'zod'
 
 const WEBHOOKS = {
   FEEDBACKS:
@@ -9,18 +10,20 @@ const WEBHOOKS = {
     'https://discord.com/api/webhooks/1313322427098464308/y_aA4mjh0GRz1RJKPOLlqYPheAXG3H0tLaP9qh-j4O34aqEERKedfyR9QEZoEkFs5-Vz',
 }
 
+type DiscordChannel = keyof typeof WEBHOOKS
+
+export const discordChannelSchema = z.enum(Object.keys(WEBHOOKS) as [DiscordChannel])
+
 type SendMessageProps = {
-  webhookUrl: string
+  channel: DiscordChannel
   message: string
 }
 
-const sendMessage = async ({ webhookUrl, message }: SendMessageProps) => {
+const sendMessage = async ({ channel, message }: SendMessageProps) => {
   try {
-    if (!webhookUrl) {
-      return
-    }
+    const webhook = WEBHOOKS[channel]
 
-    await ky.post(webhookUrl, {
+    await ky.post(webhook, {
       json: {
         content: message,
         flags: 1 << 2, // Disable embeds
@@ -47,14 +50,13 @@ const sendErrorLog = async ({ description, error }: SendErrorProps) => {
     ].join('\n')
 
     await sendMessage({
-      webhookUrl: WEBHOOKS.ERRORS,
+      channel: 'ERRORS',
       message,
     })
   } catch {}
 }
 
 export const discord = {
-  WEBHOOKS,
   sendMessage,
   sendErrorLog,
 }
