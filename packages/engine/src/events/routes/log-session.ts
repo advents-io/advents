@@ -97,7 +97,7 @@ export const logSession = (api: Hono<ApiEnv>) =>
 
         return c.json(response, 200)
       } catch (error) {
-        discord.sendErrorLog({
+        await discord.sendErrorLog({
           description: 'Erro na `logSession`',
           error,
         })

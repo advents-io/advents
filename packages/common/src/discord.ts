@@ -15,11 +15,11 @@ type SendMessageProps = {
 }
 
 const sendMessage = async ({ webhookUrl, message }: SendMessageProps) => {
-  if (!webhookUrl) {
-    return
-  }
-
   try {
+    if (!webhookUrl) {
+      return
+    }
+
     await ky.post(webhookUrl, {
       json: {
         content: message,
@@ -35,20 +35,22 @@ type SendErrorProps = {
 }
 
 const sendErrorLog = async ({ description, error }: SendErrorProps) => {
-  const message = [
-    '🚨 **Ocorreu um erro**',
-    '',
-    description,
-    '',
-    '```',
-    JSON.stringify(error),
-    '```',
-  ].join('\n')
+  try {
+    const message = [
+      '🚨 **Ocorreu um erro**',
+      '',
+      description,
+      '',
+      '```',
+      JSON.stringify(error),
+      '```',
+    ].join('\n')
 
-  await sendMessage({
-    webhookUrl: WEBHOOKS.ERRORS,
-    message,
-  })
+    await sendMessage({
+      webhookUrl: WEBHOOKS.ERRORS,
+      message,
+    })
+  } catch {}
 }
 
 export const discord = {

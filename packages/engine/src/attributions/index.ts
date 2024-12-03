@@ -1,3 +1,4 @@
+import { discord } from '@advents/common'
 import { prisma, Session } from '@advents/db'
 
 import { AttributionData } from './attribution-data'
@@ -44,7 +45,12 @@ export const handleAttribution = async (session: Session) => {
         },
       }),
     ])
-  } catch {}
+  } catch (error) {
+    await discord.sendErrorLog({
+      description: 'Erro no `handleAttribution`',
+      error,
+    })
+  }
 }
 
 const handleAndroidAttribution = async (session: Session): Promise<AttributionData | null> => {
