@@ -18,14 +18,13 @@
 import { AttributionMethod, Click, prisma, Session } from '@advents/db'
 
 import { AttributionData } from '.'
+import { attributionSettings } from './settings'
 
 export const handleProbabilisticAttribution = async (
   session: Session,
   method: AttributionMethod,
 ): Promise<AttributionData | null> => {
-  const attributionWindowInterval = 24 * 60 * 60 * 1000 // 24h
-  const now = new Date()
-  const attributionWindowStart = new Date(now.getTime() - attributionWindowInterval)
+  const attributionWindowStart = attributionSettings.getProbabilisticAttributionWindowStart()
 
   const recentClicks = await prisma.click.findMany({
     where: {
