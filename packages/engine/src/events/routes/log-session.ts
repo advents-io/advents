@@ -1,3 +1,4 @@
+import { discord } from '@advents/common'
 import { DeviceOs, prisma } from '@advents/db'
 import { waitUntil } from '@vercel/functions'
 import { Hono } from 'hono'
@@ -50,60 +51,69 @@ export const logSession = (api: Hono<ApiEnv>) =>
   api.post(
     '/sessions', //
     async c => {
-      const input = await c.req.json()
+      try {
+        const input = await c.req.json()
 
-      const sessionInput = sessionInputSchema.parse(input)
-      const deviceInput = deviceInputSchema.parse(input)
-      const installInput = installInputSchema.parse(input)
+        const sessionInput = sessionInputSchema.parse(input)
+        const deviceInput = deviceInputSchema.parse(input)
+        const installInput = installInputSchema.parse(input)
 
-      const appId = c.var.appId
+        const appId = c.var.appId
 
-      console.log({
-        sessionInput,
-        deviceInput,
-        installInput,
-        deviceId: c.var.deviceId,
-        appId,
-      })
-
-      const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
-        deviceInput,
-        c.var.deviceId,
-        sessionInput.os,
-        appId,
-      )
-
-      const { installId, isReinstall } = await handleInstallData(installInput, deviceId, appId)
-
-      console.log({ deviceId, hadToUpdateDeviceId, installId, isReinstall })
-
-      const geolocation = getGeolocation(c.req.raw)
-
-      const session = await prisma.session.create({
-        data: {
-          ...sessionInput,
-          id: sessionInput.id ?? undefined,
-          hadToUpdateDeviceId,
-          isReinstall,
-          clearedAppLocalData: hadToUpdateDeviceId && !isReinstall,
-          ...geolocation,
-          deviceId,
-          installId,
+        console.log({
+          sessionInput,
+          deviceInput,
+          installInput,
+          deviceId: c.var.deviceId,
           appId,
-        },
-      })
+        })
 
-      waitUntil(handleAttribution(session))
+        const { deviceId, hadToUpdateDeviceId } = await handleDeviceData(
+          deviceInput,
+          c.var.deviceId,
+          sessionInput.os,
+          appId,
+        )
 
-      const response = {
-        device: hadToUpdateDeviceId
-          ? {
-              updatedDeviceId: deviceId,
-            }
-          : null,
+        const { installId, isReinstall } = await handleInstallData(installInput, deviceId, appId)
+
+        console.log({ deviceId, hadToUpdateDeviceId, installId, isReinstall })
+
+        const geolocation = getGeolocation(c.req.raw)
+
+        const session = await prisma.session.create({
+          data: {
+            ...sessionInput,
+            id: sessionInput.id ?? undefined,
+            hadToUpdateDeviceId,
+            isReinstall,
+            clearedAppLocalData: hadToUpdateDeviceId && !isReinstall,
+            ...geolocation,
+            deviceId,
+            installId,
+            appId,
+          },
+        })
+
+        waitUntil(handleAttribution(session))
+
+        const response = {
+          device: hadToUpdateDeviceId
+            ? {
+                updatedDeviceId: deviceId,
+              }
+            : null,
+        }
+
+        return c.json(response, 200)
+      } catch (error) {
+        discord.sendErrorLog({
+          description: 'Erro na `logSession`',
+          error,
+        })
+
+        throw error
       }
-
-      return c.json(response, 200)
     },
   )
 
