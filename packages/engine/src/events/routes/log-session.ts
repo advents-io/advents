@@ -135,11 +135,35 @@ const handleDeviceData = async (
       appId,
       ...(os === 'android'
         ? {
-            OR: [{ androidAaid: androidAaid ?? undefined }, { androidId: androidId ?? undefined }],
+            OR: [
+              {
+                androidAaid: androidAaid ?? undefined,
+              },
+              {
+                androidId: androidId ?? undefined,
+              },
+            ],
           }
         : {
-            OR: [{ iosIdfa: iosIdfa ?? undefined }, { iosIdfv: iosIdfv ?? undefined }],
+            OR: [
+              {
+                iosIdfa: iosIdfa ?? undefined,
+              },
+              {
+                iosIdfv: iosIdfv ?? undefined,
+              },
+            ],
           }),
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      id: true,
+      androidAaid: true,
+      androidId: true,
+      iosIdfa: true,
+      iosIdfv: true,
     },
   })
 
