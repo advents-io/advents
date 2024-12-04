@@ -9,6 +9,7 @@ import {
   EditLinkFormInput,
   editLinkFormInputSchema,
   formatErrors,
+  generateAiSlugAction,
   generateRandomSlugAction,
   useAction,
 } from '@advents/mutations'
@@ -124,6 +125,32 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
         }
 
         form.setValue('slug', data.slug)
+
+        posthog.capture('generate_random_slug', {
+          domain,
+          slug: data.slug,
+          app: appSlug,
+        })
+      },
+    },
+  )
+
+  const { execute: generateAiSlug, isExecuting: isGeneratingAiSlug } = useAction(
+    generateAiSlugAction,
+    {
+      onSuccess: ({ data }) => {
+        if (!data) {
+          return
+        }
+
+        form.setValue('slug', data.slug)
+
+        posthog.capture('generate_ai_slug', {
+          title,
+          domain,
+          slug: data.slug,
+          app: appSlug,
+        })
       },
     },
   )
@@ -224,7 +251,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
-  const hasTitle = !!form.getValues('title')
+  const domain = form.watch('domain')
+  const slug = form.watch('slug')
+  const title = form.watch('title')
 
   if (form.formState.isLoading) {
     return <Loading className={className} />
@@ -268,7 +297,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     Link curto utilizado para compartilhamento.
                     <br />
                     <span className='font-semibold text-primary'>
-                      https://{form.getValues('domain')}/{form.getValues('slug') || 'abcd123'}
+                      https://{domain}/{slug || 'abcd123'}
                     </span>
                     <br />
                     <br />
@@ -289,17 +318,23 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
               <div className='flex space-x-2'>
                 <IconButton
                   isLoading={isGeneratingRandomSlug}
-                  onClick={() => generateRandomSlug({ domain: form.getValues('domain') })}
+                  onClick={() => generateRandomSlug({ domain })}
                   tooltip='Gerar um link aleatório.'
                 >
                   <ShuffleIcon />
                 </IconButton>
 
                 <IconButton
-                  disabled={!hasTitle}
-                  className='disabled:cursor-not-allowed'
+                  disabled={!title}
+                  isLoading={isGeneratingAiSlug}
+                  onClick={() =>
+                    generateAiSlug({
+                      domain,
+                      title: title!,
+                    })
+                  }
                   tooltip={
-                    hasTitle
+                    title
                       ? 'Gerar um link utilizando IA.'
                       : 'Preencha o título para gerar um link utilizando IA.'
                   }
@@ -665,7 +700,7 @@ const Loading = ({ className }: HTMLAttributes<HTMLDivElement>) => {
       </div>
 
       <div className='space-y-2'>
-        <Skeleton className='h-[22px] w-40' />
+        <Skeleton className='h-[32px] w-40' />
         <Skeleton className='h-10 w-full' />
       </div>
 
