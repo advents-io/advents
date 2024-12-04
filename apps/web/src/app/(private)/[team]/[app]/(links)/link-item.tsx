@@ -7,8 +7,8 @@ import { CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
+import { IconButton } from '@/components/icon-button'
 import { LinkItemMoreOptionsButton } from '@/components/link-item-more-options-button'
-import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip'
 
@@ -55,20 +55,9 @@ export const LinkItem = ({ link, qrCodeLogoUrl }: Props) => {
                 {link.domain}/<span className='font-semibold text-foreground'>{link.slug}</span>
               </Link>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    className='ml-1 size-8 rounded-full text-muted-foreground'
-                    onClick={copyToClipboard}
-                    variant='ghost'
-                    size='icon'
-                  >
-                    <CopyIcon />
-                  </Button>
-                </TooltipTrigger>
-
-                <TooltipContent>Copiar link</TooltipContent>
-              </Tooltip>
+              <IconButton tooltip='Copiar link' onClick={copyToClipboard} className='ml-1'>
+                <CopyIcon />
+              </IconButton>
             </div>
           </div>
 

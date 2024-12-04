@@ -242,6 +242,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
       prisma.attribution.createMany({
         data: clicksAndSessionsConvertedToAttributions.map(({ click, session }) => ({
           method: 'ios_deterministic_click',
+          confidence: 1,
           sessionId: session.id,
           clickId: click.id,
           linkId: link.id,
