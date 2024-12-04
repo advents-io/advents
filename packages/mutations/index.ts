@@ -34,6 +34,7 @@ export {
   type EditLinkFormInput,
   editLinkFormInputSchema,
 } from './src/actions/link/edit-link-action/schema'
+export { generateRandomSlugAction } from './src/actions/link/generate-random-slug-action'
 export { sendDiscordMessageAction } from './src/actions/send-discord-message'
 //
 export * from 'next-safe-action'

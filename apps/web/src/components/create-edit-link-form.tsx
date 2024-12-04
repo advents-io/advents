@@ -9,11 +9,18 @@ import {
   EditLinkFormInput,
   editLinkFormInputSchema,
   formatErrors,
+  generateRandomSlugAction,
   useAction,
 } from '@advents/mutations'
 import { GetAppDefaultValuesOutput, GetLinksAnalyticsOutput } from '@advents/queries/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusIcon, SaveIcon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import {
+  PlusIcon,
+  SaveIcon,
+  ShuffleIcon,
+  SparklesIcon,
+  SquareArrowOutUpRightIcon,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { usePostHog } from 'posthog-js/react'
@@ -23,6 +30,7 @@ import { toast } from 'sonner'
 
 import { useStartEndDate } from '@/app/(private)/[team]/[app]/analytics/use-start-end-date'
 import { ErrorAlert } from '@/components/error-alert'
+import { IconButton } from '@/components/icon-button'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import { getAppDefaultValues } from '@/lib/queries/get-app-default-values'
 import { getAppDomains } from '@/lib/queries/get-app-domains'
@@ -106,6 +114,19 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
       onSuccess()
     },
   })
+
+  const { execute: generateRandomSlug, isExecuting: isGeneratingRandomSlug } = useAction(
+    generateRandomSlugAction,
+    {
+      onSuccess: ({ data }) => {
+        if (!data) {
+          return
+        }
+
+        form.setValue('slug', data.slug)
+      },
+    },
+  )
 
   const onSubmit = async (link: CreateLinkFormInput | EditLinkFormInput) => {
     if (linkId) {
@@ -203,6 +224,8 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
+  const hasTitle = !!form.getValues('title')
+
   if (form.formState.isLoading) {
     return <Loading className={className} />
   }
@@ -237,30 +260,54 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
           />
 
           <div className='flex flex-col'>
-            <FormLabel
-              optional
-              tooltip={
-                <span>
-                  Link curto utilizado para compartilhamento.
-                  <br />
-                  <span className='font-semibold text-primary'>
-                    https://{form.getValues('domain')}/{form.getValues('slug') || 'abcd123'}
+            <div className='flex items-end justify-between'>
+              <FormLabel
+                optional
+                tooltip={
+                  <span>
+                    Link curto utilizado para compartilhamento.
+                    <br />
+                    <span className='font-semibold text-primary'>
+                      https://{form.getValues('domain')}/{form.getValues('slug') || 'abcd123'}
+                    </span>
+                    <br />
+                    <br />
+                    Você pode adicionar um domínio customizado nas{' '}
+                    <Link
+                      href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
+                      className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                      target='_blank'
+                    >
+                      configurações do app. <SquareArrowOutUpRightIcon className='size-4' />
+                    </Link>
                   </span>
-                  <br />
-                  <br />
-                  Você pode adicionar um domínio customizado nas{' '}
-                  <Link
-                    href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
-                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                    target='_blank'
-                  >
-                    configurações do app. <SquareArrowOutUpRightIcon className='size-4' />
-                  </Link>
-                </span>
-              }
-            >
-              Link curto
-            </FormLabel>
+                }
+              >
+                Link curto
+              </FormLabel>
+
+              <div className='flex space-x-2'>
+                <IconButton
+                  isLoading={isGeneratingRandomSlug}
+                  onClick={() => generateRandomSlug({ domain: form.getValues('domain') })}
+                  tooltip='Gerar um link aleatório.'
+                >
+                  <ShuffleIcon />
+                </IconButton>
+
+                <IconButton
+                  disabled={!hasTitle}
+                  className='disabled:cursor-not-allowed'
+                  tooltip={
+                    hasTitle
+                      ? 'Gerar um link utilizando IA.'
+                      : 'Preencha o título para gerar um link utilizando IA.'
+                  }
+                >
+                  <SparklesIcon />
+                </IconButton>
+              </div>
+            </div>
 
             <div className='mt-2 flex items-center gap-2'>
               <FormField
