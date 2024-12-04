@@ -42,7 +42,7 @@ export const generateAiSlugAction = authActionClient
 
                Requirements:
                - Language: Brazilian Portuguese (pt-BR)
-               - Maximum length: 32 characters
+               - Maximum length: 20 characters
                - Only use: lowercase letters, numbers, dashes (-)
                - Must be relevant to the link description.
                - Must be unique (avoid these slugs: ${existingSlugs.map(({ slug }) => slug).join(', ')})
