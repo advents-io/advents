@@ -41,8 +41,8 @@ export const generateAiSlugAction = authActionClient
                - Link domain: ${domain}
 
                Requirements:
-               - Maximum length: 20 characters
                - Language: Brazilian Portuguese (pt-BR)
+               - Maximum length: 32 characters
                - Only use: lowercase letters, numbers, dashes (-)
                - Must be relevant to the link description.
                - Must be unique (avoid these slugs: ${existingSlugs.map(({ slug }) => slug).join(', ')})

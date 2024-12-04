@@ -7,7 +7,7 @@ model Link {
 
   title                 String? @db.VarChar(64)
   domain                String
-  slug                  String  @db.VarChar(20)
+  slug                  String  @db.VarChar(32)
   androidUrl            String  @map("android_url")
   iosUrl                String  @map("ios_url")
   disableIosPreviewPage Boolean @default(false) @map("disable_ios_preview_page")

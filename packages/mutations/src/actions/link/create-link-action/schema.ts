@@ -11,7 +11,7 @@ export const createLinkFormInputSchema = z.object({
   domain: z.string({ message: 'Domínio inválido.' }),
   slug: z
     .string()
-    .max(20, 'A chave do link curto deve possuir no máximo 20 caracteres.')
+    .max(32, 'A chave do link curto deve possuir no máximo 32 caracteres.')
     .regex(
       regexes.CASE_INSENSITIVE_SLUG,
       'A chave do link deve conter apenas letras, números, hífen ou underline.',
