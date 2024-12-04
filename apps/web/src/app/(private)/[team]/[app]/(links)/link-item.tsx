@@ -3,7 +3,7 @@
 import { dayjs } from '@advents/common'
 import { Link as LinkDb } from '@advents/db'
 import { LOCALHOST_DOMAIN } from '@advents/queries/server'
-import { CopyIcon } from 'lucide-react'
+import { CheckIcon, CopyIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
@@ -55,7 +55,12 @@ export const LinkItem = ({ link, qrCodeLogoUrl }: Props) => {
                 {link.domain}/<span className='font-semibold text-foreground'>{link.slug}</span>
               </Link>
 
-              <IconButton tooltip='Copiar link' onClick={copyToClipboard} className='ml-1'>
+              <IconButton
+                tooltip='Copiar link'
+                onClick={copyToClipboard}
+                className='ml-1'
+                postClickIcon={<CheckIcon />}
+              >
                 <CopyIcon />
               </IconButton>
             </div>
