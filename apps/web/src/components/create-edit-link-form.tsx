@@ -314,12 +314,12 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
               Link curto
             </FormLabel>
 
-            <div className='mt-2 flex items-center gap-2'>
+            <div className='mt-2 flex flex-col gap-2 sm:flex-row sm:items-center'>
               <FormField
                 control={form.control}
                 name='domain'
                 render={({ field }) => (
-                  <FormItem className='w-60'>
+                  <FormItem className='w-full max-w-52'>
                     <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                       <FormControl>
                         <SelectTrigger>
@@ -339,45 +339,52 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                 )}
               />
 
-              <span className='text-muted-foreground'>/</span>
+              <span className='hidden text-muted-foreground sm:block'>/</span>
 
-              <FormField
-                control={form.control}
-                name='slug'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormControl>
-                      <Input autoFocus placeholder='abcd123' {...field} value={field.value || ''} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+              <div className='flex w-full items-center gap-1'>
+                <FormField
+                  control={form.control}
+                  name='slug'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormControl>
+                        <Input
+                          autoFocus
+                          placeholder='abcd123'
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-              <IconButton
-                isLoading={isGeneratingRandomSlug}
-                onClick={() => generateRandomSlug({ domain })}
-                tooltip='Gerar um link aleatório.'
-              >
-                <ShuffleIcon />
-              </IconButton>
+                <IconButton
+                  disabled={!title}
+                  isLoading={isGeneratingAiSlug}
+                  onClick={() =>
+                    generateAiSlug({
+                      domain,
+                      title: title!,
+                    })
+                  }
+                  tooltip={
+                    title
+                      ? 'Gerar um link utilizando IA.'
+                      : 'Preencha o título para gerar um link utilizando IA.'
+                  }
+                >
+                  <SparklesIcon />
+                </IconButton>
 
-              <IconButton
-                disabled={!title}
-                isLoading={isGeneratingAiSlug}
-                onClick={() =>
-                  generateAiSlug({
-                    domain,
-                    title: title!,
-                  })
-                }
-                tooltip={
-                  title
-                    ? 'Gerar um link utilizando IA.'
-                    : 'Preencha o título para gerar um link utilizando IA.'
-                }
-              >
-                <SparklesIcon />
-              </IconButton>
+                <IconButton
+                  isLoading={isGeneratingRandomSlug}
+                  onClick={() => generateRandomSlug({ domain })}
+                  tooltip='Gerar um link aleatório.'
+                >
+                  <ShuffleIcon />
+                </IconButton>
+              </div>
             </div>
 
             <FormMessage className='mt-1'>
@@ -416,7 +423,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     onValueChange={changeAndroidUrlType}
                     value={isDefaultAndroidUrl.toString()}
                   >
-                    <SelectTrigger className='w-44'>
+                    <SelectTrigger className='w-full max-w-36'>
                       <SelectValue />
                     </SelectTrigger>
 
@@ -427,6 +434,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                       >
                         Padrão
                       </SelectItem>
+
                       <SelectItem value='false' tooltip='Usar url personalizada.'>
                         Personalizado
                       </SelectItem>
@@ -443,6 +451,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     />
                   </FormControl>
                 </div>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -476,7 +485,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
 
                 <div className='flex flex-col gap-2 sm:flex-row'>
                   <Select onValueChange={changeIosUrlType} value={isDefaultIosUrl.toString()}>
-                    <SelectTrigger className='w-44'>
+                    <SelectTrigger className='w-full max-w-36'>
                       <SelectValue />
                     </SelectTrigger>
 
@@ -487,6 +496,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                       >
                         Padrão
                       </SelectItem>
+
                       <SelectItem value='false' tooltip='Usar url personalizada.'>
                         Personalizado
                       </SelectItem>
@@ -502,6 +512,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     />
                   </FormControl>
                 </div>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -583,7 +594,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                       onValueChange={changeFallbackUrlType}
                       value={isDefaultFallbackUrl.toString()}
                     >
-                      <SelectTrigger className='w-44'>
+                      <SelectTrigger className='w-full max-w-36'>
                         <SelectValue />
                       </SelectTrigger>
 
@@ -594,6 +605,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                         >
                           Padrão
                         </SelectItem>
+
                         <SelectItem value='false' tooltip='Usar url personalizada.'>
                           Personalizado
                         </SelectItem>
@@ -610,6 +622,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     />
                   </FormControl>
                 </div>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -642,7 +655,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                 <FormControl>
                   <Input
                     placeholder='R$ 100,00'
-                    className='w-40'
+                    className='w-full max-w-40'
                     {...field}
                     value={
                       field.value !== null && field.value !== undefined
@@ -659,6 +672,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                     }}
                   />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -696,8 +710,11 @@ const Loading = ({ className }: HTMLAttributes<HTMLDivElement>) => {
       </div>
 
       <div className='space-y-2'>
-        <Skeleton className='h-[32px] w-40' />
-        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-[22px] w-40' />
+        <div className='flex flex-col gap-2 sm:flex-row'>
+          <Skeleton className='h-10 w-44' />
+          <Skeleton className='h-10 w-full' />
+        </div>
       </div>
 
       <div className='space-y-2'>
