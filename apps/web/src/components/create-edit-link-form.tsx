@@ -289,60 +289,30 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
           />
 
           <div className='flex flex-col'>
-            <div className='flex items-end justify-between'>
-              <FormLabel
-                optional
-                tooltip={
-                  <span>
-                    Link curto utilizado para compartilhamento.
-                    <br />
-                    <span className='font-semibold text-primary'>
-                      https://{domain}/{slug || 'abcd123'}
-                    </span>
-                    <br />
-                    <br />
-                    Você pode adicionar um domínio customizado nas{' '}
-                    <Link
-                      href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
-                      className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                      target='_blank'
-                    >
-                      configurações do app. <SquareArrowOutUpRightIcon className='size-4' />
-                    </Link>
+            <FormLabel
+              optional
+              tooltip={
+                <span>
+                  Link curto utilizado para compartilhamento.
+                  <br />
+                  <span className='font-semibold text-primary'>
+                    https://{domain}/{slug || 'abcd123'}
                   </span>
-                }
-              >
-                Link curto
-              </FormLabel>
-
-              <div className='flex space-x-2'>
-                <IconButton
-                  isLoading={isGeneratingRandomSlug}
-                  onClick={() => generateRandomSlug({ domain })}
-                  tooltip='Gerar um link aleatório.'
-                >
-                  <ShuffleIcon />
-                </IconButton>
-
-                <IconButton
-                  disabled={!title}
-                  isLoading={isGeneratingAiSlug}
-                  onClick={() =>
-                    generateAiSlug({
-                      domain,
-                      title: title!,
-                    })
-                  }
-                  tooltip={
-                    title
-                      ? 'Gerar um link utilizando IA.'
-                      : 'Preencha o título para gerar um link utilizando IA.'
-                  }
-                >
-                  <SparklesIcon />
-                </IconButton>
-              </div>
-            </div>
+                  <br />
+                  <br />
+                  Você pode adicionar um domínio customizado nas{' '}
+                  <Link
+                    href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
+                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                    target='_blank'
+                  >
+                    configurações do app. <SquareArrowOutUpRightIcon className='size-4' />
+                  </Link>
+                </span>
+              }
+            >
+              Link curto
+            </FormLabel>
 
             <div className='mt-2 flex items-center gap-2'>
               <FormField
@@ -382,6 +352,32 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                   </FormItem>
                 )}
               />
+
+              <IconButton
+                isLoading={isGeneratingRandomSlug}
+                onClick={() => generateRandomSlug({ domain })}
+                tooltip='Gerar um link aleatório.'
+              >
+                <ShuffleIcon />
+              </IconButton>
+
+              <IconButton
+                disabled={!title}
+                isLoading={isGeneratingAiSlug}
+                onClick={() =>
+                  generateAiSlug({
+                    domain,
+                    title: title!,
+                  })
+                }
+                tooltip={
+                  title
+                    ? 'Gerar um link utilizando IA.'
+                    : 'Preencha o título para gerar um link utilizando IA.'
+                }
+              >
+                <SparklesIcon />
+              </IconButton>
             </div>
 
             <FormMessage className='mt-1'>

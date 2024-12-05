@@ -38,11 +38,17 @@ export const IconButton = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <div
+        <Button
           className={cn(
-            'relative flex size-8 items-center justify-center text-muted-foreground',
+            'relative aspect-square size-8 text-muted-foreground disabled:pointer-events-auto disabled:cursor-not-allowed',
+            (isPostClickInterval || isLoading) && 'pointer-events-none',
             className,
           )}
+          variant='ghost'
+          size='icon'
+          type='button'
+          onClick={handleClick}
+          disabled={disabled}
         >
           <Loader2Icon
             className={cn(
@@ -62,20 +68,15 @@ export const IconButton = ({
             </div>
           )}
 
-          <Button
+          <div
             className={cn(
-              'z-10 size-8 transition-all duration-500',
+              'transition-all duration-500',
               !isPostClickInterval && !isLoading ? 'opacity-100' : 'opacity-0',
             )}
-            variant='ghost'
-            size='icon'
-            type='button'
-            onClick={handleClick}
-            disabled={disabled}
           >
             {children}
-          </Button>
-        </div>
+          </div>
+        </Button>
       </TooltipTrigger>
 
       {tooltip && <TooltipContent>{tooltip}</TooltipContent>}
