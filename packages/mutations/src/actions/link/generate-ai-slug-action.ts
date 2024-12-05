@@ -61,6 +61,7 @@ export const generateAiSlugAction = authActionClient
                Return only the slug, nothing else. No quotes, no explanations.
                `,
       maxTokens: 300,
+      temperature: 0.5,
     })
 
     return {
