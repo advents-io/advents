@@ -4,10 +4,18 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { ApiEnv } from '../api'
+import { handleInviteUser } from '../handlers/invite-user'
 
 const inputSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   slug: z.string().min(1, 'Slug is required'),
+  users: z
+    .array(
+      z.object({
+        email: z.string().email('Invalid email'),
+      }),
+    )
+    .optional(),
 })
 
 export const createTeam = (api: Hono<ApiEnv>) =>
@@ -15,16 +23,42 @@ export const createTeam = (api: Hono<ApiEnv>) =>
     'team', //
     zValidator('json', inputSchema),
     async c => {
-      const data = c.req.valid('json')
+      const { name, slug, users } = c.req.valid('json')
 
       const team = await prisma.team.create({
         data: {
-          ...data,
+          name,
+          slug,
           createdBy: c.var.user.id,
           updatedBy: c.var.user.id,
         },
       })
 
-      return c.json(team, 201)
+      const invitedUsers: string[] = []
+
+      if (users && users.length > 0) {
+        for (const user of users) {
+          try {
+            await handleInviteUser({
+              email: user.email,
+              teamId: team.id,
+              createdByUserId: c.var.user.id,
+            })
+
+            invitedUsers.push(`Invite sent to ${user.email}`)
+          } catch (e) {
+            const error = (e as Error).message
+            invitedUsers.push(`Error inviting ${user.email}: ${error}`)
+          }
+        }
+      }
+
+      return c.json(
+        {
+          team,
+          users: invitedUsers,
+        },
+        201,
+      )
     },
   )

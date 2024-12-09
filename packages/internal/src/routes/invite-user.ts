@@ -1,10 +1,9 @@
-import { prisma } from '@advents/db'
-import { supabaseServer } from '@advents/supabase/server'
 import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { ApiEnv } from '../api'
+import { handleInviteUser } from '../handlers/invite-user'
 
 const inputSchema = z.object({
   email: z.string({ message: 'Email inválido.' }).email('Email inválido.'),
@@ -16,31 +15,18 @@ export const inviteUser = (api: Hono<ApiEnv>) =>
     'user', //
     zValidator('json', inputSchema),
     async c => {
-      const data = c.req.valid('json')
+      const { email, teamId } = c.req.valid('json')
 
-      const supabase = await supabaseServer()
-
-      const {
-        data: { user },
-        error: inviteUserError,
-      } = await supabase.auth.admin.inviteUserByEmail(data.email)
-
-      if (!user) {
-        return c.json(
-          { error: inviteUserError?.message || 'Erro ao enviar convite para o usuário.' },
-          400,
-        )
+      try {
+        await handleInviteUser({
+          email,
+          teamId,
+          createdByUserId: c.var.user.id,
+        })
+      } catch (error) {
+        return c.json({ error: (error as Error).message }, 400)
       }
 
-      const member = await prisma.member.create({
-        data: {
-          userId: user.id,
-          teamId: data.teamId,
-          createdBy: c.var.user.id,
-          updatedBy: c.var.user.id,
-        },
-      })
-
-      return c.json(member, 201)
+      return c.newResponse(null, 201)
     },
   )
