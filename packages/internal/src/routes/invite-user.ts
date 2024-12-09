@@ -32,26 +32,12 @@ export const inviteUser = (api: Hono<ApiEnv>) =>
         )
       }
 
-      const {
-        data: { users },
-      } = await supabase.auth.admin.listUsers()
-
-      if (!users.length) {
-        return c.json({ error: 'No created users found.' }, 400)
-      }
-
-      const adminUser = users.find(user => user.email === 'gabriel@advents.io')
-
-      if (!adminUser) {
-        return c.json({ error: 'Admin user not found.' }, 400)
-      }
-
       const member = await prisma.member.create({
         data: {
           userId: user.id,
           teamId: data.teamId,
-          createdBy: adminUser.id,
-          updatedBy: adminUser.id,
+          createdBy: c.var.user.id,
+          updatedBy: c.var.user.id,
         },
       })
 

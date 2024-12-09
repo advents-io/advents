@@ -28,5 +28,9 @@ export const authMiddleware = createMiddleware<AuthMiddlewareEnv>(async (c, next
     return c.json({ error: 'Unauthorized.' }, 401)
   }
 
+  c.set('user', {
+    id: user.id,
+  })
+
   await next()
 })
