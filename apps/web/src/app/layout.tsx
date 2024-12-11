@@ -34,20 +34,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://app.advents.io',
   },
-  icons: [
-    {
-      rel: 'icon',
-      type: 'image/png',
-      url: '/favicon-light.png',
-      media: '(prefers-color-scheme: light)',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      url: '/favicon-dark.png',
-      media: '(prefers-color-scheme: dark)',
-    },
-  ],
   metadataBase: new URL('https://app.advents.io'),
   openGraph: {
     type: 'website',

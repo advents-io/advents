@@ -4,7 +4,7 @@ import { createSafeActionClient } from 'next-safe-action'
 
 import { ActionError } from './action-errors'
 
-export const actionClient = createSafeActionClient({
+const actionClient = createSafeActionClient({
   handleServerError(e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       return e.code === 'P2002'

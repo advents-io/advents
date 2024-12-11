@@ -20,6 +20,7 @@ export const LoadingSpinner = ({ children, loading, className, ...rest }: Props)
       >
         {children}
       </div>
+
       {loading && (
         <div className='absolute inset-0 flex items-center justify-center'>
           <Loader2Icon className='size-4 animate-spin' />
