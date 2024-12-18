@@ -9,7 +9,7 @@ type Link = Omit<LinkDb, 'clickCount' | 'installCount' | 'revenueCount' | 'disab
 type Purchase = Omit<PurchaseDb, 'id'>
 
 const CONFIG = {
-  LINKS_TO_CREATE: 15,
+  LINKS_TO_CREATE: 50,
 }
 
 async function seed() {
@@ -83,6 +83,7 @@ const createApp = async (teamId: string, userId: string) => {
   const { id: appId } = await prisma.app.create({
     data: {
       ...APP,
+      defaultDomain: APP.domains[0],
       imageUrl,
       apiKeys: {
         create: {
@@ -116,7 +117,7 @@ const createLinks = async (appId: string, userId: string) => {
     return {
       id: crypto.randomUUID(),
       title: RANDOM_LINKS[index].name,
-      domain: APP.defaultDomain,
+      domain: faker.helpers.arrayElement(APP.domains),
       slug: Math.random() < 0.4 ? RANDOM_LINKS[index].slug : nanoid(),
       iosUrl: APP.iosUrl,
       androidUrl: APP.androidUrl,
