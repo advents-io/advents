@@ -24,9 +24,9 @@ const jetBrainsMonoFont = JetBrainsMono({
   variable: '--font-mono',
 })
 
-const title = 'Advents | Links únicos e mensuráveis para seus apps'
+const title = 'Advents | A plataforma para crescer seu app'
 const description =
-  'A Advents é a alternativa brasileira à AppsFlyer. Crie links únicos para seu apps Android e iOS. Meça o resultado das campanhas de instalação com nossa ferramenta de atribuição e analytics, e engaje seus usuários com deep links.'
+  'Advents é uma alternativa à AppsFlyer e ao Firebase Dynamic Links. Impulsione suas campanhas de instalação com a evolução da atribuição mobile.'
 
 export const metadata: Metadata = {
   title,
