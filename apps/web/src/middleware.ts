@@ -7,14 +7,13 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
-     * - _next/static
-     * - _next/image
-     * - favicon.ico
-     * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
+     * - _next: Next.js internals
+     * - Metadata files: favicon.ico, sitemap.xml, robots.txt, manifest.webmanifest
+     * - Images: .svg, .png, .jpg, .jpeg, .gif, .webp
      * - /ios/preview
      * - /api
      */
-    '/((?!_next/static|_next/image|favicon.ico|ios/preview|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|ios/preview|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 
