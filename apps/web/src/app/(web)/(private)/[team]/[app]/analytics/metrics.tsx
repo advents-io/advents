@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 import { DollarSignIcon, DownloadIcon, MousePointerClickIcon, RedoDotIcon } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
+import { useStartEndDate } from '@/hooks/use-start-end-date'
 import { getAppAnalytics } from '@/lib/queries/get-app-analytics'
 import { cn } from '@/lib/tailwind'
 
 import { MetricCard } from './metric-card'
-import { useStartEndDate } from './use-start-end-date'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   teamSlug: string

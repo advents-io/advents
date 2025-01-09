@@ -5,9 +5,9 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { useStartEndDate } from '@/app/(private)/[team]/[app]/analytics/use-start-end-date'
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
+import { useStartEndDate } from '@/hooks/use-start-end-date'
 import { getQueryClient } from '@/lib/react-query'
 import {
   AlertDialog,

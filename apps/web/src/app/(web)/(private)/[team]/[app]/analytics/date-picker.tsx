@@ -6,12 +6,11 @@ import * as React from 'react'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
+import { useStartEndDate } from '@/hooks/use-start-end-date'
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 import { Calendar } from '@/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
-
-import { useStartEndDate } from './use-start-end-date'
 
 export const DatePicker = () => {
   const [{ startDate, endDate }, setStartEndDate] = useStartEndDate()
