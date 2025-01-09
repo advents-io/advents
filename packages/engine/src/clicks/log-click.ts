@@ -29,7 +29,7 @@ export const logClick = async (
     id: clickId,
 
     destinationUrl,
-    os: ua.os.name || null,
+    os: ua.os.name?.toLowerCase() || null,
 
     referer: refererDomain || '(direct)',
     refererUrl: referer || '(direct)',

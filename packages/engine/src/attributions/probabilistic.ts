@@ -1,5 +1,4 @@
-/* TODO: Verifications before running probabilistic attribution:
- *   - device not already attributed || is first session
+/* TODO improve probabilistic attribution
  *
  * Add filters:
  *   - app_id
@@ -24,6 +23,16 @@ export const handleProbabilisticAttribution = async (
   session: Session,
   method: AttributionMethod,
 ): Promise<AttributionData | null> => {
+  if (!session.isFirstSession) {
+    // If it's not the first session, the attribution is already done
+    return null
+  }
+
+  if (session.clearedAppLocalData) {
+    // If the user cleared app local data, the attribution is already done in the first session
+    return null
+  }
+
   const attributionWindowStart = attributionSettings.getProbabilisticAttributionWindowStart()
 
   const recentClicks = await prisma.click.findMany({
@@ -33,8 +42,6 @@ export const handleProbabilisticAttribution = async (
       },
       appId: session.appId,
       os: session.os,
-      country: session.country,
-      deviceModel: session.deviceModel,
       attribution: null,
     },
     orderBy: {
@@ -46,7 +53,7 @@ export const handleProbabilisticAttribution = async (
     return null
   }
 
-  const attributedClick = getAttributedClick(recentClicks, session)
+  const attributedClick = calculateProbabilisticAttribution(recentClicks, session)
 
   if (!attributedClick) {
     return null
@@ -95,11 +102,14 @@ type AttributedClick = {
   confidence: number
 }
 
-const getAttributedClick = (clicks: Click[], session: Session): AttributedClick | null => {
+const calculateProbabilisticAttribution = (
+  clicks: Click[],
+  session: Session,
+): AttributedClick | null => {
   let bestMatch: AttributedClick | null = null
 
   for (const click of clicks) {
-    const confidence = getAttributionConfidence(click, session)
+    const confidence = calculateAttributionConfidence(click, session)
 
     if (confidence > 0.7 && (!bestMatch || confidence > bestMatch.confidence)) {
       bestMatch = {
@@ -112,7 +122,7 @@ const getAttributedClick = (clicks: Click[], session: Session): AttributedClick 
   return bestMatch
 }
 
-const getAttributionConfidence = (click: Click, session: Session): number => {
+const calculateAttributionConfidence = (click: Click, session: Session): number => {
   let matchScore = 0
   let totalScore = 0
 
@@ -138,23 +148,7 @@ const getAttributionConfidence = (click: Click, session: Session): number => {
   }
   totalScore += 0.2
 
-  // OS match
-  if (click.os === session.os) {
-    matchScore += 0.1
-  }
-  totalScore += 0.1
-
-  // Browser match (if available in session data)
-  // if (click.browser === session.browser) {
-  //   matchScore += 0.1
-  // }
-  // totalScore += 0.1
-
-  // User agent partial match
-  if (session.userAgent && click.userAgent && session.userAgent.includes(click.userAgent)) {
-    matchScore += 0.1
-  }
-  totalScore += 0.1
+  // TODO: implement distance match
 
   const confidence = matchScore / totalScore
 
