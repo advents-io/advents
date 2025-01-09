@@ -11,9 +11,10 @@ export const config = {
      * - Metadata files: favicon.ico, sitemap.xml, robots.txt, manifest.webmanifest
      * - Images: .svg, .png, .jpg, .jpeg, .gif, .webp
      * - /ios/preview
+     * - /deeplink
      * - /api
      */
-    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|ios/preview|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|ios/preview|deeplink|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 

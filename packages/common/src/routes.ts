@@ -30,8 +30,12 @@ export const routes = {
   SIGN_IN: {
     path: '/sign-in',
   },
+
   IOS_PREVIEW: {
     path: '/ios/preview',
+  },
+  DEEPLINK: {
+    path: (url: string) => `/deeplink/${url}`,
   },
 }
 
