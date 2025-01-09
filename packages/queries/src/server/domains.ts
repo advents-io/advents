@@ -29,8 +29,8 @@ const CUSTOM_DOMAINS: CustomDomain[] =
   process.env.NEXT_PUBLIC_VERCEL === '1' && process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
     ? [
         {
-          appId: 'eb39be27-f842-4eca-97d2-1835bfc4e33a',
-          domain: 'links.cumbuca.com',
+          appId: '2ba8e285-96b2-409d-aa00-b8fe37ebaabc',
+          domain: 'l.saude24h.com.br',
         },
         {
           appId: '07275def-37c3-4f2b-a049-bfee570dccc6',
