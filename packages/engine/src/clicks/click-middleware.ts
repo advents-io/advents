@@ -60,11 +60,10 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   const isIos = ua.os?.name === 'iOS'
   if (isIos) {
-    destinationUrl = !link.disableIosPreviewPage
-      ? new URL(routes.IOS_PREVIEW.path, getWebDomain(true))
-      : new URL(link.iosUrl)
+    destinationUrl = new URL(link.iosUrl)
 
     if (!link.disableIosPreviewPage) {
+      destinationUrl = new URL(routes.IOS_PREVIEW.path, getWebDomain(true))
       destinationUrl.searchParams.append('click_id', clickId)
       destinationUrl.searchParams.append('app_id', link.appId)
       destinationUrl.searchParams.append('redirect', link.iosUrl)
