@@ -2,12 +2,9 @@
 
 import { DOCS_URLS, routes } from '@advents/common'
 import {
+  createEditLinkFormInputSchema as actionCreateEditLinkFormInputSchema,
   createLinkAction,
-  CreateLinkFormInput,
-  createLinkFormInputSchema,
   editLinkAction,
-  EditLinkFormInput,
-  editLinkFormInputSchema,
   formatErrors,
   generateAiSlugAction,
   generateRandomSlugAction,
@@ -28,6 +25,7 @@ import { usePostHog } from 'posthog-js/react'
 import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { IconButton } from '@/components/icon-button'
@@ -45,7 +43,19 @@ import { ResponsiveDialogFooter } from '@/ui/responsive-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { Separator } from '@/ui/separator'
 import { Skeleton } from '@/ui/skeleton'
-import { Switch } from '@/ui/switch'
+
+const createEditLinkFormInputSchema = actionCreateEditLinkFormInputSchema.extend({
+  disableIosPreviewPage: z.union([
+    z.literal('default'), //
+    z.literal('true'),
+    z.literal('false'),
+  ]),
+  isDefaultAndroidUrl: z.boolean(),
+  isDefaultIosUrl: z.boolean(),
+  isDefaultFallbackUrl: z.boolean(),
+})
+
+type CreateEditLinkFormInput = z.infer<typeof createEditLinkFormInputSchema>
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   closeDialog: () => void
@@ -59,11 +69,6 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   const posthog = usePostHog()
 
   const [defaultAppValues, setDefaultAppValues] = useState<GetAppDefaultValuesOutput>()
-  const [isDefaultAndroidUrl, setIsDefaultAndroidUrl] = useState(true)
-  const [isDefaultIosUrl, setIsDefaultIosUrl] = useState(true)
-  const [isDefaultFallbackUrl, setIsDefaultFallbackUrl] = useState(true)
-
-  const hasDefaultFallbackUrl = !!defaultAppValues?.defaultFallbackUrl
 
   const [availableDomains, setAvailableDomains] = useState<string[]>([])
 
@@ -155,25 +160,32 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     },
   )
 
-  const onSubmit = async (link: CreateLinkFormInput | EditLinkFormInput) => {
+  const onSubmit = async (link: CreateEditLinkFormInput) => {
+    link.androidUrl = link.isDefaultAndroidUrl ? null : link.androidUrl
+    link.iosUrl = link.isDefaultIosUrl ? null : link.iosUrl
+    link.fallbackUrl = link.isDefaultFallbackUrl ? null : link.fallbackUrl
+
+    const disableIosPreviewPage =
+      link.disableIosPreviewPage === 'default' ? null : link.disableIosPreviewPage === 'true'
+
     if (linkId) {
       editLink({
         ...link,
+        disableIosPreviewPage,
         linkId,
       })
     } else {
       createLink({
         ...link,
+        disableIosPreviewPage,
         appId: defaultAppValues!.id,
       })
     }
   }
 
-  const createLinkError = formatErrors(createLinkResult)
-  const editLinkError = formatErrors(editLinkResult)
-  const error = createLinkError || editLinkError
+  const error = formatErrors(createLinkResult) || formatErrors(editLinkResult)
 
-  const handleGetLink = async (linkId: string) => {
+  const handleGetLink = async (linkId: string): Promise<CreateEditLinkFormInput> => {
     const [link, app] = await Promise.all([
       getLink({ linkId }),
       getAppDefaultValues({ teamSlug, appSlug }),
@@ -181,21 +193,28 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
 
     setDefaultAppValues(app)
 
-    setIsDefaultAndroidUrl(link.androidUrl === app.androidUrl)
-    setIsDefaultIosUrl(link.iosUrl === app.iosUrl)
-    setIsDefaultFallbackUrl(!!app.defaultFallbackUrl && link.fallbackUrl === app.defaultFallbackUrl)
-
     const availableDomains = await getAppDomains({ appId: app.id })
     setAvailableDomains(availableDomains.domains)
 
-    return link
+    return {
+      ...link,
+      androidUrl: link.androidUrl || app.androidUrl,
+      iosUrl: link.iosUrl || app.iosUrl,
+      fallbackUrl: link.fallbackUrl || app.fallbackUrl,
+      disableIosPreviewPage: !link.disableIosPreviewPage
+        ? 'default'
+        : link.disableIosPreviewPage
+          ? 'true'
+          : 'false',
+      isDefaultAndroidUrl: !link.androidUrl,
+      isDefaultIosUrl: !link.iosUrl,
+      isDefaultFallbackUrl: !link.fallbackUrl,
+    }
   }
 
-  const getDefaultLinkValues = async () => {
+  const getDefaultLinkValues = async (): Promise<CreateEditLinkFormInput> => {
     const app = await getAppDefaultValues({ teamSlug, appSlug })
     setDefaultAppValues(app)
-
-    setIsDefaultFallbackUrl(!!app.defaultFallbackUrl)
 
     const availableDomains = await getAppDomains({ appId: app.id })
     setAvailableDomains(availableDomains.domains)
@@ -206,48 +225,21 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
       slug: '',
       androidUrl: app.androidUrl,
       iosUrl: app.iosUrl,
-      disableIosPreviewPage: app.defaultDisableIosPreviewPage,
-      fallbackUrl: app.defaultFallbackUrl || '',
+      disableIosPreviewPage: 'default',
+      fallbackUrl: app.fallbackUrl,
       campaignCost: null,
+      isDefaultAndroidUrl: true,
+      isDefaultIosUrl: true,
+      isDefaultFallbackUrl: true,
     }
   }
 
-  const form = useForm<CreateLinkFormInput | EditLinkFormInput>({
-    resolver: zodResolver(linkId ? editLinkFormInputSchema : createLinkFormInputSchema),
+  const form = useForm<CreateEditLinkFormInput>({
+    resolver: zodResolver(createEditLinkFormInputSchema),
     defaultValues: linkId
       ? async () => await handleGetLink(linkId)
       : async () => await getDefaultLinkValues(),
   })
-
-  const changeAndroidUrlType = (value: string) => {
-    const isDefault = value === 'true'
-
-    setIsDefaultAndroidUrl(isDefault)
-
-    if (defaultAppValues && isDefault) {
-      form.setValue('androidUrl', defaultAppValues.androidUrl)
-    }
-  }
-
-  const changeIosUrlType = (value: string) => {
-    const isDefault = value === 'true'
-
-    setIsDefaultIosUrl(isDefault)
-
-    if (defaultAppValues && isDefault) {
-      form.setValue('iosUrl', defaultAppValues.iosUrl)
-    }
-  }
-
-  const changeFallbackUrlType = (value: string) => {
-    const isDefault = value === 'true'
-
-    setIsDefaultFallbackUrl(isDefault)
-
-    if (defaultAppValues && isDefault && defaultAppValues.defaultFallbackUrl) {
-      form.setValue('fallbackUrl', defaultAppValues.defaultFallbackUrl)
-    }
-  }
 
   const isExecuting = isCreating || isEditing || form.formState.isSubmitting
 
@@ -392,211 +384,47 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
             </FormMessage>
           </div>
 
-          <FormField
-            control={form.control}
-            name='androidUrl'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  tooltip={
-                    <span>
-                      Url utilizada para o direcionamento em dispositivos Android.
-                      <br />
-                      <br />
-                      Você pode alterar a url padrão nas{' '}
-                      <Link
-                        href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                        target='_blank'
-                      >
-                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
-                      </Link>
-                      , ou utilizar uma url personalizada.
-                    </span>
-                  }
-                >
-                  Url do app Android
-                </FormLabel>
-
-                <div className='flex flex-col gap-2 sm:flex-row'>
-                  <Select
-                    onValueChange={changeAndroidUrlType}
-                    value={isDefaultAndroidUrl.toString()}
+          <div>
+            <FormLabel
+              tooltip={
+                <span>
+                  Url utilizada para o direcionamento em dispositivos Android.
+                  <br />
+                  <br />
+                  Você pode alterar a url padrão nas{' '}
+                  <Link
+                    href={routes.SETTINGS.path(teamSlug, appSlug)}
+                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                    target='_blank'
                   >
-                    <SelectTrigger className='w-full max-w-36'>
-                      <SelectValue />
-                    </SelectTrigger>
+                    configurações do app <SquareArrowOutUpRightIcon className='size-4' />
+                  </Link>
+                  , ou utilizar uma url personalizada.
+                </span>
+              }
+            >
+              Url do app Android
+            </FormLabel>
 
-                    <SelectContent className='overflow-visible'>
-                      <SelectItem
-                        value='true'
-                        tooltip='Url padrão informada na configuração do app.'
-                      >
-                        Padrão
-                      </SelectItem>
-
-                      <SelectItem value='false' tooltip='Usar url personalizada.'>
-                        Personalizado
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className='w-full'
-                      disabled={isDefaultAndroidUrl}
-                      placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
-                      type='url'
-                    />
-                  </FormControl>
-                </div>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='iosUrl'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  tooltip={
-                    <span>
-                      Url utilizada para o direcionamento em dispositivos iOS.
-                      <br />
-                      <br />
-                      Você pode alterar a url padrão nas{' '}
-                      <Link
-                        href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                        target='_blank'
-                      >
-                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
-                      </Link>
-                      , ou utilizar uma url personalizada.
-                    </span>
-                  }
-                >
-                  Url do app iOS
-                </FormLabel>
-
-                <div className='flex flex-col gap-2 sm:flex-row'>
-                  <Select onValueChange={changeIosUrlType} value={isDefaultIosUrl.toString()}>
-                    <SelectTrigger className='w-full max-w-36'>
-                      <SelectValue />
-                    </SelectTrigger>
-
-                    <SelectContent className='overflow-visible'>
-                      <SelectItem
-                        value='true'
-                        tooltip='Url padrão informada na configuração do app.'
-                      >
-                        Padrão
-                      </SelectItem>
-
-                      <SelectItem value='false' tooltip='Usar url personalizada.'>
-                        Personalizado
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isDefaultIosUrl}
-                      placeholder='https://apps.apple.com/app/exemplo/id1234567890'
-                      type='url'
-                    />
-                  </FormControl>
-                </div>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='disableIosPreviewPage'
-            render={({ field }) => (
-              <FormItem>
-                <div className='mb-4 flex items-center gap-2'>
-                  <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-
-                  <FormLabel
-                    tooltip={
-                      <span>
-                        Desativa a página de pré-visualização em dispositivos iOS, direcionando os
-                        usuários diretamente para a App Store.
-                        <br />
-                        <br />
-                        A página de pré-visualização melhora a precisão da atribuição em
-                        dispositivos iOS. Ao abrir um link, o usuário é direcionado para a página
-                        contendo um botão de ação que copia o identificador do link no clipboard do
-                        dispositivo. Ao abrir o app pela primeira vez, o identificador é lido,
-                        fazendo com que a atribuição seja garantida.
-                        <br />
-                        <br />
-                        Saiba mais{' '}
-                        <Link
-                          href={DOCS_URLS.IOS_PREVIEW_PAGE}
-                          className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                          target='_blank'
-                        >
-                          sobre a página de pré-visualização.{' '}
-                          <SquareArrowOutUpRightIcon className='size-4' />
-                        </Link>
-                      </span>
-                    }
-                  >
-                    Desabilitar página de pré-visualização no iOS
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='fallbackUrl'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  tooltip={
-                    <span>
-                      Url utilizada para o direcionamento em dispositivos que não sejam Android ou
-                      iOS.
-                      <br />
-                      <br />
-                      Você pode alterar a url padrão nas{' '}
-                      <Link
-                        href={routes.SETTINGS.path(teamSlug, appSlug)}
-                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                        target='_blank'
-                      >
-                        configurações do app <SquareArrowOutUpRightIcon className='size-4' />
-                      </Link>
-                      , ou utilizar uma url personalizada.
-                    </span>
-                  }
-                >
-                  Url alternativa
-                </FormLabel>
-
-                <div className='flex flex-col gap-2 sm:flex-row'>
-                  {hasDefaultFallbackUrl && (
+            <div className='mt-2 flex flex-col gap-2 sm:flex-row'>
+              <FormField
+                control={form.control}
+                name='isDefaultAndroidUrl'
+                render={({ field }) => (
+                  <FormItem className='w-full max-w-36'>
                     <Select
-                      onValueChange={changeFallbackUrlType}
-                      value={isDefaultFallbackUrl.toString()}
+                      {...field}
+                      value={field.value.toString()}
+                      onValueChange={value => {
+                        field.onChange(value === 'true')
+                        form.setValue('androidUrl', defaultAppValues!.androidUrl)
+                      }}
                     >
-                      <SelectTrigger className='w-full max-w-36'>
-                        <SelectValue />
-                      </SelectTrigger>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
 
                       <SelectContent className='overflow-visible'>
                         <SelectItem
@@ -611,22 +439,263 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                  )}
+                  </FormItem>
+                )}
+              />
 
-                  <FormControl>
-                    <Input
+              <FormField
+                control={form.control}
+                name='androidUrl'
+                render={({ field }) => {
+                  return (
+                    <FormItem className='w-full'>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value || ''}
+                          disabled={form.getValues('isDefaultAndroidUrl')}
+                          placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
+                          type='url'
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )
+                }}
+              />
+            </div>
+
+            <FormMessage className='mt-1'>
+              {form.formState.errors.isDefaultAndroidUrl?.message ||
+                form.formState.errors.androidUrl?.message}
+            </FormMessage>
+          </div>
+
+          <div>
+            <FormLabel
+              tooltip={
+                <span>
+                  Url utilizada para o direcionamento em dispositivos iOS.
+                  <br />
+                  <br />
+                  Você pode alterar a url padrão nas{' '}
+                  <Link
+                    href={routes.SETTINGS.path(teamSlug, appSlug)}
+                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                    target='_blank'
+                  >
+                    configurações do app <SquareArrowOutUpRightIcon className='size-4' />
+                  </Link>
+                  , ou utilizar uma url personalizada.
+                </span>
+              }
+            >
+              Url do app iOS
+            </FormLabel>
+
+            <div className='mt-2 flex flex-col gap-2 sm:flex-row'>
+              <FormField
+                control={form.control}
+                name='isDefaultIosUrl'
+                render={({ field }) => (
+                  <FormItem className='w-full max-w-36'>
+                    <Select
                       {...field}
-                      disabled={isDefaultFallbackUrl}
-                      placeholder='https://www.meusite.com'
-                      type='url'
-                    />
+                      value={field.value.toString()}
+                      onValueChange={value => {
+                        field.onChange(value === 'true')
+                        form.setValue('iosUrl', defaultAppValues!.iosUrl)
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent className='overflow-visible'>
+                        <SelectItem
+                          value='true'
+                          tooltip='Url padrão informada na configuração do app.'
+                        >
+                          Padrão
+                        </SelectItem>
+
+                        <SelectItem value='false' tooltip='Usar url personalizada.'>
+                          Personalizado
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='iosUrl'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value || ''}
+                        disabled={form.getValues('isDefaultIosUrl')}
+                        placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                        type='url'
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormMessage className='mt-1'>
+              {form.formState.errors.isDefaultIosUrl?.message ||
+                form.formState.errors.iosUrl?.message}
+            </FormMessage>
+          </div>
+
+          <FormField
+            control={form.control}
+            name='disableIosPreviewPage'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  tooltip={
+                    <span>
+                      Desativa a página de pré-visualização em dispositivos iOS, direcionando os
+                      usuários diretamente para a App Store.
+                      <br />
+                      <br />
+                      A página de pré-visualização melhora a precisão da atribuição em dispositivos
+                      iOS. Ao abrir um link, o usuário é direcionado para a página contendo um botão
+                      de ação que copia o identificador do link no clipboard do dispositivo. Ao
+                      abrir o app pela primeira vez, o identificador é lido, fazendo com que a
+                      atribuição seja garantida.
+                      <br />
+                      <br />
+                      Saiba mais{' '}
+                      <Link
+                        href={DOCS_URLS.IOS_PREVIEW_PAGE}
+                        className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                        target='_blank'
+                      >
+                        sobre a página de pré-visualização.{' '}
+                        <SquareArrowOutUpRightIcon className='size-4' />
+                      </Link>
+                    </span>
+                  }
+                >
+                  Página de pré-visualização iOS
+                </FormLabel>
+
+                <Select {...field} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger className='w-full max-w-56'>
+                      <SelectValue />
+                    </SelectTrigger>
                   </FormControl>
-                </div>
+
+                  <SelectContent className='overflow-visible'>
+                    <SelectItem value='default'>
+                      Padrão ({defaultAppValues!.disableIosPreviewPage ? 'Desativada' : 'Ativada'})
+                    </SelectItem>
+
+                    <SelectItem value='true'>Ativada</SelectItem>
+
+                    <SelectItem value='false'>Desativada</SelectItem>
+                  </SelectContent>
+                </Select>
 
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <div>
+            <FormLabel
+              tooltip={
+                <span>
+                  Url utilizada para o direcionamento em dispositivos Desktop.
+                  <br />
+                  <br />
+                  Você pode alterar a url padrão nas{' '}
+                  <Link
+                    href={routes.SETTINGS.path(teamSlug, appSlug)}
+                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
+                    target='_blank'
+                  >
+                    configurações do app <SquareArrowOutUpRightIcon className='size-4' />
+                  </Link>
+                  , ou utilizar uma url personalizada.
+                </span>
+              }
+            >
+              Url alternativa
+            </FormLabel>
+
+            <div className='mt-2 flex flex-col gap-2 sm:flex-row'>
+              <FormField
+                control={form.control}
+                name='isDefaultFallbackUrl'
+                render={({ field }) => (
+                  <FormItem className='w-full max-w-36'>
+                    <Select
+                      {...field}
+                      value={field.value.toString()}
+                      onValueChange={value => {
+                        field.onChange(value === 'true')
+                        form.setValue('fallbackUrl', defaultAppValues!.fallbackUrl)
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent className='overflow-visible'>
+                        <SelectItem
+                          value='true'
+                          tooltip='Url padrão informada na configuração do app.'
+                        >
+                          Padrão
+                        </SelectItem>
+
+                        <SelectItem value='false' tooltip='Usar url personalizada.'>
+                          Personalizado
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='fallbackUrl'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value || ''}
+                        disabled={form.getValues('isDefaultFallbackUrl')}
+                        placeholder='https://www.meusite.com'
+                        type='url'
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormMessage className='mt-1'>
+              {form.formState.errors.isDefaultFallbackUrl?.message ||
+                form.formState.errors.fallbackUrl?.message}
+            </FormMessage>
+          </div>
 
           <div className='py-2'>
             <Separator />
@@ -733,7 +802,10 @@ const Loading = ({ className }: HTMLAttributes<HTMLDivElement>) => {
         </div>
       </div>
 
-      <Skeleton className='mb-4 h-[24px] w-1/2' />
+      <div className='space-y-2'>
+        <Skeleton className='h-[22px] w-40' />
+        <Skeleton className='h-10 w-full' />
+      </div>
 
       <div className='space-y-2'>
         <Skeleton className='h-[22px] w-40' />

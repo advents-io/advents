@@ -1,7 +1,7 @@
 import { routes, WWW_URL } from '@advents/common'
-import { Link } from '@advents/db'
+import { App as AppDb, Link as LinkDb } from '@advents/db'
 import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
-import { supabaseServer } from '@advents/supabase/server'
+import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { logClick } from './log-click'
@@ -12,10 +12,12 @@ export const isLinkDomain = (req: NextRequest) => {
   return isLinkDomain
 }
 
-type LinkProps = Pick<
-  Link,
+type Link = Pick<
+  LinkDb,
   'id' | 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'appId' | 'disableIosPreviewPage'
 >
+
+type App = Pick<AppDb, 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'disableIosPreviewPage'>
 
 export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getDomain(req)
@@ -46,7 +48,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
       .eq('domain', domain)
       .limit(1)
       .single()
-  ).data as LinkProps
+  ).data as Link
 
   if (!link) {
     return redirect(WWW_URL)
@@ -54,27 +56,64 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   const clickId = crypto.randomUUID()
 
-  let destinationUrl = new URL(link.fallbackUrl)
+  let destinationUrl: URL
 
   const ua = userAgent(req)
 
   const isIos = ua.os?.name === 'iOS'
+  const isAndroid = ua.os?.name === 'Android'
+
   if (isIos) {
-    destinationUrl = new URL(link.iosUrl)
+    let iosUrl = link.iosUrl
+
+    if (!iosUrl) {
+      const app = await getApp(supabase, link.appId)
+
+      if (!app) {
+        return redirect(WWW_URL)
+      }
+
+      iosUrl = app.iosUrl
+    }
+
+    destinationUrl = new URL(iosUrl)
 
     if (!link.disableIosPreviewPage) {
       destinationUrl = new URL(routes.IOS_PREVIEW.path, getWebDomain(true))
       destinationUrl.searchParams.append('click_id', clickId)
       destinationUrl.searchParams.append('app_id', link.appId)
-      destinationUrl.searchParams.append('redirect', link.iosUrl)
+      destinationUrl.searchParams.append('redirect', iosUrl)
     }
-  }
+  } else if (isAndroid) {
+    let androidUrl = link.androidUrl
 
-  const isAndroid = ua.os?.name === 'Android'
-  if (isAndroid) {
-    destinationUrl = new URL(link.androidUrl)
+    if (!androidUrl) {
+      const app = await getApp(supabase, link.appId)
+
+      if (!app) {
+        return redirect(WWW_URL)
+      }
+
+      androidUrl = app.androidUrl
+    }
+
+    destinationUrl = new URL(androidUrl)
     destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
     destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
+  } else {
+    let fallbackUrl = link.fallbackUrl
+
+    if (!fallbackUrl) {
+      const app = await getApp(supabase, link.appId)
+
+      if (!app) {
+        return redirect(WWW_URL)
+      }
+
+      fallbackUrl = app.fallbackUrl
+    }
+
+    destinationUrl = new URL(fallbackUrl)
   }
 
   event.waitUntil(logClick(req, clickId, link.id, link.appId, destinationUrl.toString()))
@@ -115,4 +154,22 @@ const getWebDomain = (withProtocol: boolean) => {
   domain = protocol + domain
 
   return domain
+}
+
+const getApp = async (supabase: SupabaseClient, appId: string): Promise<App | null> => {
+  return (
+    await supabase
+      .from('apps')
+      .select(
+        `
+      androidUrl:android_url,
+      iosUrl:ios_url,
+      disableIosPreviewPage:disable_ios_preview_page,
+      fallbackUrl:fallback_url
+      `,
+      )
+      .eq('id', appId)
+      .limit(1)
+      .single()
+  ).data as App
 }

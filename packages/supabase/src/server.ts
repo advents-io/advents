@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { removeSupabaseConsoleWarn } from './utils'
 
+export type { SupabaseClient } from '@supabase/supabase-js'
+
 export const supabaseServer = async () => {
   removeSupabaseConsoleWarn()
 

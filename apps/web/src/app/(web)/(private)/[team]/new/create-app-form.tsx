@@ -70,7 +70,7 @@ export const CreateAppForm = () => {
       slug: '',
       androidUrl: '',
       iosUrl: '',
-      defaultFallbackUrl: '',
+      fallbackUrl: '',
     },
   })
 
@@ -138,7 +138,9 @@ export const CreateAppForm = () => {
                   placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
                 />
               </FormControl>
-              <FormDescription>Url padrão que será utilizada ao criar um link.</FormDescription>
+              <FormDescription>
+                Url do app Android padrão que será utilizada ao criar um link.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -157,7 +159,9 @@ export const CreateAppForm = () => {
                   placeholder='https://apps.apple.com/app/exemplo/id1234567890'
                 />
               </FormControl>
-              <FormDescription>Url padrão que será utilizada ao criar um link.</FormDescription>
+              <FormDescription>
+                Url do app iOS padrão que será utilizada ao criar um link.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -165,23 +169,18 @@ export const CreateAppForm = () => {
 
         <FormField
           control={form.control}
-          name='defaultFallbackUrl'
+          name='fallbackUrl'
           render={({ field }) => (
             <FormItem>
-              <FormLabel optional>Url alternativa padrão</FormLabel>
+              <FormLabel>Url alternativa</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type='url'
-                  placeholder='https://www.meusite.com'
-                  value={field.value || ''}
-                />
+                <Input {...field} type='url' placeholder='https://www.meusite.com' />
               </FormControl>
               <div className='space-y-2 text-sm text-muted-foreground'>
                 <p>Url alternativa padrão que será utilizada ao criar um link.</p>
                 <p>
-                  É a url que o usuário será direcionado caso o dispositivo que abrir o link não
-                  seja nem Android e nem iOS.
+                  É a url que o usuário será direcionado caso o dispositivo que abrir o link seja
+                  Desktop.
                 </p>
               </div>
               <FormMessage />

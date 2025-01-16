@@ -18,10 +18,10 @@ const outputSchema = z.object({
   title: z.string().nullable(),
   domain: z.string(),
   slug: z.string(),
-  androidUrl: z.string().url(),
-  iosUrl: z.string().url(),
-  disableIosPreviewPage: z.boolean(),
-  fallbackUrl: z.string().url(),
+  androidUrl: z.string().url().nullable(),
+  iosUrl: z.string().url().nullable(),
+  disableIosPreviewPage: z.boolean().nullable(),
+  fallbackUrl: z.string().url().nullable(),
   campaignCost: z.number().nullable(),
 })
 

@@ -24,16 +24,9 @@ export {
 } from './src/actions/domains/add-custom-domain-action/schema'
 export { deleteCustomDomainAction } from './src/actions/domains/delete-custom-domain-action'
 export { createLinkAction } from './src/actions/link/create-link-action'
-export {
-  type CreateLinkFormInput,
-  createLinkFormInputSchema,
-} from './src/actions/link/create-link-action/schema'
+export { createEditLinkFormInputSchema } from './src/actions/link/create-link-action/schema'
 export { deleteLinkAction } from './src/actions/link/delete-link-action'
 export { editLinkAction } from './src/actions/link/edit-link-action'
-export {
-  type EditLinkFormInput,
-  editLinkFormInputSchema,
-} from './src/actions/link/edit-link-action/schema'
 export { generateAiSlugAction } from './src/actions/link/generate-ai-slug-action'
 export { generateRandomSlugAction } from './src/actions/link/generate-random-slug-action'
 export { sendDiscordMessageAction } from './src/actions/send-discord-message'

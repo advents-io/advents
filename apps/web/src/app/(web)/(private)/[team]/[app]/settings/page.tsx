@@ -23,8 +23,8 @@ export default async function Page(props: { params: Promise<{ team: string; app:
       defaultDomain: true,
       androidUrl: true,
       iosUrl: true,
-      defaultDisableIosPreviewPage: true,
-      defaultFallbackUrl: true,
+      disableIosPreviewPage: true,
+      fallbackUrl: true,
     },
   })
 

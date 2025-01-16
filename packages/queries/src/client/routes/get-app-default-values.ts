@@ -17,8 +17,8 @@ const outputSchema = z.object({
   defaultDomain: z.string(),
   androidUrl: z.string().url(),
   iosUrl: z.string().url(),
-  defaultDisableIosPreviewPage: z.boolean(),
-  defaultFallbackUrl: z.string().url().nullable(),
+  disableIosPreviewPage: z.boolean(),
+  fallbackUrl: z.string().url(),
 })
 
 export type GetAppDefaultValuesOutput = z.infer<typeof outputSchema>
@@ -47,8 +47,8 @@ export const getAppDefaultValues = (api: Hono<ApiEnv>) =>
           defaultDomain: true,
           androidUrl: true,
           iosUrl: true,
-          defaultDisableIosPreviewPage: true,
-          defaultFallbackUrl: true,
+          disableIosPreviewPage: true,
+          fallbackUrl: true,
         },
       })
 

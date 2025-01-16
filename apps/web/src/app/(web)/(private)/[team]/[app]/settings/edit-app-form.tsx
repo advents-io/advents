@@ -40,8 +40,8 @@ interface Props {
     | 'defaultDomain'
     | 'androidUrl'
     | 'iosUrl'
-    | 'defaultDisableIosPreviewPage'
-    | 'defaultFallbackUrl'
+    | 'disableIosPreviewPage'
+    | 'fallbackUrl'
   >
   availableDomains: string[]
 }
@@ -272,7 +272,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                   Url do app Android
                 </span>
               }
-              footerLabel='Alterações não afetam links já criados.'
+              footerLabel='Alterações não afetam links criados com a url personalizada.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(
                   async () => {
@@ -306,7 +306,9 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                 placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
               />
 
-              <p className='text-muted-foreground'>Pode ser alterada em cada link criado.</p>
+              <p className='text-muted-foreground'>
+                Pode ser alterada individualmente em cada link.
+              </p>
             </SettingsField>
           )}
         />
@@ -324,7 +326,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                   Url do app iOS
                 </span>
               }
-              footerLabel='Alterações não afetam links já criados.'
+              footerLabel='Alterações não afetam links criados com a url personalizada.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(
                   async () => {
@@ -358,14 +360,16 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                 placeholder='https://apps.apple.com/app/exemplo/id1234567890'
               />
 
-              <p className='text-muted-foreground'>Pode ser alterada em cada link criado.</p>
+              <p className='text-muted-foreground'>
+                Pode ser alterada individualmente em cada link.
+              </p>
             </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
-          name='defaultDisableIosPreviewPage'
+          name='disableIosPreviewPage'
           render={({ field, fieldState }) => (
             <SettingsField
               fieldState={fieldState}
@@ -373,7 +377,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               title='Página de pré-visualização iOS'
               footer={
                 <span>
-                  Alterações não afetam links já criados. Saiba mais sobre a{' '}
+                  Alterações não afetam links criados com opção personalizada. Saiba mais sobre a{' '}
                   <Link
                     href={DOCS_URLS.IOS_PREVIEW_PAGE}
                     className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
@@ -386,7 +390,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
             >
               <p>
                 Desativa a página de pré-visualização em dispositivos iOS, direcionando os usuários
-                diretamente para a App Store.
+                diretamente para a App Store, caso não possua o app instalado.
               </p>
 
               <div className='flex items-center gap-2'>
@@ -399,7 +403,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                         async () => {
                           const result = await editApp({
                             ...(form.formState.defaultValues as EditAppFormInput),
-                            defaultDisableIosPreviewPage: checked,
+                            disableIosPreviewPage: checked,
                             id: app.id,
                           })
 
@@ -407,7 +411,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                             throw new Error()
                           }
 
-                          form.resetField('defaultDisableIosPreviewPage', {
+                          form.resetField('disableIosPreviewPage', {
                             defaultValue: checked,
                           })
                         },
@@ -429,25 +433,29 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
 
                 {busy && <Loader2Icon className='size-4 animate-spin' />}
               </div>
+
+              <p className='text-muted-foreground'>
+                Pode ser alterada individualmente em cada link.
+              </p>
             </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
-          name='defaultFallbackUrl'
+          name='fallbackUrl'
           render={({ field, fieldState }) => (
             <SettingsField
               fieldState={fieldState}
               busy={busy}
               title='Url alternativa padrão'
-              footerLabel='Alterações não afetam links já criados.'
+              footerLabel='Alterações não afetam links criados com a url personalizada.'
               footerButtonOnClick={form.handleSubmit(() =>
                 toast.promise(
                   async () => {
                     const result = await editApp({
                       ...(form.formState.defaultValues as EditAppFormInput),
-                      defaultFallbackUrl: field.value,
+                      fallbackUrl: field.value,
                       id: app.id,
                     })
 
@@ -455,7 +463,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                       throw new Error()
                     }
 
-                    form.resetField('defaultFallbackUrl', {
+                    form.resetField('fallbackUrl', {
                       defaultValue: field.value,
                     })
                   },
@@ -470,8 +478,8 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               <span>
                 Url alternativa padrão que será utilizada ao criar um link.
                 <br />
-                <br />É a url que o usuário será direcionado caso o dispositivo que abrir o link não
-                seja nem Android e nem iOS, como por exemplo, um computador Windows, Linux ou macOS.
+                <br />É a url que o usuário será direcionado caso o dispositivo que abrir o link
+                seja Desktop.
               </span>
 
               <Input
@@ -481,7 +489,9 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                 value={field.value || ''}
               />
 
-              <p className='text-muted-foreground'>Pode ser alterada em cada link criado.</p>
+              <p className='text-muted-foreground'>
+                Pode ser alterada individualmente em cada link.
+              </p>
             </SettingsField>
           )}
         />

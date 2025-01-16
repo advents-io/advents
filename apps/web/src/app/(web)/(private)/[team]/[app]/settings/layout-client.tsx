@@ -12,7 +12,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/ui/select'
@@ -60,10 +59,6 @@ export const Layout = ({ team, app, children }: Props) => {
 
           <SelectContent>
             <SelectGroup>
-              <SelectLabel className='text-xs font-semibold text-muted-foreground'>
-                Ajustes do app
-              </SelectLabel>
-
               {SIDEBAR_ITEMS.map((item, index) => (
                 <SelectItem key={index} value={item.href}>
                   <div className='flex items-center'>
@@ -78,8 +73,6 @@ export const Layout = ({ team, app, children }: Props) => {
       </div>
 
       <aside className='hidden w-64 sm:block'>
-        <h2 className='mb-3 text-xs font-medium text-muted-foreground'>Ajustes do app</h2>
-
         <div className='flex flex-col gap-1'>
           {SIDEBAR_ITEMS.map((item, index) => (
             <Link key={index} href={item.href}>

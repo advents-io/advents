@@ -24,12 +24,7 @@ export const createAppInputSchema = z.object({
   iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
     message: 'A url do app iOS deve ser da App Store.',
   }),
-  defaultFallbackUrl: z
-    .string({ message: 'Url inválida.' })
-    .url('Url inválida.')
-    .nullish()
-    .or(z.literal(''))
-    .transform(value => value || null),
+  fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
 
 export type CreateAppInput = z.infer<typeof createAppInputSchema>

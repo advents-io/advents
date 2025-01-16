@@ -5,7 +5,7 @@ export const APP = {
   domains: ['dev.adv.sh', 'links.favorito.digital'],
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',
-  defaultFallbackUrl: 'https://favorito.digital',
+  fallbackUrl: 'https://favorito.digital',
   qrCodeLogoUrl:
     'https://kapvevgxxfwlrllswrpe.supabase.co/storage/v1/object/public/qrcode-logos/241124200422268-favorito.png',
 }

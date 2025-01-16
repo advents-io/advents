@@ -121,7 +121,7 @@ const createLinks = async (appId: string, userId: string) => {
       slug: Math.random() < 0.4 ? RANDOM_LINKS[index].slug : nanoid(),
       iosUrl: APP.iosUrl,
       androidUrl: APP.androidUrl,
-      fallbackUrl: APP.defaultFallbackUrl,
+      fallbackUrl: APP.fallbackUrl,
       campaignCost: faker.datatype.boolean() ? null : faker.number.int({ min: 10, max: 1000 }),
       appId,
       createdAt,
@@ -148,7 +148,7 @@ const createAnalyticsData = async (links: Link[], appId: string) => {
 
     const clicks = Array.from({ length: clickCount }, () => ({
       id: crypto.randomUUID(),
-      destinationUrl: link.iosUrl,
+      destinationUrl: link.iosUrl || APP.iosUrl,
       referer: '(direct)',
       refererUrl: '(direct)',
       isBot: false,

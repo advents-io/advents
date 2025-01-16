@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
 
-export const createLinkFormInputSchema = z.object({
+export const createEditLinkFormInputSchema = z.object({
   title: z
     .string()
     .max(64, 'O título deve possuir no máximo 64 caracteres.')
@@ -18,10 +18,25 @@ export const createLinkFormInputSchema = z.object({
     )
     .nullable()
     .transform(value => value || null),
-  androidUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
-  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
-  disableIosPreviewPage: z.boolean().default(false),
-  fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
+  androidUrl: z
+    .string({ message: 'Url inválida.' })
+    .url('Url inválida.')
+    .nullable()
+    .or(z.literal(''))
+    .transform(value => value || null),
+  iosUrl: z
+    .string({ message: 'Url inválida.' })
+    .url('Url inválida.')
+    .nullable()
+    .or(z.literal(''))
+    .transform(value => value || null),
+  disableIosPreviewPage: z.boolean().nullable(),
+  fallbackUrl: z
+    .string({ message: 'Url inválida.' })
+    .url('Url inválida.')
+    .nullable()
+    .or(z.literal(''))
+    .transform(value => value || null),
   campaignCost: z
     .number({ message: 'Custo da campanha inválido.' })
     .min(0.01, 'O custo da campanha deve ser maior que zero.')
@@ -29,8 +44,6 @@ export const createLinkFormInputSchema = z.object({
     .transform(value => value || null),
 })
 
-export const inputSchema = createLinkFormInputSchema.extend({
+export const inputSchema = createEditLinkFormInputSchema.extend({
   appId: z.string({ message: 'Id do app inválido.' }).uuid('Id do app inválido.'),
 })
-
-export type CreateLinkFormInput = z.infer<typeof createLinkFormInputSchema>
