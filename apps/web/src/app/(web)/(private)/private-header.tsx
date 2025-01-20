@@ -1,7 +1,6 @@
 'use client'
 
 import { DOCS_URLS, routes, settingsRoutes } from '@advents/common'
-import { App } from '@advents/db'
 import { supabaseClient } from '@advents/supabase/client'
 import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -25,10 +24,19 @@ import { UserButton } from './user-button'
 
 interface Props {
   email?: string
-  apps: Pick<App, 'id' | 'name' | 'slug' | 'imageUrl'>[]
+  teams: {
+    slug: string
+    name: string
+    apps: {
+      id: string
+      name: string
+      slug: string
+      imageUrl: string
+    }[]
+  }[]
 }
 
-export const PrivateHeader = ({ email, apps }: Props) => {
+export const PrivateHeader = ({ email, teams }: Props) => {
   const { team, app } = useParams<{ team: string; app: string }>()
   const router = useRouter()
 
@@ -57,7 +65,7 @@ export const PrivateHeader = ({ email, apps }: Props) => {
               </BreadcrumbSeparator>
 
               <BreadcrumbItem>
-                <AppSelector apps={apps} />
+                <AppSelector teams={teams} />
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
