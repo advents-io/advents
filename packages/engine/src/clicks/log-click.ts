@@ -89,7 +89,7 @@ const detectBot = (req: NextRequest) => {
    * - iframely is for https://iframely.com/docs/about (used by Notion, Linear)
    */
   return (
-    ua &&
+    !!ua &&
     /bot|chatgpt|facebookexternalhit|WhatsApp|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|MetaInspector|Go-http-client|iframely/i.test(
       ua,
     )

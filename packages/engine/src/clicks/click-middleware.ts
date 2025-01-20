@@ -1,10 +1,9 @@
-import { routes, WWW_URL } from '@advents/common'
+import { isStoreUrl, routes, WWW_URL } from '@advents/common'
 import { App as AppDb, Link as LinkDb } from '@advents/db'
 import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { isStoreUrl } from '../utils/store-helper'
 import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {

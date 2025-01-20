@@ -21,10 +21,21 @@ export const editAppFormInputSchema = z.object({
     .url('Url inválida.')
     .includes('play.google.com', {
       message: 'A url do app Android deve ser da Google Play Store.',
+    })
+    .startsWith('https://', { message: 'A url deve ser https.' })
+    .startsWith('https://play.google.com/store/apps/details?', {
+      message: 'Url da Play Store inválida.',
     }),
-  iosUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.').includes('apps.apple.com', {
-    message: 'A url do app iOS deve ser da App Store.',
-  }),
+  iosUrl: z
+    .string({ message: 'Url inválida.' })
+    .url('Url inválida.')
+    .includes('apps.apple.com', {
+      message: 'A url do app iOS deve ser da App Store.',
+    })
+    .startsWith('https://', { message: 'A url deve ser https.' })
+    .startsWith('https://apps.apple.com/', {
+      message: 'Url da App Store inválida.',
+    }),
   disableIosPreviewPage: z.boolean(),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
