@@ -4,6 +4,7 @@ import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
+import { isStoreUrl } from '../utils/store-helper'
 import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {
@@ -65,20 +66,23 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   if (isIos) {
     let iosUrl = link.iosUrl
+    let disableIosPreviewPage = link.disableIosPreviewPage
 
-    if (!iosUrl) {
+    if (!iosUrl || disableIosPreviewPage === null) {
       const app = await getApp(supabase, link.appId)
 
       if (!app) {
         return redirect(WWW_URL)
       }
 
-      iosUrl = app.iosUrl
+      iosUrl = link.iosUrl || app.iosUrl
+      disableIosPreviewPage =
+        link.disableIosPreviewPage === null ? app.disableIosPreviewPage : link.disableIosPreviewPage
     }
 
     destinationUrl = new URL(iosUrl)
 
-    if (!link.disableIosPreviewPage) {
+    if (!disableIosPreviewPage && isStoreUrl(iosUrl)) {
       destinationUrl = new URL(routes.IOS_PREVIEW.path, getWebDomain(true))
       destinationUrl.searchParams.append('click_id', clickId)
       destinationUrl.searchParams.append('app_id', link.appId)
@@ -98,8 +102,11 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
     }
 
     destinationUrl = new URL(androidUrl)
-    destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
-    destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
+
+    if (isStoreUrl(androidUrl)) {
+      destinationUrl.searchParams.append('launch', 'true') // If the user has the app installed, it will open the app instead of redirecting to the Play Store
+      destinationUrl.searchParams.append('referrer', `advents_click_id=${clickId}`)
+    }
   } else {
     let fallbackUrl = link.fallbackUrl
 
