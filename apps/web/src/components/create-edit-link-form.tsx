@@ -600,9 +600,9 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                       Padrão ({defaultAppValues!.disableIosPreviewPage ? 'Desativada' : 'Ativada'})
                     </SelectItem>
 
-                    <SelectItem value='true'>Ativada</SelectItem>
+                    <SelectItem value='false'>Ativada</SelectItem>
 
-                    <SelectItem value='false'>Desativada</SelectItem>
+                    <SelectItem value='true'>Desativada</SelectItem>
                   </SelectContent>
                 </Select>
 
