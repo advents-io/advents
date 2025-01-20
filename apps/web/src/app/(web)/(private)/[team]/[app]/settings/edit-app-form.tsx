@@ -26,7 +26,6 @@ import { Button } from '@/ui/button'
 import { Form, FormField } from '@/ui/form'
 import { Input, SlugInput } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import { Switch } from '@/ui/switch'
 
 import { DeleteAppButton } from './delete-app-button'
 import Loading from './loading'
@@ -389,21 +388,22 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
               }
             >
               <p>
-                Desativa a página de pré-visualização em dispositivos iOS, direcionando os usuários
-                diretamente para a App Store, caso não possua o app instalado.
+                Ao desativar a página de pré-visualização em dispositivos iOS, os usuários serão
+                direcionados diretamente para a App Store, caso não possua o app instalado.
               </p>
 
               <div className='flex items-center gap-2'>
-                <Switch
-                  onCheckedChange={checked => {
-                    field.onChange(checked)
+                <Select
+                  onValueChange={value => {
+                    const disabled = value === 'true'
+                    field.onChange(disabled)
 
                     form.handleSubmit(() =>
                       toast.promise(
                         async () => {
                           const result = await editApp({
                             ...(form.formState.defaultValues as EditAppFormInput),
-                            disableIosPreviewPage: checked,
+                            disableIosPreviewPage: disabled,
                             id: app.id,
                           })
 
@@ -412,7 +412,7 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                           }
 
                           form.resetField('disableIosPreviewPage', {
-                            defaultValue: checked,
+                            defaultValue: disabled,
                           })
                         },
                         {
@@ -423,15 +423,19 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                       ),
                     )()
                   }}
-                  checked={field.value}
+                  value={field.value.toString()}
                   disabled={busy}
-                />
+                >
+                  <SelectTrigger className='w-[200px]'>
+                    <SelectValue />
+                  </SelectTrigger>
 
-                <span className='font-medium'>
-                  {field.value ? 'Página Desativada' : 'Página Ativada'}
-                </span>
+                  <SelectContent>
+                    <SelectItem value='false'>Ativada</SelectItem>
 
-                {busy && <Loader2Icon className='size-4 animate-spin' />}
+                    <SelectItem value='true'>Desativada</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <p className='text-muted-foreground'>

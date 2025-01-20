@@ -562,8 +562,8 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                 <FormLabel
                   tooltip={
                     <span>
-                      Desativa a página de pré-visualização em dispositivos iOS, direcionando os
-                      usuários diretamente para a App Store.
+                      Ao desativar a página de pré-visualização em dispositivos iOS, os usuários
+                      serão direcionados diretamente para a App Store.
                       <br />
                       <br />
                       A página de pré-visualização melhora a precisão da atribuição em dispositivos
