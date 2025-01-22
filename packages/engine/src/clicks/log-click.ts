@@ -63,10 +63,10 @@ export const logClick = async (
   const supabase = await supabaseServer()
 
   await Promise.allSettled([
-    await supabase.from('clicks').insert(clickSnakeCase),
+    supabase.from('clicks').insert(clickSnakeCase),
 
     // Calls the Postgres function increment_link_clicks which updates the link by incrementing a click
-    await supabase.rpc('increment_link_clicks', { link_id: linkId }),
+    supabase.rpc('increment_link_clicks', { link_id: linkId }),
   ])
 }
 
