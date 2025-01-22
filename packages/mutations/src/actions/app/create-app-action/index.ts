@@ -1,6 +1,6 @@
 'use server'
 
-import { getUrlOgImage, nanoid, routes } from '@advents/common'
+import { getUrlOgImage, nanoid, normalizeStoreUrl, routes } from '@advents/common'
 import { prisma } from '@advents/db'
 import { DEFAULT_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
@@ -38,6 +38,22 @@ export const createAppAction = authActionClient
     if (slugExists) {
       throw new ActionError('Identificador único já utilizado por outro app na sua conta.')
     }
+
+    const normalizedIosUrl = normalizeStoreUrl(app.iosUrl)
+
+    if (!normalizedIosUrl) {
+      throw new ActionError('Url do app iOS inválida.')
+    }
+
+    app.iosUrl = normalizedIosUrl
+
+    const normalizedAndroidUrl = normalizeStoreUrl(app.androidUrl)
+
+    if (!normalizedAndroidUrl) {
+      throw new ActionError('Url do app Android inválida.')
+    }
+
+    app.androidUrl = normalizedAndroidUrl
 
     const imageUrl = await getUrlOgImage(app.androidUrl)
 

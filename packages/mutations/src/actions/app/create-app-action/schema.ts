@@ -24,17 +24,23 @@ export const createAppInputSchema = z.object({
     .startsWith('https://', { message: 'A url deve ser https.' })
     .startsWith('https://play.google.com/store/apps/details?', {
       message: 'Url da Play Store inválida.',
+    })
+    .includes('id=', {
+      message: 'Url da Play Store inválida.',
     }),
   iosUrl: z
     .string({ message: 'Url inválida.' })
     .url('Url inválida.')
-    .includes('apps.apple.com', {
+    .refine(url => url.includes('apps.apple.com') || url.includes('itunes.apple.com'), {
       message: 'A url do app iOS deve ser da App Store.',
     })
-    .startsWith('https://', { message: 'A url deve ser https.' })
-    .startsWith('https://apps.apple.com/', {
-      message: 'Url da App Store inválida.',
-    }),
+    .refine(url => url.startsWith('https://'), { message: 'A url deve ser https.' })
+    .refine(
+      url =>
+        url.startsWith('https://apps.apple.com/') || url.startsWith('https://itunes.apple.com/'),
+      { message: 'Url da App Store inválida.' },
+    )
+    .refine(url => url.includes('id'), { message: 'Url da App Store inválida.' }),
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
 
