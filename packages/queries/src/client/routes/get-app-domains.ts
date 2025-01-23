@@ -24,6 +24,8 @@ export const getAppDomains = (api: Hono<ApiEnv>) =>
     async c => {
       const { appId } = c.req.valid('param')
 
+      // TODO: add authorization
+
       const domains = await handleGetAppDomains(appId)
 
       const response = outputSchema.parse({

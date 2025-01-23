@@ -15,6 +15,7 @@ export const deleteAppQrCodeLogoAction = authActionClient
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { appSlug } = parsedInput
 
+    // TODO: user can be on multiple teams and app slug can repeat
     const app = await prisma.app.findFirst({
       where: {
         slug: appSlug,

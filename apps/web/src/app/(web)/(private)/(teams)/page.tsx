@@ -27,7 +27,15 @@ export default async function Page() {
         },
       },
     },
-    select: { id: true, slug: true },
+    select: {
+      id: true,
+      slug: true,
+      apps: {
+        select: {
+          slug: true,
+        },
+      },
+    },
   })
 
   if (!team) {
@@ -50,19 +58,7 @@ export default async function Page() {
     )
   }
 
-  const app = await prisma.app.findFirst({
-    where: {
-      team: {
-        id: team.id,
-        members: {
-          some: {
-            userId: user?.id,
-          },
-        },
-      },
-    },
-    select: { slug: true },
-  })
+  const app = team.apps.length > 0 ? team.apps[0] : null
 
   return redirect(app ? routes.LINKS.path(team.slug, app.slug) : routes.APPS.path(team.slug))
 }

@@ -12,6 +12,7 @@ import { createAppInputSchema } from './schema'
 export const createAppAction = authActionClient
   .schema(createAppInputSchema)
   .action(async ({ parsedInput: app, ctx: { user } }) => {
+    // TODO: user can be on multiple teams
     const team = await prisma.team.findFirst({
       where: {
         members: {

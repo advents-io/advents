@@ -17,6 +17,8 @@ export const generateAiSlugAction = authActionClient
   .action(async ({ parsedInput }) => {
     const { title, domain } = parsedInput
 
+    // TODO: add authorization
+
     const existingSlugs = await prisma.link.findMany({
       where: {
         domain,
