@@ -42,6 +42,7 @@ export const deleteAppQrCodeLogoAction = authActionClient
       },
       data: {
         qrCodeLogoUrl: null,
+        updatedBy: user.id,
       },
     })
   })

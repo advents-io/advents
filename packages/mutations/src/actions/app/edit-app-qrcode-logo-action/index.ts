@@ -57,6 +57,7 @@ export const editAppQrCodeLogoAction = authActionClient
       },
       data: {
         qrCodeLogoUrl,
+        updatedBy: user.id,
       },
     })
   })

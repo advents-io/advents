@@ -3,6 +3,7 @@ export const APP = {
   name: 'Favorito',
   slug: 'favorito',
   domains: ['dev.adv.sh', 'links.favorito.digital'],
+  defaultDomain: 'links.favorito.digital',
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',
   fallbackUrl: 'https://favorito.digital',

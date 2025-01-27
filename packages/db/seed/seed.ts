@@ -83,7 +83,6 @@ const createApp = async (teamId: string, userId: string) => {
   const { id: appId } = await prisma.app.create({
     data: {
       ...APP,
-      defaultDomain: APP.domains[0],
       imageUrl,
       apiKeys: {
         create: {
@@ -119,9 +118,9 @@ const createLinks = async (appId: string, userId: string) => {
       title: RANDOM_LINKS[index].name,
       domain: faker.helpers.arrayElement(APP.domains),
       slug: Math.random() < 0.4 ? RANDOM_LINKS[index].slug : nanoid(),
-      iosUrl: APP.iosUrl,
-      androidUrl: APP.androidUrl,
-      fallbackUrl: APP.fallbackUrl,
+      iosUrl: null,
+      androidUrl: null,
+      fallbackUrl: null,
       campaignCost: faker.datatype.boolean() ? null : faker.number.int({ min: 10, max: 1000 }),
       appId,
       createdAt,

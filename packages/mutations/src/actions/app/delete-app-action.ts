@@ -17,7 +17,7 @@ export const deleteAppAction = authActionClient
   .action(async ({ parsedInput, ctx: { user } }) => {
     const { id } = parsedInput
 
-    const app = await prisma.app.findFirst({
+    const app = await prisma.app.findUnique({
       where: {
         id,
         team: {

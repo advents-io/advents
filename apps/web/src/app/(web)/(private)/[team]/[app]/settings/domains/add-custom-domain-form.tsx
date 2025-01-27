@@ -95,7 +95,7 @@ export const AddCustomDomainForm = () => {
               <SettingsField fieldState={fieldState} title='Domínios Customizados'>
                 <span>Adicione um domínio customizado da sua empresa para utilizar nos links.</span>
 
-                <div className='mt-4 flex flex-col gap-2 sm:flex-row'>
+                <div className='flex flex-col gap-2 sm:flex-row'>
                   <Input placeholder='links.meuapp.com' {...field} />
 
                   <Button type='submit' disabled={busy}>

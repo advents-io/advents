@@ -55,7 +55,7 @@ export const SettingsField = ({
         </CardHeader>
 
         <Control>
-          <CardContent className='space-y-4 text-sm'>
+          <CardContent className='flex flex-col gap-4 text-sm'>
             {children}
 
             <ErrorMessage />
