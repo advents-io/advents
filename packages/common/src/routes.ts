@@ -17,6 +17,9 @@ export const routes = {
   SETTINGS: {
     path: (team: string, app: string) => `/${team}/${app}/settings`,
   },
+  SETTINGS_DEEP_LINK: {
+    path: (team: string, app: string) => `/${team}/${app}/settings/deep-link`,
+  },
   SETTINGS_DOMAINS: {
     path: (team: string, app: string) => `/${team}/${app}/settings/domains`,
   },
@@ -41,6 +44,7 @@ export const routes = {
 
 export const settingsRoutes = (team: string, app: string) => [
   routes.SETTINGS.path(team, app),
+  routes.SETTINGS_DEEP_LINK.path(team, app),
   routes.SETTINGS_DOMAINS.path(team, app),
   routes.SETTINGS_QRCODE.path(team, app),
   routes.SETTINGS_SDK.path(team, app),

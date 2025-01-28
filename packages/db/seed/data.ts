@@ -1,4 +1,22 @@
-export const APP = {
+import { App as AppDb } from '@prisma/client'
+
+type App = Omit<
+  AppDb,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'createdBy'
+  | 'updatedBy'
+  | 'imageUrl'
+  | 'teamId'
+  | 'appleTeamId'
+  | 'disableIosPreviewPage'
+  | 'enableAndroidAppLinks'
+  | 'enableIosUniversalLinks'
+> & {
+  domains: string[]
+}
+
+export const APP: App = {
   id: 'bd356bbe-4861-4a8b-8b4f-de64999702e7',
   name: 'Favorito',
   slug: 'favorito',
@@ -9,6 +27,8 @@ export const APP = {
   fallbackUrl: 'https://favorito.digital',
   qrCodeLogoUrl:
     'https://kapvevgxxfwlrllswrpe.supabase.co/storage/v1/object/public/qrcode-logos/241124200422268-favorito.png',
+  scheme: 'favorito://',
+  androidPackageName: 'com.quebarbada.quebarbada',
 }
 
 export const LINKS = [

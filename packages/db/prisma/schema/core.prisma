@@ -36,27 +36,34 @@ model App {
   createdBy String   @map("created_by")
   updatedBy String   @map("updated_by")
 
-  name                  String  @db.VarChar(64)
-  slug                  String  @db.VarChar(48)
-  defaultDomain         String  @map("default_domain")
-  imageUrl              String  @map("image_url")
-  androidUrl            String  @map("android_url")
-  iosUrl                String  @map("ios_url")
-  disableIosPreviewPage Boolean @default(false) @map("disable_ios_preview_page")
-  fallbackUrl           String  @map("fallback_url")
-  qrCodeLogoUrl         String? @map("qrcode_logo_url")
+  name                    String  @db.VarChar(64)
+  slug                    String  @db.VarChar(48)
+  defaultDomain           String  @map("default_domain")
+  imageUrl                String  @map("image_url")
+  androidUrl              String  @map("android_url")
+  iosUrl                  String  @map("ios_url")
+  disableIosPreviewPage   Boolean @default(false) @map("disable_ios_preview_page")
+  fallbackUrl             String  @map("fallback_url")
+  qrCodeLogoUrl           String? @map("qrcode_logo_url")
+  enableIosUniversalLinks Boolean @default(false) @map("enable_ios_universal_links")
+  enableAndroidAppLinks   Boolean @default(false) @map("enable_android_app_links")
+  scheme                  String? @map("scheme")
+  androidPackageName      String  @map("android_package_name") // Will get from androidUrl id search param
+  appleTeamId             String? @map("apple_team_id")
 
   teamId String @map("team_id")
   team   Team   @relation(fields: [teamId], references: [id])
 
-  links        Link[]
-  sessions     Session[]
-  apiKeys      ApiKey[]
-  clicks       Click[]
-  attributions Attribution[]
-  purchases    Purchase[]
-  devices      Device[]
-  installs     Install[]
+  links                   Link[]
+  sessions                Session[]
+  apiKeys                 ApiKey[]
+  clicks                  Click[]
+  attributions            Attribution[]
+  purchases               Purchase[]
+  devices                 Device[]
+  installs                Install[]
+  iosBundleIds            IosBundleId[]
+  androidCertFingerprints AndroidCertFingerprint[]
 
   @@unique([slug, teamId])
   @@map("apps")
@@ -106,4 +113,36 @@ model ApiKey {
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   @@map("api_keys")
+}
+
+model IosBundleId {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  bundleId String @map("bundle_id")
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@unique([bundleId, appId])
+  @@map("ios_bundle_ids")
+}
+
+model AndroidCertFingerprint {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String   @map("updated_by")
+
+  sha256Fingerprint String @map("sha256_fingerprint")
+
+  appId String @map("app_id")
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@unique([sha256Fingerprint, appId])
+  @@map("android_cert_fingerprints")
 }

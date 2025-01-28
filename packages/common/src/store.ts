@@ -48,3 +48,20 @@ export const normalizeStoreUrl = (url: string): string | null => {
     return null
   }
 }
+
+export const getAndroidPackageNameFromStoreUrl = (url: string): string | null => {
+  const normalizedUrl = normalizeStoreUrl(url)
+
+  if (!normalizedUrl) {
+    return null
+  }
+
+  const urlObj = new URL(normalizedUrl)
+  const packageSearchParam = urlObj.searchParams.get('id')
+
+  if (!packageSearchParam) {
+    return null
+  }
+
+  return packageSearchParam
+}

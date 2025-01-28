@@ -1,6 +1,10 @@
 'use server'
 
-import { getUrlOgImage, normalizeStoreUrl } from '@advents/common'
+import {
+  getAndroidPackageNameFromStoreUrl,
+  getUrlOgImage,
+  normalizeStoreUrl,
+} from '@advents/common'
 import { prisma } from '@advents/db'
 import { getAppDomains } from '@advents/queries/server'
 
@@ -73,6 +77,14 @@ export const editAppAction = authActionClient
       ...originalApp,
       ...newApp,
     }
+
+    const androidPackageName = getAndroidPackageNameFromStoreUrl(newApp.androidUrl)
+
+    if (!androidPackageName) {
+      throw new ActionError('Url do app Android inválida.')
+    }
+
+    app.androidPackageName = androidPackageName
 
     const imageUrl = await getUrlOgImage(newApp.androidUrl)
 

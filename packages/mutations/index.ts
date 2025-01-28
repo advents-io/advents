@@ -7,6 +7,7 @@ export {
 } from './src/actions/app/create-app-action/schema'
 export { deleteAppAction } from './src/actions/app/delete-app-action'
 export { deleteAppQrCodeLogoAction } from './src/actions/app/delete-app-qrcode-logo-action'
+export { editAndroidAppLinksAction } from './src/actions/app/edit-android-app-links-action'
 export { editAppAction } from './src/actions/app/edit-app-action'
 export {
   type EditAppFormInput,
@@ -17,6 +18,8 @@ export {
   type EditAppQrCodeLogoFormInput,
   editAppQrCodeLogoFormInputSchema,
 } from './src/actions/app/edit-app-qrcode-logo-action/schema'
+export { editIosUniversalLinksAction } from './src/actions/app/edit-ios-universal-links-action'
+export { editSchemeAction } from './src/actions/app/edit-scheme-action'
 export { addCustomDomainAction } from './src/actions/domains/add-custom-domain-action'
 export {
   type AddCustomDomainFormInput,

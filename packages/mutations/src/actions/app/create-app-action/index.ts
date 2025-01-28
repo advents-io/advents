@@ -1,6 +1,12 @@
 'use server'
 
-import { getUrlOgImage, nanoid, normalizeStoreUrl, routes } from '@advents/common'
+import {
+  getAndroidPackageNameFromStoreUrl,
+  getUrlOgImage,
+  nanoid,
+  normalizeStoreUrl,
+  routes,
+} from '@advents/common'
 import { prisma } from '@advents/db'
 import { DEFAULT_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
@@ -56,6 +62,12 @@ export const createAppAction = authActionClient
 
     app.androidUrl = normalizedAndroidUrl
 
+    const androidPackageName = getAndroidPackageNameFromStoreUrl(app.androidUrl)
+
+    if (!androidPackageName) {
+      throw new ActionError('Url do app Android inválida.')
+    }
+
     const imageUrl = await getUrlOgImage(app.androidUrl)
 
     if (!imageUrl) {
@@ -68,6 +80,7 @@ export const createAppAction = authActionClient
       data: {
         ...app,
         defaultDomain: DEFAULT_DOMAIN,
+        androidPackageName,
         imageUrl,
         apiKeys: {
           create: {

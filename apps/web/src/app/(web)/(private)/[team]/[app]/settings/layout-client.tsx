@@ -1,7 +1,7 @@
 'use client'
 
 import { routes } from '@advents/common'
-import { CodeIcon, GlobeIcon, QrCodeIcon, SettingsIcon } from 'lucide-react'
+import { CodeIcon, GlobeIcon, LinkIcon, QrCodeIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -31,6 +31,11 @@ export const Layout = ({ team, app, children }: Props) => {
       icon: SettingsIcon,
       title: 'Geral',
       href: routes.SETTINGS.path(team, app),
+    },
+    {
+      icon: LinkIcon,
+      title: 'Deep Link',
+      href: routes.SETTINGS_DEEP_LINK.path(team, app),
     },
     {
       icon: GlobeIcon,
