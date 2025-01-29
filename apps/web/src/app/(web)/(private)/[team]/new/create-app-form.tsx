@@ -30,7 +30,7 @@ import {
 import { Input, SlugInput } from '@/ui/input'
 
 export const CreateAppForm = () => {
-  const { team } = useParams<{ team: string }>()
+  const { team: teamSlug } = useParams<{ team: string }>()
   const posthog = usePostHog()
 
   const {
@@ -40,7 +40,7 @@ export const CreateAppForm = () => {
   } = useAction(createAppAction, {
     onSuccess: ({ input }) => {
       posthog.capture('create_app', {
-        team,
+        team: teamSlug,
         name: input.name,
         slug: input.slug,
       })
@@ -61,6 +61,10 @@ export const CreateAppForm = () => {
     },
   })
 
+  const handleCreateApp = (input: CreateAppInput) => {
+    createApp({ ...input, teamSlug })
+  }
+
   const error = formatErrors(result)
 
   const form = useForm<CreateAppInput>({
@@ -78,7 +82,7 @@ export const CreateAppForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(createApp)} className='space-y-10'>
+      <form onSubmit={form.handleSubmit(handleCreateApp)} className='space-y-10'>
         <ErrorAlert error={error} />
 
         <FormField
@@ -108,7 +112,7 @@ export const CreateAppForm = () => {
 
               <FormControl>
                 <SlugInput
-                  prefix={`app.advents.io/${team}/`}
+                  prefix={`app.advents.io/${teamSlug}/`}
                   {...field}
                   placeholder='nome-do-app'
                 />

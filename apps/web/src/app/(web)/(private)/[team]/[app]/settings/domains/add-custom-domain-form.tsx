@@ -30,7 +30,7 @@ import { Form, FormField } from '@/ui/form'
 import { Input } from '@/ui/input'
 
 export const AddCustomDomainForm = () => {
-  const { app: appSlug } = useParams<{ app: string }>()
+  const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
   const [alertIsOpen, setAlertIsOpen] = useState(false)
 
   const {
@@ -59,7 +59,7 @@ export const AddCustomDomainForm = () => {
   })
 
   const handleAddCustomDomain = (data: AddCustomDomainFormInput) => {
-    addCustomDomain({ ...data, appSlug })
+    addCustomDomain({ ...data, teamSlug, appSlug })
   }
 
   const error = formatErrors(result)

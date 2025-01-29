@@ -10,17 +10,24 @@ import {
 import { prisma } from '@advents/db'
 import { DEFAULT_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
 import { createAppInputSchema } from './schema'
 
+const inputSchema = createAppInputSchema.extend({
+  teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+})
+
 export const createAppAction = authActionClient
-  .schema(createAppInputSchema)
-  .action(async ({ parsedInput: app, ctx: { user } }) => {
-    // TODO: user can be on multiple teams
+  .schema(inputSchema)
+  .action(async ({ parsedInput, ctx: { user } }) => {
+    const { teamSlug, ...app } = parsedInput
+
     const team = await prisma.team.findFirst({
       where: {
+        slug: teamSlug,
         members: {
           some: {
             userId: user.id,

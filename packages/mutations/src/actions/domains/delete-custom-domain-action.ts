@@ -8,6 +8,7 @@ import { ActionError } from '../../action-errors'
 import { authActionClient } from '../../safe-action'
 
 const inputSchema = z.object({
+  teamSlug: z.string({ message: 'Slug da equipe inválido.' }),
   appSlug: z.string({ message: 'Slug do app inválido.' }),
   domain: z
     .string({ message: 'Domínio inválido.' })
@@ -17,13 +18,13 @@ const inputSchema = z.object({
 export const deleteCustomDomainAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug, domain } = parsedInput
+    const { teamSlug, appSlug, domain } = parsedInput
 
-    // TODO: user can be on multiple teams and app slug can repeat
     const app = await prisma.app.findFirst({
       where: {
         slug: appSlug,
         team: {
+          slug: teamSlug,
           members: {
             some: {
               userId: user.id,

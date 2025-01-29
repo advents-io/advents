@@ -27,7 +27,7 @@ interface Props {
 
 export const DeleteDomainButton = ({ domain, closeDropdown }: Props) => {
   const [open, setOpen] = useState(false)
-  const { app: appSlug } = useParams<{ app: string }>()
+  const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
 
   const handleSetOpen = (open: boolean) => {
     setOpen(open)
@@ -77,7 +77,7 @@ export const DeleteDomainButton = ({ domain, closeDropdown }: Props) => {
 
           <Button
             variant='destructive'
-            onClick={() => deleteDomain({ appSlug, domain })}
+            onClick={() => deleteDomain({ teamSlug, appSlug, domain })}
             disabled={isExecuting}
           >
             <LoadingContent loading={isExecuting}>Continuar</LoadingContent>

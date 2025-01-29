@@ -50,6 +50,7 @@ export const EditAppQrCodeLogoForm = () => {
       toast.promise(
         async () => {
           const result = await editAppQrCodeLogo({
+            teamSlug,
             appSlug,
             qrCodeLogoFile: form.getValues('qrCodeLogoFile'),
           })
@@ -72,7 +73,7 @@ export const EditAppQrCodeLogoForm = () => {
   const handleDeleteAppQrCodeLogo = () =>
     toast.promise(
       async () => {
-        const result = await deleteAppQrCodeLogo({ appSlug })
+        const result = await deleteAppQrCodeLogo({ teamSlug, appSlug })
 
         if (result?.serverError) {
           throw new Error()

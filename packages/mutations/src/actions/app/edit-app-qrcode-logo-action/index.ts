@@ -10,19 +10,20 @@ import { authActionClient } from '../../../safe-action'
 import { editAppQrCodeLogoFormInputSchema } from './schema'
 
 const inputSchema = editAppQrCodeLogoFormInputSchema.extend({
+  teamSlug: z.string({ message: 'Slug da equipe inválido.' }),
   appSlug: z.string({ message: 'Slug do app inválido.' }),
 })
 
 export const editAppQrCodeLogoAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug, qrCodeLogoFile: file } = parsedInput
+    const { teamSlug, appSlug, qrCodeLogoFile: file } = parsedInput
 
-    // TODO: user can be on multiple teams and app slug can repeat
     const app = await prisma.app.findFirst({
       where: {
         slug: appSlug,
         team: {
+          slug: teamSlug,
           members: {
             some: {
               userId: user.id,

@@ -7,19 +7,20 @@ import { ActionError } from '../../action-errors'
 import { authActionClient } from '../../safe-action'
 
 const inputSchema = z.object({
+  teamSlug: z.string({ message: 'Slug da equipe inválido.' }),
   appSlug: z.string({ message: 'Slug do app inválido.' }),
 })
 
 export const deleteAppQrCodeLogoAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { appSlug } = parsedInput
+    const { teamSlug, appSlug } = parsedInput
 
-    // TODO: user can be on multiple teams and app slug can repeat
     const app = await prisma.app.findFirst({
       where: {
         slug: appSlug,
         team: {
+          slug: teamSlug,
           members: {
             some: {
               userId: user.id,
