@@ -43,7 +43,3 @@ export const createEditLinkFormInputSchema = z.object({
     .nullable()
     .transform(value => value || null),
 })
-
-export const inputSchema = createEditLinkFormInputSchema.extend({
-  appId: z.string({ message: 'Id do app inválido.' }).uuid('Id do app inválido.'),
-})

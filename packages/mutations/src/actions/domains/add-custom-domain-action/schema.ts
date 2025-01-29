@@ -7,7 +7,3 @@ export const addCustomDomainFormSchema = z.object({
 })
 
 export type AddCustomDomainFormInput = z.infer<typeof addCustomDomainFormSchema>
-
-export const inputSchema = addCustomDomainFormSchema.extend({
-  appSlug: z.string({ message: 'Slug do app inválido.' }),
-})

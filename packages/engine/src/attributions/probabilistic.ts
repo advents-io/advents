@@ -1,4 +1,4 @@
-/* TODO improve probabilistic attribution
+/* TODO: improve probabilistic attribution
  *
  * Add filters:
  *   - app_id

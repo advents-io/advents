@@ -14,7 +14,8 @@ export const generateRandomSlugAction = authActionClient
   .action(async ({ parsedInput }) => {
     const { domain } = parsedInput
 
-    // TODO: add authorization
+    // We could add authorization here, but I don't think it's necessary
+    // because this do not change anything in the database.
 
     return {
       slug: await generateRandomSlug(domain),

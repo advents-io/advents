@@ -2,11 +2,16 @@
 
 import { prisma } from '@advents/db'
 import { getAppDomains } from '@advents/queries/server'
+import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
 import { generateRandomSlug } from '../../../utils/link-helper'
-import { inputSchema } from './schema'
+import { createEditLinkFormInputSchema } from './schema'
+
+const inputSchema = createEditLinkFormInputSchema.extend({
+  appId: z.string({ message: 'Id do app inválido.' }).uuid('Id do app inválido.'),
+})
 
 export const createLinkAction = authActionClient
   .schema(inputSchema)

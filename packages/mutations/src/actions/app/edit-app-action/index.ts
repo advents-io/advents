@@ -7,10 +7,15 @@ import {
 } from '@advents/common'
 import { prisma } from '@advents/db'
 import { getAppDomains } from '@advents/queries/server'
+import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { inputSchema } from './schema'
+import { editAppFormInputSchema } from './schema'
+
+const inputSchema = editAppFormInputSchema.extend({
+  id: z.string({ message: 'Id do app é obrigatório.' }).uuid('Id do app é obrigatório.'),
+})
 
 export const editAppAction = authActionClient
   .schema(inputSchema)

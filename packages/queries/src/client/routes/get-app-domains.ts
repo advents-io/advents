@@ -24,7 +24,9 @@ export const getAppDomains = (api: Hono<ApiEnv>) =>
     async c => {
       const { appId } = c.req.valid('param')
 
-      // TODO: add authorization
+      // We should add authorization to valid if user has access to the app,
+      // but previously of fetching this endpoint, we call the getAppDefaultValues,
+      // which already validates if the user has access to the app.
 
       const domains = await handleGetAppDomains(appId)
 

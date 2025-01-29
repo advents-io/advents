@@ -3,10 +3,15 @@
 import { dayjs } from '@advents/common'
 import { prisma } from '@advents/db'
 import { getStorageFileUrl, supabaseServer } from '@advents/supabase/server'
+import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { inputSchema } from './schema'
+import { editAppQrCodeLogoFormInputSchema } from './schema'
+
+const inputSchema = editAppQrCodeLogoFormInputSchema.extend({
+  appSlug: z.string({ message: 'Slug do app inválido.' }),
+})
 
 export const editAppQrCodeLogoAction = authActionClient
   .schema(inputSchema)

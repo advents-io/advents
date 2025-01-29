@@ -15,7 +15,3 @@ export const editAppQrCodeLogoFormInputSchema = z.object({
 })
 
 export type EditAppQrCodeLogoFormInput = z.infer<typeof editAppQrCodeLogoFormInputSchema>
-
-export const inputSchema = editAppQrCodeLogoFormInputSchema.extend({
-  appSlug: z.string({ message: 'Slug do app inválido.' }),
-})

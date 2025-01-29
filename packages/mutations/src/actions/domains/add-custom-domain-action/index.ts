@@ -2,10 +2,15 @@
 
 import { discord, SUPPORT_PHONE, whatsapp } from '@advents/common'
 import { prisma } from '@advents/db'
+import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { inputSchema } from './schema'
+import { addCustomDomainFormSchema } from './schema'
+
+const inputSchema = addCustomDomainFormSchema.extend({
+  appSlug: z.string({ message: 'Slug do app inválido.' }),
+})
 
 export const addCustomDomainAction = authActionClient
   .schema(inputSchema)
