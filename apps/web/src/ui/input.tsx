@@ -20,26 +20,41 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
 Input.displayName = 'Input'
 
 interface SlugInputProps extends React.ComponentProps<'input'> {
-  prefix: string
+  prefix?: string
+  suffix?: string
 }
 
 const SlugInput = React.forwardRef<HTMLInputElement, SlugInputProps>(
-  ({ className, type, prefix, ...props }, ref) => {
+  ({ className, type, prefix, suffix, ...props }, ref) => {
     return (
-      <div className='flex h-10 rounded-md border border-input bg-background text-sm'>
-        <div className='hidden items-center overflow-hidden rounded-s-md border-r bg-gray-50 px-3 sm:flex'>
-          <span className='text-muted-foreground'>{prefix}</span>
-        </div>
+      <div
+        className={cn(
+          'flex h-10 rounded-md border border-input bg-background text-sm',
+          suffix && 'w-fit',
+        )}
+      >
+        {prefix && (
+          <div className='hidden items-center overflow-hidden rounded-s-md border-r bg-gray-50 px-3 sm:flex'>
+            <span className='text-muted-foreground'>{prefix}</span>
+          </div>
+        )}
 
         <input
           type={type}
           className={cn(
-            'flex flex-1 rounded-md px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+            'z-10 flex flex-1 rounded-md px-3 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+            suffix && 'w-48',
             className,
           )}
           ref={ref}
           {...props}
         />
+
+        {suffix && (
+          <div className='hidden items-center overflow-hidden rounded-e-md border-l bg-gray-50 px-3 sm:flex'>
+            <span className='text-muted-foreground'>{suffix}</span>
+          </div>
+        )}
       </div>
     )
   },

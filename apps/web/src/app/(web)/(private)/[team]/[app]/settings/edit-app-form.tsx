@@ -108,7 +108,7 @@ export const EditAppForm = ({ app }: Props) => {
             >
               <p>Usado para identificar o app na plataforma.</p>
 
-              <Input {...field} placeholder='Nome do app' />
+              <Input {...field} placeholder='Nome do app' maxLength={64} />
             </SettingsField>
           )}
         />
@@ -157,6 +157,7 @@ export const EditAppForm = ({ app }: Props) => {
                 {...field}
                 placeholder='nome-do-app'
                 prefix={`app.advents.io/${teamSlug}/`}
+                maxLength={48}
               />
             </SettingsField>
           )}

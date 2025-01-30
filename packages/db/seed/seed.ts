@@ -74,6 +74,9 @@ const createMember = async () => {
 const createApp = async (teamId: string, userId: string) => {
   const imageUrl = await getUrlOgImage(APP.androidUrl)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { domains, ...app } = APP
+
   if (!imageUrl) {
     throw new Error('App image not found')
   }
@@ -82,7 +85,7 @@ const createApp = async (teamId: string, userId: string) => {
 
   const { id: appId } = await prisma.app.create({
     data: {
-      ...APP,
+      ...app,
       imageUrl,
       apiKeys: {
         create: {

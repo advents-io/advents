@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { regexes } from '../../../utils/regexes'
 
-export const createAppInputSchema = z.object({
+export const baseCreateAppInputSchema = z.object({
   name: z
     .string({ message: 'Nome do app é obrigatório.' })
     .min(1, 'Nome do app é obrigatório.')
@@ -44,4 +44,15 @@ export const createAppInputSchema = z.object({
   fallbackUrl: z.string({ message: 'Url inválida.' }).url('Url inválida.'),
 })
 
-export type CreateAppInput = z.infer<typeof createAppInputSchema>
+export const createAppFormInputSchema = baseCreateAppInputSchema.extend({
+  subDomain: z
+    .string({ message: 'Sub-domínio é obrigatório.' })
+    .min(1, 'Sub-domínio é obrigatório.')
+    .max(48, 'O sub-domínio deve possuir no máximo 48 caracteres.')
+    .regex(
+      /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/,
+      'O sub-domínio deve conter apenas letras minúsculas, números e hífen. Não pode começar ou terminar com hífen.',
+    ),
+})
+
+export type CreateAppFormInput = z.infer<typeof createAppFormInputSchema>

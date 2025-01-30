@@ -2,8 +2,8 @@
 
 import {
   createAppAction,
-  CreateAppInput,
-  createAppInputSchema,
+  CreateAppFormInput,
+  createAppFormInputSchema,
   formatErrors,
   useAction,
 } from '@advents/mutations'
@@ -56,17 +56,18 @@ export const CreateAppForm = () => {
     },
   })
 
-  const handleCreateApp = (input: CreateAppInput) => {
+  const handleCreateApp = (input: CreateAppFormInput) => {
     createApp({ ...input, teamSlug })
   }
 
   const error = formatErrors(result)
 
-  const form = useForm<CreateAppInput>({
-    resolver: zodResolver(createAppInputSchema),
+  const form = useForm<CreateAppFormInput>({
+    resolver: zodResolver(createAppFormInputSchema),
     defaultValues: {
       name: '',
       slug: '',
+      subDomain: '',
       androidUrl: '',
       iosUrl: '',
       fallbackUrl: '',
@@ -86,7 +87,7 @@ export const CreateAppForm = () => {
           render={({ field, fieldState }) => (
             <SettingsField title='Nome' fieldState={fieldState}>
               Usado para identificar o app na plataforma.
-              <Input {...field} placeholder='Nome do app' />
+              <Input {...field} placeholder='Nome do app' maxLength={64} />
               Máximo de 64 caracteres.
             </SettingsField>
           )}
@@ -102,7 +103,21 @@ export const CreateAppForm = () => {
                 prefix={`app.advents.io/${teamSlug}/`}
                 {...field}
                 placeholder='nome-do-app'
+                maxLength={48}
               />
+              Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
+              caracteres.
+            </SettingsField>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='subDomain'
+          render={({ field, fieldState }) => (
+            <SettingsField title='Sub-domínio' fieldState={fieldState}>
+              Sub-domínio personalizado que será utilizado para criar os links.
+              <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
               Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
               caracteres.
             </SettingsField>
@@ -167,10 +182,10 @@ export const CreateAppForm = () => {
           )}
         />
 
-        <Button type='submit' className='w-full md:w-auto' disabled={busy}>
+        <Button type='submit' className='w-full min-w-32 md:w-auto' disabled={busy}>
           <LoadingSpinner loading={busy}>
             <SaveIcon />
-            Salvar
+            Criar app
           </LoadingSpinner>
         </Button>
       </form>

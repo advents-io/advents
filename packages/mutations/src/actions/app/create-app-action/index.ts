@@ -14,9 +14,9 @@ import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { createAppInputSchema } from './schema'
+import { createAppFormInputSchema } from './schema'
 
-const inputSchema = createAppInputSchema.extend({
+const inputSchema = createAppFormInputSchema.extend({
   teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
 })
 
@@ -51,10 +51,26 @@ export const createAppAction = authActionClient
           teamId: team.id,
         },
       },
+      select: {
+        id: true,
+      },
     })
 
     if (slugExists) {
       throw new ActionError('Identificador único já utilizado por outro app na sua conta.')
+    }
+
+    const subDomainExists = await prisma.app.findUnique({
+      where: {
+        subDomain: app.subDomain,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (subDomainExists) {
+      throw new ActionError('Sub-domínio já utilizado por outro app.')
     }
 
     const normalizedIosUrl = normalizeStoreUrl(app.iosUrl)

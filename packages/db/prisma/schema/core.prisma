@@ -38,6 +38,7 @@ model App {
 
   name                    String  @db.VarChar(64)
   slug                    String  @db.VarChar(48)
+  subDomain               String  @unique @map("sub_domain") @db.VarChar(48)
   defaultDomain           String  @map("default_domain")
   imageUrl                String  @map("image_url")
   androidUrl              String  @map("android_url")

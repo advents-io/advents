@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { createAppInputSchema } from '../create-app-action/schema'
+import { baseCreateAppInputSchema } from '../create-app-action/schema'
 
-export const editAppFormInputSchema = createAppInputSchema.extend({
+export const editAppFormInputSchema = baseCreateAppInputSchema.extend({
   disableIosPreviewPage: z.boolean(),
 })
 

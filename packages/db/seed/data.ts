@@ -20,6 +20,7 @@ export const APP: App = {
   id: 'bd356bbe-4861-4a8b-8b4f-de64999702e7',
   name: 'Favorito',
   slug: 'favorito',
+  subDomain: 'favorito',
   domains: ['dev.adv.sh', 'links.favorito.digital'],
   defaultDomain: 'links.favorito.digital',
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
