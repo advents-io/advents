@@ -13,20 +13,15 @@ import { useParams } from 'next/navigation'
 import { usePostHog } from 'posthog-js/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { FaAppStoreIos as IosIcon } from 'react-icons/fa'
+import { IoLogoAndroid as AndroidIcon } from 'react-icons/io'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingSpinner } from '@/components/loading-spinner'
+import { SettingsField } from '@/components/settings-field'
 import { Button } from '@/ui/button'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form'
+import { Form, FormField } from '@/ui/form'
 import { Input, SlugInput } from '@/ui/input'
 
 export const CreateAppForm = () => {
@@ -88,107 +83,87 @@ export const CreateAppForm = () => {
         <FormField
           control={form.control}
           name='name'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome</FormLabel>
-
-              <FormControl>
-                <Input {...field} placeholder='Nome do app' />
-              </FormControl>
-
-              <FormDescription>Usado para identificar o app na plataforma.</FormDescription>
-
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <SettingsField title='Nome' fieldState={fieldState}>
+              Usado para identificar o app na plataforma.
+              <Input {...field} placeholder='Nome do app' />
+              Máximo de 64 caracteres.
+            </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
           name='slug'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Identificador único</FormLabel>
-
-              <FormControl>
-                <SlugInput
-                  prefix={`app.advents.io/${teamSlug}/`}
-                  {...field}
-                  placeholder='nome-do-app'
-                />
-              </FormControl>
-
-              <FormDescription>
-                Valor único usado para identificar o app na plataforma.
-                <br />
-                Deve conter apenas letras minúsculas, números, hífen ou underline.
-              </FormDescription>
-
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <SettingsField title='Identificador único' fieldState={fieldState}>
+              Valor único usado para identificar o app na plataforma.
+              <SlugInput
+                prefix={`app.advents.io/${teamSlug}/`}
+                {...field}
+                placeholder='nome-do-app'
+              />
+              Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
+              caracteres.
+            </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
           name='androidUrl'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Url do app Android</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type='url'
-                  placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
-                />
-              </FormControl>
-              <FormDescription>
-                Url do app Android padrão que será utilizada ao criar um link.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <SettingsField
+              title={
+                <span className='inline-flex items-center gap-2'>
+                  <AndroidIcon className='size-6' />
+                  Url do app Android
+                </span>
+              }
+              fieldState={fieldState}
+            >
+              Url padrão que será utilizada ao criar um link.
+              <Input
+                {...field}
+                type='url'
+                placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
+              />
+            </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
           name='iosUrl'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Url do app iOS</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type='url'
-                  placeholder='https://apps.apple.com/app/exemplo/id1234567890'
-                />
-              </FormControl>
-              <FormDescription>
-                Url do app iOS padrão que será utilizada ao criar um link.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <SettingsField
+              title={
+                <span className='inline-flex items-center gap-2'>
+                  <IosIcon className='size-6' />
+                  Url do app iOS
+                </span>
+              }
+              fieldState={fieldState}
+            >
+              Url padrão que será utilizada ao criar um link.
+              <Input
+                {...field}
+                type='url'
+                placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+              />
+            </SettingsField>
           )}
         />
 
         <FormField
           control={form.control}
           name='fallbackUrl'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Url alternativa</FormLabel>
-              <FormControl>
-                <Input {...field} type='url' placeholder='https://www.meusite.com' />
-              </FormControl>
-              <div className='space-y-2 text-sm text-muted-foreground'>
-                <p>Url alternativa padrão que será utilizada ao criar um link.</p>
-                <p>
-                  É a url que o usuário será direcionado caso o dispositivo que abrir o link seja
-                  Desktop.
-                </p>
-              </div>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <SettingsField title='Url alternativa' fieldState={fieldState}>
+              Url alternativa padrão que será utilizada ao criar um link.
+              <Input {...field} type='url' placeholder='https://www.meusite.com' />É a url que o
+              usuário será direcionado caso o dispositivo que abrir o link seja Desktop.
+            </SettingsField>
           )}
         />
 
