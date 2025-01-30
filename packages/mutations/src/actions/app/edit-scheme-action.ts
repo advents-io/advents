@@ -27,6 +27,9 @@ export const editSchemeAction = authActionClient
           },
         },
       },
+      select: {
+        id: true,
+      },
     })
 
     if (!app) {
@@ -35,7 +38,7 @@ export const editSchemeAction = authActionClient
 
     await prisma.app.update({
       where: {
-        id: appId,
+        id: app.id,
       },
       data: {
         scheme,

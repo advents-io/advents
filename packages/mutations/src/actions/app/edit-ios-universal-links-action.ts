@@ -36,6 +36,9 @@ export const editIosUniversalLinksAction = authActionClient
           },
         },
       },
+      select: {
+        id: true,
+      },
     })
 
     if (!app) {
@@ -46,7 +49,7 @@ export const editIosUniversalLinksAction = authActionClient
 
     await prisma.app.update({
       where: {
-        id: appId,
+        id: app.id,
       },
       data: {
         enableIosUniversalLinks,

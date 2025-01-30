@@ -34,6 +34,10 @@ export const createAppAction = authActionClient
           },
         },
       },
+      select: {
+        id: true,
+        slug: true,
+      },
     })
 
     if (!team) {

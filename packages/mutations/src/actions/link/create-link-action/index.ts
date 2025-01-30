@@ -46,12 +46,14 @@ export const createLinkAction = authActionClient
 
     if (link.slug) {
       const linkExists = await prisma.link.findUnique({
-        select: { id: true },
         where: {
           domain_slug: {
             domain: link.domain,
             slug: link.slug,
           },
+        },
+        select: {
+          id: true,
         },
       })
 

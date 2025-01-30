@@ -35,6 +35,9 @@ export const editAndroidAppLinksAction = authActionClient
           },
         },
       },
+      select: {
+        id: true,
+      },
     })
 
     if (!app) {
@@ -45,7 +48,7 @@ export const editAndroidAppLinksAction = authActionClient
 
     await prisma.app.update({
       where: {
-        id: appId,
+        id: app.id,
       },
       data: {
         enableAndroidAppLinks,
