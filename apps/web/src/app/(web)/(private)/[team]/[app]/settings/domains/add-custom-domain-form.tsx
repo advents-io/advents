@@ -15,7 +15,6 @@ import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { LoadingContent } from '@/components/loading-content'
-import { SettingsField } from '@/components/settings-field'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -26,6 +25,7 @@ import {
   AlertDialogTitle,
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
+import { CardContent, CardTitle } from '@/ui/card'
 import { Form, FormField } from '@/ui/form'
 import { Input } from '@/ui/input'
 
@@ -91,9 +91,13 @@ export const AddCustomDomainForm = () => {
           <FormField
             control={form.control}
             name='domain'
-            render={({ field, fieldState }) => (
-              <SettingsField fieldState={fieldState} title='Domínios Customizados'>
-                <span>Adicione um domínio customizado da sua empresa para utilizar nos links.</span>
+            render={({ field }) => (
+              <div className='space-y-4'>
+                <CardTitle className='text-lg'>Domínios Customizados</CardTitle>
+
+                <CardContent className='p-0 text-sm'>
+                  Adicione um domínio customizado da sua empresa para utilizar nos links.
+                </CardContent>
 
                 <div className='flex flex-col gap-2 sm:flex-row'>
                   <Input placeholder='links.meuapp.com' {...field} />
@@ -102,7 +106,7 @@ export const AddCustomDomainForm = () => {
                     <LoadingContent loading={busy}>Adicionar domínio</LoadingContent>
                   </Button>
                 </div>
-              </SettingsField>
+              </div>
             )}
           />
         </form>

@@ -1,6 +1,5 @@
 import { routes } from '@advents/common'
 import { prisma } from '@advents/db'
-import { getAppDomains } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
@@ -20,7 +19,6 @@ export default async function Page(props: { params: Promise<{ team: string; app:
       id: true,
       slug: true,
       name: true,
-      defaultDomain: true,
       androidUrl: true,
       iosUrl: true,
       disableIosPreviewPage: true,
@@ -32,7 +30,5 @@ export default async function Page(props: { params: Promise<{ team: string; app:
     redirect(routes.APPS.path(params.team))
   }
 
-  const availableDomains = await getAppDomains(app.id)
-
-  return <EditAppForm app={app} availableDomains={availableDomains.map(domain => domain.domain)} />
+  return <EditAppForm app={app} />
 }

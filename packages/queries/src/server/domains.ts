@@ -3,7 +3,7 @@ type CustomDomain = {
   domain: string
 }
 
-type Domain = {
+export type Domain = {
   domain: string
   type: 'default' | 'custom'
 }
@@ -42,13 +42,13 @@ const CUSTOM_DOMAINS: CustomDomain[] =
 
 export const LOCALHOST_DOMAIN: string = 'l.localhost:3000'
 
-export const getAppDomains = async (appId?: string): Promise<Domain[]> => {
-  const customDomains: Domain[] = appId
-    ? CUSTOM_DOMAINS.filter(customDomain => customDomain.appId === appId).map(customDomain => ({
-        domain: customDomain.domain,
-        type: 'custom',
-      }))
-    : []
+export const getAppDomains = async (appId: string): Promise<Domain[]> => {
+  const customDomains: Domain[] = CUSTOM_DOMAINS.filter(
+    customDomain => customDomain.appId === appId,
+  ).map(customDomain => ({
+    domain: customDomain.domain,
+    type: 'custom',
+  }))
 
   const domains = [...DEFAULT_DOMAINS, ...customDomains]
 

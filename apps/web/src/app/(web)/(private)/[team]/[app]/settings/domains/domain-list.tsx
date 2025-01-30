@@ -1,49 +1,16 @@
-import { prisma } from '@advents/db'
-import { getAppDomains } from '@advents/queries/server'
-import { getSessionUser } from '@advents/supabase/server'
+import { Domain } from '@advents/queries/server'
 
 import { cn } from '@/lib/tailwind'
 import { Badge } from '@/ui/badge'
 import { Card, CardHeader } from '@/ui/card'
-import { Skeleton } from '@/ui/skeleton'
 
 import { DomainItemMoreOptionsButton } from './domain-item-more-options-button'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  teamSlug: string
-  appSlug: string
+  domains: Domain[]
 }
 
-export const DomainList = async ({ teamSlug, appSlug, className }: Props) => {
-  const user = await getSessionUser()
-
-  if (!user) {
-    return null
-  }
-
-  const app = await prisma.app.findFirst({
-    where: {
-      slug: appSlug,
-      team: {
-        slug: teamSlug,
-        members: {
-          some: {
-            userId: user.id,
-          },
-        },
-      },
-    },
-    select: {
-      id: true,
-    },
-  })
-
-  if (!app) {
-    return null
-  }
-
-  const domains = await getAppDomains(app.id)
-
+export const DomainList = ({ domains, className }: Props) => {
   return (
     <div className={cn('space-y-2', className)}>
       {domains.map((domain, index) => (
@@ -62,23 +29,6 @@ export const DomainList = async ({ teamSlug, appSlug, className }: Props) => {
               {domain.type === 'custom' && (
                 <DomainItemMoreOptionsButton domain={domain.domain} className='ml-auto' />
               )}
-            </div>
-          </CardHeader>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-export const DomainListSkeleton = () => {
-  return (
-    <div className='space-y-2'>
-      {Array.from({ length: 10 }).map((_, index) => (
-        <Card key={index}>
-          <CardHeader>
-            <div className='flex min-h-10 flex-row items-center gap-4'>
-              <Skeleton className='h-6 w-32' />
-              <Skeleton className='h-6 w-20' />
             </div>
           </CardHeader>
         </Card>

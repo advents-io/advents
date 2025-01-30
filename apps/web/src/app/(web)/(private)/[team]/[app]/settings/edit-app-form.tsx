@@ -10,7 +10,7 @@ import {
 } from '@advents/mutations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { App } from '@prisma/client'
-import { Loader2Icon, SquareArrowOutUpRightIcon } from 'lucide-react'
+import { SquareArrowOutUpRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
@@ -33,19 +33,11 @@ import Loading from './loading'
 interface Props {
   app: Pick<
     App,
-    | 'id'
-    | 'name'
-    | 'slug'
-    | 'defaultDomain'
-    | 'androidUrl'
-    | 'iosUrl'
-    | 'disableIosPreviewPage'
-    | 'fallbackUrl'
+    'id' | 'name' | 'slug' | 'androidUrl' | 'iosUrl' | 'disableIosPreviewPage' | 'fallbackUrl'
   >
-  availableDomains: string[]
 }
 
-export const EditAppForm = ({ app, availableDomains }: Props) => {
+export const EditAppForm = ({ app }: Props) => {
   const router = useRouter()
   const { team: teamSlug } = useParams<{ team: string }>()
 
@@ -166,94 +158,6 @@ export const EditAppForm = ({ app, availableDomains }: Props) => {
                 placeholder='nome-do-app'
                 prefix={`app.advents.io/${teamSlug}/`}
               />
-            </SettingsField>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='defaultDomain'
-          render={({ field, fieldState }) => (
-            <SettingsField
-              fieldState={fieldState}
-              busy={busy}
-              title='Domínio padrão'
-              footer={
-                <span>
-                  Alterações não afetam links já criados. Adicione um domínio customizado na{' '}
-                  <Link
-                    href={routes.SETTINGS_DOMAINS.path(teamSlug, app.slug)}
-                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                    target='_blank'
-                  >
-                    página de domínios. <SquareArrowOutUpRightIcon className='size-4' />
-                  </Link>
-                </span>
-              }
-            >
-              <p>
-                Domínio que será pré preenchido ao criar um link. Para cada link será possível
-                alterar o domínio.
-              </p>
-
-              <Select
-                onValueChange={value => {
-                  field.onChange(value)
-
-                  form.handleSubmit(() =>
-                    toast.promise(
-                      async () => {
-                        const result = await editApp({
-                          ...(form.formState.defaultValues as EditAppFormInput),
-                          defaultDomain: value,
-                          id: app.id,
-                        })
-
-                        if (result?.serverError) {
-                          throw new Error()
-                        }
-
-                        form.resetField('defaultDomain', {
-                          defaultValue: value,
-                        })
-                      },
-                      {
-                        loading: 'Alterando o domínio padrão...',
-                        success: 'Domínio padrão alterado.',
-                        error: 'Erro ao alterar o domínio padrão.',
-                      },
-                    ),
-                  )()
-                }}
-                defaultValue={field.value}
-                disabled={busy}
-                {...field}
-              >
-                <SelectTrigger className='relative'>
-                  <SelectValue />
-
-                  {busy && (
-                    <div className='absolute right-3 z-10 bg-white'>
-                      <Loader2Icon className='size-4 animate-spin' />
-                    </div>
-                  )}
-                </SelectTrigger>
-
-                <SelectContent>
-                  {availableDomains.map((domain, index) => (
-                    <SelectItem key={index} value={domain}>
-                      {domain}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <p className='text-muted-foreground'>
-                Exemplo do link com domínio:{' '}
-                <span className='font-mono font-semibold tracking-tighter text-primary'>
-                  https://{field.value}/7yB46jk
-                </span>
-              </p>
             </SettingsField>
           )}
         />
