@@ -6,17 +6,17 @@ import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
 import { authActionClient } from '../../../safe-action'
-import { editAppDefaultDomainFormInputSchema } from './schema'
+import { editAppDomainConfigFormInputSchema } from './schema'
 
-const inputSchema = editAppDefaultDomainFormInputSchema.extend({
+const inputSchema = editAppDomainConfigFormInputSchema.extend({
   teamSlug: z.string({ message: 'Slug da equipe inválido.' }),
   appSlug: z.string({ message: 'Slug do app inválido.' }),
 })
 
-export const editAppDefaultDomainAction = authActionClient
+export const editAppDomainConfigAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { teamSlug, appSlug, defaultDomain } = parsedInput
+    const { teamSlug, appSlug, defaultDomain, subDomain } = parsedInput
 
     const app = await prisma.app.findFirst({
       where: {
@@ -32,6 +32,7 @@ export const editAppDefaultDomainAction = authActionClient
       },
       select: {
         id: true,
+        subDomain: true,
       },
     })
 
@@ -39,10 +40,31 @@ export const editAppDefaultDomainAction = authActionClient
       throw new ActionError('App não encontrado.')
     }
 
+    const subDomainChanged = app.subDomain !== subDomain
+
+    if (subDomainChanged) {
+      const subDomainExists = await prisma.app.findUnique({
+        where: {
+          subDomain,
+        },
+        select: {
+          id: true,
+        },
+      })
+
+      if (subDomainExists) {
+        throw new ActionError('Sub-domínio já utilizado por outro app.')
+      }
+    }
+
     const availableDomains = await getAppDomains(app.id)
 
-    if (!availableDomains.some(domain => domain.domain === defaultDomain)) {
-      throw new ActionError('Domínio inválido.')
+    const defaultDomainIsAvailable = availableDomains.some(
+      domain => domain.domain === defaultDomain,
+    )
+
+    if (!defaultDomainIsAvailable) {
+      throw new ActionError('Domínio padrão inválido.')
     }
 
     await prisma.app.update({
@@ -51,6 +73,7 @@ export const editAppDefaultDomainAction = authActionClient
       },
       data: {
         defaultDomain,
+        subDomain,
         updatedBy: user.id,
       },
     })

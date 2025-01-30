@@ -1,39 +1,40 @@
 'use client'
 
-import { routes } from '@advents/common'
 import {
-  editAppDefaultDomainAction,
-  EditAppDefaultDomainFormInput,
-  editAppDefaultDomainFormInputSchema,
+  editAppDomainConfigAction,
+  EditAppDomainConfigFormInput,
+  editAppDomainConfigFormInputSchema,
   formatErrors,
   useAction,
 } from '@advents/mutations'
 import { Domain } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2Icon, SquareArrowOutUpRightIcon } from 'lucide-react'
-import Link from 'next/link'
+import { Loader2Icon } from 'lucide-react'
 import { useParams } from 'next/navigation'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { SettingsField } from '@/components/settings-field'
 import { Form, FormField } from '@/ui/form'
+import { SlugInput } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 
 interface Props {
   availableDomains: Domain[]
   defaultDomain: string
+  subDomain: string
 }
 
-export const EditDefaultDomainForm = ({ availableDomains, defaultDomain }: Props) => {
+export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomain }: Props) => {
   const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
 
   const {
-    executeAsync: editAppDefaultDomain,
+    executeAsync: editAppDomainConfig,
     isExecuting,
     result,
-  } = useAction(editAppDefaultDomainAction, {
+  } = useAction(editAppDomainConfigAction, {
     onError: () => {
       window.scrollTo({
         top: 0,
@@ -44,10 +45,11 @@ export const EditDefaultDomainForm = ({ availableDomains, defaultDomain }: Props
 
   const error = formatErrors(result)
 
-  const form = useForm<EditAppDefaultDomainFormInput>({
-    resolver: zodResolver(editAppDefaultDomainFormInputSchema),
+  const form = useForm<EditAppDomainConfigFormInput>({
+    resolver: zodResolver(editAppDomainConfigFormInputSchema),
     defaultValues: {
       defaultDomain,
+      subDomain,
     },
   })
 
@@ -60,24 +62,54 @@ export const EditDefaultDomainForm = ({ availableDomains, defaultDomain }: Props
 
         <FormField
           control={form.control}
+          name='subDomain'
+          render={({ field, fieldState }) => (
+            <SettingsField
+              fieldState={fieldState}
+              busy={busy}
+              title='Sub-domínio'
+              footerLabel='Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48 caracteres.'
+              footerButtonOnClick={form.handleSubmit(() =>
+                toast.promise(
+                  async () => {
+                    const result = await editAppDomainConfig({
+                      ...(form.formState.defaultValues as EditAppDomainConfigFormInput),
+                      teamSlug,
+                      appSlug,
+                      subDomain: field.value,
+                    })
+
+                    if (result?.serverError) {
+                      throw new Error()
+                    }
+
+                    form.resetField('subDomain', {
+                      defaultValue: field.value,
+                    })
+                  },
+                  {
+                    loading: 'Alterando o sub-domínio...',
+                    success: 'Sub-domínio alterado.',
+                    error: 'Erro ao alterar o sub-domínio.',
+                  },
+                ),
+              )}
+            >
+              Sub-domínio personalizado que será utilizado para criar os links.
+              <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
+            </SettingsField>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='defaultDomain'
           render={({ field, fieldState }) => (
             <SettingsField
               fieldState={fieldState}
               busy={busy}
               title='Domínio padrão'
-              footer={
-                <span>
-                  Alterações não afetam links já criados. Adicione um domínio customizado na{' '}
-                  <Link
-                    href={routes.SETTINGS_DOMAINS.path(teamSlug, appSlug)}
-                    className='inline-flex items-center whitespace-pre text-blue-600 hover:underline'
-                    target='_blank'
-                  >
-                    página de domínios. <SquareArrowOutUpRightIcon className='size-4' />
-                  </Link>
-                </span>
-              }
+              footerLabel='Alterações não afetam links já criados.'
             >
               <p>
                 Domínio que será pré preenchido ao criar um link. Para cada link será possível
@@ -91,7 +123,8 @@ export const EditDefaultDomainForm = ({ availableDomains, defaultDomain }: Props
                   form.handleSubmit(() =>
                     toast.promise(
                       async () => {
-                        const result = await editAppDefaultDomain({
+                        const result = await editAppDomainConfig({
+                          ...(form.formState.defaultValues as EditAppDomainConfigFormInput),
                           teamSlug,
                           appSlug,
                           defaultDomain: value,

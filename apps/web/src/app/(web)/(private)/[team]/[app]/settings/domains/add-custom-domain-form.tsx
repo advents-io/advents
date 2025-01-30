@@ -93,7 +93,7 @@ export const AddCustomDomainForm = () => {
             name='domain'
             render={({ field }) => (
               <div className='space-y-4'>
-                <CardTitle className='text-lg'>Domínios Customizados</CardTitle>
+                <CardTitle className='text-xl'>Domínios Customizados</CardTitle>
 
                 <CardContent className='p-0 text-sm'>
                   Adicione um domínio customizado da sua empresa para utilizar nos links.

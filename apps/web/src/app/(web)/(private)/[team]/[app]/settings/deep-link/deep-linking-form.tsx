@@ -399,19 +399,19 @@ export const DeepLinkingForm = ({ app }: Props) => {
             )}
           />
 
+          <p>
+            Android App Links oferece mais segurança e uma melhor experiência de usuário do que o
+            URI Scheme, e será o método preferencial para abrir o app, caso esteja instalado no
+            dispositivo do usuário.
+          </p>
+
+          <p>
+            Nós fazemos toda a configuração necessária para que funcione, só precisamos do
+            certificado SHA265 do seu app.
+          </p>
+
           {form.watch('enableAndroidAppLinks') && (
             <>
-              <p>
-                Android App Links oferece mais segurança e uma melhor experiência de usuário do que
-                o URI Scheme, e será o método preferencial para abrir o app, caso esteja instalado
-                no dispositivo do usuário.
-              </p>
-
-              <p>
-                Nós fazemos toda a configuração necessária para que funcione, só precisamos do
-                certificado SHA265 do seu app.
-              </p>
-
               <div className='mt-5 space-y-2'>
                 <FormLabel>Android SHA256 Cert Fingerprints</FormLabel>
 

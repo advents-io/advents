@@ -5,7 +5,7 @@ import { Separator } from '@/ui/separator'
 
 import { AddCustomDomainForm } from './add-custom-domain-form'
 import { DomainList } from './domain-list'
-import { EditDefaultDomainForm } from './edit-default-domain-form'
+import { EditDomainConfigForm } from './edit-domain-config-form'
 
 export default async function Page({ params }: { params: Promise<{ team: string; app: string }> }) {
   const { team: teamSlug, app: appSlug } = await params
@@ -19,6 +19,7 @@ export default async function Page({ params }: { params: Promise<{ team: string;
     },
     select: {
       id: true,
+      subDomain: true,
       defaultDomain: true,
     },
   })
@@ -31,7 +32,11 @@ export default async function Page({ params }: { params: Promise<{ team: string;
 
   return (
     <div className='space-y-10'>
-      <EditDefaultDomainForm availableDomains={domains} defaultDomain={app.defaultDomain} />
+      <EditDomainConfigForm
+        availableDomains={domains}
+        defaultDomain={app.defaultDomain}
+        subDomain={app.subDomain}
+      />
 
       <Separator />
 
