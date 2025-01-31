@@ -3,8 +3,12 @@ import React, { HTMLAttributes } from 'react'
 import { cn } from '@/lib/tailwind'
 import { Button } from '@/ui/button'
 
-export const EmptyScreen = ({ children }: { children?: React.ReactNode }) => {
-  return <div className='mx-auto flex h-72 max-w-72 flex-col justify-center gap-4'>{children}</div>
+export const EmptyScreen = ({ children, className }: HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div className={cn('mx-auto flex h-72 max-w-72 flex-col justify-center gap-4', className)}>
+      {children}
+    </div>
+  )
 }
 
 export const EmptyScreenIcon = ({ children }: { children: React.ReactNode }) => {
