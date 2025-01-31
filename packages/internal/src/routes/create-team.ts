@@ -4,6 +4,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 
 import { ApiEnv } from '../api'
+import { createAdminUsersMember } from '../handlers/create-admin-users-member'
 import { handleInviteUser } from '../handlers/invite-user'
 
 const inputSchema = z.object({
@@ -52,6 +53,8 @@ export const createTeam = (api: Hono<ApiEnv>) =>
           }
         }
       }
+
+      await createAdminUsersMember({ teamId: team.id, createdByUserId: c.var.user.id })
 
       return c.json(
         {
