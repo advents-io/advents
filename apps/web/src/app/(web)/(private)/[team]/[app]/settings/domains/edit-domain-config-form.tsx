@@ -7,7 +7,7 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { Domain } from '@advents/queries/server'
+import { BASE_DEFAULT_DOMAIN, Domain } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -97,8 +97,12 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
             >
               <span>Sub-domínio personalizado que será utilizado para criar os links.</span>
 
-              {/* TODO: Change suffix to the environment domain */}
-              <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
+              <SlugInput
+                suffix={BASE_DEFAULT_DOMAIN}
+                {...field}
+                placeholder='ifood'
+                maxLength={48}
+              />
 
               {fieldState.isDirty && !fieldState.invalid && (
                 <div className='space-y-4 text-sm font-medium text-destructive'>

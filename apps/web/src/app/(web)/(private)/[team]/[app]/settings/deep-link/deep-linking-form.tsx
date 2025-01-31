@@ -321,7 +321,7 @@ export const DeepLinkingForm = ({ app }: Props) => {
                       <FormItem>
                         <FormControl>
                           <div className='flex gap-2'>
-                            <Input placeholder='com.exemplo.app' {...field} />
+                            <Input placeholder='br.com.ifood' {...field} />
 
                             <Button
                               type='button'
@@ -424,7 +424,10 @@ export const DeepLinkingForm = ({ app }: Props) => {
                       <FormItem>
                         <FormControl>
                           <div className='flex flex-1 gap-2'>
-                            <Input placeholder='SHA256 fingerprint' {...field} />
+                            <Input
+                              placeholder='3F:2A:89:8D:37:6B:4C:AD:77:12:8B:9A:45:6E:CB:3D:9E:2F:AB:74:57:D1:67:99:BF:12:34:56:78:9A:BC:DE'
+                              {...field}
+                            />
 
                             <Button
                               type='button'

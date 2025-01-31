@@ -108,7 +108,7 @@ export const EditAppForm = ({ app }: Props) => {
             >
               <p>Usado para identificar o app na plataforma.</p>
 
-              <Input {...field} placeholder='Nome do app' maxLength={64} />
+              <Input {...field} placeholder='iFood' maxLength={64} />
             </SettingsField>
           )}
         />
@@ -155,7 +155,7 @@ export const EditAppForm = ({ app }: Props) => {
 
               <SlugInput
                 {...field}
-                placeholder='nome-do-app'
+                placeholder='ifood'
                 prefix={`app.advents.io/${teamSlug}/`}
                 maxLength={48}
               />
@@ -207,7 +207,7 @@ export const EditAppForm = ({ app }: Props) => {
               <Input
                 {...field}
                 type='url'
-                placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
+                placeholder='https://play.google.com/store/apps/details?id=br.com.ifood'
               />
 
               <p className='text-muted-foreground'>
@@ -261,7 +261,7 @@ export const EditAppForm = ({ app }: Props) => {
               <Input
                 {...field}
                 type='url'
-                placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                placeholder='https://apps.apple.com/br/app/ifood/id483017239'
               />
 
               <p className='text-muted-foreground'>
@@ -394,7 +394,7 @@ export const EditAppForm = ({ app }: Props) => {
               <Input
                 {...field}
                 type='url'
-                placeholder='https://www.meusite.com'
+                placeholder='https://www.ifood.com.br'
                 value={field.value || ''}
               />
 

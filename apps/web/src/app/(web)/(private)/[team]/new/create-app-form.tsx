@@ -7,6 +7,7 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
+import { BASE_DEFAULT_DOMAIN } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SaveIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -87,7 +88,7 @@ export const CreateAppForm = () => {
           render={({ field, fieldState }) => (
             <SettingsField title='Nome' fieldState={fieldState}>
               Usado para identificar o app na plataforma.
-              <Input {...field} placeholder='Nome do app' maxLength={64} />
+              <Input {...field} placeholder='iFood' maxLength={64} />
               Máximo de 64 caracteres.
             </SettingsField>
           )}
@@ -102,7 +103,7 @@ export const CreateAppForm = () => {
               <SlugInput
                 prefix={`app.advents.io/${teamSlug}/`}
                 {...field}
-                placeholder='nome-do-app'
+                placeholder='ifood'
                 maxLength={48}
               />
               Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
@@ -117,8 +118,12 @@ export const CreateAppForm = () => {
           render={({ field, fieldState }) => (
             <SettingsField title='Sub-domínio' fieldState={fieldState}>
               Sub-domínio personalizado que será utilizado para criar os links.
-              {/* TODO: Change suffix to the environment domain */}
-              <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
+              <SlugInput
+                suffix={BASE_DEFAULT_DOMAIN}
+                {...field}
+                placeholder='ifood'
+                maxLength={48}
+              />
               Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
               caracteres.
             </SettingsField>
@@ -142,7 +147,7 @@ export const CreateAppForm = () => {
               <Input
                 {...field}
                 type='url'
-                placeholder='https://play.google.com/store/apps/details?id=com.examplo.app'
+                placeholder='https://play.google.com/store/apps/details?id=br.com.ifood'
               />
             </SettingsField>
           )}
@@ -165,7 +170,7 @@ export const CreateAppForm = () => {
               <Input
                 {...field}
                 type='url'
-                placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                placeholder='https://apps.apple.com/br/app/ifood/id483017239'
               />
             </SettingsField>
           )}
@@ -177,7 +182,7 @@ export const CreateAppForm = () => {
           render={({ field, fieldState }) => (
             <SettingsField title='Url alternativa' fieldState={fieldState}>
               Url alternativa padrão que será utilizada ao criar um link.
-              <Input {...field} type='url' placeholder='https://www.meusite.com' />É a url que o
+              <Input {...field} type='url' placeholder='https://www.ifood.com.br' />É a url que o
               usuário será direcionado caso o dispositivo que abrir o link seja Desktop.
             </SettingsField>
           )}

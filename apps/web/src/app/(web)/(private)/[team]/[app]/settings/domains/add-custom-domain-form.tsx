@@ -100,7 +100,7 @@ export const AddCustomDomainForm = () => {
                 </CardContent>
 
                 <div className='flex flex-col gap-2 sm:flex-row'>
-                  <Input placeholder='links.meuapp.com' {...field} />
+                  <Input placeholder='links.ifood.com.br' {...field} />
 
                   <Button type='submit' disabled={busy}>
                     <LoadingContent loading={busy}>Adicionar domínio</LoadingContent>

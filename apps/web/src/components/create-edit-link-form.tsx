@@ -342,7 +342,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                       <FormControl>
                         <Input
                           autoFocus
-                          placeholder='abcd123'
+                          placeholder='influencer-joao'
                           {...field}
                           value={field.value || ''}
                         />
@@ -476,7 +476,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                           {...field}
                           value={field.value || ''}
                           disabled={form.getValues('isDefaultAndroidUrl')}
-                          placeholder='https://play.google.com/store/apps/details?id=com.exemplo.app'
+                          placeholder='https://play.google.com/store/apps/details?id=br.com.ifood'
                           type='url'
                         />
                       </FormControl>
@@ -561,7 +561,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                         {...field}
                         value={field.value || ''}
                         disabled={form.getValues('isDefaultIosUrl')}
-                        placeholder='https://apps.apple.com/app/exemplo/id1234567890'
+                        placeholder='https://apps.apple.com/br/app/ifood/id483017239'
                         type='url'
                       />
                     </FormControl>
@@ -702,7 +702,7 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
                         {...field}
                         value={field.value || ''}
                         disabled={form.getValues('isDefaultFallbackUrl')}
-                        placeholder='https://www.meusite.com'
+                        placeholder='https://www.ifood.com.br'
                         type='url'
                       />
                     </FormControl>
