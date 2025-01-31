@@ -25,7 +25,7 @@ export type GetAppDefaultValuesOutput = z.infer<typeof outputSchema>
 
 export const getAppDefaultValues = (api: Hono<ApiEnv>) =>
   api.get(
-    'team/:teamSlug/app/:appSlug/default-values', //
+    '/team/:teamSlug/app/:appSlug/default-values', //
     zValidator('param', inputSchema),
     async c => {
       const { teamSlug, appSlug } = c.req.valid('param')

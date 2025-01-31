@@ -38,7 +38,7 @@ export type GetAppAnalyticsOutput = z.infer<typeof outputSchema>
 
 export const getAppAnalytics = (api: Hono<ApiEnv>) =>
   api.get(
-    'team/:teamSlug/app/:appSlug/analytics', //
+    '/team/:teamSlug/app/:appSlug/analytics', //
     zValidator('param', inputParamsSchema),
     zValidator('query', inputQuerySchema),
     async c => {

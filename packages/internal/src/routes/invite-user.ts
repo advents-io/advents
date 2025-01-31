@@ -12,7 +12,7 @@ const inputSchema = z.object({
 
 export const inviteUser = (api: Hono<ApiEnv>) =>
   api.post(
-    'user', //
+    '/user', //
     zValidator('json', inputSchema),
     async c => {
       const { email, teamId } = c.req.valid('json')
