@@ -1,14 +1,15 @@
 import { isStoreUrl, routes, WWW_URL } from '@advents/common'
 import { App as AppDb, Link as LinkDb } from '@advents/db'
-import { DEFAULT_DOMAIN, LOCALHOST_DOMAIN } from '@advents/queries/server'
 import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
 import { logClick } from './log-click'
 
 export const isLinkDomain = (req: NextRequest) => {
-  const domain = getDomain(req)
-  const isLinkDomain = getWebDomain(false) !== domain
+  const requestDomain = getDomain(req)
+  const webDomain = getWebDomain(false)
+
+  const isLinkDomain = requestDomain !== webDomain
   return isLinkDomain
 }
 
@@ -136,10 +137,10 @@ const redirect = (url: string) => {
 const getDomain = (req: NextRequest) => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
-  const isDevLinkDomain = domain === LOCALHOST_DOMAIN
+  const isDevLinkDomain = domain.endsWith('.localhost:3000')
 
   if (isDevLinkDomain) {
-    domain = DEFAULT_DOMAIN
+    domain = domain.replace('.localhost:3000', '')
   }
 
   return domain

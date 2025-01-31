@@ -21,7 +21,7 @@ export const APP: App = {
   name: 'Favorito',
   slug: 'favorito',
   subDomain: 'favorito',
-  domains: ['dev.adv.sh', 'links.favorito.digital'],
+  domains: ['favorito.adv.sh', 'links.favorito.digital'],
   defaultDomain: 'links.favorito.digital',
   androidUrl: 'https://play.google.com/store/apps/details?id=com.quebarbada.quebarbada',
   iosUrl: 'https://apps.apple.com/app/id1598991618',

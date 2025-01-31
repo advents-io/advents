@@ -33,8 +33,6 @@ const CUSTOM_DOMAINS: CustomDomain[] = isProduction
       },
     ]
 
-export const LOCALHOST_DOMAIN: string = 'l.localhost:3000'
-
 export const getAppDomains = async (appId: string): Promise<Domain[]> => {
   const app = await prisma.app.findUnique({
     where: {
