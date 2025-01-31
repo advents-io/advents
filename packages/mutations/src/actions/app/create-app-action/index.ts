@@ -8,7 +8,7 @@ import {
   routes,
 } from '@advents/common'
 import { prisma } from '@advents/db'
-import { DEFAULT_DOMAIN } from '@advents/queries/server'
+import { BASE_ADVENTS_DOMAIN } from '@advents/queries/server'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
@@ -106,7 +106,7 @@ export const createAppAction = authActionClient
     await prisma.app.create({
       data: {
         ...app,
-        defaultDomain: DEFAULT_DOMAIN,
+        defaultDomain: app.subDomain + BASE_ADVENTS_DOMAIN,
         androidPackageName,
         imageUrl,
         apiKeys: {

@@ -1,19 +1,18 @@
+import { prisma } from '@advents/db'
+import { z } from 'zod'
+
 const isProduction =
   process.env.NEXT_PUBLIC_VERCEL === '1' && process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 
-export type Domain = {
-  domain: string
-  type: 'default' | 'custom'
-}
+export const domainSchema = z.object({
+  domain: z.string(),
+  type: z.enum(['advents', 'custom']),
+  isDefault: z.boolean(),
+})
 
-const DEFAULT_DOMAINS: Domain[] = [
-  {
-    domain: isProduction ? 'adv.sh' : 'dev.adv.sh',
-    type: 'default',
-  },
-]
+export type Domain = z.infer<typeof domainSchema>
 
-export const DEFAULT_DOMAIN: string = DEFAULT_DOMAINS[0].domain
+export const BASE_ADVENTS_DOMAIN: string = isProduction ? '.adv.sh' : '.dev.adv.sh'
 
 type CustomDomain = {
   appId: string
@@ -37,14 +36,38 @@ const CUSTOM_DOMAINS: CustomDomain[] = isProduction
 export const LOCALHOST_DOMAIN: string = 'l.localhost:3000'
 
 export const getAppDomains = async (appId: string): Promise<Domain[]> => {
+  const app = await prisma.app.findUnique({
+    where: {
+      id: appId,
+    },
+    select: {
+      subDomain: true,
+      defaultDomain: true,
+    },
+  })
+
+  if (!app) {
+    return []
+  }
+
+  const adventsDomain: Domain = {
+    domain: app.subDomain + BASE_ADVENTS_DOMAIN,
+    type: 'advents',
+    isDefault: false,
+  }
+
   const customDomains: Domain[] = CUSTOM_DOMAINS.filter(
     customDomain => customDomain.appId === appId,
   ).map(customDomain => ({
     domain: customDomain.domain,
     type: 'custom',
+    isDefault: false,
   }))
 
-  const domains = [...DEFAULT_DOMAINS, ...customDomains]
+  const domains: Domain[] = [adventsDomain, ...customDomains].map(domain => ({
+    ...domain,
+    isDefault: domain.domain === app.defaultDomain,
+  }))
 
   return domains
 }

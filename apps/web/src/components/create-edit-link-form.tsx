@@ -186,15 +186,14 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   const error = formatErrors(createLinkResult) || formatErrors(editLinkResult)
 
   const handleGetLink = async (linkId: string): Promise<CreateEditLinkFormInput> => {
-    const [link, app] = await Promise.all([
+    const [link, app, availableDomains] = await Promise.all([
       getLink({ linkId }),
       getAppDefaultValues({ teamSlug, appSlug }),
+      getAppDomains({ teamSlug, appSlug }),
     ])
 
     setDefaultAppValues(app)
-
-    const availableDomains = await getAppDomains({ appId: app.id })
-    setAvailableDomains(availableDomains.domains)
+    setAvailableDomains(availableDomains.domains.map(domain => domain.domain))
 
     return {
       ...link,
@@ -213,11 +212,13 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
   }
 
   const getDefaultLinkValues = async (): Promise<CreateEditLinkFormInput> => {
-    const app = await getAppDefaultValues({ teamSlug, appSlug })
-    setDefaultAppValues(app)
+    const [app, availableDomains] = await Promise.all([
+      getAppDefaultValues({ teamSlug, appSlug }),
+      getAppDomains({ teamSlug, appSlug }),
+    ])
 
-    const availableDomains = await getAppDomains({ appId: app.id })
-    setAvailableDomains(availableDomains.domains)
+    setDefaultAppValues(app)
+    setAvailableDomains(availableDomains.domains.map(domain => domain.domain))
 
     return {
       title: null,

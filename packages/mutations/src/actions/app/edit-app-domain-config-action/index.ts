@@ -1,7 +1,7 @@
 'use server'
 
-import { prisma } from '@advents/db'
-import { getAppDomains } from '@advents/queries/server'
+import { Prisma, prisma } from '@advents/db'
+import { BASE_ADVENTS_DOMAIN, getAppDomains } from '@advents/queries/server'
 import { z } from 'zod'
 
 import { ActionError } from '../../../action-errors'
@@ -16,7 +16,12 @@ const inputSchema = editAppDomainConfigFormInputSchema.extend({
 export const editAppDomainConfigAction = authActionClient
   .schema(inputSchema)
   .action(async ({ parsedInput, ctx: { user } }) => {
-    const { teamSlug, appSlug, defaultDomain, subDomain } = parsedInput
+    const {
+      teamSlug,
+      appSlug,
+      defaultDomain: newDefaultDomain,
+      subDomain: newSubDomain,
+    } = parsedInput
 
     const app = await prisma.app.findFirst({
       where: {
@@ -33,6 +38,7 @@ export const editAppDomainConfigAction = authActionClient
       select: {
         id: true,
         subDomain: true,
+        defaultDomain: true,
       },
     })
 
@@ -40,41 +46,71 @@ export const editAppDomainConfigAction = authActionClient
       throw new ActionError('App não encontrado.')
     }
 
-    const subDomainChanged = app.subDomain !== subDomain
+    const oldSubDomain = app.subDomain
+    const oldDefaultDomain = app.defaultDomain
+
+    const subDomainChanged = oldSubDomain !== newSubDomain
 
     if (subDomainChanged) {
-      const subDomainExists = await prisma.app.findUnique({
+      const newSubDomainExists = await prisma.app.findUnique({
         where: {
-          subDomain,
+          subDomain: newSubDomain,
         },
         select: {
           id: true,
         },
       })
 
-      if (subDomainExists) {
+      if (newSubDomainExists) {
         throw new ActionError('Sub-domínio já utilizado por outro app.')
       }
     }
 
-    const availableDomains = await getAppDomains(app.id)
+    const defaultDomainChanged = oldDefaultDomain !== newDefaultDomain
 
-    const defaultDomainIsAvailable = availableDomains.some(
-      domain => domain.domain === defaultDomain,
-    )
+    if (defaultDomainChanged) {
+      const availableDomains = await getAppDomains(app.id)
 
-    if (!defaultDomainIsAvailable) {
-      throw new ActionError('Domínio padrão inválido.')
+      const newDefaultDomainIsAvailable = availableDomains.some(
+        domain => domain.domain === newDefaultDomain,
+      )
+
+      if (!newDefaultDomainIsAvailable) {
+        throw new ActionError('Domínio padrão inválido.')
+      }
     }
 
-    await prisma.app.update({
-      where: {
-        id: app.id,
-      },
-      data: {
-        defaultDomain,
-        subDomain,
-        updatedBy: user.id,
-      },
-    })
+    const oldDefaultDomainIsAdventsDomain = oldDefaultDomain === oldSubDomain + BASE_ADVENTS_DOMAIN
+
+    const queriesToExecute: Prisma.PrismaPromise<unknown>[] = [
+      prisma.app.update({
+        where: {
+          id: app.id,
+        },
+        data: {
+          defaultDomain:
+            subDomainChanged && oldDefaultDomainIsAdventsDomain
+              ? newSubDomain + BASE_ADVENTS_DOMAIN
+              : newDefaultDomain,
+          subDomain: newSubDomain,
+          updatedBy: user.id,
+        },
+      }),
+    ]
+
+    if (subDomainChanged) {
+      queriesToExecute.push(
+        prisma.link.updateMany({
+          where: {
+            domain: oldSubDomain + BASE_ADVENTS_DOMAIN,
+          },
+          data: {
+            domain: newSubDomain + BASE_ADVENTS_DOMAIN,
+            updatedBy: user.id,
+          },
+        }),
+      )
+    }
+
+    await prisma.$transaction(queriesToExecute)
   })

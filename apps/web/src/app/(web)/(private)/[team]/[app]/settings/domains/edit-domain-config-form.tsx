@@ -7,16 +7,17 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { BASE_DEFAULT_DOMAIN, Domain } from '@advents/queries/server'
+import { BASE_ADVENTS_DOMAIN, Domain } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2Icon } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { ErrorAlert } from '@/components/error-alert'
 import { SettingsField } from '@/components/settings-field'
+import { getAppDomains } from '@/lib/queries/get-app-domains'
 import { Form, FormField } from '@/ui/form'
 import { SlugInput } from '@/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
@@ -27,7 +28,15 @@ interface Props {
   subDomain: string
 }
 
-export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomain }: Props) => {
+export const EditDomainConfigForm = ({
+  availableDomains: initAvailableDomains,
+  defaultDomain,
+  subDomain,
+}: Props) => {
+  const [availableDomains, setAvailableDomains] = useState<string[]>(
+    initAvailableDomains.map(domain => domain.domain),
+  )
+
   const { team: teamSlug, app: appSlug } = useParams<{ team: string; app: string }>()
 
   const {
@@ -86,6 +95,13 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
                     form.resetField('subDomain', {
                       defaultValue: field.value,
                     })
+
+                    const newAvailableDomains = await getAppDomains({ teamSlug, appSlug })
+                    setAvailableDomains(newAvailableDomains.domains.map(domain => domain.domain))
+                    form.resetField('defaultDomain', {
+                      defaultValue: newAvailableDomains.domains.find(domain => domain.isDefault)!
+                        .domain,
+                    })
                   },
                   {
                     loading: 'Alterando o sub-domínio...',
@@ -98,7 +114,7 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
               <span>Sub-domínio personalizado que será utilizado para criar os links.</span>
 
               <SlugInput
-                suffix={BASE_DEFAULT_DOMAIN}
+                suffix={BASE_ADVENTS_DOMAIN}
                 {...field}
                 placeholder='ifood'
                 maxLength={48}
@@ -143,6 +159,14 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
 
               <Select
                 onValueChange={value => {
+                  if (!value) {
+                    // This is because when we change the sub-domain,
+                    // and the defaultDomain is the advents domain,
+                    // we change the value of the defaultDomain too,
+                    // and it trigger a value change with an empty value.
+                    return
+                  }
+
                   field.onChange(value)
 
                   form.handleSubmit(() =>
@@ -187,8 +211,8 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
 
                 <SelectContent>
                   {availableDomains.map((domain, index) => (
-                    <SelectItem key={index} value={domain.domain}>
-                      {domain.domain}
+                    <SelectItem key={index} value={domain}>
+                      {domain}
                     </SelectItem>
                   ))}
                 </SelectContent>

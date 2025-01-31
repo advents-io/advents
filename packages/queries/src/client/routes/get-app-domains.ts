@@ -1,38 +1,52 @@
+import { prisma } from '@advents/db'
 import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 import { z } from 'zod'
 
-import { getAppDomains as handleGetAppDomains } from '../../server/domains'
+import { domainSchema, getAppDomains as handleGetAppDomains } from '../../server/domains'
 import { ApiEnv } from '../api'
 
 const inputSchema = z.object({
-  appId: z.string({ message: 'Id do app é obrigatório.' }),
+  teamSlug: z.string({ message: 'Slug da equipe é obrigatório.' }),
+  appSlug: z.string({ message: 'Slug do app é obrigatório.' }),
 })
 
 export type GetAppDomainsInput = z.infer<typeof inputSchema>
 
 const outputSchema = z.object({
-  domains: z.array(z.string()),
+  domains: z.array(domainSchema),
 })
 
 export type GetAppDomainsOutput = z.infer<typeof outputSchema>
 
 export const getAppDomains = (api: Hono<ApiEnv>) =>
   api.get(
-    '/app/:appId/domains', //
+    '/team/:teamSlug/app/:appSlug/domains', //
     zValidator('param', inputSchema),
     async c => {
-      const { appId } = c.req.valid('param')
+      const { teamSlug, appSlug } = c.req.valid('param')
 
-      // We should add authorization to valid if user has access to the app,
-      // but previously of fetching this endpoint, we call the getAppDefaultValues,
-      // which already validates if the user has access to the app.
-
-      const domains = await handleGetAppDomains(appId)
-
-      const response = outputSchema.parse({
-        domains: domains.map(domain => domain.domain),
+      const app = await prisma.app.findFirst({
+        where: {
+          slug: appSlug,
+          team: {
+            slug: teamSlug,
+            members: {
+              some: {
+                userId: c.var.user.id,
+              },
+            },
+          },
+        },
       })
+
+      if (!app) {
+        return c.json({ error: 'App não encontrado.' }, 404)
+      }
+
+      const domains = await handleGetAppDomains(app.id)
+
+      const response = outputSchema.parse({ domains })
 
       return c.json(response)
     },

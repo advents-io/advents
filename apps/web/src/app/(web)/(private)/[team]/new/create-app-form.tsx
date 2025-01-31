@@ -7,7 +7,7 @@ import {
   formatErrors,
   useAction,
 } from '@advents/mutations'
-import { BASE_DEFAULT_DOMAIN } from '@advents/queries/server'
+import { BASE_ADVENTS_DOMAIN } from '@advents/queries/server'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SaveIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -119,7 +119,7 @@ export const CreateAppForm = () => {
             <SettingsField title='Sub-domínio' fieldState={fieldState}>
               Sub-domínio personalizado que será utilizado para criar os links.
               <SlugInput
-                suffix={BASE_DEFAULT_DOMAIN}
+                suffix={BASE_ADVENTS_DOMAIN}
                 {...field}
                 placeholder='ifood'
                 maxLength={48}
