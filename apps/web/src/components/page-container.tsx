@@ -13,7 +13,7 @@ export const PageContainer = ({ children, title, actions, className }: Props) =>
   return (
     <div className='flex flex-1 flex-col'>
       <div className='mb-8 flex h-14 items-center justify-between gap-2'>
-        <h1 className='text-2xl font-medium md:text-3xl'>{title}</h1>
+        <h1 className='truncate text-2xl font-medium md:text-3xl'>{title}</h1>
 
         {actions}
       </div>

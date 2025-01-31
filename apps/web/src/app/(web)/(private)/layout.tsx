@@ -9,69 +9,27 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const email = user?.email
   const userId = user?.id
 
-  const apps = await prisma.app.findMany({
+  const teams = await prisma.team.findMany({
     where: {
-      team: {
-        members: {
-          some: {
-            userId,
-          },
+      members: {
+        some: {
+          userId,
         },
       },
     },
     select: {
-      id: true,
       name: true,
       slug: true,
-      imageUrl: true,
-      team: {
+      apps: {
         select: {
-          slug: true,
+          id: true,
           name: true,
+          slug: true,
+          imageUrl: true,
         },
       },
     },
-    orderBy: {
-      name: 'asc',
-    },
   })
-
-  const teamsRecord = apps.reduce<
-    Record<
-      string,
-      {
-        name: string
-        slug: string
-        apps: {
-          id: string
-          name: string
-          slug: string
-          imageUrl: string
-        }[]
-      }
-    >
-  >((acc, app) => {
-    const teamSlug = app.team.slug
-
-    if (!acc[teamSlug]) {
-      acc[teamSlug] = {
-        name: app.team.name,
-        slug: app.team.slug,
-        apps: [],
-      }
-    }
-
-    acc[teamSlug].apps.push({
-      id: app.id,
-      name: app.name,
-      slug: app.slug,
-      imageUrl: app.imageUrl,
-    })
-
-    return acc
-  }, {})
-
-  const teams = Object.values(teamsRecord)
 
   return (
     <>
