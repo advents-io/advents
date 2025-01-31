@@ -117,6 +117,7 @@ export const CreateAppForm = () => {
           render={({ field, fieldState }) => (
             <SettingsField title='Sub-domínio' fieldState={fieldState}>
               Sub-domínio personalizado que será utilizado para criar os links.
+              {/* TODO: Change suffix to the environment domain */}
               <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
               Deve conter apenas letras minúsculas, números, hífen ou underline. Máximo de 48
               caracteres.

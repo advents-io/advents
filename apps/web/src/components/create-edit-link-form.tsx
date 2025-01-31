@@ -382,6 +382,28 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
             <FormMessage className='mt-1'>
               {form.formState.errors.domain?.message || form.formState.errors.slug?.message}
             </FormMessage>
+
+            {linkId &&
+              (form.formState.dirtyFields.domain || form.formState.dirtyFields.slug) &&
+              !(form.formState.errors.domain || form.formState.errors.slug) && (
+                <div className='mt-1 space-y-2 text-sm font-medium text-destructive'>
+                  <p>
+                    Ao alterar o domínio ou link curto, o endereço anterior do link deixará de
+                    funcionar.
+                  </p>
+
+                  {form.getValues('slug') ? (
+                    <p>
+                      O novo endereço será:{' '}
+                      <span className='rounded-md bg-gray-100 px-2 py-1 font-mono tracking-tighter text-primary'>
+                        https://{form.getValues('domain')}/{form.getValues('slug')}
+                      </span>
+                    </p>
+                  ) : (
+                    <p>O novo endereço será gerado aleatoriamente ao salvar o link.</p>
+                  )}
+                </div>
+              )}
           </div>
 
           <div>

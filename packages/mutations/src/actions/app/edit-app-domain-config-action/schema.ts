@@ -5,6 +5,7 @@ export const editAppDomainConfigFormInputSchema = z.object({
   subDomain: z
     .string({ message: 'Sub-domínio inválido.' })
     .min(1, 'Sub-domínio inválido.')
+    .min(3, 'O sub-domínio deve possuir no mínimo 3 caracteres.')
     .max(48, 'O sub-domínio deve possuir no máximo 48 caracteres.')
     .regex(
       /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/,

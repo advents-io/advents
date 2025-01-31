@@ -95,8 +95,29 @@ export const EditDomainConfigForm = ({ availableDomains, defaultDomain, subDomai
                 ),
               )}
             >
-              Sub-domínio personalizado que será utilizado para criar os links.
+              <span>Sub-domínio personalizado que será utilizado para criar os links.</span>
+
+              {/* TODO: Change suffix to the environment domain */}
               <SlugInput suffix='.adv.sh' {...field} placeholder='nome-do-app' maxLength={48} />
+
+              {fieldState.isDirty && !fieldState.invalid && (
+                <div className='space-y-4 text-sm font-medium text-destructive'>
+                  <p>
+                    Ao alterar o sub-domínio, o sub-domínio anterior deixará de funcionar, fazendo
+                    com que todos os links criados com ele funcionem somente com o novo sub-domínio.
+                  </p>
+
+                  <p>
+                    <span className='rounded-md bg-gray-100 px-2 py-1 font-mono tracking-tighter text-primary'>
+                      https://{form.formState.defaultValues?.subDomain}.adv.sh/7yB46jk
+                    </span>{' '}
+                    passará a funcionar como{' '}
+                    <span className='rounded-md bg-gray-100 px-2 py-1 font-mono tracking-tighter text-primary'>
+                      https://{field.value}.adv.sh/7yB46jk
+                    </span>
+                  </p>
+                </div>
+              )}
             </SettingsField>
           )}
         />
