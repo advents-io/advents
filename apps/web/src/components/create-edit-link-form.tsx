@@ -193,6 +193,18 @@ export const CreateEditLinkForm = ({ closeDialog, linkId, className }: Props) =>
     ])
 
     setDefaultAppValues(app)
+
+    // WORKAROUND: This is necessary because of the legacy domains, like adv.sh.
+    // Today we have only https://adv.sh/kab legacy link available,
+    // if this link is excluded we can remove this workaround.
+    if (!availableDomains.domains.some(domain => domain.domain === link.domain)) {
+      availableDomains.domains.push({
+        domain: link.domain,
+        isDefault: false,
+        type: 'custom',
+      })
+    }
+
     setAvailableDomains(availableDomains.domains.map(domain => domain.domain))
 
     return {
