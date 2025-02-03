@@ -1,6 +1,8 @@
 import { handle } from 'hono/vercel'
 
-import { clickMiddleware, isLinkDomain } from './src/clicks/click-middleware'
-import { api } from './src/events/api'
+import { clickMiddleware } from './src/clicks/click-middleware'
+import { eventsApi } from './src/events/api'
+import { isLinkDomain } from './src/utils/domain'
+import { wellKnownHandlerApi } from './src/well-known-handler/api'
 
-export { api, clickMiddleware, handle, isLinkDomain }
+export { clickMiddleware, eventsApi, handle, isLinkDomain, wellKnownHandlerApi }

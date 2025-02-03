@@ -10,11 +10,12 @@ export const config = {
      * - _next: Next.js internals
      * - Metadata files: favicon.ico, sitemap.xml, robots.txt, manifest.webmanifest
      * - Images: .svg, .png, .jpg, .jpeg, .gif, .webp
+     * - Well-known files: /.well-known/
      * - /ios/preview
      * - /deeplink
      * - /api
      */
-    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|ios/preview|deeplink|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|manifest.webmanifest|.well-known|ios/preview|deeplink|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
 

@@ -1,7 +1,7 @@
-import { api, handle } from '@advents/engine'
+import { eventsApi, handle } from '@advents/engine'
 
-export const GET = handle(api)
-export const POST = handle(api)
-export const PUT = handle(api)
-export const PATCH = handle(api)
-export const DELETE = handle(api)
+export const GET = handle(eventsApi)
+export const POST = handle(eventsApi)
+export const PUT = handle(eventsApi)
+export const PATCH = handle(eventsApi)
+export const DELETE = handle(eventsApi)

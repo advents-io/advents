@@ -7,12 +7,12 @@ import { logSession } from './routes/log-session'
 
 export type ApiEnv = AuthMiddlewareEnv & DeviceMiddlewareEnv
 
-export const api = new Hono<ApiEnv>({
+export const eventsApi = new Hono<ApiEnv>({
   strict: false,
 }).basePath('/api/events')
 
-api.use(authMiddleware)
-api.use(deviceMiddleware)
+eventsApi.use(authMiddleware)
+eventsApi.use(deviceMiddleware)
 
-logSession(api)
-logPurchase(api)
+logSession(eventsApi)
+logPurchase(eventsApi)

@@ -3,15 +3,8 @@ import { App as AppDb, Link as LinkDb } from '@advents/db'
 import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
+import { getRequestDomain, getWebDomain } from '../utils/domain'
 import { logClick } from './log-click'
-
-export const isLinkDomain = (req: NextRequest) => {
-  const requestDomain = getDomain(req)
-  const webDomain = getWebDomain(false)
-
-  const isLinkDomain = requestDomain !== webDomain
-  return isLinkDomain
-}
 
 type Link = Pick<
   LinkDb,
@@ -21,7 +14,7 @@ type Link = Pick<
 type App = Pick<AppDb, 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'disableIosPreviewPage'>
 
 export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
-  const domain = getDomain(req)
+  const domain = getRequestDomain(req)
 
   const slug = req.nextUrl.pathname.split('/')[1]
 
@@ -133,35 +126,6 @@ const redirect = (url: string) => {
   return NextResponse.redirect(url, {
     status: 307,
   })
-}
-
-const getDomain = (req: NextRequest) => {
-  let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
-
-  const isDevLinkDomain = domain.endsWith('.localhost:3000')
-
-  if (isDevLinkDomain) {
-    domain = domain.replace('.localhost:3000', '')
-  }
-
-  return domain
-}
-
-const getWebDomain = (withProtocol: boolean) => {
-  const isLocalhost = process.env.VERCEL !== '1'
-
-  let domain =
-    process.env.VERCEL === '1'
-      ? process.env.VERCEL_ENV === 'production'
-        ? 'app.advents.io'
-        : 'dev.advents.io'
-      : 'localhost:3000'
-
-  const protocol = withProtocol ? (isLocalhost ? 'http://' : 'https://') : ''
-
-  domain = protocol + domain
-
-  return domain
 }
 
 const getApp = async (supabase: SupabaseClient, appId: string): Promise<App | null> => {
