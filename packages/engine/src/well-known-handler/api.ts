@@ -1,4 +1,5 @@
 import { prisma } from '@advents/db'
+import { BASE_ADVENTS_DOMAIN, getAppIdFromDomain } from '@advents/queries/server'
 import { Hono } from 'hono'
 
 import { getRequestDomain } from '../utils/domain'
@@ -10,17 +11,14 @@ export const wellKnownHandlerApi = new Hono({
 wellKnownHandlerApi.get(
   '/apple-app-site-association', //
   async c => {
-    const domain = getRequestDomain(c.req.raw)
-    const subDomain = domain.includes('.') ? domain.split('.')[0] : null
+    const query = getAppQueryFromRequest(c.req.raw)
 
-    if (!subDomain) {
+    if (!query) {
       return c.json({ error: 'Domínio inválido.' }, 400)
     }
 
     const app = await prisma.app.findFirst({
-      where: {
-        subDomain,
-      },
+      where: query,
       select: {
         enableIosUniversalLinks: true,
         appleTeamId: true,
@@ -67,17 +65,14 @@ wellKnownHandlerApi.get(
 wellKnownHandlerApi.get(
   '/assetlinks.json', //
   async c => {
-    const domain = getRequestDomain(c.req.raw)
-    const subDomain = domain.includes('.') ? domain.split('.')[0] : null
+    const query = getAppQueryFromRequest(c.req.raw)
 
-    if (!subDomain) {
+    if (!query) {
       return c.json({ error: 'Domínio inválido.' }, 400)
     }
 
     const app = await prisma.app.findFirst({
-      where: {
-        subDomain,
-      },
+      where: query,
       select: {
         enableAndroidAppLinks: true,
         androidPackageName: true,
@@ -117,3 +112,22 @@ wellKnownHandlerApi.get(
     return c.json(result)
   },
 )
+
+const getAppQueryFromRequest = (req: Request) => {
+  const domain = getRequestDomain(req)
+
+  const isAdventsDomain = domain.includes(BASE_ADVENTS_DOMAIN)
+  const appId = !isAdventsDomain ? getAppIdFromDomain(domain) : null
+
+  const query = isAdventsDomain
+    ? {
+        subDomain: domain.split('.')[0],
+      }
+    : appId
+      ? {
+          id: appId,
+        }
+      : null
+
+  return query
+}
