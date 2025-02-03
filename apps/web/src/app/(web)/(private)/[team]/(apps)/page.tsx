@@ -77,7 +77,7 @@ export default async function Page(props: { params: Promise<{ team: string }> })
 
   return (
     <PageContainer
-      // We could do it in a better way, but when I did it, I was hurry
+      // WORKAROUND: We could do it in a better way, but when I did it, I was hurry
       title={teamName ? `Apps - ${teamName}` : 'Apps'}
       actions={
         <Link href={routes.APPS_NEW.path(teamSlug)}>

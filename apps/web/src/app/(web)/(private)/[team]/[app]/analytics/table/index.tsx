@@ -101,7 +101,7 @@ export const Table = ({ teamSlug, appSlug, className }: Props) => {
                   </TableHead>
                 ))}
 
-                {/* Actions column header. Without this, the header will have an empty space */}
+                {/* WORKAROUND: Actions column header. Without this, the header will have an empty space */}
                 <TableHead className='p-0'>{flexRender(<div />, {})}</TableHead>
               </TableRow>
             ))}
@@ -135,7 +135,7 @@ export const Table = ({ teamSlug, appSlug, className }: Props) => {
                   ))}
 
                   {/**
-                   * Actions column. We can't pass it on `table-columns.tsx` because we have to pass the qrCodeUrl,
+                   * WORKAROUND: Actions column. We can't pass it on `table-columns.tsx` because we have to pass the qrCodeUrl,
                    * which is fetched on the server, and this was causing an error on rendering the table
                    */}
                   <TableCell className='p-0'>

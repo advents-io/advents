@@ -1,5 +1,5 @@
 /**
- * Remove the supabase console warning from using auth.getSession()
+ * WORKAROUND: Remove the supabase console warning from using auth.getSession()
  */
 export const removeSupabaseConsoleWarn = () => {
   const originalConsoleWarn = console.warn

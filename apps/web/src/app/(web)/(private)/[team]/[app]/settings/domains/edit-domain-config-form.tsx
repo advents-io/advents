@@ -160,7 +160,7 @@ export const EditDomainConfigForm = ({
               <Select
                 onValueChange={value => {
                   if (!value) {
-                    // This is because when we change the sub-domain,
+                    // WORKAROUND: This is because when we change the sub-domain,
                     // and the defaultDomain is the advents domain,
                     // we change the value of the defaultDomain too,
                     // and it trigger a value change with an empty value.

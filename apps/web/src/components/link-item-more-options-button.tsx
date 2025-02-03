@@ -19,7 +19,7 @@ export const LinkItemMoreOptionsButton = ({ id, domain, slug, qrCodeLogoUrl, ...
 
   const shortLink = `${domain}/${slug}`
 
-  /* We have to add preventDefault to avoid the dropdown to close when clicking on an item.
+  /* WORKAROUND: We have to add preventDefault to avoid the dropdown to close when clicking on an item.
    * That's why we pass the closeDropdown to the Dialogs, to be able to close the dropdown after closing the Dialog.
    * We may fix this in the future.
    */
