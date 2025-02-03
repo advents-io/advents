@@ -61,7 +61,13 @@ export const AppSelector = ({ teams }: Props) => {
   }
 
   return (
-    <Select value={selectedApp} onValueChange={handleAppChange} open={open} onOpenChange={setOpen}>
+    <Select
+      value={selectedApp}
+      onValueChange={handleAppChange}
+      open={open}
+      onOpenChange={setOpen}
+      disabled={!initialTeam}
+    >
       <SelectTrigger className='w-52 font-medium text-foreground focus:ring-0 focus:ring-offset-0 md:w-64'>
         <SelectValue placeholder='Selecione um app' className='text-nowrap' />
       </SelectTrigger>
