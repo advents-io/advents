@@ -1,10 +1,9 @@
 'use client'
 
 import { DOCS_URLS, routes, settingsRoutes } from '@advents/common'
-import { supabaseClient } from '@advents/supabase/client'
 import { MoveUpRightIcon, SlashIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 import { AdventsLogo } from '@/assets/advents-logo'
 import { ContactButton } from '@/components/contact-button'
@@ -38,13 +37,6 @@ interface Props {
 
 export const PrivateHeader = ({ email, teams }: Props) => {
   const { team, app } = useParams<{ team: string; app: string }>()
-  const router = useRouter()
-
-  const signOut = () => {
-    const supabase = supabaseClient()
-    supabase.auth.signOut()
-    router.push(routes.SIGN_IN.path)
-  }
 
   const includeTabs = !!team && !!app
 
@@ -87,7 +79,7 @@ export const PrivateHeader = ({ email, teams }: Props) => {
             </Button>
           </Link>
 
-          <UserButton email={email} signOut={signOut} />
+          {email && <UserButton email={email} />}
         </div>
       </div>
 
