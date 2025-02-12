@@ -25,6 +25,10 @@ const CUSTOM_DOMAINS: CustomDomain[] = isProduction
         appId: '07275def-37c3-4f2b-a049-bfee570dccc6',
         domain: 'li.favorito.digital',
       },
+      {
+        appId: '0724788a-39f8-487c-808e-75e7d196e97d',
+        domain: 'baixe.clubecondor.com',
+      },
     ]
   : [
       {
