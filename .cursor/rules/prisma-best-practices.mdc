@@ -1,0 +1,10 @@
+---
+description: Best practices for Prisma ORM operations
+globs: **/*.{ts}
+---
+
+- Use transactions for related operations
+- Use select and include for performance
+- Implement soft deletes where appropriate
+- Use proper indexing strategies
+- Cache expensive queries

@@ -1,0 +1,9 @@
+---
+description: Best practices for form handling with React Hook Form and Zod
+globs: apps/web/src/**/*.{tsx}
+---
+
+- Use Zod schemas for form validation
+- Use controlled inputs
+- Implement proper form submission states
+- Use form watchers efficiently

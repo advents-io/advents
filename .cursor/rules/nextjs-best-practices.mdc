@@ -1,0 +1,21 @@
+---
+description: Best practices for Next.js 15+ applications and routing
+globs: apps/web/src/**/*.{ts,tsx}
+---
+
+- Use React Server Components by default, add `'use client'` only when necessary
+- Minimize `use client`, `useEffect`, and `setState`; favor React Server Components (RSC)
+- Limit `'use client'`:
+  - Favor server components and Next.js SSR
+  - Use only for Web API access in small components
+  - Avoid for data fetching or state management
+- Implement route handlers with Route Handler API instead of API routes
+- Use next/image for optimized image loading
+- Leverage server actions for form submissions
+- Implement streaming with `loading.tsx` and suspense boundaries
+- Cache responses with Route Cache Configuration
+- Follow Next.js docs for Data Fetching, Rendering, and Routing
+- Use `next-safe-action` for all server actions:
+  - Implement type-safe server actions with proper validation.
+  - Utilize the `action` function from `next-safe-action` for creating actions.
+  - Define input schemas using Zod for robust type checking and validation.

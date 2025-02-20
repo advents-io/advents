@@ -1,0 +1,11 @@
+---
+description: Best practices for data fetching with TanStack Query v5
+globs: apps/web/src/**/*.{ts,tsx}
+---
+
+- Use suspense mode for streaming
+- Implement proper query keys with type safety
+- Use prefetching for anticipated data needs
+- Implement infinite queries for pagination
+- Use query invalidation strategically
+- Implement proper retry logic
