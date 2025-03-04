@@ -1,5 +1,5 @@
 import { prisma } from '@advents/db'
-import { BASE_ADVENTS_DOMAIN, getAppIdFromDomain } from '@advents/queries/server'
+import { getAppIdFromCustomDomain } from '@advents/queries/server'
 import { Hono } from 'hono'
 
 import { getRequestDomain } from '../utils/domain'
@@ -116,12 +116,11 @@ wellKnownHandlerApi.get(
 const getAppQueryFromRequest = (req: Request) => {
   const domain = getRequestDomain(req)
 
-  const isAdventsDomain = domain.includes(BASE_ADVENTS_DOMAIN)
-  const appId = !isAdventsDomain ? getAppIdFromDomain(domain) : null
+  const appId = !domain.isAdventsSubDomain ? getAppIdFromCustomDomain(domain.domain) : null
 
-  const query = isAdventsDomain
+  const query = domain.isAdventsSubDomain
     ? {
-        subDomain: domain.split('.')[0],
+        subDomain: domain.domain.split('.')[0],
       }
     : appId
       ? {

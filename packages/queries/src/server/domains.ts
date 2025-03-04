@@ -74,7 +74,7 @@ export const getAppDomains = async (appId: string): Promise<Domain[]> => {
   return domains
 }
 
-export const getAppIdFromDomain = (domain: string): string | null => {
-  const appId = CUSTOM_DOMAINS.find(customDomain => customDomain.domain === domain)
-  return appId ? appId.appId : null
+export const getAppIdFromCustomDomain = (customDomain: string): string | null => {
+  const domain = CUSTOM_DOMAINS.find(domain => domain.domain === customDomain)
+  return domain ? domain.appId : null
 }

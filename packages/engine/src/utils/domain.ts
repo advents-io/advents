@@ -1,12 +1,19 @@
+import { BASE_ADVENTS_DOMAIN } from '@advents/queries/server'
+
 export const isLinkDomain = (req: Request) => {
-  const requestDomain = getRequestDomain(req)
+  const { domain: requestDomain } = getRequestDomain(req)
   const webDomain = getWebDomain(false)
 
   const isLinkDomain = requestDomain !== webDomain
   return isLinkDomain
 }
 
-export const getRequestDomain = (req: Request) => {
+export type RequestDomain = {
+  domain: string
+  isAdventsSubDomain: boolean
+}
+
+export const getRequestDomain = (req: Request): RequestDomain => {
   let domain = (req.headers.get('host') as string).replace('www.', '').toLowerCase()
 
   const isDevLinkDomain = domain.endsWith('.localhost:3000')
@@ -15,7 +22,10 @@ export const getRequestDomain = (req: Request) => {
     domain = domain.replace('.localhost:3000', '')
   }
 
-  return domain
+  return {
+    domain,
+    isAdventsSubDomain: domain.includes(BASE_ADVENTS_DOMAIN),
+  }
 }
 
 export const getWebDomain = (withProtocol: boolean) => {

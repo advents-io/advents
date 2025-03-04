@@ -1,9 +1,10 @@
 import { isStoreUrl, routes, WWW_URL } from '@advents/common'
 import { App as AppDb, Link as LinkDb } from '@advents/db'
+import { getAppIdFromCustomDomain } from '@advents/queries/server'
 import { SupabaseClient, supabaseServer } from '@advents/supabase/server'
 import { NextFetchEvent, NextRequest, NextResponse, userAgent } from 'next/server'
 
-import { getRequestDomain, getWebDomain } from '../utils/domain'
+import { getRequestDomain, getWebDomain, RequestDomain } from '../utils/domain'
 import { logClick } from './log-click'
 
 type Link = Pick<
@@ -13,19 +14,47 @@ type Link = Pick<
 
 type App = Pick<AppDb, 'androidUrl' | 'iosUrl' | 'fallbackUrl' | 'disableIosPreviewPage'>
 
+type Os = 'ios' | 'android' | 'unknown'
+
 export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) => {
   const domain = getRequestDomain(req)
 
   const slug = req.nextUrl.pathname.split('/')[1]
 
+  const ua = userAgent(req)
+  const os = ua.os?.name === 'iOS' ? 'ios' : ua.os?.name === 'Android' ? 'android' : 'unknown'
+
   if (!slug) {
-    return redirect(WWW_URL)
+    return handleRequestWithoutSlug({
+      domain,
+      os,
+    })
   }
 
+  return handleRequestWithSlug({
+    domain,
+    slug,
+    os,
+    req,
+    event,
+  })
+}
+
+const handleRequestWithSlug = async ({
+  slug,
+  domain,
+  os,
+  req,
+  event,
+}: {
+  slug: string
+  domain: RequestDomain
+  os: Os
+  req: NextRequest
+  event: NextFetchEvent
+}): Promise<NextResponse> => {
   const supabase = await supabaseServer()
 
-  // WORKAROUND: This was necessary because Prisma was not able
-  // to run on edge middleware in the Supabase database
   const link = (
     await supabase
       .from('links')
@@ -40,7 +69,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
         `,
       )
       .eq('slug', slug)
-      .eq('domain', domain)
+      .eq('domain', domain.domain)
       .limit(1)
       .single()
   ).data as Link
@@ -53,12 +82,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
 
   let destinationUrl: URL
 
-  const ua = userAgent(req)
-
-  const isIos = ua.os?.name === 'iOS'
-  const isAndroid = ua.os?.name === 'Android'
-
-  if (isIos) {
+  if (os === 'ios') {
     let iosUrl = link.iosUrl
     let disableIosPreviewPage = link.disableIosPreviewPage
 
@@ -82,7 +106,7 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
       destinationUrl.searchParams.append('app_id', link.appId)
       destinationUrl.searchParams.append('redirect', iosUrl)
     }
-  } else if (isAndroid) {
+  } else if (os === 'android') {
     let androidUrl = link.androidUrl
 
     if (!androidUrl) {
@@ -120,6 +144,47 @@ export const clickMiddleware = async (req: NextRequest, event: NextFetchEvent) =
   event.waitUntil(logClick(req, clickId, link.id, link.appId, destinationUrl.toString()))
 
   return redirect(destinationUrl.toString())
+}
+
+const handleRequestWithoutSlug = async ({
+  domain,
+  os,
+}: {
+  domain: RequestDomain
+  os: Os
+}): Promise<NextResponse> => {
+  const supabase = await supabaseServer()
+
+  const subDomain = domain.isAdventsSubDomain ? domain.domain.split('.')[0] : null
+  const appId = !subDomain ? getAppIdFromCustomDomain(domain.domain) : null
+
+  const app = (
+    await supabase
+      .from('apps')
+      .select(
+        `
+      androidUrl:android_url,
+      iosUrl:ios_url,
+      disableIosPreviewPage:disable_ios_preview_page,
+      fallbackUrl:fallback_url
+      `,
+      )
+      .eq(subDomain ? 'subDomain' : 'id', subDomain || appId)
+      .limit(1)
+      .single()
+  ).data as App
+
+  if (!app) {
+    return redirect(WWW_URL)
+  }
+
+  if (os === 'ios') {
+    return redirect(app.iosUrl)
+  } else if (os === 'android') {
+    return redirect(app.androidUrl)
+  } else {
+    return redirect(app.fallbackUrl)
+  }
 }
 
 const redirect = (url: string) => {
