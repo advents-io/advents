@@ -25,7 +25,7 @@ For getting started, please check our official documentation:
 
 ## Contribution
 
-Feel free to contribute to the SDK! Follow these steps:
+Feel free to contribute! Follow these steps:
 
 1. Fork this repository
 2. Create your feature branch (`git checkout -b feature/new-feature`)
