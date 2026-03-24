@@ -4,9 +4,3 @@
 [submodule "modules/docs"]
 	path = modules/docs
 	url = git@github.com:advents-io/docs.git
-[submodule "modules/@gabriel-moresco"]
-	path = modules/@gabriel-moresco
-	url = git@github.com:gabriel-moresco/gabriel-moresco.git
-[submodule "modules/@advents-io"]
-	path = modules/@advents-io
-	url = git@github.com:advents-io/.github.git
